@@ -1,0 +1,90 @@
+{
+  "love": {
+    "sheet": true,
+    "name": "Love"
+  },
+  "ciel": {
+    "sheet": true,
+    "name": "Ciel"
+  },
+  "thirteen": {
+    "sheet": true,
+    "name": "Thirteen"
+  },
+  "celeste": {
+    "sheet": true,
+    "name": "Celeste"
+  },
+  "michael": {
+    "sheet": true,
+    "name": "Michael"
+  },
+  "angelica": {
+    "sheet": true,
+    "name": "Angelica"
+  },
+  "astella": {
+    "sheet": true,
+    "name": "Astella"
+  },
+  "vortex": {
+    "sheet": true,
+    "name": "Vortex"
+  },
+  "cynth": {
+    "sheet": true,
+    "name": "Cynth"
+  },
+  "cymbeline": {
+    "sheet": true,
+    "name": "Cymbeline"
+  },
+  "ezra": {
+    "sheet": true,
+    "name": "Ezra"
+  },
+  "aura": {
+    "sheet": true,
+    "name": "Aura"
+  },
+  "neptune": {
+    "sheet": true,
+    "name": "Neptune"
+  },
+  "clara": {
+    "sheet": true,
+    "name": "Clara"
+  },
+  "ace": {
+    "sheet": true,
+    "name": "Ace"
+  },
+  "beau": {
+    "sheet": false,
+    "name": "Beau"
+  },
+  "harper": {
+    "sheet": false,
+    "name": "Harper"
+  },
+  "kai": {
+    "sheet": false,
+    "name": "Kai"
+  },
+  "victoria": {
+    "sheet": false,
+    "name": "Victoria"
+  },
+  "idris": {
+    "sheet": false,
+    "name": "Idris"
+  },
+  "jasmine": {
+    "sheet": false,
+    "name": "Jasmine"
+  },
+  "jamie": {
+    "sheet": false,
+    "name": "Jamie"
+  }
+}

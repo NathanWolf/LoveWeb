@@ -1,11 +1,4 @@
-<?php
-$characters = array(
-    'love', 'ciel','thirteen', 'celeste',  'michael', 'angelica',
-    'astella', 'vortex', 'cynth', 'cymbeline', 'ezra', 'aura',
-    'neptune', 'clara', 'ace', 'beau', 'harper', 'kai',
-);
-$extras = array('jasmine', 'jamie', 'victoria', 'idris');
-?>
+<?php ?>
 <html lang="en-us">
 <head>
     <title>Love</title>
@@ -13,19 +6,14 @@ $extras = array('jasmine', 'jamie', 'victoria', 'idris');
     <script type="text/javascript" src="js/love.js"></script>
     <script type="text/javascript">
         window.onload = function() {
-            new Love();
+            let love = new Love();
+            love.register();
+            love.load();
         };
     </script>
 </head>
 <body>
-    <div class="portraits">
-        <?php
-        foreach ($characters as $character) {
-            $image = "$character.jpg";
-            echo "<div class=\"portrait\" style=\"background-image: url(image/portraits/$image)\">&nbsp;</div>\n";
-            echo "<div class=\"portraitName\" data-character=\"$character\">$character</div>\n";
-        }
-        ?>
+    <div class="portraits" id="portraitList">
     </div>
     <div class="popup" id="characterSheetPopup" style="display: none">
         <div class="popupContent">
