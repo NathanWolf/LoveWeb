@@ -1,0 +1,8 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #EEE;
+    overscroll-behavior-y: none;
+    overflow: hidden;
+}
