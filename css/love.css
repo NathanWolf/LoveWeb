@@ -1,8 +1,76 @@
-body {
+html,body {
     margin: 0;
     padding: 0;
-    height: 100%;
+    height: 100vh;
+}
+
+body {
     background: #EEE;
     overscroll-behavior-y: none;
     overflow: hidden;
+}
+
+.popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.popupContent {
+    width: 100%;
+    height: 100%;
+    margin: 64px;
+}
+
+.portraits {
+    display: flex;
+    margin-left: 16px;
+    margin-right: 16px;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.portrait {
+    min-width: 256px;
+    min-height: 256px;
+    overflow: hidden;
+    margin: 8px;
+    cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.portraitName {
+    min-width: 256px;
+    min-height: 256px;
+    max-height: 256px;
+    margin-top: 8px;
+    margin-left: -264px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 2em;
+    background: rgba(0,0,0,0);
+    color: rgba(0,0,0,0);
+    cursor: pointer;
+}
+
+.portraitName:hover {
+    background: rgba(0,0,0,0.75);
+    color: white;
+}
+
+#characterSheet {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
