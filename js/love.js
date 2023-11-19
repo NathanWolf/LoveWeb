@@ -2,12 +2,40 @@ class Love {
     #characters = {};
 
     register() {
-        // Click to close character sheet
-        let popups = document.getElementsByClassName('popup');
-        for (let i = 0; i < popups.length; i++) {
-            popups[i].addEventListener('click', function() {
-                this.style.display = 'none';
-            });
+        let love = this;
+        Love.addHandlerToClass('popup', function() {
+            this.style.display = 'none';
+        });
+        Love.addHandlerToClass('tabButton', function() {
+            love.selectTab(this.dataset.tab);
+        });
+    }
+
+    static addHandlerToClass(className, callback) {
+        let elements = document.getElementsByClassName(className);
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('click', callback);
+        }
+    }
+
+    selectTab(tabId) {
+        let tabButtons = document.getElementsByClassName('tabButton');
+        for (let i = 0; i < tabButtons.length; i++) {
+            let className = 'tabButton';
+            let tabButton = tabButtons[i];
+            if (tabButton.dataset.tab == tabId) {
+                className += ' active';
+            }
+            tabButton.className = className;
+        }
+        let tabs = document.getElementsByClassName('tab');
+        for (let i = 0; i < tabs.length; i++) {
+            let tab = tabs[i];
+            if (tab.id == tabId) {
+                tab.style.display = 'flex';
+            } else {
+                tab.style.display = 'none';
+            }
         }
     }
 
@@ -35,7 +63,7 @@ class Love {
 
         let love = this;
         this.#characters = data.characters;
-        let portraitList = document.getElementById('portraitList');
+        let portraitList = document.getElementById('characters');
         for (let characterKey in this.#characters) {
             if (!this.#characters.hasOwnProperty(characterKey)) continue;
             let image = characterKey + ".jpg";

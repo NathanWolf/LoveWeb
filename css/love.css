@@ -29,13 +29,39 @@ body {
     margin: 64px;
 }
 
-.portraits {
+.tabContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.tabButtons {
+    display: flex;
+    border: 1px solid black;
+}
+
+.tabButton {
+    background: #888;
+    border: 1px solid darkblue;
+    padding: 2px 12px;
+    cursor: pointer;
+    color: black;
+}
+
+.tabButton.active {
+    background: black;
+    cursor: default;
+    color: white;
+}
+
+.tab {
     display: flex;
     margin-left: 16px;
     margin-right: 16px;
     flex-wrap: wrap;
     overflow-y: auto;
     height: 100%;
+    flex: 1;
 }
 
 .portrait {
