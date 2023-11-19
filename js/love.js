@@ -1,4 +1,5 @@
 class Love {
+    #tab = 'characters';
     #characters = {};
     #quizzes = {};
     #currentQuizQuestions = [];
@@ -34,6 +35,7 @@ class Love {
         Love.#addHandlerToClass('tabButton', function() {
             love.selectTab(this.dataset.tab);
         });
+        this.checkHistory();
     }
 
     selectTab(tabId) {
@@ -58,12 +60,26 @@ class Love {
 
         switch (tabId) {
             case 'quizzes':
+                document.title = 'Love (Quizzes)';
                 this.#showQuizzes();
                 break;
             case 'flashCards':
+                document.title = 'Love (Flash Cards)';
                 this.#showFlashCards();
                 break;
+            case 'characters':
+                document.title = 'Love (Characters)';
+                break;
+            case 'relationships':
+                document.title = 'Love (Relationships)';
+                break;
+            case 'tierLists':
+                document.title = 'Love (Tier Lists)';
+                break;
         }
+
+        this.#tab = tabId;
+        this.updateHistory();
     }
 
     #showFlashCards() {
@@ -283,5 +299,37 @@ class Love {
             document.getElementById('characterSheetMissingName').innerText = character.name;
             document.getElementById('characterSheetMissingPopup').style.display = 'flex';
         }
+    }
+
+    checkHistory() {
+        let hash = window.location.hash;
+        if (hash.startsWith('#')) {
+            hash = hash.substring(1);
+        }
+        let pairs = hash.split('&');
+        let tab = 'characters';
+        for (let i = 0; i < pairs.length; i++) {
+            let kv = pairs[i].split('=');
+            if (kv[0] === 'tab') {
+                tab = kv[1];
+            }
+        }
+        if (tab !== this.#tab) {
+            this.selectTab(tab);
+        }
+
+        let love = this;
+        setTimeout(function() {
+            love.checkHistory();
+        }, 500);
+    }
+
+    updateHistory() {
+        let hash = '';
+        if (this.#tab !== 'characters') {
+            hash = 'tab=' + this.#tab;
+        }
+
+        window.location.hash = hash;
     }
 }
