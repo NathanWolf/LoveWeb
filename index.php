@@ -17,9 +17,10 @@
     <div class="tabContainer">
         <div class="tabButtons">
             <div class="tabButton active" data-tab="characters">Characters</div>
+            <div class="tabButton" data-tab="quizzes">Quizzes</div>
+            <div class="tabButton" data-tab="flashCards">Flash Cards</div>
             <div class="tabButton" data-tab="relationships">Relationships</div>
             <div class="tabButton" data-tab="tierLists">Tier Lists</div>
-            <div class="tabButton" data-tab="quizzes">Quizzes</div>
         </div>
 
         <div class="tab" id="characters">
@@ -33,12 +34,24 @@
             Tier Lists Coming Soon!
         </div>
 
+        <div class="tab" id="flashCards" style="display: none">
+            Flash Cards Coming Soon!
+        </div>
+
         <div class="tab" id="quizzes" style="display: none">
             <div id="quizList">
 
             </div>
             <div id="quizQuestion" style="display: none">
+                <div id="quizQuestionQuestion">
 
+                </div>
+                <div id="quizQuestionAnswers">
+
+                </div>
+            </div>
+            <div id="quizFinished" style="display: none">
+                DONE!
             </div>
         </div>
     </div>

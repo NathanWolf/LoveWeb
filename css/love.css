@@ -135,7 +135,27 @@ body {
     background: #ddd;
 }
 
+#quizQuestion {
+    flex-direction: column;
+}
+
 .quizOption:hover {
     background: #444;
+    color: white;
+}
+
+#quizQuestionQuestion {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+#quizQuestionAnswers ul li {
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+#quizQuestionAnswers ul li:hover {
+    background-color: grey;
     color: white;
 }

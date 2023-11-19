@@ -1,6 +1,10 @@
 class Love {
     #characters = {};
     #quizzes = {};
+    #currentQuizQuestions = [];
+    #correctAnswer = 0;
+    #correctAnswers = 0;
+    #wrongAnswers = 0;
 
     register() {
         let love = this;
@@ -50,6 +54,7 @@ class Love {
         let quizList = document.getElementById('quizList');
 
         // Populate quiz list
+        let love = this;
         while (quizList.firstChild) {
             quizList.removeChild(quizList.lastChild);
         }
@@ -57,6 +62,10 @@ class Love {
             if (!this.#quizzes.hasOwnProperty(quizKey)) continue;
             let quiz = this.#quizzes[quizKey];
             let quizOption = document.createElement('div');
+            quizOption.dataset.quiz = quizKey;
+            quizOption.addEventListener('click', function() {
+                love.onSelectQuiz(this.dataset.quiz);
+            });
             quizOption.className = 'quizOption';
             quizOption.innerText = quiz.name;
             quizList.appendChild(quizOption);
@@ -64,7 +73,72 @@ class Love {
 
         // Reset to showing quiz list, not questions
         document.getElementById('quizQuestion').style.display = 'none';
+        document.getElementById('quizFinished').style.display = 'none';
         quizList.style.display = 'flex';
+    }
+
+    onSelectQuiz(quizKey) {
+        document.getElementById('quizList').style.display = 'none';
+        this.#correctAnswers = 0;
+        this.#wrongAnswers = 0;
+        let quiz = this.#quizzes[quizKey];
+        let questions = [...quiz.questions];
+        this.#currentQuizQuestions = this.#shuffle(questions);
+        this.#nextQuestion();
+    }
+
+    #shuffle = function(a) {
+        return a.map(value => ({ value, sort: Math.random() }))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({ value }) => value);
+    }
+
+    #nextQuestion() {
+        let quizQuestion = document.getElementById('quizQuestion');
+
+        if (this.#currentQuizQuestions.length === 0) {
+            quizQuestion.style.display = 'none';
+            document.getElementById('quizFinished').style.display = 'flex';
+            return;
+        }
+
+        let nextQuestion = this.#currentQuizQuestions.pop();
+        document.getElementById('quizQuestionQuestion').innerText = nextQuestion.question;
+        let answerContainer = document.getElementById('quizQuestionAnswers');
+
+        while (answerContainer.firstChild) {
+            answerContainer.removeChild(answerContainer.lastChild);
+        }
+        let love = this;
+        let list = document.createElement('ul');
+        let answers = [...nextQuestion.answers];
+        let correct = answers[0];
+        answers = this.#shuffle(answers);
+        for (let i = 0; i < answers.length; i++) {
+            let answer = document.createElement('li');
+            answer.innerText = answers[i];
+            if (answers[i] === correct) {
+                this.#correctAnswer = i;
+            }
+            answer.dataset.index = i;
+            answer.addEventListener('click', function() {
+                love.onAnswerClick(this.dataset.index);
+            });
+            list.appendChild(answer);
+        }
+        answerContainer.appendChild(list);
+        quizQuestion.style.display = 'flex';
+    }
+
+    onAnswerClick(answerIndex) {
+        if (answerIndex === this.#correctAnswer) {
+            alert("CORRECT!");
+            this.#correctAnswers++;
+        } else {
+            alert("Wrong :(");
+            this.#wrongAnswers++;
+        }
+        this.#nextQuestion();
     }
 
     #request(url, callback) {
