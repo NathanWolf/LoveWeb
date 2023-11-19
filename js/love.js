@@ -5,22 +5,35 @@ class Love {
     #correctAnswer = 0;
     #correctAnswers = 0;
     #wrongAnswers = 0;
+    #currentFlashcards = [];
 
-    register() {
-        let love = this;
-        Love.addHandlerToClass('popup', function() {
-            this.style.display = 'none';
-        });
-        Love.addHandlerToClass('tabButton', function() {
-            love.selectTab(this.dataset.tab);
-        });
+    static #shuffle = function(a) {
+        return a.map(value => ({ value, sort: Math.random() }))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({ value }) => value);
     }
 
-    static addHandlerToClass(className, callback) {
+    static #empty = function(node) {
+        while (node.firstChild) {
+            node.removeChild(node.lastChild);
+        }
+    }
+
+    static #addHandlerToClass(className, callback) {
         let elements = document.getElementsByClassName(className);
         for (let i = 0; i < elements.length; i++) {
             elements[i].addEventListener('click', callback);
         }
+    }
+
+    register() {
+        let love = this;
+        Love.#addHandlerToClass('popup', function() {
+            this.style.display = 'none';
+        });
+        Love.#addHandlerToClass('tabButton', function() {
+            love.selectTab(this.dataset.tab);
+        });
     }
 
     selectTab(tabId) {
@@ -47,7 +60,81 @@ class Love {
             case 'quizzes':
                 this.#showQuizzes();
                 break;
+            case 'flashCards':
+                this.#showFlashCards();
+                break;
         }
+    }
+
+    #showFlashCards() {
+        let characters = [];
+        for (let key in this.#characters) {
+            if (this.#characters.hasOwnProperty(key)) {
+                let character = this.#characters[key];
+                characters.push(character);
+            }
+        }
+        document.getElementById('flashCardsFinished').style.display = 'none';
+        document.getElementById('flashCard').style.display = 'flex';
+        document.getElementById('flashCardAnswers').style.display = 'flex';
+        this.#wrongAnswers = 0;
+        this.#correctAnswers = 0;
+        this.#currentFlashcards = Love.#shuffle(characters);
+        this.#nextFlashCard();
+    }
+
+    #nextFlashCard() {
+        let love = this;
+        let flashCardContainer = document.getElementById('flashCard');
+        let answerContainer = document.getElementById('flashCardAnswers');
+        Love.#empty(flashCardContainer);
+
+        if (this.#currentFlashcards.length === 0) {
+            flashCardContainer.style.display = 'none';
+            answerContainer.style.display = 'none';
+            document.getElementById('flashCardsFinished').style.display = 'flex';
+            return;
+        }
+
+        let nextCharacter = this.#currentFlashcards.pop();
+        document.getElementById('flashCard').style.backgroundImage = 'url(image/portraits/' + nextCharacter.id + '.jpg)';
+        Love.#empty(answerContainer);
+        let list = document.createElement('ul');
+        let answers = [nextCharacter];
+        let characters = Object.values(this.#characters);
+        characters = Love.#shuffle(characters);
+        while (answers.length < 5) {
+            let answer = characters.pop();
+            if (answer.id !== nextCharacter.id) {
+                answers.push(answer);
+            }
+        }
+        answers = Love.#shuffle(answers);
+        for (let i = 0; i < answers.length; i++) {
+            let answer = document.createElement('li');
+            answer.innerText = answers[i].name;
+            if (answers[i].id === nextCharacter.id) {
+                this.#correctAnswer = i;
+            }
+            answer.dataset.index = i;
+            answer.addEventListener('click', function() {
+                love.onFlashCardClick(parseInt(this.dataset.index));
+            });
+            list.appendChild(answer);
+        }
+        answerContainer.appendChild(list);
+        answerContainer.style.display = 'flex';
+    }
+
+    onFlashCardClick(answerIndex) {
+        if (answerIndex === this.#correctAnswer) {
+            alert("CORRECT!");
+            this.#correctAnswers++;
+        } else {
+            alert("Wrong :(");
+            this.#wrongAnswers++;
+        }
+        this.#nextFlashCard();
     }
 
     #showQuizzes() {
@@ -55,9 +142,7 @@ class Love {
 
         // Populate quiz list
         let love = this;
-        while (quizList.firstChild) {
-            quizList.removeChild(quizList.lastChild);
-        }
+        Love.#empty(quizList);
         for (let quizKey in this.#quizzes) {
             if (!this.#quizzes.hasOwnProperty(quizKey)) continue;
             let quiz = this.#quizzes[quizKey];
@@ -83,14 +168,8 @@ class Love {
         this.#wrongAnswers = 0;
         let quiz = this.#quizzes[quizKey];
         let questions = [...quiz.questions];
-        this.#currentQuizQuestions = this.#shuffle(questions);
+        this.#currentQuizQuestions = Love.#shuffle(questions);
         this.#nextQuestion();
-    }
-
-    #shuffle = function(a) {
-        return a.map(value => ({ value, sort: Math.random() }))
-            .sort((a, b) => a.sort - b.sort)
-            .map(({ value }) => value);
     }
 
     #nextQuestion() {
@@ -106,14 +185,12 @@ class Love {
         document.getElementById('quizQuestionQuestion').innerText = nextQuestion.question;
         let answerContainer = document.getElementById('quizQuestionAnswers');
 
-        while (answerContainer.firstChild) {
-            answerContainer.removeChild(answerContainer.lastChild);
-        }
+        Love.#empty(answerContainer);
         let love = this;
         let list = document.createElement('ul');
         let answers = [...nextQuestion.answers];
         let correct = answers[0];
-        answers = this.#shuffle(answers);
+        answers = Love.#shuffle(answers);
         for (let i = 0; i < answers.length; i++) {
             let answer = document.createElement('li');
             answer.innerText = answers[i];
@@ -122,7 +199,7 @@ class Love {
             }
             answer.dataset.index = i;
             answer.addEventListener('click', function() {
-                love.onAnswerClick(this.dataset.index);
+                love.onAnswerClick(parseInt(this.dataset.index));
             });
             list.appendChild(answer);
         }
