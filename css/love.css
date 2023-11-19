@@ -8,6 +8,7 @@ body {
     background: #EEE;
     overscroll-behavior-y: none;
     overflow: hidden;
+    user-select: none;
 }
 
 .popup {
@@ -73,4 +74,17 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+#characterSheetMissingName {
+    font-weight: bold;
+}
+
+#characterSheetMissing {
+    margin: 2em;
+    padding: 2em 1em;
+    background: white;
+    color: black;
+    font-size: 3em;
+    text-align: center;
 }

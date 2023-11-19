@@ -22,5 +22,12 @@
             </div>
         </div>
     </div>
+    <div class="popup" id="characterSheetMissingPopup" style="display: none">
+        <div class="popupContent">
+            <div id="characterSheetMissing">
+                Information on <span id="characterSheetMissingName">???</span> coming soon!
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -3,9 +3,12 @@ class Love {
 
     register() {
         // Click to close character sheet
-        document.getElementById('characterSheet').addEventListener('click', function() {
-            document.getElementById('characterSheetPopup').style.display = 'none';
-        });
+        let popups = document.getElementsByClassName('popup');
+        for (let i = 0; i < popups.length; i++) {
+            popups[i].addEventListener('click', function() {
+                this.style.display = 'none';
+            });
+        }
     }
 
     #request(url, callback) {
@@ -53,9 +56,19 @@ class Love {
     }
 
     onPortraitClick(portrait) {
-        document.getElementById('characterSheetPopup').style.display = 'flex';
         let sheet = document.getElementById('characterSheet');
-        let character = portrait.dataset.character;
-        sheet.style.backgroundImage = "url('image/sheets/" + character + ".png')";
+        let characterKey = portrait.dataset.character;
+        if (!this.#characters.hasOwnProperty(characterKey)) {
+            alert("Sorry, something went wrong!");
+            return;
+        }
+        let character = this.#characters[characterKey];
+        if (character.sheet) {
+            document.getElementById('characterSheetPopup').style.display = 'flex';
+            sheet.style.backgroundImage = "url('image/sheets/" + characterKey + ".png')";
+        } else {
+            document.getElementById('characterSheetMissingName').innerText = character.name;
+            document.getElementById('characterSheetMissingPopup').style.display = 'flex';
+        }
     }
 }
