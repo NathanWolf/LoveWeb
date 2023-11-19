@@ -1,5 +1,6 @@
 class Love {
     #characters = {};
+    #quizzes = {};
 
     register() {
         let love = this;
@@ -23,7 +24,7 @@ class Love {
         for (let i = 0; i < tabButtons.length; i++) {
             let className = 'tabButton';
             let tabButton = tabButtons[i];
-            if (tabButton.dataset.tab == tabId) {
+            if (tabButton.dataset.tab === tabId) {
                 className += ' active';
             }
             tabButton.className = className;
@@ -31,12 +32,39 @@ class Love {
         let tabs = document.getElementsByClassName('tab');
         for (let i = 0; i < tabs.length; i++) {
             let tab = tabs[i];
-            if (tab.id == tabId) {
+            if (tab.id === tabId) {
                 tab.style.display = 'flex';
             } else {
                 tab.style.display = 'none';
             }
         }
+
+        switch (tabId) {
+            case 'quizzes':
+                this.#showQuizzes();
+                break;
+        }
+    }
+
+    #showQuizzes() {
+        let quizList = document.getElementById('quizList');
+
+        // Populate quiz list
+        while (quizList.firstChild) {
+            quizList.removeChild(quizList.lastChild);
+        }
+        for (let quizKey in this.#quizzes) {
+            if (!this.#quizzes.hasOwnProperty(quizKey)) continue;
+            let quiz = this.#quizzes[quizKey];
+            let quizOption = document.createElement('div');
+            quizOption.className = 'quizOption';
+            quizOption.innerText = quiz.name;
+            quizList.appendChild(quizOption);
+        }
+
+        // Reset to showing quiz list, not questions
+        document.getElementById('quizQuestion').style.display = 'none';
+        quizList.style.display = 'flex';
     }
 
     #request(url, callback) {
@@ -61,8 +89,14 @@ class Love {
             return;
         }
 
-        let love = this;
         this.#characters = data.characters;
+        this.#quizzes = data.quizzes;
+
+        this.#loadPortraits();
+    }
+
+    #loadPortraits() {
+        let love = this;
         let portraitList = document.getElementById('characters');
         for (let characterKey in this.#characters) {
             if (!this.#characters.hasOwnProperty(characterKey)) continue;

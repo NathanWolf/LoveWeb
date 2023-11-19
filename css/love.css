@@ -48,6 +48,11 @@ body {
     color: black;
 }
 
+.tabButton:hover {
+    background: #444;
+    color: white;
+}
+
 .tabButton.active {
     background: black;
     cursor: default;
@@ -114,4 +119,23 @@ body {
     color: black;
     font-size: 3em;
     text-align: center;
+}
+
+#quizList {
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.quizOption {
+    font-size: 3em;
+    padding: 16px;
+    margin: 32px;
+    cursor: pointer;
+    background: #ddd;
+}
+
+.quizOption:hover {
+    background: #444;
+    color: white;
 }

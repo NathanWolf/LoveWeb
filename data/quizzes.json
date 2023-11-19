@@ -1,0 +1,30 @@
+{
+  "characters": {
+    "name" : "Character Quiz",
+    "questions" : [
+      {
+        "question": "What is Love's favorite color?",
+        "answers": [
+          "Red",
+          "Black",
+          "White",
+          "Blue"
+        ]
+      }
+    ]
+  },
+  "relationships": {
+    "name" : "Relationship Quiz",
+    "questions" : [
+      {
+        "question": "Who is Love's father?",
+        "answers": [
+          "Michael",
+          "Angelica",
+          "Thirteen",
+          "Vortex"
+        ]
+      }
+    ]
+  }
+}

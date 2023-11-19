@@ -34,7 +34,12 @@
         </div>
 
         <div class="tab" id="quizzes" style="display: none">
-            Quizzes Coming Soon!
+            <div id="quizList">
+
+            </div>
+            <div id="quizQuestion" style="display: none">
+
+            </div>
         </div>
     </div>
 
