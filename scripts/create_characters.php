@@ -1,5 +1,9 @@
 <?php
 
+if (PHP_SAPI !== 'cli') {
+    die('What are you doing?');
+}
+
 $characters = array(
     'love', 'ciel','thirteen', 'celeste',  'michael', 'angelica',
     'astella', 'vortex', 'cynth', 'cymbeline', 'ezra', 'aura',
