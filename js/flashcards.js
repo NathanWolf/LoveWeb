@@ -70,7 +70,6 @@ class Flashcards {
 
     onFlashCardClick(answerIndex) {
         if (answerIndex === this.#correctAnswer) {
-            alert("CORRECT!");
             this.#correctAnswers++;
         } else {
             alert("Wrong :(");
