@@ -1,5 +1,6 @@
 class Love {
-    #tab = 'characters';
+    #loaded = false;
+    #tab = null;
     #characters = new Characters();
     #quizzes = new Quizzes();
     #flashcards = new Flashcards();
@@ -22,7 +23,6 @@ class Love {
         this.#quizzes.setQuestionElement(document.getElementById('quizQuestionQuestion'));
         this.#quizzes.setAnswerElement(document.getElementById('quizQuestionAnswers'));
         this.#quizzes.setFinishedElement(document.getElementById('quizFinished'));
-        this.checkHistory();
     }
 
     selectTab(tabId) {
@@ -56,6 +56,7 @@ class Love {
                 break;
             case 'characters':
                 document.title = 'Love (Characters)';
+                this.#showCharacters();
                 break;
             case 'relationships':
                 document.title = 'Love (Relationships)';
@@ -68,6 +69,10 @@ class Love {
 
         this.#tab = tabId;
         this.updateHistory();
+    }
+
+    #showCharacters() {
+        this.#characters.showPortraits();
     }
 
     #showFlashCards() {
@@ -108,10 +113,14 @@ class Love {
         this.#quizzes.addQuizzes(data.quizzes);
         this.#tiers.addTiers(data.tiers);
 
-        this.#characters.loadPortraits();
+        this.#loaded = true;
+        document.getElementById('loading').style.display = 'none';
+        this.checkHistory();
     }
 
     checkHistory() {
+        if (!this.#loaded) return;
+
         let hash = window.location.hash;
         if (hash.startsWith('#')) {
             hash = hash.substring(1);
@@ -135,6 +144,8 @@ class Love {
     }
 
     updateHistory() {
+        if (!this.#loaded) return;
+
         let hash = '';
         if (this.#tab !== 'characters') {
             hash = 'tab=' + this.#tab;

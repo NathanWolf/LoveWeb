@@ -38,7 +38,7 @@ class Characters {
         return this.#characters.hasOwnProperty(id) ? this.#characters[id] : null;
     }
 
-    loadPortraits() {
+    showPortraits() {
         this.#checkElements();
         let controller = this;
         let container = controller.#listElement;
