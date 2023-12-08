@@ -1,13 +1,36 @@
 #tierLists {
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     height: 100%;
 }
 
-.tierOption {
+#tierLists .option {
     font-size: 3em;
     padding: 16px;
     margin: 32px;
     cursor: pointer;
     background: #ddd;
+}
+
+#tierLists .title {
+    font-size: 2em;
+}
+
+#tierLists .tier {
+    display: flex;
+}
+
+#tierLists .tier .label {
+    padding: 4px;
+    height: 128px;
+    color: rgba(255,255,255,0.5);;
+}
+
+.tierPortrait {
+    min-width: 128px;
+    min-height: 128px;
+    overflow: hidden;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }

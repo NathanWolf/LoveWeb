@@ -4,7 +4,7 @@ class Love {
     #characters = new Characters();
     #quizzes = new Quizzes();
     #flashcards = new Flashcards();
-    #tiers = new Tiers(document.getElementById('tierLists'));
+    #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
 
     register() {
         let love = this;
