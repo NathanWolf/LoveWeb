@@ -15,13 +15,14 @@
     min-height: 256px;
     max-height: 256px;
     margin-top: 8px;
-    margin-left: -264px;
+    margin-left: -272px;
     text-align: center;
     vertical-align: middle;
     font-size: 2em;
     background: rgba(0,0,0,0);
     color: rgba(0,0,0,0);
     cursor: pointer;
+    border: 4px solid rgba(0,0,0,0);
 }
 
 .portraitName:hover {
