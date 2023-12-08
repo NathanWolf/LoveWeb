@@ -48,6 +48,10 @@ body {
     color: black;
 }
 
+.tabButton a {
+    text-decoration: none;
+}
+
 .tabButton:hover {
     background: #444;
     color: white;
