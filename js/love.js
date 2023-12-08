@@ -8,31 +8,12 @@ class Love {
     #wrongAnswers = 0;
     #currentFlashcards = [];
 
-    static #shuffle = function(a) {
-        return a.map(value => ({ value, sort: Math.random() }))
-            .sort((a, b) => a.sort - b.sort)
-            .map(({ value }) => value);
-    }
-
-    static #empty = function(node) {
-        while (node.firstChild) {
-            node.removeChild(node.lastChild);
-        }
-    }
-
-    static #addHandlerToClass(className, callback) {
-        let elements = document.getElementsByClassName(className);
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].addEventListener('click', callback);
-        }
-    }
-
     register() {
         let love = this;
-        Love.#addHandlerToClass('popup', function() {
+        Utilities.addHandlerToClass('popup', function() {
             this.style.display = 'none';
         });
-        Love.#addHandlerToClass('tabButton', function() {
+        Utilities.addHandlerToClass('tabButton', function() {
             love.selectTab(this.dataset.tab);
         });
         this.checkHistory();
@@ -95,7 +76,7 @@ class Love {
         document.getElementById('flashCardAnswers').style.display = 'flex';
         this.#wrongAnswers = 0;
         this.#correctAnswers = 0;
-        this.#currentFlashcards = Love.#shuffle(characters);
+        this.#currentFlashcards = Utilities.shuffle(characters);
         this.#nextFlashCard();
     }
 
@@ -103,7 +84,7 @@ class Love {
         let love = this;
         let flashCardContainer = document.getElementById('flashCard');
         let answerContainer = document.getElementById('flashCardAnswers');
-        Love.#empty(flashCardContainer);
+        Utilities.empty(flashCardContainer);
 
         if (this.#currentFlashcards.length === 0) {
             flashCardContainer.style.display = 'none';
@@ -114,18 +95,18 @@ class Love {
 
         let nextCharacter = this.#currentFlashcards.pop();
         document.getElementById('flashCard').style.backgroundImage = 'url(image/portraits/' + nextCharacter.id + '.jpg)';
-        Love.#empty(answerContainer);
+        Utilities.empty(answerContainer);
         let list = document.createElement('ul');
         let answers = [nextCharacter];
         let characters = Object.values(this.#characters);
-        characters = Love.#shuffle(characters);
+        characters = Utilities.shuffle(characters);
         while (answers.length < 5) {
             let answer = characters.pop();
             if (answer.id !== nextCharacter.id) {
                 answers.push(answer);
             }
         }
-        answers = Love.#shuffle(answers);
+        answers = Utilities.shuffle(answers);
         for (let i = 0; i < answers.length; i++) {
             let answer = document.createElement('li');
             answer.innerText = answers[i].name;
@@ -158,7 +139,7 @@ class Love {
 
         // Populate quiz list
         let love = this;
-        Love.#empty(quizList);
+        Utilities.empty(quizList);
         for (let quizKey in this.#quizzes) {
             if (!this.#quizzes.hasOwnProperty(quizKey)) continue;
             let quiz = this.#quizzes[quizKey];
@@ -184,7 +165,7 @@ class Love {
         this.#wrongAnswers = 0;
         let quiz = this.#quizzes[quizKey];
         let questions = [...quiz.questions];
-        this.#currentQuizQuestions = Love.#shuffle(questions);
+        this.#currentQuizQuestions = Utilities.shuffle(questions);
         this.#nextQuestion();
     }
 
@@ -201,12 +182,12 @@ class Love {
         document.getElementById('quizQuestionQuestion').innerText = nextQuestion.question;
         let answerContainer = document.getElementById('quizQuestionAnswers');
 
-        Love.#empty(answerContainer);
+        Utilities.empty(answerContainer);
         let love = this;
         let list = document.createElement('ul');
         let answers = [...nextQuestion.answers];
         let correct = answers[0];
-        answers = Love.#shuffle(answers);
+        answers = Utilities.shuffle(answers);
         for (let i = 0; i < answers.length; i++) {
             let answer = document.createElement('li');
             answer.innerText = answers[i];

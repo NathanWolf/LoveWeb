@@ -3,6 +3,7 @@
 <head>
     <title>Love</title>
     <link rel="stylesheet" href="css/love.css">
+    <script type="text/javascript" src="js/utilities.js"></script>
     <script type="text/javascript" src="js/love.js"></script>
     <script type="text/javascript">
         window.onload = function() {
