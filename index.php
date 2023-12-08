@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="css/characters.css">
     <link rel="stylesheet" href="css/quizzes.css">
     <link rel="stylesheet" href="css/flashcards.css">
+    <link rel="stylesheet" href="css/tiers.css">
     <script type="text/javascript" src="js/utilities.js"></script>
     <script type="text/javascript" src="js/characters.js"></script>
     <script type="text/javascript" src="js/quizzes.js"></script>
     <script type="text/javascript" src="js/flashcards.js"></script>
+    <script type="text/javascript" src="js/tiers.js"></script>
     <script type="text/javascript" src="js/love.js"></script>
     <script type="text/javascript">
         window.onload = function() {
@@ -39,7 +41,7 @@
         </div>
 
         <div class="tab" id="tierLists" style="display: none">
-            Tier Lists Coming Soon!
+
         </div>
 
         <div class="tab" id="flashCards" style="display: none">

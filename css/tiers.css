@@ -1,0 +1,13 @@
+#tierLists {
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.tierOption {
+    font-size: 3em;
+    padding: 16px;
+    margin: 32px;
+    cursor: pointer;
+    background: #ddd;
+}

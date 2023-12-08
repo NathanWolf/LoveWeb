@@ -11,10 +11,12 @@ function mapArray(&$array) {
 try {
     $characters = json_decode(file_get_contents('characters.json'), true);
     $quizzes = json_decode(file_get_contents('quizzes.json'), true);
+    $tiers = json_decode(file_get_contents('tiers.json'), true);
     $response = array(
         'success' => true,
         'characters' => mapArray($characters),
-        'quizzes' => mapArray($quizzes)
+        'quizzes' => mapArray($quizzes),
+        'tiers' => mapArray($tiers)
     );
 } catch (Exception $ex) {
     $response = array(

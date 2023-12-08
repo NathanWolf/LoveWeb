@@ -3,6 +3,7 @@ class Love {
     #characters = new Characters();
     #quizzes = new Quizzes();
     #flashcards = new Flashcards();
+    #tiers = new Tiers(document.getElementById('tierLists'));
 
     register() {
         let love = this;
@@ -61,6 +62,7 @@ class Love {
                 break;
             case 'tierLists':
                 document.title = 'Love (Tier Lists)';
+                this.#showTierList();
                 break;
         }
 
@@ -74,6 +76,10 @@ class Love {
 
     #showQuizzes() {
         this.#quizzes.listQuizzes();
+    }
+
+    #showTierList() {
+        this.#tiers.showList();
     }
 
     #request(url, callback) {
@@ -100,6 +106,7 @@ class Love {
 
         this.#characters.addCharacters(data.characters);
         this.#quizzes.addQuizzes(data.quizzes);
+        this.#tiers.addTiers(data.tiers);
 
         this.#characters.loadPortraits();
     }

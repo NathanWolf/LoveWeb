@@ -1,0 +1,15 @@
+{
+    "favorites": {
+        "name" : "Favorites",
+        "tiers" : [
+            {
+                "title": "The BEST",
+                "color": "green"
+            },
+            {
+                "title": "The WORST",
+                "color": "red"
+            }
+        ]
+    }
+}
