@@ -1,6 +1,6 @@
 #quizList {
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     height: 100%;
 }
 
