@@ -87,5 +87,9 @@
             </div>
         </div>
     </div>
+
+    <div id="loading">
+        &nbsp;
+    </div>
 </body>
 </html>
