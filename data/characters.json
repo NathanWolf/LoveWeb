@@ -71,6 +71,26 @@
     "sheet": false,
     "name": "Kai"
   },
+  "daisy": {
+    "sheet": false,
+    "name": "Daisy"
+  },
+  "gizmo": {
+    "sheet": false,
+    "name": "Gizmo"
+  },
+  "iris": {
+    "sheet": false,
+    "name": "Iris"
+  },
+  "lilac": {
+    "sheet": false,
+    "name": "Lilac"
+  },
+  "luci": {
+    "sheet": false,
+    "name": "Luci"
+  },
   "victoria": {
     "sheet": false,
     "name": "Victoria"
