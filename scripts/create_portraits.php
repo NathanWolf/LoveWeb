@@ -53,7 +53,6 @@ foreach ($iterator as $fileInfo) {
         continue;
     }
 
-    echo "Processing $characterId\n";
     $image = imagecreatefrompng($filename);
     if (!$image) {
         echo " Error loading $filename\n";
@@ -61,27 +60,32 @@ foreach ($iterator as $fileInfo) {
     }
 
     list($width, $height) = getimagesize($filename);
+    echo "Processing $characterId ($width x $height)\n";
     list($centerXPercentage, $centerYPercentage) = $character['portrait'];
     $centerX = floor($centerXPercentage * $width);
     $centerY = floor($centerYPercentage * $height);
-
     $cropSize = $centerY * 2;
+
     // Expand horizontally if needed
-    if ($width < $cropSize) {
-        echo " Expanding width from $width to $cropSize\n";
-        $expanded = imagecreatetruecolor($cropSize, $cropSize);
+    $overflowLeft = floor($cropSize / 2) - $centerX;
+    $overflowRight = $centerX + floor($cropSize / 2) - $width;
+    if ($overflowLeft > 0 || $overflowRight > 0) {
+        $offset = $overflowLeft > 0 ? $overflowLeft : 0;
+        $overflow = max($overflowLeft, $overflowRight);
+        $cropWidth = $width + $overflow * 2;
+        echo " Expanding width from $width to $cropWidth\n";
+        $expanded = imagecreatetruecolor($cropWidth, $height);
         imagealphablending($expanded,false);
         imagesavealpha($expanded,true);
         $alpha = imagecolorallocatealpha($expanded, 0, 0, 0, 127);
-        imagefilledrectangle($expanded, 0, 0, $cropSize, $height, $alpha);
+        imagefilledrectangle($expanded, 0, 0, $cropWidth, $height, $alpha);
         // Center image
-        $destinationX = ($cropSize - $width) / 2;
+        $destinationX = ($cropWidth - $width) / 2;
         imagecopy($expanded, $image, $destinationX, 0, 0, 0, $width, $height);
         $image = $expanded;
-        $width = $cropSize;
-        $centerX = floor($centerXPercentage * $width);
+        $width = $cropWidth;
+        $centerX += $offset;
     }
-
     $cropX = $centerX - floor($cropSize / 2);
     $cropY = $centerY - floor($cropSize / 2);
 
