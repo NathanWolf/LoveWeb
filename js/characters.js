@@ -44,7 +44,7 @@ class Characters {
         let container = controller.#listElement;
         let characters = this.getCharacterList();
         characters.forEach(function(character){
-            let image = character.id + ".jpg";
+            let image = character.id + ".png";
             let portrait = document.createElement('div');
             portrait.className = 'portrait';
             portrait.style.backgroundImage = 'url(image/portraits/' + image + ')';

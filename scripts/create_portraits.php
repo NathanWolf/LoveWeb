@@ -4,13 +4,14 @@ if (PHP_SAPI !== 'cli') {
     die('What are you doing?');
 }
 
-if (count($argv) < 3) {
-    die("Usage: create_portraits <character folder> <portrait folder>\n");
+if (count($argv) < 5) {
+    die("Usage: create_portraits <character folder> <portrait folder> <width> <height>\n");
 }
 
 $characterFolder = $argv[1];
 $portraitFolder = $argv[2];
-
+$targetWidth = $argv[3];
+$targetHeight = $argv[4];
 
 function endsWith($haystack, $needle){
     $length = strlen($needle);
@@ -34,25 +35,17 @@ foreach ($iterator as $fileInfo) {
     }
 
     list($width, $height) = getimagesize($filename);
-    $foundX = 0;
-    $foundY = 0;
-    for ($y = 0; $y < $height && !$foundX; $y++){
-        for ($x = 0; $x < $width && !$foundX; $x++){
-            $pixel = imagecolorat($image, $x, $y);
-            $alpha = ($pixel & 0x7F000000) >> 24;
-            $colors = imagecolorsforindex($image, $pixel);
-            $a = $colors['alpha'];
-            if ($alpha != 127) {
-                echo "$alpha\n";
-                $foundX = $x;
-                $foundY = $y;
-            }
-        }
-    }
-    if (!$foundX) {
-        echo " Could not find a non-transparent pixel in $filename\n";
-        continue;
-    }
 
-    echo " Found top at $foundX,$foundY\n";
+    $crop = array(
+        'x' => 0,
+        'y' => 0,
+        'width' => $width,
+        'height' => $width
+    );
+    $cropped = imagecrop($image, $crop);
+    $scaled = imagescale($cropped, $targetWidth, $targetHeight);
+    imagesavealpha($scaled, true);
+    $outputFilename = $portraitFolder . '/' . $base;
+    imagepng($scaled, $outputFilename);
+    echo " Wrote to $outputFilename\n";
 }
