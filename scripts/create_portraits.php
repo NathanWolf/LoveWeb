@@ -12,6 +12,11 @@ $characterFolder = $argv[1];
 $portraitFolder = $argv[2];
 $targetWidth = $argv[3];
 $targetHeight = $argv[4];
+$targetCharacter = null;
+
+if (count($argv) > 5) {
+    $targetCharacter = $argv[5];
+}
 
 $characterFile = dirname(__FILE__) . '/../data/characters.json';
 if (!file_exists($characterFile)) {
@@ -37,6 +42,7 @@ foreach ($iterator as $fileInfo) {
     $filename = $fileInfo->getPathname();
     $info = pathinfo($filename);
     $characterId = basename($filename, '.' . $info['extension']);
+    if ($targetCharacter && $targetCharacter != $characterId) continue;
     if (!isset($characters[$characterId])) {
         echo "Unknown character: $characterId\n";
         continue;
@@ -55,15 +61,29 @@ foreach ($iterator as $fileInfo) {
     }
 
     list($width, $height) = getimagesize($filename);
-    list($centerX, $centerY) = $character['portrait'];
-    $centerX = floor($centerX * $width);
-    $centerY = floor($centerY * $height);
+    list($centerXPercentage, $centerYPercentage) = $character['portrait'];
+    $centerX = floor($centerXPercentage * $width);
+    $centerY = floor($centerYPercentage * $height);
 
-    $cropHeight = $centerY * 2;
-    $cropWidth = min($width, $cropHeight);
-    $cropSize = min($cropWidth, $cropHeight);
-    $cropX = $centerX - floor($cropWidth / 2);
-    $cropY = $centerY - floor($cropHeight / 2);
+    $cropSize = $centerY * 2;
+    // Expand horizontally if needed
+    if ($width < $cropSize) {
+        echo " Expanding width from $width to $cropSize\n";
+        $expanded = imagecreatetruecolor($cropSize, $cropSize);
+        imagealphablending($expanded,false);
+        imagesavealpha($expanded,true);
+        $alpha = imagecolorallocatealpha($expanded, 0, 0, 0, 127);
+        imagefilledrectangle($expanded, 0, 0, $cropSize, $height, $alpha);
+        // Center image
+        $destinationX = ($cropSize - $width) / 2;
+        imagecopy($expanded, $image, $destinationX, 0, 0, 0, $width, $height);
+        $image = $expanded;
+        $width = $cropSize;
+        $centerX = floor($centerXPercentage * $width);
+    }
+
+    $cropX = $centerX - floor($cropSize / 2);
+    $cropY = $centerY - floor($cropSize / 2);
 
     $crop = array(
         'x' => $cropX,
