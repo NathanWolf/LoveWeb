@@ -66,6 +66,28 @@ foreach ($iterator as $fileInfo) {
     $centerY = floor($centerYPercentage * $height);
     $cropSize = $centerY * 2;
 
+    // Move center down so the top is aligned with the first non-transparent part of the image
+    $foundX = 0;
+    $foundY = 0;
+    for ($y = 0; $y < $height && !$foundX; $y++){
+        for ($x = 0; $x < $width && !$foundX; $x++){
+            $pixel = imagecolorat($image, $x, $y);
+            $alpha = ($pixel & 0x7F000000) >> 24;
+            $colors = imagecolorsforindex($image, $pixel);
+            $a = $colors['alpha'];
+            if ($alpha != 127) {
+                $foundX = $x;
+                $foundY = $y;
+            }
+        }
+    }
+    if (!$foundX) {
+        echo " Could not find a non-transparent pixel in $filename\n";
+    } else if ($foundY > 0) {
+        echo " Found top at $foundX,$foundY, shifting down\n";
+        $centerY += $foundY;
+    }
+
     // Expand horizontally if needed
     $overflowLeft = floor($cropSize / 2) - $centerX;
     $overflowRight = $centerX + floor($cropSize / 2) - $width;
