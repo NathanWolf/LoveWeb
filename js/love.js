@@ -1,8 +1,7 @@
 class Love {
     #tab = 'characters';
     #characters = new Characters();
-    #quizzes = {};
-    #currentQuizQuestions = [];
+    #quizzes = new Quizzes();
     #correctAnswer = 0;
     #correctAnswers = 0;
     #wrongAnswers = 0;
@@ -16,7 +15,14 @@ class Love {
         Utilities.addHandlerToClass('tabButton', function() {
             love.selectTab(this.dataset.tab);
         });
-        this.#characters.setCharacterSheet(document.getElementById('characterSheet'));
+        this.#characters.setListElement(document.getElementById('characters'));
+        this.#characters.setSheetElement(document.getElementById('characterSheet'));
+        this.#characters.setSheetPopupElement(document.getElementById('characterSheetPopup'));
+        this.#quizzes.setListElement(document.getElementById('quizList'));
+        this.#quizzes.setQuizElement(document.getElementById('quizQuestion'));
+        this.#quizzes.setQuestionElement(document.getElementById('quizQuestionQuestion'));
+        this.#quizzes.setAnswerElement(document.getElementById('quizQuestionAnswers'));
+        this.#quizzes.setFinishedElement(document.getElementById('quizFinished'));
         this.checkHistory();
     }
 
@@ -130,84 +136,7 @@ class Love {
     }
 
     #showQuizzes() {
-        let quizList = document.getElementById('quizList');
-
-        // Populate quiz list
-        let love = this;
-        Utilities.empty(quizList);
-        for (let quizKey in this.#quizzes) {
-            if (!this.#quizzes.hasOwnProperty(quizKey)) continue;
-            let quiz = this.#quizzes[quizKey];
-            let quizOption = document.createElement('div');
-            quizOption.dataset.quiz = quizKey;
-            quizOption.addEventListener('click', function() {
-                love.onSelectQuiz(this.dataset.quiz);
-            });
-            quizOption.className = 'quizOption';
-            quizOption.innerText = quiz.name;
-            quizList.appendChild(quizOption);
-        }
-
-        // Reset to showing quiz list, not questions
-        document.getElementById('quizQuestion').style.display = 'none';
-        document.getElementById('quizFinished').style.display = 'none';
-        quizList.style.display = 'flex';
-    }
-
-    onSelectQuiz(quizKey) {
-        document.getElementById('quizList').style.display = 'none';
-        this.#correctAnswers = 0;
-        this.#wrongAnswers = 0;
-        let quiz = this.#quizzes[quizKey];
-        let questions = [...quiz.questions];
-        this.#currentQuizQuestions = Utilities.shuffle(questions);
-        this.#nextQuestion();
-    }
-
-    #nextQuestion() {
-        let quizQuestion = document.getElementById('quizQuestion');
-
-        if (this.#currentQuizQuestions.length === 0) {
-            quizQuestion.style.display = 'none';
-            document.getElementById('quizFinished').style.display = 'flex';
-            return;
-        }
-
-        let nextQuestion = this.#currentQuizQuestions.pop();
-        document.getElementById('quizQuestionQuestion').innerText = nextQuestion.question;
-        let answerContainer = document.getElementById('quizQuestionAnswers');
-
-        Utilities.empty(answerContainer);
-        let love = this;
-        let list = document.createElement('ul');
-        let answers = [...nextQuestion.answers];
-        let correct = answers[0];
-        answers = Utilities.shuffle(answers);
-        for (let i = 0; i < answers.length; i++) {
-            let answer = document.createElement('li');
-            answer.innerText = answers[i];
-            if (answers[i] === correct) {
-                this.#correctAnswer = i;
-            }
-            answer.dataset.index = i;
-            answer.addEventListener('click', function() {
-                love.onAnswerClick(parseInt(this.dataset.index));
-            });
-            list.appendChild(answer);
-        }
-        answerContainer.appendChild(list);
-        quizQuestion.style.display = 'flex';
-    }
-
-    onAnswerClick(answerIndex) {
-        if (answerIndex === this.#correctAnswer) {
-            alert("CORRECT!");
-            this.#correctAnswers++;
-        } else {
-            alert("Wrong :(");
-            this.#wrongAnswers++;
-        }
-        this.#nextQuestion();
+        this.#quizzes.listQuizzes();
     }
 
     #request(url, callback) {
@@ -233,7 +162,7 @@ class Love {
         }
 
         this.#characters.addCharacters(data.characters);
-        this.#quizzes = data.quizzes;
+        this.#quizzes.addQuizzes(data.quizzes);
 
         this.#characters.loadPortraits();
     }
