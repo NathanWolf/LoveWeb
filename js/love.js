@@ -1,6 +1,6 @@
 class Love {
     #tab = 'characters';
-    #characters = {};
+    #characters = new Characters();
     #quizzes = {};
     #currentQuizQuestions = [];
     #correctAnswer = 0;
@@ -16,6 +16,7 @@ class Love {
         Utilities.addHandlerToClass('tabButton', function() {
             love.selectTab(this.dataset.tab);
         });
+        this.#characters.setCharacterSheet(document.getElementById('characterSheet'));
         this.checkHistory();
     }
 
@@ -64,13 +65,7 @@ class Love {
     }
 
     #showFlashCards() {
-        let characters = [];
-        for (let key in this.#characters) {
-            if (this.#characters.hasOwnProperty(key)) {
-                let character = this.#characters[key];
-                characters.push(character);
-            }
-        }
+        let characters = this.#characters.getCharacterList();
         document.getElementById('flashCardsFinished').style.display = 'none';
         document.getElementById('flashCard').style.display = 'flex';
         document.getElementById('flashCardAnswers').style.display = 'flex';
@@ -98,7 +93,7 @@ class Love {
         Utilities.empty(answerContainer);
         let list = document.createElement('ul');
         let answers = [nextCharacter];
-        let characters = Object.values(this.#characters);
+        let characters = this.#characters.getCharacterList();
         characters = Utilities.shuffle(characters);
         while (answers.length < 5) {
             let answer = characters.pop();
@@ -237,49 +232,10 @@ class Love {
             return;
         }
 
-        this.#characters = data.characters;
+        this.#characters.addCharacters(data.characters);
         this.#quizzes = data.quizzes;
 
-        this.#loadPortraits();
-    }
-
-    #loadPortraits() {
-        let love = this;
-        let portraitList = document.getElementById('characters');
-        for (let characterKey in this.#characters) {
-            if (!this.#characters.hasOwnProperty(characterKey)) continue;
-            let image = characterKey + ".jpg";
-            let character = this.#characters[characterKey];
-            let portrait = document.createElement('div');
-            portrait.className = 'portrait';
-            portrait.style.backgroundImage = 'url(image/portraits/' + image + ')';
-            portraitList.appendChild(portrait);
-            let portraitName = document.createElement('div');
-            portraitName.className = 'portraitName';
-            portraitName.dataset.character = characterKey;
-            portraitName.innerText = character.name;
-            portraitName.addEventListener('click', function(event) {
-                love.onPortraitClick(event.target);
-            })
-            portraitList.appendChild(portraitName);
-        }
-    }
-
-    onPortraitClick(portrait) {
-        let sheet = document.getElementById('characterSheet');
-        let characterKey = portrait.dataset.character;
-        if (!this.#characters.hasOwnProperty(characterKey)) {
-            alert("Sorry, something went wrong!");
-            return;
-        }
-        let character = this.#characters[characterKey];
-        if (character.sheet) {
-            document.getElementById('characterSheetPopup').style.display = 'flex';
-            sheet.style.backgroundImage = "url('image/sheets/" + characterKey + ".png')";
-        } else {
-            document.getElementById('characterSheetMissingName').innerText = character.name;
-            document.getElementById('characterSheetMissingPopup').style.display = 'flex';
-        }
+        this.#characters.loadPortraits();
     }
 
     checkHistory() {
