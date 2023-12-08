@@ -39,7 +39,7 @@ class Flashcards {
         }
 
         let nextCharacter = this.#currentFlashcards.pop();
-        document.getElementById('flashCard').style.backgroundImage = 'url(image/portraits/' + nextCharacter.id + '.jpg)';
+        document.getElementById('flashCard').style.backgroundImage = 'url(image/portraits/' + nextCharacter.id + '.png)';
         Utilities.empty(answerContainer);
         let list = document.createElement('ul');
         let answers = [nextCharacter];
