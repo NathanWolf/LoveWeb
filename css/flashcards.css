@@ -1,0 +1,24 @@
+#flashCard {
+    min-width: 256px;
+    min-height: 256px;
+    overflow: hidden;
+    margin: 8px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#flashCards {
+    justify-content: center;
+    align-items: center;
+}
+
+#flashCardAnswers ul li {
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+#flashCardAnswers ul li:hover {
+    background-color: grey;
+    color: white;
+}
