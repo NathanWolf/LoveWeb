@@ -48,9 +48,11 @@ foreach ($iterator as $fileInfo) {
         continue;
     }
     $character = $characters[$characterId];
-    if (!isset($character['portrait'])) {
-        echo "Character has no portrait location set: $characterId\n";
-        continue;
+    $centerXPercentage = 0.5;
+    $centerYPercentage = 0.1;
+    $offset = array('0.5', '0.1');
+    if (isset($character['portrait']) && isset($character['portrait']['offset'])) {
+        list($centerXPercentage, $centerYPercentage) = $character['portrait']['offset'];
     }
 
     $image = imagecreatefrompng($filename);
@@ -61,7 +63,6 @@ foreach ($iterator as $fileInfo) {
 
     list($width, $height) = getimagesize($filename);
     echo "Processing $characterId ($width x $height)\n";
-    list($centerXPercentage, $centerYPercentage) = $character['portrait'];
     $centerX = floor($centerXPercentage * $width);
     $centerY = floor($centerYPercentage * $height);
     $cropSize = $centerY * 2;

@@ -2,141 +2,141 @@
   "love": {
     "sheet": true,
     "name": "Love",
-    "portrait": [0.3, 0.12]
+    "portrait": {"offset": [0.3, 0.12]}
   },
   "ciel": {
     "sheet": true,
     "name": "Ciel",
-    "portrait": [0.7, 0.1]
+    "portrait": {"offset": [0.7, 0.1]}
   },
   "thirteen": {
     "sheet": true,
     "name": "Thirteen",
-    "portrait": [0.5, 0.1]
+    "portrait": {"offset": [0.5, 0.1]}
   },
   "celeste": {
     "sheet": true,
     "name": "Celeste",
-    "portrait": [0.45, 0.1]
+    "portrait": {"offset": [0.45, 0.1]}
   },
   "michael": {
     "sheet": true,
     "name": "Michael",
-    "portrait": [0.5, 0.1]
+    "portrait": {"offset": [0.5, 0.1]}
   },
   "angelica": {
     "sheet": true,
     "name": "Angelica",
-    "portrait": [0.4, 0.1]
+    "portrait": {"offset": [0.4, 0.1]}
   },
   "astella": {
     "sheet": true,
     "name": "Astella",
-    "portrait": [0.5, 0.1]
+    "portrait": {"offset": [0.5, 0.1]}
   },
   "vortex": {
     "sheet": true,
     "name": "Vortex",
-    "portrait": [0.7, 0.1]
+    "portrait": {"offset": [0.7, 0.1]}
   },
   "cynth": {
     "sheet": true,
     "name": "Cynth",
-    "portrait": [0.3, 0.1]
+    "portrait": {"offset": [0.3, 0.1]}
   },
   "cymbeline": {
     "sheet": true,
     "name": "Cymbeline",
-    "portrait": [0.45, 0.1]
+    "portrait": {"offset": [0.45, 0.1]}
   },
   "ezra": {
     "sheet": true,
     "name": "Ezra",
-    "portrait": [0.8, 0.1]
+    "portrait": {"offset": [0.8, 0.1]}
   },
   "aura": {
     "sheet": true,
     "name": "Aura",
-    "portrait": [0.4, 0.1]
+    "portrait": {"offset": [0.4, 0.1]}
   },
   "neptune": {
     "sheet": true,
     "name": "Neptune",
-    "portrait": [0.3, 0.12]
+    "portrait": {"offset": [0.3, 0.12]}
   },
   "clara": {
     "sheet": true,
     "name": "Clara",
-    "portrait": [0.45, 0.1]
+    "portrait": {"offset": [0.45, 0.1]}
   },
   "ace": {
     "sheet": true,
     "name": "Ace",
-    "portrait": [0.5, 0.1]
+    "portrait": {"offset": [0.5, 0.1]}
   },
   "beau": {
     "sheet": false,
     "name": "Beau",
-    "portrait": [0.6, 0.1]
+    "portrait": {"offset": [0.6, 0.1]}
   },
   "harper": {
     "sheet": false,
     "name": "Harper",
-    "portrait": [0.5, 0.1]
+    "portrait": {"offset": [0.5, 0.1]}
   },
   "kai": {
     "sheet": false,
     "name": "Kai",
-    "portrait": [0.5, 0.1]
+    "portrait": {"offset": [0.5, 0.1]}
   },
   "daisy": {
     "sheet": false,
     "name": "Daisy",
-    "portrait": [0.5, 0.1]
+    "portrait": {"offset": [0.5, 0.1]}
   },
   "gizmo": {
     "sheet": false,
     "name": "Gizmo",
-    "portrait": [0.5, 0.1]
+    "portrait": {"offset": [0.5, 0.1]}
   },
   "iris": {
     "sheet": false,
     "name": "Iris",
-    "portrait": [0.4, 0.1]
+    "portrait": {"offset": [0.4, 0.1]}
   },
   "lilac": {
     "sheet": false,
     "name": "Lilac",
-    "portrait": [0.4, 0.1]
+    "portrait": {"offset": [0.4, 0.1]}
   },
   "luci": {
     "sheet": false,
     "name": "Luci",
-    "portrait": [0.4, 0.1]
+    "portrait": {"offset": [0.4, 0.1]}
   },
   "victoria": {
     "sheet": false,
     "name": "Victoria",
-    "portrait": [0.3, 0.1]
+    "portrait": {"offset": [0.3, 0.1]}
   },
   "idris": {
     "sheet": false,
     "name": "Idris",
-    "portrait": [0.8, 0.1]
+    "portrait": {"offset": [0.8, 0.1]}
   },
   "jasmine": {
     "sheet": false,
     "name": "Jasmine",
-    "portrait": [0.2, 0.1]
+    "portrait": {"offset": [0.2, 0.1]}
   },
   "jamie": {
     "sheet": false,
     "name": "Jamie",
-    "portrait": [0.6, 0.1]
+    "portrait": {"offset": [0.6, 0.1]}
   },
   "fourteen": {
     "sheet": true,
     "name": "Fourteen",
-    "portrait": [0.5, 0.1]
+    "portrait": {"offset": [0.5, 0.1]}
   }
 }
