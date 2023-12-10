@@ -6,12 +6,20 @@
                 "title": "The BEST",
                 "color": "green"
             },
+            "like": {
+                "title": "Like",
+                "color": "lime"
+            },
             "mid": {
                 "title": "Literally MID",
-                "color": "grey"
+                "color": "yellow"
             },
-            "worst": {
-                "title": "The WORST",
+            "dislike": {
+                "title": "Dislike",
+                "color": "orange"
+            },
+            "hate": {
+                "title": "Hate",
                 "color": "red"
             },
             "idk": {
