@@ -21,7 +21,7 @@ class Tiers {
         }
     }
 
-    showList() {
+    show() {
         Utilities.empty(this.#element);
         let controller = this;
         for (let tierId in this.#tiers) {

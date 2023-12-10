@@ -22,7 +22,7 @@ class Characters {
         return this.#characters.hasOwnProperty(id) ? this.#characters[id] : null;
     }
 
-    showPortraits() {
+    show() {
         let controller = this;
         let container = controller.#element;
         let characters = this.getCharacterList();

@@ -60,7 +60,7 @@ class Love {
     }
 
     #showCharacters() {
-        this.#characters.showPortraits();
+        this.#characters.show();
     }
 
     #showFlashCards() {
@@ -68,11 +68,11 @@ class Love {
     }
 
     #showQuizzes() {
-        this.#quizzes.listQuizzes();
+        this.#quizzes.show();
     }
 
     #showTierList() {
-        this.#tiers.showList();
+        this.#tiers.show();
     }
 
     #request(url, callback) {

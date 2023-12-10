@@ -18,7 +18,7 @@ class Quizzes {
         }
     }
 
-    listQuizzes() {
+    show() {
         // Populate quiz list
         let controller = this;
         Utilities.empty(this.#element);
@@ -49,7 +49,7 @@ class Quizzes {
     #nextQuestion() {
         Utilities.empty(this.#element);
         if (this.#currentQuizQuestions.length === 0) {
-            this.listQuizzes();
+            this.show();
             let popup = Utilities.showPopup(this.#element.parentNode);
             Utilities.createDiv('quizFinishedTitle', popup).innerText = 'Finished!';
             Utilities.createDiv('quizCorrect', popup).innerText = 'Correct: ' + this.#correctAnswers;
