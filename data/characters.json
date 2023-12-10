@@ -2,7 +2,7 @@
   "love": {
     "sheet": true,
     "name": "Love",
-    "portrait": [0.3, 0.1]
+    "portrait": [0.3, 0.12]
   },
   "ciel": {
     "sheet": true,
