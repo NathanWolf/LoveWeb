@@ -73,21 +73,6 @@
         </div>
     </div>
 
-    <div class="popup" id="characterSheetPopup" style="display: none">
-        <div class="popupContent">
-            <div id="characterSheet">
-                &nbsp;
-            </div>
-        </div>
-    </div>
-    <div class="popup" id="characterSheetMissingPopup" style="display: none">
-        <div class="popupContent">
-            <div id="characterSheetMissing">
-                Information on <span id="characterSheetMissingName">???</span> coming soon!
-            </div>
-        </div>
-    </div>
-
     <div id="loading">
         &nbsp;
     </div>

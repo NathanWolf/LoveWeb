@@ -1,22 +1,16 @@
 class Love {
     #loaded = false;
     #tab = null;
-    #characters = new Characters();
+    #characters = new Characters(document.getElementById('characters'));
     #quizzes = new Quizzes();
     #flashcards = new Flashcards();
     #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
 
     register() {
         let love = this;
-        Utilities.addHandlerToClass('popup', function() {
-            this.style.display = 'none';
-        });
         Utilities.addHandlerToClass('tabButton', function() {
             love.selectTab(this.dataset.tab);
         });
-        this.#characters.setListElement(document.getElementById('characters'));
-        this.#characters.setSheetElement(document.getElementById('characterSheet'));
-        this.#characters.setSheetPopupElement(document.getElementById('characterSheetPopup'));
         this.#flashcards.setCharacters(this.#characters);
         this.#quizzes.setListElement(document.getElementById('quizList'));
         this.#quizzes.setQuizElement(document.getElementById('quizQuestion'));

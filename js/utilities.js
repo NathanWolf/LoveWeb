@@ -17,4 +17,21 @@ class Utilities {
             elements[i].addEventListener('click', callback);
         }
     }
+
+    static showPopup(parent, innerClass) {
+        let popupDiv = document.createElement('div');
+        popupDiv.className = 'popup';
+        let contentDiv = document.createElement('div');
+        contentDiv.className = 'popupContent';
+        popupDiv.appendChild(contentDiv);
+        let innerDiv = document.createElement('div');
+        innerDiv.className = innerClass;
+        contentDiv.appendChild(innerDiv);
+        parent.appendChild(popupDiv);
+
+        popupDiv.addEventListener('click', function() {
+            this.remove();
+        });
+        return innerDiv;
+    }
 }

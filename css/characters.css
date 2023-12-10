@@ -30,7 +30,7 @@
     color: white;
 }
 
-#characterSheet {
+.characterSheet {
     width: 100%;
     height: 100%;
     background-size: contain;
@@ -38,11 +38,11 @@
     background-position: center;
 }
 
-#characterSheetMissingName {
+.characterSheetMissingName {
     font-weight: bold;
 }
 
-#characterSheetMissing {
+.characterSheetMissing {
     margin: 2em;
     padding: 2em 1em;
     background: white;

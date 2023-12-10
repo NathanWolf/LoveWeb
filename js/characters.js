@@ -1,8 +1,10 @@
 class Characters {
     #characters = {};
-    #sheetElement = null;
-    #sheetPopupElement = null;
-    #listElement = null;
+    #element = null;
+
+    constructor(element) {
+        this.#element = element;
+    }
 
     addCharacters(characters) {
         for (let id in characters) {
@@ -10,24 +12,6 @@ class Characters {
                 this.#characters[id] = characters[id];
             }
         }
-    }
-
-    setSheetElement(container) {
-        this.#sheetElement = container;
-    }
-
-    setSheetPopupElement(container) {
-        this.#sheetPopupElement = container;
-    }
-
-    setListElement(container) {
-        this.#listElement = container;
-    }
-
-    #checkElements() {
-        if (this.#sheetElement == null) throw new Error("Sheet element not set");
-        if (this.#sheetPopupElement == null) throw new Error("Sheet popup element not set");
-        if (this.#listElement == null) throw new Error("List element not set");
     }
 
     getCharacterList() {
@@ -39,9 +23,8 @@ class Characters {
     }
 
     showPortraits() {
-        this.#checkElements();
         let controller = this;
-        let container = controller.#listElement;
+        let container = controller.#element;
         let characters = this.getCharacterList();
         characters.forEach(function(character){
             let image = character.id + ".png";
@@ -61,8 +44,6 @@ class Characters {
     }
 
     onPortraitClick(portrait) {
-        this.#checkElements();
-
         let characterKey = portrait.dataset.character;
         let character = this.getCharacter(characterKey);
         if (character == null) {
@@ -70,11 +51,19 @@ class Characters {
             return;
         }
         if (character.sheet) {
-            this.#sheetPopupElement.style.display = 'flex';
-            this.#sheetElement.style.backgroundImage = "url('image/sheets/" + characterKey + ".png')";
+            let popup = Utilities.showPopup(this.#element.parentNode, 'characterSheet');
+            popup.style.backgroundImage = "url('image/sheets/" + characterKey + ".png')";
         } else {
-            document.getElementById('characterSheetMissingName').innerText = character.name;
-            document.getElementById('characterSheetMissingPopup').style.display = 'flex';
+            let popup = Utilities.showPopup(this.#element.parentNode, 'characterSheetMissing');
+            let contentSpan = document.createElement('span');
+            contentSpan.innerText = 'Information on ';
+            let nameSpan = document.createElement('span');
+            nameSpan.className = 'characterSheetMissingName';
+            let contentSpan2 = document.createElement('span');
+            contentSpan2.innerText = ' Coming soon!';
+            popup.appendChild(contentSpan);
+            popup.appendChild(nameSpan);
+            popup.appendChild(contentSpan2);
         }
     }
 }
