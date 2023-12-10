@@ -13,6 +13,11 @@
             "worst": {
                 "title": "The WORST",
                 "color": "red"
+            },
+            "idk": {
+                "title": "I don't even know who you are",
+                "dark": true,
+                "color": "black"
             }
         }
     },

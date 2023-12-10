@@ -65,13 +65,15 @@ class Tiers {
             tierDiv.style.backgroundColor = tier.color;
             let tierLabel = document.createElement('div');
             tierLabel.className = 'label';
+            if (tier.hasOwnProperty('dark') && tier.dark) {
+                tierLabel.className += ' dark';
+            }
             tierLabel.innerText = tier.title;
             tierDiv.appendChild(tierLabel);
             this.#element.appendChild(tierDiv);
             tierElements[tier.id] = tierDiv;
         }
 
-        // Start off on empty tier
         let controller = this;
         let characters = this.#characters.getCharacterList();
         for (let i = 0; i < characters.length; i++) {
@@ -79,6 +81,7 @@ class Tiers {
             let tier = this.#characters.getTier(character.id, id, 'default');
             let tierPortrait = document.createElement('div');
             tierPortrait.className = 'tierPortrait';
+            tierPortrait.title = character.name;
             tierPortrait.style.backgroundImage = 'url(' + this.#characters.getPortrait(character.id) + ')'
             tierElements[tier].appendChild(tierPortrait);
 
