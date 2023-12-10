@@ -46,14 +46,15 @@ class Tiers {
 
     onSelectTierList(id) {
         let tierList = this.#tiers[id];
-        let tiers = Object.values(tierList.tiers);
+        let tiers = Utilities.mapArray(tierList.tiers);
         Utilities.empty(this.#element);
         let tierTitle = document.createElement('div');
         tierTitle.className = 'title';
         tierTitle.innerText = tierList.name;
         this.#element.appendChild(tierTitle);
-        let currentTierElements = [];
+        let tierElements = {};
         tiers.unshift({
+            'id': 'default',
             'title': '',
             'color': 'white'
         });
@@ -67,7 +68,7 @@ class Tiers {
             tierLabel.innerText = tier.title;
             tierDiv.appendChild(tierLabel);
             this.#element.appendChild(tierDiv);
-            currentTierElements.push(tierDiv);
+            tierElements[tier.id] = tierDiv;
         }
 
         // Start off on empty tier
@@ -75,10 +76,11 @@ class Tiers {
         let characters = this.#characters.getCharacterList();
         for (let i = 0; i < characters.length; i++) {
             let character = characters[i];
+            let tier = this.#characters.getTier(character.id, id, 'default');
             let tierPortrait = document.createElement('div');
             tierPortrait.className = 'tierPortrait';
             tierPortrait.style.backgroundImage = 'url(' + this.#characters.getPortrait(character.id) + ')'
-            currentTierElements[0].appendChild(tierPortrait);
+            tierElements[tier].appendChild(tierPortrait);
 
             tierPortrait.addEventListener('mousedown', function() {
                 controller.onPortraitGrab(this);

@@ -117,4 +117,12 @@ class Characters {
     getImage(characterId) {
         return this.#getImage(characterId, 'characters', 'image');
     }
+
+    getTier(characterId, tierList, defaultTier) {
+        let character = this.getCharacter(characterId);
+        if (character == null || !character.hasOwnProperty('tiers')) {
+            return defaultTier;
+        }
+        return character.tiers.hasOwnProperty(tierList) ? character.tiers[tierList] : defaultTier;
+    }
 }

@@ -5,6 +5,18 @@ class Utilities {
             .map(({ value }) => value);
     }
 
+    static mapArray = function(obj) {
+        let a = [];
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                let o = obj[key];
+                o.id = key;
+                a.push(o);
+            }
+        }
+        return a;
+    }
+
     static empty = function(node) {
         while (node.firstChild) {
             node.removeChild(node.lastChild);

@@ -15,5 +15,30 @@
                 "color": "red"
             }
         }
+    },
+    "power": {
+        "name" : "Power",
+        "tiers" : {
+            "overlord": {
+                "title": "Overlord",
+                "color": "gold"
+            },
+            "god": {
+                "title": "God",
+                "color": "silver"
+            },
+            "powerful": {
+                "title": "Pretty powerful",
+                "color": "red"
+            },
+            "normal": {
+                "title": "Normal",
+                "color": "green"
+            },
+            "weak": {
+                "title": "Weak",
+                "color": "yellow"
+            }
+        }
     }
 }

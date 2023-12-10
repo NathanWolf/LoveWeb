@@ -18,6 +18,9 @@
       "partner": "love",
       "mother": ["jamie", "jasmine"],
       "sister": "cynth"
+    },
+    "tiers": {
+      "power": "god"
     }
   },
   "thirteen": {
@@ -27,12 +30,18 @@
     "relationships": {
       "mother": "clara",
       "evil_twin": "fourteen"
+    },
+    "tiers": {
+      "power": "overlord"
     }
   },
   "celeste": {
     "sheet": true,
     "name": "Celeste",
-    "portrait": {"offset": [0.45, 0.1]}
+    "portrait": {"offset": [0.45, 0.1]},
+    "tiers": {
+      "power": "god"
+    }
   },
   "michael": {
     "sheet": true,
@@ -47,12 +56,18 @@
   "astella": {
     "sheet": true,
     "name": "Astella",
-    "portrait": {"offset": [0.5, 0.1]}
+    "portrait": {"offset": [0.5, 0.1]},
+    "tiers": {
+      "power": "god"
+    }
   },
   "vortex": {
     "sheet": true,
     "name": "Vortex",
-    "portrait": {"offset": [0.7, 0.1]}
+    "portrait": {"offset": [0.7, 0.1]},
+    "tiers": {
+      "power": "god"
+    }
   },
   "cynth": {
     "sheet": true,
@@ -152,6 +167,9 @@
   "fourteen": {
     "sheet": true,
     "name": "Fourteen",
-    "portrait": {"offset": [0.5, 0.1]}
+    "portrait": {"offset": [0.5, 0.1]},
+    "tiers": {
+      "power": "overlord"
+    }
   }
 }
