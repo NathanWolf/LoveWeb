@@ -77,4 +77,27 @@ class Utilities {
         }
         return pieces.join(' ');
     }
+
+    static addClass(element, className) {
+        let classes = element.className.split(' ');
+        if (classes.indexOf(className) === -1) {
+            classes.push(className);
+            element.className = classes.join(' ');
+        }
+    }
+
+    static removeClass(element, className) {
+        let classes = element.className.split(' ');
+        let index = classes.indexOf(className);
+        if (index !== -1) {
+            classes.splice(index, 1);
+            element.className = classes.join(' ');
+        }
+    }
+
+    static hasClass(element, className) {
+        let classes = element.className.split(' ');
+        let index = classes.indexOf(className);
+        return index !== -1;
+    }
 }

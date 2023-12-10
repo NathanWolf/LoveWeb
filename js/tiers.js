@@ -4,6 +4,8 @@ class Tiers {
     #tiers = {};
     #currentTierList = null;
     #currentTierElements = [];
+    #clicked = null;
+    #dragging = false;
 
     constructor(element, characters) {
         this.#element = element;
@@ -11,6 +13,11 @@ class Tiers {
         if (this.#element == null) {
             throw new Error("Element not set");
         }
+
+        let controller = this;
+        this.#element.addEventListener('mousemove', function(event) {
+            controller.onMouseMove(event.x, event.y);
+        });
     }
 
     addTiers(tiers) {
@@ -23,6 +30,7 @@ class Tiers {
 
     show() {
         Utilities.empty(this.#element);
+        this.release();
         let controller = this;
         for (let tierId in this.#tiers) {
             if (!this.#tiers.hasOwnProperty(tierId)) continue;
@@ -60,7 +68,8 @@ class Tiers {
             this.#currentTierElements.push(tierDiv);
         }
 
-        // Temporary!
+        // Start off randomized
+        let controller = this;
         let characters = this.#characters.getCharacterList();
         for (let i = 0; i < characters.length; i++) {
             let character = characters[i];
@@ -69,6 +78,66 @@ class Tiers {
             tierPortrait.className = 'tierPortrait';
             tierPortrait.style.backgroundImage = 'url(' + this.#characters.getPortrait(character.id) + ')'
             this.#currentTierElements[tierIndex].appendChild(tierPortrait);
+
+            tierPortrait.addEventListener('mousedown', function() {
+                controller.onPortraitGrab(this);
+            });
+
+            tierPortrait.addEventListener('mouseup', function() {
+                controller.onPortraitRelease(this);
+            });
+        }
+    }
+
+    onPortraitGrab(portrait) {
+        this.#clicked = portrait;
+    }
+
+    release() {
+        if (this.#clicked != null) {
+            this.#clicked.style.left = '';
+            this.#clicked.style.top = '';
+            if (this.#dragging) {
+                Utilities.removeClass(this.#clicked, 'dragging');
+            }
+        }
+        this.#dragging = false;
+        this.#clicked = null;
+    }
+
+    onPortraitRelease(portrait) {
+        if (this.#clicked === portrait) {
+            // Find the closest tier and insert them into the list
+            let bounds = portrait.getBoundingClientRect();
+            let center = [(bounds.left + bounds.right) / 2, (bounds.top + bounds.bottom) / 2];
+            let draggingOver = document.elementsFromPoint(center[0], center[1]);
+            for (let dragIndex = 0; dragIndex < draggingOver.length; dragIndex++) {
+                let draggedOver = draggingOver[dragIndex];
+                if (Utilities.hasClass(draggedOver, 'dragging')) continue;
+                if (Utilities.hasClass(draggedOver, 'tier')) {
+                    draggedOver.appendChild(portrait);
+                    break;
+                } else if (Utilities.hasClass(draggedOver, 'tierPortrait')) {
+                    draggedOver.parentNode.insertBefore(portrait, draggedOver);
+                    break;
+                }
+            }
+
+            this.release();
+        }
+    }
+
+    onMouseMove(x, y) {
+        if (this.#clicked != null) {
+            x -= 64;
+            y -= 64;
+            this.#clicked.style.left = x + 'px';
+            this.#clicked.style.top = y + 'px';
+
+            if (!this.#dragging) {
+                this.#dragging = true;
+                Utilities.addClass(this.#clicked, 'dragging');
+            }
         }
     }
 }
