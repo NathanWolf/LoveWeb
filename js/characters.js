@@ -67,8 +67,8 @@ class Characters {
     }
 
     static getRelationshipName(relationshipId) {
-        // TODO: Make pretty name, or add a relationships.json
-        return relationshipId;
+        // Maybe add a relationships.json?
+        return Utilities.humanizeKey(relationshipId);
     }
 
     getRelationshipList(characterId) {

@@ -69,4 +69,12 @@ class Utilities {
         }
         return div;
     }
+
+    static humanizeKey(str) {
+        let pieces = str.split('_');
+        for (let i = 0 ; i < pieces.length; i++) {
+            pieces[i] = pieces[i].charAt(0).toUpperCase() + pieces[i].slice(1);
+        }
+        return pieces.join(' ');
+    }
 }
