@@ -3,7 +3,7 @@
     justify-content: start;
     height: 100%;
     overscroll-behavior: none;
-    touch-action: none;
+    padding-bottom: 64px;
 }
 
 #tierLists .option {
@@ -43,6 +43,6 @@
     background-position: center;
 }
 
-.dragging {
+.tierPortrait.dragging {
     position: absolute;
 }

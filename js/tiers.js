@@ -19,6 +19,9 @@ class Tiers {
         });
         this.#element.addEventListener('touchmove', function(event) {
             controller.onMouseMove(event.touches[0].clientX, event.touches[0].clientY);
+            if (controller.#dragging) {
+                event.preventDefault();
+            }
         });
     }
 
