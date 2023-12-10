@@ -2,6 +2,8 @@
     flex-direction: column;
     justify-content: start;
     height: 100%;
+    overscroll-behavior: none;
+    touch-action: none;
 }
 
 #tierLists .option {
