@@ -1,3 +1,7 @@
+#characters {
+    flex-wrap: wrap;
+}
+
 .portrait {
     min-width: 256px;
     min-height: 256px;

@@ -85,11 +85,10 @@ body {
     display: flex;
     margin-left: 16px;
     margin-right: 16px;
-    flex-wrap: wrap;
-    overflow-y: auto;
+    overflow: auto;
     height: 100%;
     flex: 1;
-    padding-bottom: 64px;
+    padding-bottom: 16px;
 }
 
 @keyframes gradient {

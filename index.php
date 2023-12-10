@@ -39,7 +39,6 @@
         </div>
 
         <div class="tab" id="relationships" style="display: none">
-            Relationships Coming Soon!
         </div>
 
         <div class="tab" id="tierLists" style="display: none">
@@ -49,20 +48,6 @@
         </div>
 
         <div class="tab" id="quizzes" style="display: none">
-            <div id="quizList">
-
-            </div>
-            <div id="quizQuestion" style="display: none">
-                <div id="quizQuestionQuestion">
-
-                </div>
-                <div id="quizQuestionAnswers">
-
-                </div>
-            </div>
-            <div id="quizFinished" style="display: none">
-                DONE!
-            </div>
         </div>
     </div>
 

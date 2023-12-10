@@ -18,6 +18,7 @@
 
 #tierLists .tier {
     display: flex;
+    flex-wrap: wrap;
 }
 
 #tierLists .tier .label {

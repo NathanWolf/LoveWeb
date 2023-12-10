@@ -2,8 +2,6 @@ class Tiers {
     #characters = null;
     #element;
     #tiers = {};
-    #currentTierList = null;
-    #currentTierElements = [];
     #clicked = null;
     #dragging = false;
 
@@ -47,16 +45,20 @@ class Tiers {
     }
 
     onSelectTierList(id) {
-        this.#currentTierList = id;
         let tierList = this.#tiers[id];
+        let tiers = Object.values(tierList.tiers);
         Utilities.empty(this.#element);
         let tierTitle = document.createElement('div');
         tierTitle.className = 'title';
         tierTitle.innerText = tierList.name;
         this.#element.appendChild(tierTitle);
-        this.#currentTierElements = [];
-        for (let i = 0; i < tierList.tiers.length; i++) {
-            let tier = tierList.tiers[i];
+        let currentTierElements = [];
+        tiers.unshift({
+            'title': '',
+            'color': 'white'
+        });
+        for (let i = 0; i < tiers.length; i++) {
+            let tier = tiers[i];
             let tierDiv = document.createElement('div');
             tierDiv.className = 'tier';
             tierDiv.style.backgroundColor = tier.color;
@@ -65,19 +67,18 @@ class Tiers {
             tierLabel.innerText = tier.title;
             tierDiv.appendChild(tierLabel);
             this.#element.appendChild(tierDiv);
-            this.#currentTierElements.push(tierDiv);
+            currentTierElements.push(tierDiv);
         }
 
-        // Start off randomized
+        // Start off on empty tier
         let controller = this;
         let characters = this.#characters.getCharacterList();
         for (let i = 0; i < characters.length; i++) {
             let character = characters[i];
-            let tierIndex = Math.floor(Math.random() * this.#currentTierElements.length);
             let tierPortrait = document.createElement('div');
             tierPortrait.className = 'tierPortrait';
             tierPortrait.style.backgroundImage = 'url(' + this.#characters.getPortrait(character.id) + ')'
-            this.#currentTierElements[tierIndex].appendChild(tierPortrait);
+            currentTierElements[0].appendChild(tierPortrait);
 
             tierPortrait.addEventListener('mousedown', function() {
                 controller.onPortraitGrab(this);

@@ -1,19 +1,19 @@
 {
     "favorites": {
         "name" : "Favorites",
-        "tiers" : [
-            {
+        "tiers" : {
+            "best": {
                 "title": "The BEST",
                 "color": "green"
             },
-            {
+            "mid": {
                 "title": "Literally MID",
                 "color": "grey"
             },
-            {
+            "worst": {
                 "title": "The WORST",
                 "color": "red"
             }
-        ]
+        }
     }
 }
