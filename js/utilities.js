@@ -19,6 +19,9 @@ class Utilities {
     }
 
     static showPopup(parent, innerClass) {
+        if (typeof(innerClass) === 'undefined') {
+            innerClass = 'popupInnerContent';
+        }
         let popupDiv = document.createElement('div');
         popupDiv.className = 'popup';
         let contentDiv = document.createElement('div');

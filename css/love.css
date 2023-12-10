@@ -32,6 +32,11 @@ body {
     margin: 64px;
 }
 
+.popupInnerContent {
+    background: white;
+    padding: 2em;
+}
+
 .tabContainer {
     display: flex;
     flex-direction: column;

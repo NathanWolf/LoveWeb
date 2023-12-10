@@ -24,7 +24,7 @@ class Flashcards {
         Utilities.empty(this.#element);
 
         if (this.#currentFlashcards.length === 0) {
-            let popup = Utilities.showPopup(this.#element.parentNode, 'flashCardsFinished');
+            let popup = Utilities.showPopup(this.#element.parentNode);
             popup.innerText = 'DONE!';
             return;
         }
