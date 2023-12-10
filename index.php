@@ -41,7 +41,6 @@
         </div>
 
         <div class="tab" id="tierLists" style="display: none">
-
         </div>
 
         <div class="tab" id="flashCards" style="display: none">

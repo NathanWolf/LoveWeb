@@ -2,7 +2,7 @@ class Love {
     #loaded = false;
     #tab = null;
     #characters = new Characters(document.getElementById('characters'));
-    #quizzes = new Quizzes();
+    #quizzes = new Quizzes(document.getElementById('quizzes'));
     #flashcards = new Flashcards(document.getElementById('flashCards'), this.#characters);
     #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
 
@@ -11,11 +11,6 @@ class Love {
         Utilities.addHandlerToClass('tabButton', function() {
             love.selectTab(this.dataset.tab);
         });
-        this.#quizzes.setListElement(document.getElementById('quizList'));
-        this.#quizzes.setQuizElement(document.getElementById('quizQuestion'));
-        this.#quizzes.setQuestionElement(document.getElementById('quizQuestionQuestion'));
-        this.#quizzes.setAnswerElement(document.getElementById('quizQuestionAnswers'));
-        this.#quizzes.setFinishedElement(document.getElementById('quizFinished'));
     }
 
     selectTab(tabId) {

@@ -38,9 +38,12 @@ class Utilities {
         return innerDiv;
     }
 
-    static createDiv(className) {
+    static createDiv(className, parent) {
         let div = document.createElement('div');
         div.className = className;
+        if (typeof(parent) !== 'undefined') {
+            parent.appendChild(div);
+        }
         return div;
     }
 }

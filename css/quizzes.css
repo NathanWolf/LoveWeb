@@ -1,4 +1,4 @@
-#quizList {
+.quizList {
     flex-direction: column;
     justify-content: start;
     height: 100%;
@@ -12,7 +12,7 @@
     background: #ddd;
 }
 
-#quizQuestion {
+.quizQuestion {
     flex-direction: column;
 }
 
@@ -21,18 +21,18 @@
     color: white;
 }
 
-#quizQuestionQuestion {
+.quizQuestionQuestion {
     font-size: 2em;
     font-weight: bold;
     margin-top: 1em;
 }
 
-#quizQuestionAnswers ul li {
+.quizQuestionAnswers ul li {
     font-size: 1.5em;
     cursor: pointer;
 }
 
-#quizQuestionAnswers ul li:hover {
+.quizQuestionAnswers ul li:hover {
     background-color: grey;
     color: white;
 }

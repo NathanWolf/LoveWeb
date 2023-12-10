@@ -1,14 +1,14 @@
 class Quizzes {
     #quizzes = {};
-    #listElement = null;
-    #quizElement = null;
-    #questionElement = null;
-    #answerElement = null;
-    #finishedElement = null;
+    #element;
     #currentQuizQuestions = [];
     #correctAnswer = 0;
     #correctAnswers = 0;
     #wrongAnswers = 0;
+
+    constructor(element) {
+        this.#element = element;
+    }
 
     addQuizzes(quizzes) {
         for (let id in quizzes) {
@@ -18,39 +18,11 @@ class Quizzes {
         }
     }
 
-    setListElement(container) {
-        this.#listElement = container;
-    }
-
-    setQuizElement(container) {
-        this.#quizElement = container;
-    }
-
-    setQuestionElement(container) {
-        this.#questionElement = container;
-    }
-
-    setAnswerElement(container) {
-        this.#answerElement = container;
-    }
-
-    setFinishedElement(container) {
-        this.#finishedElement = container;
-    }
-
-    #checkElements() {
-        if (this.#listElement == null) throw new Error("List element not set");
-        if (this.#quizElement == null) throw new Error("Quiz element not set");
-        if (this.#finishedElement == null) throw new Error("Finished element not set");
-        if (this.#questionElement == null) throw new Error("Question element not set");
-        if (this.#answerElement == null) throw new Error("Answer element not set");
-    }
-
     listQuizzes() {
-        this.#checkElements();
         // Populate quiz list
         let controller = this;
-        Utilities.empty(this.#listElement);
+        Utilities.empty(this.#element);
+        let listElement = Utilities.createDiv('quizList', this.#element);
         for (let quizKey in this.#quizzes) {
             if (!this.#quizzes.hasOwnProperty(quizKey)) continue;
             let quiz = this.#quizzes[quizKey];
@@ -61,18 +33,11 @@ class Quizzes {
             });
             quizOption.className = 'quizOption';
             quizOption.innerText = quiz.name;
-            this.#listElement.appendChild(quizOption);
+            listElement.appendChild(quizOption);
         }
-
-        // Reset to showing quiz list, not questions
-        this.#quizElement.style.display = 'none';
-        this.#finishedElement.style.display = 'none';
-        this.#listElement.style.display = 'flex';
     }
 
     onSelectQuiz(quizKey) {
-        this.#checkElements();
-        this.#listElement.style.display = 'none';
         this.#correctAnswers = 0;
         this.#wrongAnswers = 0;
         let quiz = this.#quizzes[quizKey];
@@ -82,17 +47,20 @@ class Quizzes {
     }
 
     #nextQuestion() {
-        this.#checkElements();
+        Utilities.empty(this.#element);
         if (this.#currentQuizQuestions.length === 0) {
-            this.#quizElement.style.display = 'none';
-            this.#finishedElement.style.display = 'flex';
+            this.listQuizzes();
+            let popup = Utilities.showPopup(this.#element.parentNode);
+            popup.innerText = 'DONE!';
             return;
         }
 
         let nextQuestion = this.#currentQuizQuestions.pop();
-        this.#questionElement.innerText = nextQuestion.question;
+        let questionContainer = Utilities.createDiv('quizQuestion', this.#element);
+        let questionElement = Utilities.createDiv('quizQuestionQuestion', questionContainer);
+        let answerElement = Utilities.createDiv('quizQuestionAnswers', questionContainer);
 
-        Utilities.empty(this.#answerElement);
+        questionElement.innerText = nextQuestion.question;
         let controller = this;
         let list = document.createElement('ul');
         let answers = [...nextQuestion.answers];
@@ -110,8 +78,7 @@ class Quizzes {
             });
             list.appendChild(answer);
         }
-        this.#answerElement.appendChild(list);
-        this.#quizElement.style.display = 'flex';
+        answerElement.appendChild(list);
     }
 
     onAnswerClick(answerIndex) {
