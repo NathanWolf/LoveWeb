@@ -16,6 +16,9 @@ class Tiers {
         this.#element.addEventListener('mousemove', function(event) {
             controller.onMouseMove(event.x, event.y);
         });
+        this.#element.addEventListener('touchmove', function(event) {
+            controller.onMouseMove(event.touches[0].clientX, event.touches[0].clientY);
+        });
     }
 
     addTiers(tiers) {
@@ -92,6 +95,18 @@ class Tiers {
             tierPortrait.addEventListener('mouseup', function() {
                 controller.onPortraitRelease(this);
             });
+
+            tierPortrait.addEventListener('touchstart', function() {
+                controller.onPortraitGrab(this);
+            });
+
+            tierPortrait.addEventListener('touchend', function() {
+                controller.onPortraitRelease(this);
+            });
+
+            tierPortrait.addEventListener('touchcancel', function() {
+                controller.onCancelDrag();
+            });
         }
     }
 
@@ -109,6 +124,10 @@ class Tiers {
         }
         this.#dragging = false;
         this.#clicked = null;
+    }
+
+    onCancelDrag() {
+        this.release();
     }
 
     onPortraitRelease(portrait) {
