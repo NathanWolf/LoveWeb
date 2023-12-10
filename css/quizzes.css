@@ -36,3 +36,7 @@
     background-color: grey;
     color: white;
 }
+
+.quizFinishedTitle {
+    font-size: 1.5em;
+}

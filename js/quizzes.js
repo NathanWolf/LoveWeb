@@ -51,7 +51,9 @@ class Quizzes {
         if (this.#currentQuizQuestions.length === 0) {
             this.listQuizzes();
             let popup = Utilities.showPopup(this.#element.parentNode);
-            popup.innerText = 'DONE!';
+            Utilities.createDiv('quizFinishedTitle', popup).innerText = 'Finished!';
+            Utilities.createDiv('quizCorrect', popup).innerText = 'Correct: ' + this.#correctAnswers;
+            Utilities.createDiv('quizWrong', popup).innerText = 'Wrong: ' + this.#wrongAnswers;
             return;
         }
 

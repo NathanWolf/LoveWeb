@@ -25,7 +25,9 @@ class Flashcards {
 
         if (this.#currentFlashcards.length === 0) {
             let popup = Utilities.showPopup(this.#element.parentNode);
-            popup.innerText = 'DONE!';
+            Utilities.createDiv('flashCardFinishedTitle', popup).innerText = 'Finished!';
+            Utilities.createDiv('flashCardCorrect', popup).innerText = 'Correct: ' + this.#correctAnswers;
+            Utilities.createDiv('flashCardWrong', popup).innerText = 'Wrong: ' + this.#wrongAnswers;
             return;
         }
 
