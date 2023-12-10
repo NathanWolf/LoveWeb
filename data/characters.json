@@ -132,12 +132,12 @@
   "iris": {
     "sheet": false,
     "name": "Iris",
-    "portrait": {"offset": [0.4, 0.1]}
+    "portrait": {"offset": [0.4, 0.12]}
   },
   "lilac": {
     "sheet": false,
     "name": "Lilac",
-    "portrait": {"offset": [0.4, 0.1]}
+    "portrait": {"offset": [0.4, 0.12]}
   },
   "luci": {
     "sheet": false,
