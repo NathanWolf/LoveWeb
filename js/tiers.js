@@ -1,6 +1,7 @@
 class Tiers {
     #characters = null;
     #element;
+    #defaultGroup = null;
     #tiers = {};
     #clicked = null;
     #dragging = false;
@@ -76,6 +77,7 @@ class Tiers {
             this.#element.appendChild(tierDiv);
             tierElements[tier.id] = tierDiv;
         }
+        this.#defaultGroup = tierElements['default'];
 
         let controller = this;
         let characters = this.#characters.getCharacterList();
@@ -146,6 +148,12 @@ class Tiers {
                     draggedOver.parentNode.insertBefore(portrait, draggedOver);
                     break;
                 }
+            }
+            // Check to see if the default group is empty
+            // Hackily making room for the title div- would be better to look for any children of type tierPortrait
+            if (this.#defaultGroup != null && this.#defaultGroup.childNodes.length <= 1) {
+                this.#defaultGroup.style.display = 'none';
+                this.#defaultGroup = null;
             }
 
             this.release();
