@@ -67,7 +67,7 @@ class Tiers {
             let tierIndex = Math.floor(Math.random() * this.#currentTierElements.length);
             let tierPortrait = document.createElement('div');
             tierPortrait.className = 'tierPortrait';
-            tierPortrait.style.backgroundImage = 'url(image/portraits/' + character.id + '.png)'
+            tierPortrait.style.backgroundImage = 'url(' + this.#characters.getPortrait(character.id) + ')'
             this.#currentTierElements[tierIndex].appendChild(tierPortrait);
         }
     }

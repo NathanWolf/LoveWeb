@@ -37,7 +37,7 @@ class Flashcards {
         this.#element.appendChild(answerContainer);
 
         let nextCharacter = this.#currentFlashcards.pop();
-        flashCardContainer.style.backgroundImage = 'url(image/portraits/' + nextCharacter.id + '.png)';
+        flashCardContainer.style.backgroundImage = 'url(' + this.#characters.getPortrait(nextCharacter.id) + ')';
         let list = document.createElement('ul');
         let answers = [nextCharacter];
         let characters = this.#characters.getCharacterList();

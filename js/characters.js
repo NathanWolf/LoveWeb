@@ -27,10 +27,9 @@ class Characters {
         let container = controller.#element;
         let characters = this.getCharacterList();
         characters.forEach(function(character){
-            let image = character.id + ".png";
             let portrait = document.createElement('div');
             portrait.className = 'portrait';
-            portrait.style.backgroundImage = 'url(image/portraits/' + image + ')';
+            portrait.style.backgroundImage = 'url(' + controller.getPortrait(character.id) + ')';
             container.appendChild(portrait);
             let portraitName = document.createElement('div');
             portraitName.className = 'portraitName';
@@ -52,7 +51,7 @@ class Characters {
         }
         if (character.sheet) {
             let popup = Utilities.showPopup(this.#element.parentNode, 'characterSheet');
-            popup.style.backgroundImage = "url('image/sheets/" + characterKey + ".png')";
+            popup.style.backgroundImage = 'url(' + this.getSheet(characterKey) + ')';
         } else {
             let popup = Utilities.showPopup(this.#element.parentNode, 'characterSheetMissing');
             let contentSpan = document.createElement('span');
@@ -65,5 +64,28 @@ class Characters {
             popup.appendChild(nameSpan);
             popup.appendChild(contentSpan2);
         }
+    }
+
+    #getImage(characterId, folder, dataKey) {
+        let character = this.getCharacter(characterId);
+        if (character == null) {
+            return '';
+        }
+        if (character.hasOwnProperty(dataKey) && character[dataKey].hasOwnProperty('url')) {
+            return 'image/' + folder + '/' + character[dataKey].url;
+        }
+        return 'image/' + folder + '/' + characterId + '.png'
+    }
+
+    getPortrait(characterId) {
+        return this.#getImage(characterId, 'portraits', 'portrait');
+    }
+
+    getSheet(characterId) {
+        return this.#getImage(characterId, 'sheets', 'sheet');
+    }
+
+    getImage(characterId) {
+        return this.#getImage(characterId, 'characters', 'image');
     }
 }
