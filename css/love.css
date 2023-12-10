@@ -48,7 +48,7 @@ body {
     border: 1px solid black;
 }
 
-.tabButton {
+.tabButton, .tabLink {
     background: #888;
     border: 1px solid darkblue;
     padding: 2px 12px;
@@ -56,8 +56,18 @@ body {
     color: black;
 }
 
-.tabButton a {
+.tabLink a {
     text-decoration: none;
+    color: black;
+}
+
+.tabLink:hover {
+    background: #228;
+    color: white;
+}
+
+.tabLink:hover a {
+    color: white;
 }
 
 .tabButton:hover {
