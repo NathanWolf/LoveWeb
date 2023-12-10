@@ -1,24 +1,18 @@
 class Flashcards {
-    #characters = null;
+    #characters;
+    #element;
     #correctAnswer = 0;
     #correctAnswers = 0;
     #wrongAnswers = 0;
     #currentFlashcards = [];
 
-    setCharacters(characters) {
+    constructor(element, characters) {
+        this.#element = element;
         this.#characters = characters;
     }
 
-    #checkCharacters() {
-        if (this.#characters == null) throw new Error("Characters not set");
-    }
-
     show() {
-        this.#checkCharacters();
         let characters = this.#characters.getCharacterList();
-        document.getElementById('flashCardsFinished').style.display = 'none';
-        document.getElementById('flashCard').style.display = 'flex';
-        document.getElementById('flashCardAnswers').style.display = 'flex';
         this.#wrongAnswers = 0;
         this.#correctAnswers = 0;
         this.#currentFlashcards = Utilities.shuffle(characters);
@@ -27,20 +21,21 @@ class Flashcards {
 
     #nextFlashCard() {
         let controller = this;
-        let flashCardContainer = document.getElementById('flashCard');
-        let answerContainer = document.getElementById('flashCardAnswers');
-        Utilities.empty(flashCardContainer);
+        Utilities.empty(this.#element);
 
         if (this.#currentFlashcards.length === 0) {
-            flashCardContainer.style.display = 'none';
-            answerContainer.style.display = 'none';
-            document.getElementById('flashCardsFinished').style.display = 'flex';
+            let popup = Utilities.showPopup(this.#element.parentNode, 'flashCardsFinished');
+            popup.innerText = 'DONE!';
             return;
         }
 
+        let flashCardContainer = Utilities.createDiv('flashCard');
+        let answerContainer = Utilities.createDiv('flashCardAnswers');
+        this.#element.appendChild(flashCardContainer);
+        this.#element.appendChild(answerContainer);
+
         let nextCharacter = this.#currentFlashcards.pop();
-        document.getElementById('flashCard').style.backgroundImage = 'url(image/portraits/' + nextCharacter.id + '.png)';
-        Utilities.empty(answerContainer);
+        flashCardContainer.style.backgroundImage = 'url(image/portraits/' + nextCharacter.id + '.png)';
         let list = document.createElement('ul');
         let answers = [nextCharacter];
         let characters = this.#characters.getCharacterList();

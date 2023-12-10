@@ -3,7 +3,7 @@ class Love {
     #tab = null;
     #characters = new Characters(document.getElementById('characters'));
     #quizzes = new Quizzes();
-    #flashcards = new Flashcards();
+    #flashcards = new Flashcards(document.getElementById('flashCards'), this.#characters);
     #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
 
     register() {
@@ -11,7 +11,6 @@ class Love {
         Utilities.addHandlerToClass('tabButton', function() {
             love.selectTab(this.dataset.tab);
         });
-        this.#flashcards.setCharacters(this.#characters);
         this.#quizzes.setListElement(document.getElementById('quizList'));
         this.#quizzes.setQuizElement(document.getElementById('quizQuestion'));
         this.#quizzes.setQuestionElement(document.getElementById('quizQuestionQuestion'));

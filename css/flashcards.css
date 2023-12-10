@@ -1,4 +1,4 @@
-#flashCard {
+.flashCard {
     min-width: 256px;
     min-height: 256px;
     overflow: hidden;
@@ -13,12 +13,17 @@
     align-items: center;
 }
 
-#flashCardAnswers ul li {
+.flashCardAnswers ul li {
     font-size: 1.5em;
     cursor: pointer;
 }
 
-#flashCardAnswers ul li:hover {
+.flashCardAnswers ul li:hover {
     background-color: grey;
     color: white;
+}
+
+.flashCardsFinished {
+    background: white;
+    padding: 2em;
 }

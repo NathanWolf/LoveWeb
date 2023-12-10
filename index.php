@@ -45,14 +45,6 @@
         </div>
 
         <div class="tab" id="flashCards" style="display: none">
-            <div id="flashCard">
-
-            </div>
-            <div id="flashCardAnswers">
-            </div>
-            <div id="flashCardsFinished" style="display: none">
-                DONE!
-            </div>
         </div>
 
         <div class="tab" id="quizzes" style="display: none">

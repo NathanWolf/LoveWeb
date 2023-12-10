@@ -34,4 +34,10 @@ class Utilities {
         });
         return innerDiv;
     }
+
+    static createDiv(className) {
+        let div = document.createElement('div');
+        div.className = className;
+        return div;
+    }
 }
