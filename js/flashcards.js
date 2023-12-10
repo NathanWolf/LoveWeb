@@ -67,9 +67,10 @@ class Flashcards {
 
     onFlashCardClick(answerIndex) {
         if (answerIndex === this.#correctAnswer) {
+            Utilities.showStatusPopup(this.#element.parentNode, 'flashCardCorrect').innerText = 'CORRECT!';
             this.#correctAnswers++;
         } else {
-            alert("Wrong :(");
+            Utilities.showStatusPopup(this.#element.parentNode, 'flashCardWrong').innerText = 'Wrong :(';
             this.#wrongAnswers++;
         }
         this.#nextFlashCard();

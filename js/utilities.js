@@ -18,6 +18,29 @@ class Utilities {
         }
     }
 
+    static showStatusPopup(parent, innerClass, timeout) {
+        if (typeof(innerClass) === 'undefined') {
+            innerClass = 'popupInnerContent';
+        }
+        if (typeof(timeout) === 'undefined') {
+            timeout = 1000;
+        }
+        let popupDiv = document.createElement('div');
+        popupDiv.className = 'statusPopup';
+        let contentDiv = document.createElement('div');
+        contentDiv.className = 'statusPopupContent';
+        popupDiv.appendChild(contentDiv);
+        let innerDiv = document.createElement('div');
+        innerDiv.className = innerClass;
+        contentDiv.appendChild(innerDiv);
+        parent.appendChild(popupDiv);
+
+        setTimeout(function() {
+            popupDiv.remove();
+        }, timeout);
+        return innerDiv;
+    }
+
     static showPopup(parent, innerClass) {
         if (typeof(innerClass) === 'undefined') {
             innerClass = 'popupInnerContent';

@@ -85,10 +85,10 @@ class Quizzes {
 
     onAnswerClick(answerIndex) {
         if (answerIndex === this.#correctAnswer) {
-            alert("CORRECT!");
+            Utilities.showStatusPopup(this.#element.parentNode, 'quizCorrect').innerText = 'CORRECT!';
             this.#correctAnswers++;
         } else {
-            alert("Wrong :(");
+            Utilities.showStatusPopup(this.#element.parentNode, 'quizWrong').innerText = 'Wrong :(';
             this.#wrongAnswers++;
         }
         this.#nextQuestion();
