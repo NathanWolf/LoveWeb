@@ -58,6 +58,7 @@ class Characters {
             contentSpan.innerText = 'Information on ';
             let nameSpan = document.createElement('span');
             nameSpan.className = 'characterSheetMissingName';
+            nameSpan.innerText = character.name;
             let contentSpan2 = document.createElement('span');
             contentSpan2.innerText = ' Coming soon!';
             popup.appendChild(contentSpan);

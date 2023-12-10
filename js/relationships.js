@@ -36,7 +36,7 @@ class Relationships {
                     // The first row will have the main character in it with a full-height rowspan
                     if (relationShipIndex === 0 && rowIndex === 0) {
                         let characterCell = document.createElement('td');
-                        characterCell.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+                        characterCell.style.backgroundImage = 'url(' + characters.getImage(character.id) + ')';
                         characterCell.className = 'relationshipMainCharacter';
                         characterCell.rowSpan = rowCount;
                         characterCell.title = character.name;
