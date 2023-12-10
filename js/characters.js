@@ -66,6 +66,35 @@ class Characters {
         }
     }
 
+    static getRelationshipName(relationshipId) {
+        // TODO: Make pretty name, or add a relationships.json
+        return relationshipId;
+    }
+
+    getRelationshipList(characterId) {
+        let character = this.#characters[characterId];
+        let relationshipList = [];
+        if (!character.hasOwnProperty('relationships')) {
+            return relationshipList;
+        }
+        let relationships = character.relationships;
+        for (let relationshipId in relationships) {
+            let relationshipTargets = relationships[relationshipId];
+            if (!Array.isArray(relationshipTargets)) {
+                relationshipTargets = [relationshipTargets];
+            }
+            relationshipTargets.forEach(function(target) {
+                let relationship = {
+                    id: relationshipId,
+                    name: Characters.getRelationshipName(relationshipId),
+                    character: target
+                };
+                relationshipList.push(relationship);
+            });
+        }
+        return relationshipList;
+    }
+
     #getImage(characterId, folder, dataKey) {
         let character = this.getCharacter(characterId);
         if (character == null) {

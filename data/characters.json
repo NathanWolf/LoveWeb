@@ -2,17 +2,32 @@
   "love": {
     "sheet": true,
     "name": "Love",
-    "portrait": {"offset": [0.3, 0.12]}
+    "portrait": {"offset": [0.3, 0.12]},
+    "relationships": {
+      "father": "michael",
+      "mother": "angelica",
+      "partner": "ciel",
+      "sister": ["aura", "celeste"]
+    }
   },
   "ciel": {
     "sheet": true,
     "name": "Ciel",
-    "portrait": {"offset": [0.7, 0.1]}
+    "portrait": {"offset": [0.7, 0.1]},
+    "relationships": {
+      "partner": "love",
+      "mother": ["jamie", "jasmine"],
+      "sister": "cynth"
+    }
   },
   "thirteen": {
     "sheet": true,
     "name": "Thirteen",
-    "portrait": {"offset": [0.5, 0.1]}
+    "portrait": {"offset": [0.5, 0.1]},
+    "relationships": {
+      "mother": "clara",
+      "evil_twin": "fourteen"
+    }
   },
   "celeste": {
     "sheet": true,

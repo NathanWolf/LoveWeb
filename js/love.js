@@ -5,6 +5,7 @@ class Love {
     #quizzes = new Quizzes(document.getElementById('quizzes'));
     #flashcards = new Flashcards(document.getElementById('flashCards'), this.#characters);
     #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
+    #relationships = new Relationships(document.getElementById('relationships'), this.#characters);
 
     register() {
         let love = this;
@@ -48,6 +49,7 @@ class Love {
                 break;
             case 'relationships':
                 document.title = 'Love (Relationships)';
+                this.#showRelationships();
                 break;
             case 'tierLists':
                 document.title = 'Love (Tier Lists)';
@@ -57,6 +59,10 @@ class Love {
 
         this.#tab = tabId;
         this.updateHistory();
+    }
+
+    #showRelationships() {
+        this.#relationships.show();
     }
 
     #showCharacters() {

@@ -1,0 +1,41 @@
+#relationships {
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.relationship {
+    margin-bottom: 64px;
+}
+
+.relationship table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+td.relationshipMainCharacter {
+    width: 256px;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid black;
+    background-position: center;
+}
+
+td.relationshipCharacter {
+    width: 128px;
+    height: 128px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 1px solid black;
+}
+
+td.relationshipFiller {
+    height: 42px;
+}
+
+td.relationshipType {
+    border: 1px solid black;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: center;
+}

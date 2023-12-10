@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="css/quizzes.css">
     <link rel="stylesheet" href="css/flashcards.css">
     <link rel="stylesheet" href="css/tiers.css">
+    <link rel="stylesheet" href="css/relationships.css">
     <script type="text/javascript" src="js/utilities.js"></script>
     <script type="text/javascript" src="js/characters.js"></script>
     <script type="text/javascript" src="js/quizzes.js"></script>
     <script type="text/javascript" src="js/flashcards.js"></script>
     <script type="text/javascript" src="js/tiers.js"></script>
+    <script type="text/javascript" src="js/relationships.js"></script>
     <script type="text/javascript" src="js/love.js"></script>
     <script type="text/javascript">
         window.onload = function() {
