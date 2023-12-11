@@ -4,8 +4,7 @@
     "name": "Love",
     "portrait": {"offset": [0.3, 0.12]},
     "relationships": {
-      "father": "michael",
-      "mother": "angelica",
+      "parent": ["michael", "angelica"],
       "partner": "ciel",
       "sibling": ["aura", "celeste"]
     }
@@ -16,7 +15,7 @@
     "portrait": {"offset": [0.7, 0.1]},
     "relationships": {
       "partner": "love",
-      "mother": ["jamie", "jasmine"],
+      "parent": ["jamie", "jasmine"],
       "sibling": "cynth"
     },
     "tiers": {
@@ -28,7 +27,7 @@
     "name": "Thirteen",
     "portrait": {"offset": [0.5, 0.1]},
     "relationships": {
-      "mother": "clara",
+      "creator": "clara",
       "evil_twin": "fourteen"
     },
     "tiers": {
@@ -40,9 +39,8 @@
     "name": "Celeste",
     "portrait": {"offset": [0.45, 0.1]},
     "relationships": {
-      "mother": "thirteen",
-      "birth_mother": "angelica",
-      "birth_father": "michael",
+      "parent": "thirteen",
+      "birth_parent": ["angelica", "michael"],
       "sibling": ["love", "aura"]
     },
     "tiers": {
@@ -89,7 +87,7 @@
     "portrait": {"offset": [0.3, 0.1]},
     "relationships": {
       "sibling": "ciel",
-      "mother": ["jamie", "jasmine"]
+      "parent": ["jamie", "jasmine"]
     }
   },
   "cymbeline": {
@@ -97,7 +95,7 @@
     "name": "Cymbeline",
     "relationships": {
       "sibling": ["ezra", "beau"],
-      "mother": ["idris", "victoria"]
+      "parent": ["idris", "victoria"]
     },
     "portrait": {"offset": [0.45, 0.1]},
     "tiers": {
@@ -113,7 +111,7 @@
     },
     "relationships": {
       "sibling": ["ezra", "beau"],
-      "mother": ["idris", "victoria"]
+      "parent": ["idris", "victoria"]
     }
   },
   "aura": {
@@ -124,8 +122,7 @@
       "hotness": "child"
     },
     "relationships": {
-      "father": "michael",
-      "mother": "angelica",
+      "parent": ["michael", "angelica"],
       "sibling": ["love", "celeste"]
     }
   },
@@ -142,7 +139,7 @@
     "name": "Clara",
     "portrait": {"offset": [0.45, 0.1]},
     "tiers": {
-      "child": ["thirteen", "fourteen"]
+      "creation": ["thirteen", "fourteen"]
     }
   },
   "ace": {
@@ -156,7 +153,7 @@
     "portrait": {"offset": [0.6, 0.1]},
     "relationships": {
       "sibling": ["ezra", "beau"],
-      "mother": ["idris", "cymbeline"]
+      "parent": ["idris", "cymbeline"]
     }
   },
   "harper": {
@@ -238,8 +235,8 @@
     "name": "Fourteen",
     "portrait": {"offset": [0.5, 0.1]},
     "relationships": {
-      "mother": "clara",
-      "evil_twin": "fourteen"
+      "parent": "clara",
+      "evil_twin": "thirteen"
     },
     "tiers": {
       "power": "overlord"
