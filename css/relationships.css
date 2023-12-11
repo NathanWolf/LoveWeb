@@ -1,10 +1,11 @@
 #relationships {
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .relationship {
     margin-bottom: 64px;
+    margin-right: 128px;
 }
 
 .relationship table {
