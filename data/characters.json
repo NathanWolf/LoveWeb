@@ -77,22 +77,34 @@
   "cymbeline": {
     "sheet": true,
     "name": "Cymbeline",
-    "portrait": {"offset": [0.45, 0.1]}
+    "portrait": {"offset": [0.45, 0.1]},
+    "tiers": {
+      "hotness": "child"
+    }
   },
   "ezra": {
     "sheet": true,
     "name": "Ezra",
-    "portrait": {"offset": [0.8, 0.1]}
+    "portrait": {"offset": [0.8, 0.1]},
+    "tiers": {
+      "hotness": "child"
+    }
   },
   "aura": {
     "sheet": true,
     "name": "Aura",
-    "portrait": {"offset": [0.4, 0.1]}
+    "portrait": {"offset": [0.4, 0.1]},
+    "tiers": {
+      "hotness": "child"
+    }
   },
   "neptune": {
     "sheet": true,
     "name": "Neptune",
-    "portrait": {"offset": [0.3, 0.12]}
+    "portrait": {"offset": [0.3, 0.12]},
+    "tiers": {
+      "hotness": "child"
+    }
   },
   "clara": {
     "sheet": true,
@@ -122,7 +134,10 @@
   "daisy": {
     "sheet": false,
     "name": "Daisy",
-    "portrait": {"offset": [0.5, 0.1]}
+    "portrait": {"offset": [0.5, 0.1]},
+    "tiers": {
+      "hotness": "child"
+    }
   },
   "gizmo": {
     "sheet": false,

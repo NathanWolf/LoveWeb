@@ -29,6 +29,57 @@
             }
         }
     },
+    "hotness": {
+        "name" : "Hotness",
+        "tiers" : {
+            "super": {
+                "title": "SUPER HOT",
+                "color": "#FF0000"
+            },
+            "really": {
+                "title": "Really Hot",
+                "color": "#BB0000"
+            },
+            "mid": {
+                "title": "Mid",
+                "color": "#880000",
+                "dark": true
+            },
+            "not": {
+                "title": "Not My Style",
+                "color": "#660000",
+                "dark": true
+            },
+            "child": {
+                "title": "I'M A CHILD!",
+                "color": "black",
+                "dark": true
+            }
+        }
+    },
+    "cuteness": {
+        "name" : "Cuteness",
+        "tiers" : {
+            "cutest": {
+                "title": "Cutest",
+                "color": "gold"
+            },
+            "super": {
+                "title": "Super Cute",
+                "color": "silver"
+            },
+            "meh": {
+                "title": "Meh",
+                "color": "red",
+                "dark": true
+            },
+            "ugly": {
+                "title": "Ugly",
+                "color": "brown",
+                "dark": true
+            }
+        }
+    },
     "power": {
         "name" : "Power",
         "tiers" : {
