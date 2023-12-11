@@ -7,7 +7,7 @@
       "father": "michael",
       "mother": "angelica",
       "partner": "ciel",
-      "sister": ["aura", "celeste"]
+      "sibling": ["aura", "celeste"]
     }
   },
   "ciel": {
@@ -17,7 +17,7 @@
     "relationships": {
       "partner": "love",
       "mother": ["jamie", "jasmine"],
-      "sister": "cynth"
+      "sibling": "cynth"
     },
     "tiers": {
       "power": "god"
@@ -39,6 +39,12 @@
     "sheet": true,
     "name": "Celeste",
     "portrait": {"offset": [0.45, 0.1]},
+    "relationships": {
+      "mother": "thirteen",
+      "birth_mother": "angelica",
+      "birth_father": "michael",
+      "sibling": ["love", "aura"]
+    },
     "tiers": {
       "power": "god"
     }
@@ -46,11 +52,19 @@
   "michael": {
     "sheet": true,
     "name": "Michael",
+    "relationships": {
+      "child": ["love", "celeste", "aura"],
+      "ex_partner": "angelica"
+    },
     "portrait": {"offset": [0.5, 0.1]}
   },
   "angelica": {
     "sheet": true,
     "name": "Angelica",
+    "relationships": {
+      "child": ["love", "celeste", "aura"],
+      "ex_partner": "michael"
+    },
     "portrait": {"offset": [0.4, 0.1]}
   },
   "astella": {
@@ -72,11 +86,19 @@
   "cynth": {
     "sheet": true,
     "name": "Cynth",
-    "portrait": {"offset": [0.3, 0.1]}
+    "portrait": {"offset": [0.3, 0.1]},
+    "relationships": {
+      "sibling": "ciel",
+      "mother": ["jamie", "jasmine"]
+    }
   },
   "cymbeline": {
     "sheet": true,
     "name": "Cymbeline",
+    "relationships": {
+      "sibling": ["ezra", "beau"],
+      "mother": ["idris", "victoria"]
+    },
     "portrait": {"offset": [0.45, 0.1]},
     "tiers": {
       "hotness": "child"
@@ -88,6 +110,10 @@
     "portrait": {"offset": [0.8, 0.1]},
     "tiers": {
       "hotness": "child"
+    },
+    "relationships": {
+      "sibling": ["ezra", "beau"],
+      "mother": ["idris", "victoria"]
     }
   },
   "aura": {
@@ -96,6 +122,11 @@
     "portrait": {"offset": [0.4, 0.1]},
     "tiers": {
       "hotness": "child"
+    },
+    "relationships": {
+      "father": "michael",
+      "mother": "angelica",
+      "sibling": ["love", "celeste"]
     }
   },
   "neptune": {
@@ -109,7 +140,10 @@
   "clara": {
     "sheet": true,
     "name": "Clara",
-    "portrait": {"offset": [0.45, 0.1]}
+    "portrait": {"offset": [0.45, 0.1]},
+    "tiers": {
+      "child": ["thirteen", "fourteen"]
+    }
   },
   "ace": {
     "sheet": true,
@@ -119,7 +153,11 @@
   "beau": {
     "sheet": false,
     "name": "Beau",
-    "portrait": {"offset": [0.6, 0.1]}
+    "portrait": {"offset": [0.6, 0.1]},
+    "relationships": {
+      "sibling": ["ezra", "beau"],
+      "mother": ["idris", "cymbeline"]
+    }
   },
   "harper": {
     "sheet": false,
@@ -162,27 +200,47 @@
   "victoria": {
     "sheet": false,
     "name": "Victoria",
-    "portrait": {"offset": [0.3, 0.1]}
+    "portrait": {"offset": [0.3, 0.1]},
+    "relationships": {
+      "child": ["ezra", "beau", "cymbeline"],
+      "partner": ["idris"]
+    }
   },
   "idris": {
     "sheet": false,
     "name": "Idris",
-    "portrait": {"offset": [0.8, 0.1]}
+    "portrait": {"offset": [0.8, 0.1]},
+    "relationships": {
+      "child": ["ezra", "beau", "cymbeline"],
+      "partner": ["victoria"]
+    }
   },
   "jasmine": {
     "sheet": false,
     "name": "Jasmine",
-    "portrait": {"offset": [0.2, 0.1]}
+    "portrait": {"offset": [0.2, 0.1]},
+    "relationships": {
+      "child": ["cynth", "ciel"],
+      "partner": ["jamie"]
+    }
   },
   "jamie": {
     "sheet": false,
     "name": "Jamie",
-    "portrait": {"offset": [0.6, 0.1]}
+    "portrait": {"offset": [0.6, 0.1]},
+    "relationships": {
+      "child": ["cynth", "ciel"],
+      "partner": ["jasmine"]
+    }
   },
   "fourteen": {
     "sheet": false,
     "name": "Fourteen",
     "portrait": {"offset": [0.5, 0.1]},
+    "relationships": {
+      "mother": "clara",
+      "evil_twin": "fourteen"
+    },
     "tiers": {
       "power": "overlord"
     }
