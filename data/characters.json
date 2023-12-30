@@ -34,6 +34,11 @@
       "power": "overlord"
     }
   },
+  "envy": {
+    "sheet": true,
+    "name": "Envy",
+    "portrait": {"offset": [0.5, 0.18]}
+  },
   "celeste": {
     "sheet": true,
     "name": "Celeste",
