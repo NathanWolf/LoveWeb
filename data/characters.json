@@ -139,6 +139,14 @@
       "hotness": "child"
     }
   },
+  "sara": {
+    "sheet": true,
+    "name": "Sara",
+    "portrait": {"offset": [0.5, 0.1]},
+    "relationships": {
+      "angelifier": "neptune"
+    }
+  },
   "clara": {
     "sheet": true,
     "name": "Clara",
