@@ -35,7 +35,6 @@
     }
   },
   "envy": {
-    "sheet": true,
     "name": "Envy",
     "portrait": {"offset": [0.5, 0.18]}
   },
@@ -140,7 +139,6 @@
     }
   },
   "sara": {
-    "sheet": true,
     "name": "Sara",
     "portrait": {"offset": [0.5, 0.1]},
     "relationships": {
