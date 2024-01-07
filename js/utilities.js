@@ -1,4 +1,10 @@
 class Utilities {
+    static #markdown_converter = new showdown.Converter({
+        requireSpaceBeforeHeadingText: true,
+        tables: true,
+        underline: false,
+    });
+
     static shuffle = function(a) {
         return a.map(value => ({ value, sort: Math.random() }))
             .sort((a, b) => a.sort - b.sort)
@@ -111,5 +117,53 @@ class Utilities {
         let classes = element.className.split(' ');
         let index = classes.indexOf(className);
         return index !== -1;
+    }
+
+    static escapeHtml(unsafe) {
+        return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+    }
+
+    static convertMarkdown(text) {
+        text = text.trim();
+
+        // add ending code block tags when missing
+        let code_block_count = (text.match(/```/g) || []).length;
+        if( code_block_count % 2 !== 0 ) {
+            text += "\n```";
+        }
+
+        // HTML-escape parts of text that are not inside ticks.
+        // This prevents <?php from turning into a comment tag
+        let escaped_parts = [];
+        let code_parts = text.split("`");
+        for( let i = 0; i < code_parts.length; i++ ) {
+            if( i % 2 === 0 ) {
+                escaped_parts.push( Utilities.escapeHtml( code_parts[i] ) );
+            } else {
+                escaped_parts.push( code_parts[i] );
+            }
+        }
+        let escaped_message = escaped_parts.join("`");
+
+        // Convert Markdown to HTML
+        let formatted_message = "";
+        let code_blocks = escaped_message.split("```");
+        for( let i = 0; i < code_blocks.length; i++ ) {
+            if( i % 2 === 0 ) {
+                // add two spaces in the end of every line
+                // for non-codeblocks so that one-per-line lists
+                // without markdown can be generated
+                formatted_message += Utilities.#markdown_converter.makeHtml(
+                    code_blocks[i].trim().replace( /\n/g, "  \n" )
+                );
+            } else {
+                // convert Markdown code blocks to HTML
+                formatted_message += Utilities.#markdown_converter.makeHtml(
+                    "```" + code_blocks[i] + "```"
+                );
+            }
+        }
+
+        return formatted_message;
     }
 }

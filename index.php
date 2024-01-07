@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/flashcards.css">
     <link rel="stylesheet" href="css/tiers.css">
     <link rel="stylesheet" href="css/relationships.css">
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js"></script>
     <script type="text/javascript" src="js/characters.js"></script>
     <script type="text/javascript" src="js/chat.js"></script>

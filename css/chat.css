@@ -2,3 +2,113 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.chatContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.chatMessages {
+    flex: 1;
+    border: 1px solid black;
+    overflow-y: auto;
+    white-space: normal;
+    background: white;
+}
+
+
+.chatInput textarea {
+    height: 55px;
+    border-radius: 13px;
+    width: 100%;
+    box-sizing: border-box;
+    resize: none;
+    padding: 17px 85px 17px 15px;
+    font-family: inherit;
+    font-size: 1em;
+    box-shadow: rgba(0,0,0,0.2) 0 0 45px;
+    outline: none;
+}
+
+.chatInputContainer {
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 850px;
+    text-align: center;
+    padding: 0px 45px 0 45px;
+}
+
+.chatInput {
+    position: relative;
+}
+
+.chatInput button {
+    position: absolute;
+    background: lime;
+    cursor: pointer;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 1em;
+    padding: 7px 9px 7px 7px;
+    border: none;
+    margin-top: -2px;
+}
+
+.message {
+    display: flex;
+    gap: 20px;
+    padding: 25px 60px 15px 60px;
+    border-bottom: 1px solid;
+    font-size: 0.95em;
+    position: relative;
+}
+
+.identity {
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 64px;
+    height: 64px;
+}
+
+.message.user .identity {
+    background-image: url('../image/blank-profile.png');
+}
+
+.message.assistant {
+    flex-direction: row-reverse;
+}
+
+.message .content {
+    padding-top: 5px;
+    width: 100%;
+}
+
+.message.assistant .content {
+    text-align: end;
+}
+
+#cursor {
+    width: 16px;
+    height: 20px;
+    background-color: black;
+    display: inline-block;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
