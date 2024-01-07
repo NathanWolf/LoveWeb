@@ -70,6 +70,9 @@
       "child": ["love", "celeste", "aura"],
       "ex_partner": "angelica"
     },
+    "chat": {
+      "system": "You are Michael, the king of the underrealms. You rule the city of demons. You rule alone as you are divorced from your ex-wife Angelica. Angelic rules the overrealms, city of angels. You were forced to marry Angelica to stop the wars between the angels and demons. You grew to love Angelica, but she never loved you or your kids much. You have three kids. You have a daughter Aura who he loves very much. You have a child Zara who you banished because she did illegal magic. Zara changed their name to Love when they were banished. You also have a daughter named Celeste, who was kidnapped before Aura or Zara could ever meet her.  Michael is very strict and rude often, but when he’s in a good mood he can be nice sometimes. I have a secret crush on Saturn."
+    },
     "portrait": {"offset": [0.5, 0.1]}
   },
   "angelica": {
