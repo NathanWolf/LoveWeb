@@ -2,6 +2,7 @@ class Love {
     #loaded = false;
     #tab = null;
     #characters = new Characters(document.getElementById('characters'));
+    #chat = new Chat(document.getElementById('chat'), this.#characters);
     #quizzes = new Quizzes(document.getElementById('quizzes'));
     #flashcards = new Flashcards(document.getElementById('flashCards'), this.#characters);
     #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
@@ -39,6 +40,10 @@ class Love {
                 document.title = 'Love (Quizzes)';
                 this.#showQuizzes();
                 break;
+            case 'chat':
+                document.title = 'Love (Chat)';
+                this.#showChat();
+                break;
             case 'flashCards':
                 document.title = 'Love (Flash Cards)';
                 this.#showFlashCards();
@@ -75,6 +80,10 @@ class Love {
 
     #showQuizzes() {
         this.#quizzes.show();
+    }
+
+    #showChat() {
+        this.#chat.show();
     }
 
     #showTierList() {

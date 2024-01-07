@@ -4,12 +4,14 @@
     <title>Love</title>
     <link rel="stylesheet" href="css/love.css">
     <link rel="stylesheet" href="css/characters.css">
+    <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/quizzes.css">
     <link rel="stylesheet" href="css/flashcards.css">
     <link rel="stylesheet" href="css/tiers.css">
     <link rel="stylesheet" href="css/relationships.css">
     <script type="text/javascript" src="js/utilities.js"></script>
     <script type="text/javascript" src="js/characters.js"></script>
+    <script type="text/javascript" src="js/chat.js"></script>
     <script type="text/javascript" src="js/quizzes.js"></script>
     <script type="text/javascript" src="js/flashcards.js"></script>
     <script type="text/javascript" src="js/tiers.js"></script>
@@ -28,6 +30,7 @@
     <div class="tabContainer">
         <div class="tabButtons">
             <div class="tabButton active" data-tab="characters">Characters</div>
+            <div class="tabButton" data-tab="chat">Chat</div>
             <div class="tabButton" data-tab="quizzes">Quizzes</div>
             <div class="tabButton" data-tab="flashCards">Flash Cards</div>
             <div class="tabButton" data-tab="relationships">Relationships</div>
@@ -36,6 +39,9 @@
         </div>
 
         <div class="tab" id="characters">
+        </div>
+
+        <div class="tab" id="chat">
         </div>
 
         <div class="tab" id="relationships" style="display: none">
