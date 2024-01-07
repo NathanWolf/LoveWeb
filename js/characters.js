@@ -25,6 +25,7 @@ class Characters {
     show() {
         let controller = this;
         let container = controller.#element;
+        Utilities.empty(container);
         let characters = this.getCharacterList();
         characters.forEach(function(character){
             let portrait = document.createElement('div');
