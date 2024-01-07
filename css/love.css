@@ -46,6 +46,7 @@ body {
 .tabButtons {
     display: flex;
     border: 1px solid black;
+    overflow-x: auto;
 }
 
 .tabButton, .tabLink {
@@ -54,6 +55,7 @@ body {
     padding: 2px 12px;
     cursor: pointer;
     color: black;
+    white-space: nowrap;
 }
 
 .tabLink a {

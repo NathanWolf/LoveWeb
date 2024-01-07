@@ -1,6 +1,7 @@
 #chat {
     flex-wrap: wrap;
     justify-content: center;
+    align-content: start;
 }
 
 .chatContainer {

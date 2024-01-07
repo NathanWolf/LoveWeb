@@ -1,6 +1,7 @@
 #characters {
     flex-wrap: wrap;
     justify-content: center;
+    align-content: start;
 }
 
 .portrait {
