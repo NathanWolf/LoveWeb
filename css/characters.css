@@ -6,6 +6,7 @@
 .portrait {
     min-width: 256px;
     min-height: 256px;
+    max-height: 256px;
     overflow: hidden;
     margin: 8px;
     cursor: pointer;
