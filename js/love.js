@@ -16,7 +16,9 @@ class Love {
 
         // Try to make the virtual keyboard on iOS not break the entire layout
         if (window.visualViewport) {
-            this.forceViewport();
+            window.visualViewport.addEventListener('resize', () => {
+                love.forceViewport();
+            });
         }
     }
 
@@ -24,13 +26,8 @@ class Love {
         let container = document.getElementById('mainContainer');
         container.style.height = window.visualViewport.height + 'px';
         container.scrollTop = 0;
-        window.scrollTop = 0;
         document.body.scrollTop = 0;
-
-        let controller = this;
-        setTimeout(function() {
-            controller.forceViewport();
-        }, 500);
+        window.scrollTop = 0;
     }
 
     selectTab(tabId) {
