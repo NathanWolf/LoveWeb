@@ -13,6 +13,24 @@ class Love {
         Utilities.addHandlerToClass('tabButton', function() {
             love.selectTab(this.dataset.tab);
         });
+
+        // Try to make the virtual keyboard on iOS not break the entire layout
+        if (window.visualViewport) {
+            this.forceViewport();
+        }
+    }
+
+    forceViewport() {
+        let container = document.getElementById('mainContainer');
+        container.style.height = window.visualViewport.height + 'px';
+        container.scrollTop = 0;
+        window.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        let controller = this;
+        setTimeout(function() {
+            controller.forceViewport();
+        }, 500);
     }
 
     selectTab(tabId) {

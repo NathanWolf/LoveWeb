@@ -29,7 +29,7 @@
 </head>
 <body>
 
-    <div class="tabContainer">
+    <div class="tabContainer" id="mainContainer">
         <div class="tabButtons">
             <div class="tabButton active" data-tab="characters">Characters</div>
             <div class="tabButton" data-tab="chat">Chat</div>
