@@ -7,7 +7,7 @@ if (ob_get_level()) ob_end_clean();
 
 $settings = require('settings.php');
 
-$MODEL = 'gpt-3.5-turbo';
+$MODEL = 'gpt-4-0125-preview';
 $STORAGE_TYPE = "session";
 $PARAMETERS = array();
 
