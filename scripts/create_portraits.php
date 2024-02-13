@@ -4,14 +4,14 @@ if (PHP_SAPI !== 'cli') {
     die('What are you doing?');
 }
 
-if (count($argv) < 5) {
-    die("Usage: create_portraits <character folder> <portrait folder> <width> <height>\n");
+if (count($argv) < 3) {
+    die("Usage: create_portraits <character folder> <portrait folder> [width] [height]\n");
 }
 
 $characterFolder = $argv[1];
 $portraitFolder = $argv[2];
-$targetWidth = $argv[3];
-$targetHeight = $argv[4];
+$targetWidth = count($argv) > 3 ? $argv[3] : 256;
+$targetHeight = count($argv) > 4 ? $argv[4] : 256;
 $targetCharacter = null;
 
 if (count($argv) > 5) {
