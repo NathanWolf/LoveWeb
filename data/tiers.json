@@ -91,6 +91,10 @@
                 "title": "God",
                 "color": "silver"
             },
+            "spirit": {
+                "title": "Spirit",
+                "color": "bronze"
+            },
             "powerful": {
                 "title": "Pretty powerful",
                 "color": "red"
