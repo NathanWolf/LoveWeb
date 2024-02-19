@@ -7,6 +7,6 @@ $_config = array(
         "user" => "love",
         "password" => "",
         "user_admin" => "love_admin",
-        "user_admin_password" => ""
+        "password_admin" => ""
     )
 );

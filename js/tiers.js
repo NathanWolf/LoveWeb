@@ -62,7 +62,7 @@ class Tiers {
         let tierElements = {};
         tiers.unshift({
             'id': 'default',
-            'title': '',
+            'name': '',
             'color': 'white'
         });
         for (let i = 0; i < tiers.length; i++) {
@@ -75,7 +75,7 @@ class Tiers {
             if (tier.hasOwnProperty('dark') && tier.dark) {
                 tierLabel.className += ' dark';
             }
-            tierLabel.innerText = tier.title;
+            tierLabel.innerText = tier.name;
             tierDiv.appendChild(tierLabel);
             this.#element.appendChild(tierDiv);
             tierElements[tier.id] = tierDiv;

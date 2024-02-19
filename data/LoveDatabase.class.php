@@ -79,4 +79,20 @@ class LoveDatabase extends Database {
     public function getUser($email) {
         return $this->get('user', $email, 'email');
     }
+
+    public function getTierLists() {
+        $tierLists = $this->getAll('tier_list');
+        $tiers = $this->getAll('tier');
+
+        $results = array();
+        foreach ($tierLists as $tierList) {
+            $tierList['tiers'] = array();
+            $results[$tierList['id']] = $tierList;
+        }
+        foreach ($tiers as $tier) {
+            $results[$tier['tier_list_id']]['tiers'][$tier['id']] = $tier;
+        }
+
+        return $results;
+    }
 }

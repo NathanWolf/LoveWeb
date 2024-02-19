@@ -18,14 +18,14 @@ class Database {
     private $retries = 5;
     private $rowsAffected;
 
-    public function __construct() {
+    public function __construct($admin = false) {
         global $_config;
         $parameters = $_config['database'];
 
         $this->server = $parameters['server'];
         $this->database = $parameters['database'];
-        $this->user = $parameters['user'];
-        $this->password = $parameters['password'];
+        $this->user = $admin ? $parameters['user_admin'] : $parameters['user'];
+        $this->password = $admin ? $parameters['password_admin'] : $parameters['password'];
         $this->port = $parameters['port'] ?? null;
     }
 
@@ -76,6 +76,10 @@ class Database {
             return $rows[0];
         }
         return null;
+    }
+
+    public function getAll($table) {
+        return $this->query("SELECT * FROM $table");
     }
 
     function prepare($sql, $parameters = array()) {

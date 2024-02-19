@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: application/json");
+require_once 'LoveDatabase.class.php';
 
 function mapArray(&$array) {
     foreach ($array as $id => &$element) {
@@ -9,9 +10,10 @@ function mapArray(&$array) {
 }
 
 try {
+    $db = new \com\elmakers\love\LoveDatabase();
     $characters = json_decode(file_get_contents('characters.json'), true);
     $quizzes = json_decode(file_get_contents('quizzes.json'), true);
-    $tiers = json_decode(file_get_contents('tiers.json'), true);
+    $tiers = $db->getTierLists();
     $response = array(
         'success' => true,
         'characters' => mapArray($characters),
