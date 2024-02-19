@@ -12,7 +12,8 @@ function mapArray(&$array) {
 try {
     $db = new \com\elmakers\love\LoveDatabase();
     $characters = json_decode(file_get_contents('characters.json'), true);
-    $quizzes = json_decode(file_get_contents('quizzes.json'), true);
+    // $quizzes = json_decode(file_get_contents('quizzes.json'), true);
+    $quizzes = array();
     $tiers = $db->getTierLists();
     $response = array(
         'success' => true,

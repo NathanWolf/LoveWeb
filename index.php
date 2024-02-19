@@ -37,7 +37,9 @@
             <div class="tabButtons">
                 <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
                 <div class="tabButton toolbarButton" data-tab="chat">Chat</div>
+                <!--
                 <div class="tabButton toolbarButton" data-tab="quizzes">Quizzes</div>
+                -->
                 <div class="tabButton toolbarButton" data-tab="flashCards">Flash Cards</div>
                 <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
                 <div class="tabButton toolbarButton" data-tab="tierLists">Tier Lists</div>
