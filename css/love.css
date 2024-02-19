@@ -11,6 +11,26 @@ body {
     user-select: none;
 }
 
+.tile {
+    color: black;
+    width: 5em;
+    height: 5em;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
+    padding: 1em;
+    margin: 1em;
+    text-decoration: none;
+    font-size: 1.5em;
+    display: inline-block;
+    background-color: white;
+    cursor: pointer;
+}
+.tile:hover {
+    text-decoration: underline;
+    background-color: cyan;
+}
+
 .popup {
     display: flex;
     align-items: center;

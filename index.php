@@ -31,13 +31,24 @@
 
     <div class="tabContainer" id="mainContainer">
         <div class="tabButtons">
-            <div class="tabButton active" data-tab="characters">Characters</div>
+            <div class="tabButton active" data-tab="home">&#8962;</div>
+            <div class="tabButton" data-tab="characters">Characters</div>
             <div class="tabButton" data-tab="chat">Chat</div>
             <div class="tabButton" data-tab="quizzes">Quizzes</div>
             <div class="tabButton" data-tab="flashCards">Flash Cards</div>
             <div class="tabButton" data-tab="relationships">Relationships</div>
             <div class="tabButton" data-tab="tierLists">Tier Lists</div>
             <div class="tabLink"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
+        </div>
+
+        <div class="tab" id="home">
+            <div class="tile navigation" data-tab="characters">Characters</div>
+            <div class="tile navigation" data-tab="chat">Chat</div>
+            <div class="tile navigation" data-tab="quizzes">Quizzes</div>
+            <div class="tile navigation" data-tab="flashCards">Flash Cards</div>
+            <div class="tile navigation" data-tab="relationships">Relationships</div>
+            <div class="tile navigation" data-tab="tierLists">Tier Lists</div>
+            <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
         </div>
 
         <div class="tab" id="characters">

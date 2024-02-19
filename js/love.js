@@ -13,6 +13,9 @@ class Love {
         Utilities.addHandlerToClass('tabButton', function() {
             love.selectTab(this.dataset.tab);
         });
+        Utilities.addHandlerToClass('navigation', function() {
+            love.selectTab(this.dataset.tab);
+        });
 
         // Try to make the virtual keyboard on iOS not break the entire layout
         if (window.visualViewport) {
