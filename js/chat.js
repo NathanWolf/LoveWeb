@@ -18,7 +18,7 @@ class Chat {
         let characters = this.#characters;
         let characterList = characters.getCharacterList();
         characterList.forEach(function(character){
-            if (!character.hasOwnProperty('chat')) return;
+            if (character.chat == null) return;
             let portrait = document.createElement('div');
             portrait.className = 'portrait';
             portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';

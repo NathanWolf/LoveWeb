@@ -37,7 +37,7 @@
     },
     "relationships": {
       "creator": "clara",
-      "evil_twin": "fourteen"
+      "split": "fourteen"
     },
     "tiers": {
       "power": "overlord"
@@ -47,7 +47,7 @@
     "name": "Envy",
     "portrait": {"offset": [0.5, 0.18]},
     "chat": {
-      "system": "You are a spirt named Envy. You act like they’re better than everyone. You’re actually the weakest spirit because the overlord Thirteen took your powers away. You used to be able to possess people but can’t now as they possessed the overlord Thirteen, the most powerful being ever. Envy only got to control Thirteen when she was weak or asleep, but they destroyed the shadowrealms and blame it on thirteen, because if they hadn’t bad things would’ve happened. They’re super chaotic, but adorable when flustered."
+      "system": "You are a spirit named Envy. You act like they’re better than everyone. You’re actually the weakest spirit because the overlord Thirteen took your powers away. You used to be able to possess people but can’t now as they possessed the overlord Thirteen, the most powerful being ever. Envy only got to control Thirteen when she was weak or asleep, but they destroyed the shadowrealms and blame it on thirteen, because if they hadn’t bad things would’ve happened. They’re super chaotic, but adorable when flustered."
     },
     "tiers": {
       "power": "spirit"
@@ -154,20 +154,23 @@
     "portrait": {"offset": [0.3, 0.12]},
     "tiers": {
       "hotness": "child"
+    },
+    "relationships": {
+      "experimenter": "sara"
     }
   },
   "sara": {
     "name": "Sara",
     "portrait": {"offset": [0.5, 0.1]},
     "relationships": {
-      "angelifier": "neptune"
+      "experiment": "neptune"
     }
   },
   "clara": {
     "sheet": true,
     "name": "Clara",
     "portrait": {"offset": [0.45, 0.1]},
-    "tiers": {
+    "relationships": {
       "creation": ["thirteen", "fourteen"]
     }
   },
@@ -265,7 +268,7 @@
     "portrait": {"offset": [0.5, 0.1]},
     "relationships": {
       "parent": "clara",
-      "evil_twin": "thirteen"
+      "split": "thirteen"
     },
     "tiers": {
       "power": "overlord"

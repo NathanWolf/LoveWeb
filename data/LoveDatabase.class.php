@@ -95,4 +95,40 @@ class LoveDatabase extends Database {
 
         return $results;
     }
+
+    public function getCharacters() {
+        // Note that the db name is "persona" to avoid issues with "character" being a reserved word.
+        $characters = $this->getAll('persona');
+        $relationships = $this->getAll('persona_relationship');
+        $tiers = $this->getAll('persona_tier');
+        $properties = $this->getAll('persona_property');
+
+        $results = array();
+        foreach ($characters as $character) {
+            $character['tiers'] = array();
+            $character['relationships'] = array();
+            $character['properties'] = array();
+            $character['name'] = $character['first_name'];
+            $character['full_name'] = $character['first_name'];
+            if ($character['last_name']) {
+                $character['full_name'] .= ' ' . $character['last_name'];
+            }
+            $results[$character['id']] = $character;
+        }
+        foreach ($relationships as $relationship) {
+            if (isset($results[$relationship['persona_id']]['relationships'][$relationship['id']])) {
+                $results[$relationship['persona_id']]['relationships'][$relationship['id']][] = $relationship['related_persona_id'];
+            } else {
+                $results[$relationship['persona_id']]['relationships'][$relationship['id']] = array($relationship['related_persona_id']);
+            }
+        }
+        foreach ($tiers as $tier) {
+            $results[$tier['persona_id']]['tiers'][$tier['tier_list_id']] = $tier['tier_id'];
+        }
+        foreach ($properties as $property) {
+            $results[$property['persona_id']]['properties'][$property['property_id']] = $property['value'];
+        }
+
+        return $results;
+    }
 }
