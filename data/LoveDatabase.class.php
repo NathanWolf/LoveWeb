@@ -66,7 +66,7 @@ class LoveDatabase extends Database {
 
     public function validateLogin($email, $token) {
         $user = $this->getUser($email);
-        if (!$user['token'] == $token) {
+        if (!$user || $user['token'] !== $token) {
             throw new Exception("Invalid login for $email");
         }
         return $user;
