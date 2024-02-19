@@ -1,9 +1,7 @@
 class Profile {
     #element;
     #button;
-    #email;
     #user;
-    #token;
 
     constructor(element, button) {
         this.#element = element;
@@ -89,14 +87,50 @@ class Profile {
 
     #showProfile() {
         Utilities.empty(this.#element);
-        let welcomeDiv = Utilities.createDiv('profile', this.#element);
+        let profileDiv = Utilities.createDiv('profile', this.#element);
+        let welcomeDiv = Utilities.createDiv('welcome', profileDiv);
         welcomeDiv.innerText = 'Welcome back, ' + this.#user.first_name + '!';
+
+        let logoutDiv = Utilities.createDiv('logout', profileDiv);
+        let logoutForm = document.createElement('form');
+        let logoutButton = document.createElement('button');
+        logoutButton.className = 'logout';
+        logoutButton.innerText = 'Logout';
+        let profile = this;
+        logoutForm.addEventListener('submit', () => {
+            profile.#logout();
+        });
+        logoutForm.appendChild(logoutButton);
+        logoutDiv.appendChild(logoutForm);
+    }
+
+    #logout() {
+        const request = new XMLHttpRequest();
+        let profile = this;
+        request.responseType = 'json';
+        request.onerror = function() { alert("Failed to logout, sorry!"); };
+        request.onload = function() {
+            profile.#processLogout(this.response);
+        };
+        request.open("POST", "data/user.php?action=logout&user=" + this.#user.email + "&token=" + this.#user.token, true);
+        request.send();
+    }
+
+    #processLogout(response) {
+        if (response.success) {
+            Utilities.removeClass(this.#button, 'loggedin');
+            Utilities.addClass(this.#button, 'loggedout');
+            this.#user = null;
+            this.#showLogin();
+        } else {
+            alert("Failed to logout, please try again!");
+        }
     }
 
     check() {
-        this.#email = Utilities.getCookie('email');
-        this.#token = Utilities.getCookie('token');
-        if (this.#email != null && this.#token != null) {
+        let email = Utilities.getCookie('email');
+        let token = Utilities.getCookie('token');
+        if (email != null && token != null) {
             const request = new XMLHttpRequest();
             let profile = this;
             request.onload = function() {
@@ -104,7 +138,7 @@ class Profile {
             };
             request.responseType = 'json';
             request.onerror = function() { alert("Failed to load user info, sorry!"); };
-            request.open("POST", "data/user.php?action=return&user=" + this.#email + "&token=" + this.#token, true);
+            request.open("POST", "data/user.php?action=return&user=" + email + "&token=" + token, true);
             request.send();
         } else {
             Utilities.addClass(this.#button, 'loggedout');

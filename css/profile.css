@@ -59,6 +59,17 @@ section {
     background-color: darkcyan;
 }
 
+.profile {
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.logout {
+    margin-top: 1em;
+}
+
 @media (min-width: 450px) {
     button.login {
         font-size: 14px; /* fallback */
