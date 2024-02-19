@@ -10,8 +10,8 @@ try {
         case 'login':
             $email = getParameter('user');
             $password = getParameter('password');
-            $token = $db->login($email, $password);
-            die(json_encode(array('success' => true, 'token' => $token)));
+            $user = $db->login($email, $password);
+            die(json_encode(array('success' => true, 'user' => $user)));
         case 'logout':
             $email = getParameter('user');
             $token = getParameter('token');
@@ -23,8 +23,14 @@ try {
             $password = getParameter('password');
             $firstName = getParameter('first', '');
             $lastName = getParameter('last', '');
-            $token = $db->createUser($email, $password, $firstName, $lastName);
-            die(json_encode(array('success' => true, 'token' => $token)));
+            $user = $db->createUser($email, $password, $firstName, $lastName);
+            die(json_encode(array('success' => true, 'user' => $user)));
+        case 'return':
+            $email = getParameter('user');
+            $token = getParameter('token');
+            $user = $db->validateLogin($email, $token);
+            $db->sanitize($user);
+            die(json_encode(array('success' => true, 'user' => $user)));
         default:
             throw new Exception("Invalid action: $action");
     }

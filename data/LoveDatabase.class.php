@@ -22,7 +22,7 @@ class LoveDatabase extends Database {
             'token' => $token
         );
         $this->insert('user', $user);
-        return $token;
+        return $user;
     }
 
     private function generateToken() {
@@ -41,7 +41,12 @@ class LoveDatabase extends Database {
             $user['token'] = $this->generateToken();
             $this->save('user', $user);
         }
-        return $user['token'];
+        $this->sanitize($user);
+        return $user;
+    }
+
+    public function sanitize(&$user) {
+        unset($user['password_hash']);
     }
 
     public function changePassword($email, $token, $password) {

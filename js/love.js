@@ -7,6 +7,7 @@ class Love {
     #flashcards = new Flashcards(document.getElementById('flashCards'), this.#characters);
     #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
     #relationships = new Relationships(document.getElementById('relationships'), this.#characters);
+    #profile = new Profile(document.getElementById('profile'), document.getElementById('profileButton'));
 
     register() {
         let love = this;
@@ -23,6 +24,8 @@ class Love {
                 love.forceViewport();
             });
         }
+
+        this.#profile.check();
     }
 
     forceViewport() {
@@ -36,12 +39,12 @@ class Love {
     selectTab(tabId) {
         let tabButtons = document.getElementsByClassName('tabButton');
         for (let i = 0; i < tabButtons.length; i++) {
-            let className = 'tabButton';
             let tabButton = tabButtons[i];
             if (tabButton.dataset.tab === tabId) {
-                className += ' active';
+                Utilities.addClass(tabButton, 'active');
+            } else {
+                Utilities.removeClass(tabButton, 'active');
             }
-            tabButton.className = className;
         }
         let tabs = document.getElementsByClassName('tab');
         for (let i = 0; i < tabs.length; i++) {
@@ -56,56 +59,36 @@ class Love {
         switch (tabId) {
             case 'quizzes':
                 document.title = 'Love (Quizzes)';
-                this.#showQuizzes();
+                this.#quizzes.show();
                 break;
             case 'chat':
                 document.title = 'Love (Chat)';
-                this.#showChat();
+                this.#chat.show();
                 break;
             case 'flashCards':
                 document.title = 'Love (Flash Cards)';
-                this.#showFlashCards();
+                this.#flashcards.show();
                 break;
             case 'characters':
                 document.title = 'Love (Characters)';
-                this.#showCharacters();
+                this.#characters.show();
                 break;
             case 'relationships':
                 document.title = 'Love (Relationships)';
-                this.#showRelationships();
+                this.#relationships.show();
                 break;
             case 'tierLists':
                 document.title = 'Love (Tier Lists)';
-                this.#showTierList();
+                this.#tiers.show();
+                break;
+            case 'profile':
+                document.title = 'Love (User Profile)';
+                this.#profile.show();
                 break;
         }
 
         this.#tab = tabId;
         this.updateHistory();
-    }
-
-    #showRelationships() {
-        this.#relationships.show();
-    }
-
-    #showCharacters() {
-        this.#characters.show();
-    }
-
-    #showFlashCards() {
-        this.#flashcards.show();
-    }
-
-    #showQuizzes() {
-        this.#quizzes.show();
-    }
-
-    #showChat() {
-        this.#chat.show();
-    }
-
-    #showTierList() {
-        this.#tiers.show();
     }
 
     #request(url, callback) {

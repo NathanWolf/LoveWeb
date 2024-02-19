@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/flashcards.css">
     <link rel="stylesheet" href="css/tiers.css">
     <link rel="stylesheet" href="css/relationships.css">
+    <link rel="stylesheet" href="css/profile.css">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js"></script>
     <script type="text/javascript" src="js/characters.js"></script>
@@ -18,6 +19,7 @@
     <script type="text/javascript" src="js/flashcards.js"></script>
     <script type="text/javascript" src="js/tiers.js"></script>
     <script type="text/javascript" src="js/relationships.js"></script>
+    <script type="text/javascript" src="js/profile.js"></script>
     <script type="text/javascript" src="js/love.js"></script>
     <script type="text/javascript">
         window.onload = function() {
@@ -30,15 +32,18 @@
 <body>
 
     <div class="tabContainer" id="mainContainer">
-        <div class="tabButtons">
-            <div class="tabButton active" data-tab="home">&#8962;</div>
-            <div class="tabButton" data-tab="characters">Characters</div>
-            <div class="tabButton" data-tab="chat">Chat</div>
-            <div class="tabButton" data-tab="quizzes">Quizzes</div>
-            <div class="tabButton" data-tab="flashCards">Flash Cards</div>
-            <div class="tabButton" data-tab="relationships">Relationships</div>
-            <div class="tabButton" data-tab="tierLists">Tier Lists</div>
-            <div class="tabLink"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
+        <div class="toolbar">
+            <div class="tabButton active toolbarButton" data-tab="home">&#8962;</div>
+            <div class="tabButtons">
+                <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
+                <div class="tabButton toolbarButton" data-tab="chat">Chat</div>
+                <div class="tabButton toolbarButton" data-tab="quizzes">Quizzes</div>
+                <div class="tabButton toolbarButton" data-tab="flashCards">Flash Cards</div>
+                <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
+                <div class="tabButton toolbarButton" data-tab="tierLists">Tier Lists</div>
+                <div class="tabLink toolbarButton"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
+            </div>
+            <div id="profileButton" class="tabButton toolbarButton loggedout" data-tab="profile">&#128100;&#xfe0e;</div>
         </div>
 
         <div class="tab" id="home">
@@ -67,6 +72,10 @@
         </div>
 
         <div class="tab" id="quizzes" style="display: none">
+        </div>
+
+        <div class="tab" id="profile" style="display: none">
+
         </div>
     </div>
 

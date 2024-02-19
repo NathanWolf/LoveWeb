@@ -69,19 +69,29 @@ body {
     height: 100%;
 }
 
-.tabButtons {
+.toolbar {
     display: flex;
     border: 1px solid black;
+}
+
+.tabButtons {
+    display: flex;
+    flex: auto;
     overflow-x: auto;
 }
 
-.tabButton, .tabLink {
+.toolbarButton {
     background: #888;
     border: 1px solid darkblue;
     padding: 2px 12px;
     cursor: pointer;
     color: black;
     white-space: nowrap;
+}
+
+.toolbarButton:hover {
+    background: #444;
+    color: white;
 }
 
 .tabLink a {
@@ -95,11 +105,6 @@ body {
 }
 
 .tabLink:hover a {
-    color: white;
-}
-
-.tabButton:hover {
-    background: #444;
     color: white;
 }
 
