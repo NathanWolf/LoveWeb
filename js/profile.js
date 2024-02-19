@@ -44,7 +44,6 @@ class Profile {
         let passwordInput = document.createElement('input');
         passwordInput.id = 'passwordInput';
         passwordInput.type = 'password';
-        // passwordInput.placeholder = 'Password';
         passwordInput.required = true;
         passwordInput.autocomplete = 'current-password';
         passwordSection.appendChild(passwordLabel);
@@ -58,6 +57,90 @@ class Profile {
             profile.#login(emailInput.value, passwordInput.value);
         });
         loginForm.appendChild(loginButton);
+
+        let registerButton = document.createElement('button');
+        registerButton.type = 'button';
+        registerButton.className = 'register';
+        registerButton.innerText = 'Register';
+        registerButton.addEventListener('click', () => {
+            profile.#showRegister(emailInput.value, passwordInput.value);
+        });
+        loginForm.appendChild(registerButton);
+    }
+
+    #showRegister(email, password) {
+        Utilities.empty(this.#element);
+        let registerDiv = Utilities.createDiv('register', this.#element);
+        let registerForm = document.createElement('form');
+        registerDiv.appendChild(registerForm);
+        let emailSection = document.createElement('section');
+        registerForm.appendChild(emailSection);
+        let emailLabel = document.createElement('label');
+        emailLabel.for = 'emailInput';
+        emailLabel.innerText = 'Email Address';
+        let emailInput = document.createElement('input');
+        emailInput.id = 'emailInput';
+        emailInput.type = 'email';
+        emailInput.required = true;
+        emailInput.autocomplete = 'username';
+        emailSection.appendChild(emailLabel);
+        emailSection.appendChild(emailInput);
+
+        let passwordSection = document.createElement('section');
+        registerForm.appendChild(passwordSection);
+        let passwordLabel = document.createElement('label');
+        passwordLabel.for = 'passwordInput';
+        passwordLabel.innerText = 'Password';
+        let passwordInput = document.createElement('input');
+        passwordInput.id = 'passwordInput';
+        passwordInput.type = 'password';
+        passwordInput.required = true;
+        passwordInput.autocomplete = 'current-password';
+        passwordSection.appendChild(passwordLabel);
+        passwordSection.appendChild(passwordInput);
+
+        let firstSection = document.createElement('section');
+        registerForm.appendChild(firstSection);
+        let firstLabel = document.createElement('label');
+        firstLabel.for = 'firstInput';
+        firstLabel.innerText = 'First Name';
+        let firstInput = document.createElement('input');
+        firstInput.id = 'firstInput';
+        firstInput.autocomplete = 'given-name';
+        firstSection.appendChild(firstLabel);
+        firstSection.appendChild(firstInput);
+
+        let lastSection = document.createElement('section');
+        registerForm.appendChild(lastSection);
+        let lastLabel = document.createElement('label');
+        lastLabel.for = 'lastInput';
+        lastLabel.innerText = 'Last Name';
+        let lastInput = document.createElement('input');
+        lastInput.id = 'lastInput';
+        lastInput.autocomplete = 'family-name';
+        lastSection.appendChild(lastLabel);
+        lastSection.appendChild(lastInput);
+
+        let loginButton = document.createElement('button');
+        loginButton.className = 'register';
+        loginButton.innerText = 'Register';
+        let profile = this;
+        registerForm.addEventListener('submit', () => {
+            profile.#register(emailInput.value, passwordInput.value, firstInput.value, lastInput.value);
+        });
+        registerForm.appendChild(loginButton);
+    }
+
+    #register(email, password, firstName, lastName) {
+        const request = new XMLHttpRequest();
+        let profile = this;
+        request.onload = function() {
+            profile.#processLogin(this.response);
+        };
+        request.responseType = 'json';
+        request.onerror = function() { alert("Failed to register, sorry!"); };
+        request.open("POST", "data/user.php?action=register&user=" + email + "&password=" + password + "&first=" + firstName + "&last=" + lastName, true);
+        request.send();
     }
 
     #login(email, password) {
@@ -81,7 +164,7 @@ class Profile {
             Utilities.addClass(this.#button, 'loggedin');
             this.#showProfile();
         } else {
-            alert("An error occurred logging you in, please try again!")
+            alert("An error occurred logging you in, please try again: " + response.message)
         }
     }
 
