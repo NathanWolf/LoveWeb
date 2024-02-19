@@ -113,6 +113,12 @@ class LoveDatabase extends Database {
             if ($character['last_name']) {
                 $character['full_name'] .= ' ' . $character['last_name'];
             }
+            if ($character['chat']) {
+                $character['chat'] = json_decode($character['chat'], true);
+            }
+            if ($character['portrait']) {
+                $character['portrait'] = json_decode($character['portrait'], true);
+            }
             $results[$character['id']] = $character;
         }
         foreach ($relationships as $relationship) {
