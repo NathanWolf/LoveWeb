@@ -14,6 +14,7 @@ body {
 .tile {
     color: black;
     width: 5em;
+    min-width: 5em;
     height: 5em;
     text-align: center;
     vertical-align: middle;
@@ -26,9 +27,14 @@ body {
     background-color: white;
     cursor: pointer;
 }
+
 .tile:hover {
     text-decoration: underline;
     background-color: cyan;
+}
+
+.tile a {
+    text-decoration: none;
 }
 
 .popup {
@@ -159,4 +165,11 @@ body {
 .popupInnerContent {
     background: white;
     padding: 2em;
+}
+
+#home {
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    align-content: start;
 }
