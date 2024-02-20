@@ -3,6 +3,8 @@ class Editor {
     #characters = {};
     #profile = {};
     #characterId = null;
+    #saveButton = null;
+    #confirmedElement = null;
 
     constructor(element, characters, profile) {
         this.#element = element;
@@ -124,6 +126,7 @@ class Editor {
         let saveButton = document.createElement('button');
         saveButton.className = 'save';
         saveButton.innerText = 'Save';
+        this.#saveButton = saveButton;
         let editor = this;
         editorForm.addEventListener('submit', () => {
             let properties = {};
@@ -151,12 +154,21 @@ class Editor {
                 character.full_name += ' ' + lastNameInput.value;
             }
             saveButton.disabled = true;
-            editor.#save(properties, saveButton);
+            editor.#save(properties);
         });
-        editorForm.appendChild(saveButton);
+        editorForm.addEventListener('keyup', () => {
+            editor.#clearSaved();
+        });
+        let saveContainer = Utilities.createDiv('save', editorForm);
+        let confirmedDiv = Utilities.createDiv('confirmed', editorForm);
+        confirmedDiv.innerHTML = '&#9989;'
+        confirmedDiv.style.display = 'none';
+        this.#confirmedElement = confirmedDiv;
+        saveContainer.appendChild(saveButton);
+        saveContainer.appendChild(confirmedDiv);
     }
 
-    #save(properties, saveButton) {
+    #save(properties) {
         let user = this.#profile.getUser();
         if (user == null || !user.admin) {
             alert("Hey, you're not supposed to be doing this!");
@@ -165,10 +177,14 @@ class Editor {
         const request = new XMLHttpRequest();
         let profile = this;
         request.onload = function() {
-            profile.#processSave(this.response, saveButton);
+            profile.#processSave(this.response);
         };
         request.responseType = 'json';
-        request.onerror = function() { alert("Failed to save, sorry!"); saveButton.disabled = false; };
+        let saveButton = this.#saveButton;
+        request.onerror = function() {
+            alert("Failed to save, sorry!");
+            saveButton.disabled = false;
+        };
 
         request.open("POST", "data/editor.php?action=save_character&character=" + this.#characterId
             + '&user=' + user.id
@@ -177,10 +193,18 @@ class Editor {
         request.send();
     }
 
-    #processSave(response, saveButton) {
+    #processSave(response) {
         if (!response.success) {
             alert("An error occurred saving, please try again: " + response.message)
         }
-        saveButton.disabled = false;
+
+        this.#saveButton.disabled = false;
+        this.#confirmedElement.style.display = 'block';
+    }
+
+    #clearSaved() {
+        if (this.#confirmedElement != null) {
+            this.#confirmedElement.style.display = 'none';
+        }
     }
 }

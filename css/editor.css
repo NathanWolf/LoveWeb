@@ -22,3 +22,8 @@
     flex-direction: column;
     margin-right: 1em;
 }
+
+div.save {
+    display: flex;
+    align-items: center;
+}
