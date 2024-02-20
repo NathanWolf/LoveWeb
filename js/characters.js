@@ -62,6 +62,9 @@ class Characters {
         let popup = Utilities.showPopup(this.#element.parentNode, 'characterSheet');
         let image = Utilities.createDiv('sheetImage', popup);
         image.style.backgroundImage = 'url(' + this.getImage(characterKey) + ')';
+        if (character.properties.hasOwnProperty('color')) {
+            image.style.borderColor = character.properties.color.toLowerCase().replace(' ', '');
+        }
         let propertiesDiv = Utilities.createDiv('sheetProperties', popup);
         let nameDiv = Utilities.createDiv('sheetName', propertiesDiv);
         nameDiv.innerText = character.full_name;
