@@ -17,7 +17,7 @@
 }
 
 .quizOption:hover {
-    background: #444;
+    background: #448844;
     color: white;
 }
 
@@ -33,8 +33,20 @@
 }
 
 .quizQuestionAnswers ul li:hover {
-    background-color: grey;
+    background-color: #448844;
     color: white;
+}
+
+
+@media (hover: none) {
+    .quizOption:hover {
+        background: inherit;
+        color: inherit;
+    }
+    .quizQuestionAnswers ul li:hover {
+        background: inherit;
+        color: inherit;
+    }
 }
 
 .quizFinishedTitle {
