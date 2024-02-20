@@ -1,28 +1,200 @@
 {
-  "characters": {
-    "name" : "Character Quiz",
+  "lore": {
+    "name" : "Lore Quiz",
     "questions" : [
       {
-        "question": "What is Love's favorite color?",
+        "question": "How many realms are there?",
+        "explanation": "Overrealms, Underrealms, Midlands, Shadowrealms and Afterrealms",
         "answers": [
-          "Red",
-          "Black",
-          "White",
-          "Blue"
+          "Five",
+          "Four",
+          "Three",
+          "Two",
+          "One",
+          "Six"
         ]
-      }
-    ]
-  },
-  "relationships": {
-    "name" : "Relationship Quiz",
-    "questions" : [
+      },
       {
-        "question": "Who is Love's father?",
+        "question": "How many species are there?",
+        "explanation": "Angel, Demon, Human, Shadow, Spirit and Overlord",
         "answers": [
+          "Six",
+          "Seven",
+          "Five",
+          "Four",
+          "Three",
+          "Two",
+          "One"
+        ]
+      },
+      {
+        "question": "Who is the most powerful person in all the realms?",
+        "answers": [
+          "Thirteen",
+          "Celeste",
+          "Ciel",
+          "Envy"
+        ]
+      },
+      {
+        "question": "Which realm was destroyed 10 years ago?",
+        "answers": [
+          "The Shadowrealms",
+          "The Overrealms",
+          "The Midlands",
+          "The Afterrealms",
+          "The Underealms"
+        ]
+      },
+      {
+        "question": "Constance is the watcher of which realm?",
+        "answers": [
+          "Afterrealms",
+          "Overrealms",
+          "Midlands",
+          "Underrealms",
+          "Shadowrealms"
+        ]
+      },
+      {
+        "question": "Celeste is the god of life, true or false?",
+        "answers": [
+          "False",
+          "True"
+        ]
+      },
+      {
+        "question": "Who is Celeste's biological parent?",
+        "answers": [
+          "Angelica",
+          "Andromeda",
+          "Thirteen",
+          "Love",
+          "Mary",
+          "Luci"
+        ]
+      },
+      {
+        "question": "Who is the antagonist of the story?",
+        "answers": [
+          "Envy",
+          "Thirteen",
+          "Angelica",
+          "Idris"
+        ]
+      },
+      {
+        "question": "What horrible thing did Envy do?",
+        "answers": [
+          "They destroyed the Shadowrealms",
+          "They killed Thirteen's best friend",
+          "They cause chaos for fun",
+          "They were teh one who kidnapped Celeste"
+        ]
+      },
+      {
+        "question": "Does the antagonist get redeemed in the end?",
+        "answers": [
+          "Yes, they do something to redeem themselves, but only a few people forgive them.",
+          "Yes, they do something to redeem themselves and everyone forgives them",
+          "No, they don't do anything to redeem themselves, but everyone forgives them anyway",
+          "No, they don't do anything to redeem themselves and no one forgives them"
+        ]
+      },
+      {
+        "question": "How did Love and Ciel meet?",
+        "answers": [
+          "Love overheard Ciel talking about her magic",
+          "School, Love was being picked on and Ciel saved them",
+          "At a royal ball",
+          "An arranged marriage, like Love's parents",
+          "Love met Cynth, Cynth introduced Love and Ciel"
+        ]
+      },
+      {
+        "question": "What is Celeste to Thirteen",
+        "answers": [
+          "Her daughter",
+          "Her lover",
+          "Her friend",
+          "Her mother"
+        ]
+      },
+      {
+        "question": "Who is Thirteen's best friend?",
+        "answers": [
+          "Envy",
+          "Celeste",
           "Michael",
           "Angelica",
-          "Thirteen",
-          "Vortex"
+          "Love",
+          "Ciel",
+          "Constance"
+        ]
+      },
+      {
+        "question": "Michael and Angelica are...",
+        "answers": [
+          "The rulers of the Under and Overrealms",
+          "The rulers of the Underrealms",
+          "The rulers of the Overrealms",
+          "The rulers of the Shadowrealms",
+          "The rulers of all the realms"
+        ]
+      },
+      {
+        "question": "Thirteen is...",
+        "answers": [
+          "The Overlord",
+          "The goddess of life",
+          "The goddess of love",
+          "The ruler of all the realms",
+          "The watcher of the Afterrealms"
+        ]
+      },
+      {
+        "question": "Who is Thirteen's creator?",
+        "answers": [
+          "Clara",
+          "Sara",
+          "Constance",
+          "Aura",
+          "Neptune"
+        ]
+      },
+      {
+        "question": "Why did Michael and Angelica banish Love?",
+        "answers": [
+          "They did illegal magic",
+          "They loved a girl",
+          "They just wanted to get rid of Love",
+          "They weren't the 'perfect child'"
+        ]
+      },
+      {
+        "question": "Celeste is mad at Thirteen, she believes Thirteen destroyed the Shadowrealms",
+        "answers": [
+          "False",
+          "True"
+        ]
+      },
+      {
+        "question": "Did Envy go unpunished for their crimes?",
+        "answers": [
+          "No, they got their powers taken away",
+          "Yes, they did",
+          "No, they got locked away, but escaped",
+          "Yes, but they're hated"
+        ]
+      },
+      {
+        "question": "Did Thirteen hate Envy for blaming her?",
+        "answers": [
+          "No, but she's very mad at Envy",
+          "No, she's too forgiving to hate Envy",
+          "Yes, definitely",
+          "No, she could never hate Envy",
+          "Yes, and she's guilty that she hates Envy"
         ]
       }
     ]
