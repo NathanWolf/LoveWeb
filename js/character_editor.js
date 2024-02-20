@@ -96,6 +96,10 @@ class CharacterEditor extends Editor {
         let lastNameInput = this.createInput(editorForm, {id: 'last_name', name: 'Last Name'});
         lastNameInput.value = character.last_name;
 
+        let descriptionInput = this.createLongInput(editorForm, {id: "description", name: "Description"}, character.description);
+        let backstoryInput = this.createLongInput(editorForm, {id: "backstory", name: "Backstory"}, character.backstory);
+        let chatInput = this.createLongInput(editorForm, {id: "chat", name: "Chat Prompt"}, character.chat != null ? character.chat.system : null);
+
         let propertyInputs = {};
         let properties = this.#characters.getProperties();
         for (let propertyId in properties) {
@@ -107,15 +111,6 @@ class CharacterEditor extends Editor {
             }
             propertyInputs[propertyId] = propertyInput;
         }
-
-        let backstorySection = document.createElement('section');
-        editorForm.appendChild(backstorySection);
-        let backstoryLabel = document.createElement('label');
-        backstoryLabel.for = 'backstoryInput';
-        backstoryLabel.innerText = 'Backstory'
-        let descriptionInput = this.createLongInput(editorForm, {id: "description", name: "Description"}, character.description);
-        let backstoryInput = this.createLongInput(editorForm, {id: "backstory", name: "Backstory"}, character.backstory);
-        let chatInput = this.createLongInput(editorForm, {id: "chat", name: "Chat Prompt"}, character.chat != null ? character.chat.system : null);
 
         let editor = this;
         editorForm.addEventListener('submit', () => {
