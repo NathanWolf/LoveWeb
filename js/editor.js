@@ -48,6 +48,24 @@ class Editor {
         return propertyInput;
     }
 
+    #createLongInput(editorForm, property, value) {
+        let section = document.createElement('section');
+        editorForm.appendChild(section);
+        let label = document.createElement('label');
+        label.for = 'input-' + property.id;
+        label.innerText = property.name;
+        let input = document.createElement('textarea');
+        input.id = 'input-' + property.id;
+        input.rows = 10;
+        input.cols = 80;
+        section.appendChild(label);
+        section.appendChild(input);
+        if (value != null) {
+            input.value = value;
+        }
+        return input;
+    }
+
     onPortraitClick(portrait) {
         let characters = this.#characters;
         let characterKey = portrait.dataset.character;
@@ -98,30 +116,9 @@ class Editor {
         let backstoryLabel = document.createElement('label');
         backstoryLabel.for = 'backstoryInput';
         backstoryLabel.innerText = 'Backstory'
-        let backstoryInput = document.createElement('textarea');
-        backstoryInput.id = 'backstoryInput';
-        backstoryInput.rows = 10;
-        backstoryInput.cols = 80;
-        backstorySection.appendChild(backstoryLabel);
-        backstorySection.appendChild(backstoryInput);
-        if (character.backstory != null) {
-            backstoryInput.value = character.backstory;
-        }
-
-        let chatSection = document.createElement('section');
-        editorForm.appendChild(chatSection);
-        let chatLabel = document.createElement('label');
-        chatLabel.for = 'chatInput';
-        chatLabel.innerText = 'Chat Prompt'
-        let chatInput = document.createElement('textarea');
-        chatInput.id = 'chatInput';
-        chatInput.rows = 10;
-        chatInput.cols = 80;
-        chatSection.appendChild(chatLabel);
-        chatSection.appendChild(chatInput);
-        if (character.chat != null) {
-            chatInput.value = character.chat.system;
-        }
+        let descriptionInput = this.#createLongInput(editorForm, {id: "description", name: "Description"}, character.description);
+        let backstoryInput = this.#createLongInput(editorForm, {id: "backstory", name: "Backstory"}, character.backstory);
+        let chatInput = this.#createLongInput(editorForm, {id: "chat", name: "Chat Prompt"}, character.chat != null ? character.chat.system : null);
 
         let saveButton = document.createElement('button');
         saveButton.className = 'save';
@@ -133,9 +130,15 @@ class Editor {
             for (let key in propertyInputs) {
                 if (propertyInputs.hasOwnProperty(key)) {
                     properties[key] = propertyInputs[key].value;
-                    character.properties[key] = properties[key];
+                    if (properties[key].length == 0) {
+                        delete character.properties[key];
+                    } else {
+                        character.properties[key] = properties[key];
+                    }
                 }
             }
+            character.description = descriptionInput.value;
+            properties['description'] = descriptionInput.value;
             character.backstory = backstoryInput.value;
             properties['backstory'] = backstoryInput.value;
             if (chatInput.value.length > 0) {
