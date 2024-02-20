@@ -74,13 +74,13 @@ class Characters {
         propertiesDiv.appendChild(propertiesTable);
         let propertiesBody = document.createElement('tbody');
         propertiesTable.appendChild(propertiesBody);
-        let properties = character.properties;
+        let properties = {... this.getProperties() };
         if (character.backstory != null && character.backstory.length > 0) {
             properties['backstory'] = character.backstory;
         }
         for (let propertyId in properties) {
             if (!properties.hasOwnProperty(propertyId)) continue;
-            if (!this.#properties.hasOwnProperty(propertyId)) continue;
+            if (!character.properties.hasOwnProperty(propertyId)) continue;
             let propertyRow = document.createElement('tr');
             propertiesBody.appendChild(propertyRow);
             let propertyHeader = document.createElement('th');
