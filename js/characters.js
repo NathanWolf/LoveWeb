@@ -69,8 +69,10 @@ class Characters {
         let nameDiv = Utilities.createDiv('sheetName', propertiesDiv);
         nameDiv.innerText = character.full_name;
         let divider = document.createElement('hr');
+        divider.className = 'separator';
         propertiesDiv.appendChild(divider);
         let propertiesTable = document.createElement('table');
+        propertiesTable.className = 'properties';
         propertiesDiv.appendChild(propertiesTable);
         let propertiesBody = document.createElement('tbody');
         propertiesTable.appendChild(propertiesBody);

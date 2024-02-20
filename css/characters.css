@@ -67,3 +67,23 @@ th {
     margin-left: 1em;
     width: 100%;
 }
+
+table.properties {
+    border-collapse: collapse;
+}
+
+table.properties tr {
+    border-bottom: 1px solid grey;
+}
+
+hr.separator {
+    height: 3px;
+    border: none;
+    background: black;
+    margin-top: -20px;
+}
+
+table.properties th {
+    white-space: nowrap;
+    padding-right: 1em;
+}
