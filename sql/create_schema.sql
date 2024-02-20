@@ -182,3 +182,44 @@ CREATE TABLE persona_tier
         on delete cascade
         on update cascade
 );
+
+create table quiz
+(
+    id VARCHAR(64) NOT NULL,
+    name varchar(255) NOT NULL,
+
+    constraint quiz_pk
+        primary key (id)
+);
+
+create table quiz_question
+(
+    id int auto_increment not null,
+    quiz_id varchar(64) not null,
+    question TEXT NOT NULL,
+    explanation TEXT NULL,
+
+    constraint quiz_question_pk
+        primary key (id),
+
+    foreign key (quiz_id)
+        references quiz(id)
+        on delete cascade
+        on update cascade
+);
+
+create table quiz_answer
+(
+    id int auto_increment not null,
+    quiz_question_id int not null,
+    answer TEXT NOT NULL,
+    correct boolean not null default false,
+
+    constraint quiz_answer_pk
+        primary key (id),
+
+    foreign key (quiz_question_id)
+        references quiz_question(id)
+        on delete cascade
+        on update cascade
+);

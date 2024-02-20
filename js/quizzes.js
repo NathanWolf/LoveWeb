@@ -80,12 +80,12 @@ class Quizzes {
         let controller = this;
         let list = document.createElement('ul');
         let answers = [...nextQuestion.answers];
-        let correct = answers[0];
         answers = Utilities.shuffle(answers);
         for (let i = 0; i < answers.length; i++) {
             let answer = document.createElement('li');
-            answer.innerText = answers[i];
-            if (answers[i] === correct) {
+            answer.innerText = answers[i].answer;
+            // TODO: Multiple choice?
+            if (answers[i].correct) {
                 this.#correctAnswer = i;
             }
             answer.dataset.index = i;
@@ -106,8 +106,17 @@ class Quizzes {
             let popup = Utilities.showStatusPopup(this.#element.parentNode, 'quizWrong', 8000);
             let wrong = Utilities.createDiv('incorrect', popup);
             wrong.innerText = 'Wrong :(';
-            let answer = Utilities.createDiv('answer', popup);
-            answer.innerText = 'The correct answer was: ' + question.answers[0];
+            let correctAnswer = null;
+            for (let i = 0; i < this.#currentQuestion.answers.length; i++) {
+                if (this.#currentQuestion.answers[i].correct) {
+                    correctAnswer = this.#currentQuestion.answers[i];
+                    break;
+                }
+            }
+            if (correctAnswer != null) {
+                let answer = Utilities.createDiv('answer', popup);
+                answer.innerText = 'The correct answer was: ' + correctAnswer.answer;
+            }
             if (question.explanation != null && question.explanation.length > 0) {
                 let answer = Utilities.createDiv('explanation', popup);
                 answer.innerText = question.explanation;

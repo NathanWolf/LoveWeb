@@ -8,7 +8,7 @@ try {
     $tiers = $db->getTierLists();
     $relationships = $db->getRelationships();
     $properties = $db->getProperties();
-    $quizzes = json_decode(file_get_contents('quizzes.json'), true);
+    $quizzes = $db->getQuizzes();
     $response = array(
         'success' => true,
         'characters' => $characters,

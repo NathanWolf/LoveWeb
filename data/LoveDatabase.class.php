@@ -145,6 +145,31 @@ class LoveDatabase extends Database {
         return $results;
     }
 
+    public function getQuizzes() {
+        $quizzes = $this->getAll('quiz');
+        $quizzes = $this->index($quizzes);
+        foreach ($quizzes as &$quizRef) {
+            $quizRef['questions'] = array();
+        }
+        $questions = $this->getAll('quiz_question');
+        foreach ($questions as &$questionRef) {
+            $questionRef['answers'] = array();
+        }
+        $questions = $this->index($questions);
+        $answers = $this->getAll('quiz_answer');
+        foreach ($answers as $answer) {
+            if (isset($questions[$answer['quiz_question_id']])) {
+                $questions[$answer['quiz_question_id']]['answers'][] = $answer;
+            }
+        }
+        foreach ($questions as $question) {
+            if (isset($quizzes[$question['quiz_id']])) {
+                $quizzes[$question['quiz_id']]['questions'][] = $question;
+            }
+        }
+        return $quizzes;
+    }
+
     public function getRelationships() {
         $relationships = $this->getAll('relationship');
         $relationships = $this->index($relationships);
