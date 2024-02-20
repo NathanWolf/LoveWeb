@@ -16,7 +16,8 @@ class Editor {
         editorForm.appendChild(propertySection);
         let propertyLabel = document.createElement('label');
         propertyLabel.for = 'propertyInput-' + property.id;
-        propertyLabel.innerText = property.name;
+        let label = property.question != null ? property.question : property.name;
+        propertyLabel.innerText = label;
         let propertyInput = document.createElement('input');
         propertyInput.id = 'propertyInput-' + property.id;
         propertyInput.size = 50;
