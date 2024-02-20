@@ -68,6 +68,9 @@ create table persona
         primary key (id)
 );
 
+alter table persona
+    add column description LONGTEXT null;
+
 create table property
 (
     id VARCHAR(64) NOT NULL,
@@ -81,6 +84,11 @@ insert into property (id, name) values ('sexuality', 'Sexuality');
 insert into property (id, name) values ('species', 'Species');
 insert into property (id, name) values ('pronouns', 'Pronouns');
 insert into property (id, name) values ('title', 'Title');
+
+alter table property
+    add column question text null,
+    add column priority int default 0,
+    add column plural boolean default false;
 
 CREATE TABLE persona_property
 (
