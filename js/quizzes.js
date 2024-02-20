@@ -103,7 +103,7 @@ class Quizzes {
             this.#correctAnswers++;
         } else {
             let question = this.#currentQuestion;
-            let popup = Utilities.showStatusPopup(this.#element.parentNode, 'quizWrong', 8000);
+            let popup = Utilities.showStatusPopup(this.#element.parentNode, 'quizWrong', 5000);
             let wrong = Utilities.createDiv('incorrect', popup);
             wrong.innerText = 'Wrong :(';
             let correctAnswer = null;
