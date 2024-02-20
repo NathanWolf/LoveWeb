@@ -2,6 +2,7 @@ class Quizzes {
     #quizzes = {};
     #element;
     #currentQuizQuestions = [];
+    #currentQuestion = null;
     #correctAnswer = 0;
     #correctAnswers = 0;
     #wrongAnswers = 0;
@@ -70,6 +71,7 @@ class Quizzes {
         }
 
         let nextQuestion = this.#currentQuizQuestions.pop();
+        this.#currentQuestion = nextQuestion;
         let questionContainer = Utilities.createDiv('quizQuestion', this.#element);
         let questionElement = Utilities.createDiv('quizQuestionQuestion', questionContainer);
         let answerElement = Utilities.createDiv('quizQuestionAnswers', questionContainer);
@@ -100,7 +102,16 @@ class Quizzes {
             Utilities.showStatusPopup(this.#element.parentNode, 'quizCorrect').innerText = 'CORRECT!';
             this.#correctAnswers++;
         } else {
-            Utilities.showStatusPopup(this.#element.parentNode, 'quizWrong').innerText = 'Wrong :(';
+            let question = this.#currentQuestion;
+            let popup = Utilities.showStatusPopup(this.#element.parentNode, 'quizWrong', 8000);
+            let wrong = Utilities.createDiv('incorrect', popup);
+            wrong.innerText = 'Wrong :(';
+            let answer = Utilities.createDiv('answer', popup);
+            answer.innerText = 'The correct answer was: ' + question.answers[0];
+            if (question.explanation != null && question.explanation.length > 0) {
+                let answer = Utilities.createDiv('explanation', popup);
+                answer.innerText = question.explanation;
+            }
             this.#wrongAnswers++;
         }
         this.#nextQuestion();

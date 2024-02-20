@@ -54,7 +54,7 @@ class Utilities {
         parent.appendChild(popupDiv);
 
         setTimeout(function() {
-            popupDiv.remove();
+           popupDiv.remove();
         }, timeout);
         return innerDiv;
     }
