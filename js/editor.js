@@ -2,21 +2,12 @@ class Editor {
     #element = null;
     #characters = {};
     #profile = {};
-    #properties = {};
     #characterId = null;
 
     constructor(element, characters, profile) {
         this.#element = element;
         this.#characters = characters;
         this.#profile = profile;
-    }
-
-    addProperties(properties) {
-        for (let id in properties) {
-            if (properties.hasOwnProperty(id)) {
-                this.#properties[id] = properties[id];
-            }
-        }
     }
 
     show() {
@@ -70,9 +61,10 @@ class Editor {
         editorContainer.appendChild(editorForm);
 
         let propertyInputs = {};
-        for (let propertyId in this.#properties) {
-            if (!this.#properties.hasOwnProperty(propertyId)) continue;
-            let property = this.#properties[propertyId];
+        let properties = this.#characters.getProperties();
+        for (let propertyId in properties) {
+            if (!properties.hasOwnProperty(propertyId)) continue;
+            let property = properties[propertyId];
             let propertySection = document.createElement('section');
             editorForm.appendChild(propertySection);
             let propertyLabel = document.createElement('label');

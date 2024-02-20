@@ -118,10 +118,10 @@ class Love {
             return;
         }
 
+        this.#characters.addProperties(data.properties);
         this.#characters.addCharacters(data.characters);
         this.#quizzes.addQuizzes(data.quizzes);
         this.#tiers.addTiers(data.tiers);
-        this.#editor.addProperties(data.properties);
 
         this.#loaded = true;
         document.getElementById('loading').style.display = 'none';

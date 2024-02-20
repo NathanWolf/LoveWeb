@@ -1,5 +1,6 @@
 class Characters {
     #characters = {};
+    #properties = {};
     #element = null;
 
     constructor(element) {
@@ -10,6 +11,14 @@ class Characters {
         for (let id in characters) {
             if (characters.hasOwnProperty(id)) {
                 this.#characters[id] = characters[id];
+            }
+        }
+    }
+
+    addProperties(properties) {
+        for (let id in properties) {
+            if (properties.hasOwnProperty(id)) {
+                this.#properties[id] = properties[id];
             }
         }
     }
@@ -50,21 +59,33 @@ class Characters {
             alert("Sorry, something went wrong!");
             return;
         }
-        if (character.sheet) {
-            let popup = Utilities.showPopup(this.#element.parentNode, 'characterSheet');
-            popup.style.backgroundImage = 'url(' + this.getSheet(characterKey) + ')';
-        } else {
-            let popup = Utilities.showPopup(this.#element.parentNode, 'characterSheetMissing');
-            let contentSpan = document.createElement('span');
-            contentSpan.innerText = 'Information on ';
-            let nameSpan = document.createElement('span');
-            nameSpan.className = 'characterSheetMissingName';
-            nameSpan.innerText = character.name;
-            let contentSpan2 = document.createElement('span');
-            contentSpan2.innerText = ' Coming soon!';
-            popup.appendChild(contentSpan);
-            popup.appendChild(nameSpan);
-            popup.appendChild(contentSpan2);
+        let popup = Utilities.showPopup(this.#element.parentNode, 'characterSheet');
+        let image = Utilities.createDiv('sheetImage', popup);
+        image.style.backgroundImage = 'url(' + this.getImage(characterKey) + ')';
+        let propertiesDiv = Utilities.createDiv('sheetProperties', popup);
+        let nameDiv = Utilities.createDiv('sheetName', propertiesDiv);
+        nameDiv.innerText = character.full_name;
+        let divider = document.createElement('hr');
+        propertiesDiv.appendChild(divider);
+        let propertiesTable = document.createElement('table');
+        propertiesDiv.appendChild(propertiesTable);
+        let propertiesBody = document.createElement('tbody');
+        propertiesTable.appendChild(propertiesBody);
+        let properties = character.properties;
+        if (character.backstory != null && character.backstory.length > 0) {
+            properties['backstory'] = character.backstory;
+        }
+        for (let propertyId in properties) {
+            if (!properties.hasOwnProperty(propertyId)) continue;
+            if (!this.#properties.hasOwnProperty(propertyId)) continue;
+            let propertyRow = document.createElement('tr');
+            propertiesBody.appendChild(propertyRow);
+            let propertyHeader = document.createElement('th');
+            propertyHeader.innerText = this.#properties[propertyId].name;
+            propertyRow.appendChild(propertyHeader);
+            let propertyValue = document.createElement('td');
+            propertyValue.innerText = character.properties[propertyId];
+            propertyRow.appendChild(propertyValue);
         }
     }
 
@@ -126,5 +147,9 @@ class Characters {
             return defaultTier;
         }
         return character.tiers.hasOwnProperty(tierList) ? character.tiers[tierList] : defaultTier;
+    }
+
+    getProperties() {
+        return this.#properties;
     }
 }
