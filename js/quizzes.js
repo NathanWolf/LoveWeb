@@ -5,9 +5,11 @@ class Quizzes {
     #correctAnswer = 0;
     #correctAnswers = 0;
     #wrongAnswers = 0;
+    #characterQuiz = null;
 
     constructor(element) {
         this.#element = element;
+        this.#characterQuiz = new CharacterQuiz(element);
     }
 
     addQuizzes(quizzes) {
@@ -23,6 +25,16 @@ class Quizzes {
         let controller = this;
         Utilities.empty(this.#element);
         let listElement = Utilities.createDiv('quizList', this.#element);
+
+        // Add extra quizzes
+        let characterQuizOption = document.createElement('div');
+        characterQuizOption.addEventListener('click', function() {
+            controller.#characterQuiz.show();
+        });
+        characterQuizOption.className = 'quizOption';
+        characterQuizOption.innerText = 'Which character are you?'
+        listElement.appendChild(characterQuizOption);
+
         for (let quizKey in this.#quizzes) {
             if (!this.#quizzes.hasOwnProperty(quizKey)) continue;
             let quiz = this.#quizzes[quizKey];

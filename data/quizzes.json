@@ -1,6 +1,6 @@
 {
   "lore": {
-    "name" : "Lore Quiz",
+    "name" : "How much do you know about the lore?",
     "questions" : [
       {
         "question": "How many realms are there?",

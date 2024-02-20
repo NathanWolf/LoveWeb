@@ -16,6 +16,7 @@
     <script type="text/javascript" src="js/utilities.js"></script>
     <script type="text/javascript" src="js/characters.js"></script>
     <script type="text/javascript" src="js/chat.js"></script>
+    <script type="text/javascript" src="js/character_quiz.js"></script>
     <script type="text/javascript" src="js/quizzes.js"></script>
     <script type="text/javascript" src="js/flashcards.js"></script>
     <script type="text/javascript" src="js/tiers.js"></script>
