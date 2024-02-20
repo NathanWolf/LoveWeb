@@ -78,8 +78,12 @@ class Database {
         return null;
     }
 
-    public function getAll($table) {
-        return $this->query("SELECT * FROM $table");
+    public function getAll($table, $sort = null) {
+        $sql = "SELECT * FROM $table";
+        if ($sort) {
+            $sql .= " ORDER BY $sort";
+        }
+        return $this->query($sql);
     }
 
     function prepare($sql, $parameters = array()) {

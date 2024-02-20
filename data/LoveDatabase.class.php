@@ -152,7 +152,7 @@ class LoveDatabase extends Database {
     }
 
     public function getProperties() {
-        $properties = $this->getAll('property');
+        $properties = $this->getAll('property', 'priority desc');
         $properties = $this->index($properties);
         return $properties;
     }
