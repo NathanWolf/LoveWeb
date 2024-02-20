@@ -4,6 +4,10 @@
     align-content: start;
 }
 
+th {
+    text-align: left;
+}
+
 .portrait {
     min-width: 256px;
     min-height: 256px;

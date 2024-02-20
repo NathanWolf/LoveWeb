@@ -19,6 +19,10 @@ try {
             foreach ($properties as $propertyId => $value) {
                 if ($propertyId == 'backstory') {
                     $character['backstory'] = $value;
+                } else if ($propertyId == 'first_name') {
+                    $character['first_name'] = $value;
+                } else if ($propertyId == 'last_name') {
+                    $character['last_name'] = $value;
                 } else if ($propertyId == 'chat') {
                     if ($value) {
                         $value = array('system' => $value);

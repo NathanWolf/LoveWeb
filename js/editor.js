@@ -32,6 +32,20 @@ class Editor {
         });
     }
 
+    #createInput(editorForm, property) {
+        let propertySection = document.createElement('section');
+        editorForm.appendChild(propertySection);
+        let propertyLabel = document.createElement('label');
+        propertyLabel.for = 'propertyInput-' + property.id;
+        propertyLabel.innerText = property.name;
+        let propertyInput = document.createElement('input');
+        propertyInput.id = 'propertyInput-' + property.id;
+        propertyInput.size = 50;
+        propertySection.appendChild(propertyLabel);
+        propertySection.appendChild(propertyInput);
+        return propertyInput;
+    }
+
     onPortraitClick(portrait) {
         let characters = this.#characters;
         let characterKey = portrait.dataset.character;
@@ -60,22 +74,17 @@ class Editor {
         let editorForm = document.createElement('form');
         editorContainer.appendChild(editorForm);
 
+        let firstNameInput = this.#createInput(editorForm, {id: 'first_name', name: 'First Name'});
+        firstNameInput.value = character.first_name;
+        let lastNameInput = this.#createInput(editorForm, {id: 'last_name', name: 'Last Name'});
+        lastNameInput.value = character.last_name;
+
         let propertyInputs = {};
         let properties = this.#characters.getProperties();
         for (let propertyId in properties) {
             if (!properties.hasOwnProperty(propertyId)) continue;
             let property = properties[propertyId];
-            let propertySection = document.createElement('section');
-            editorForm.appendChild(propertySection);
-            let propertyLabel = document.createElement('label');
-            propertyLabel.for = 'propertyInput-' + propertyId;
-            propertyLabel.innerText = property.name;
-            let propertyInput = document.createElement('input');
-            propertyInput.id = 'propertyInput-' + propertyId;
-            propertyInput.size = 50;
-            propertySection.appendChild(propertyLabel);
-            propertySection.appendChild(propertyInput);
-
+            let propertyInput = this.#createInput(editorForm, property);
             if (character.properties != null && character.properties.hasOwnProperty(propertyId)) {
                 propertyInput.value = character.properties[propertyId];
             }
@@ -132,6 +141,15 @@ class Editor {
                 character.chat = null;
             }
             properties['chat'] = chatInput.value;
+            properties['first_name'] = firstNameInput.value;
+            properties['last_name'] = lastNameInput.value;
+            character.first_name = firstNameInput.value;
+            character.last_name = lastNameInput.value;
+            character.name = character.first_name;
+            character.full_name = character.first_name;
+            if (lastNameInput.value.length > 0) {
+                character.full_name += ' ' + lastNameInput.value;
+            }
             saveButton.disabled = true;
             editor.#save(properties, saveButton);
         });
