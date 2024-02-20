@@ -75,19 +75,27 @@ class Characters {
         let propertiesBody = document.createElement('tbody');
         propertiesTable.appendChild(propertiesBody);
         let properties = {... this.getProperties() };
+        let characterProperties = {... character.properties };
+        if (character.description != null && character.description.length > 0) {
+            properties['description'] = {name: 'Description', question: null};
+            characterProperties['description'] = character.description;
+        }
         if (character.backstory != null && character.backstory.length > 0) {
-            properties['backstory'] = character.backstory;
+            properties['backstory'] =  {name: 'Backstory', question: null};
+            characterProperties['backstory'] = character.backstory;
         }
         for (let propertyId in properties) {
             if (!properties.hasOwnProperty(propertyId)) continue;
-            if (!character.properties.hasOwnProperty(propertyId)) continue;
+            if (!characterProperties.hasOwnProperty(propertyId)) continue;
+            let property = properties[propertyId];
+            if (property.question != null) continue;
             let propertyRow = document.createElement('tr');
             propertiesBody.appendChild(propertyRow);
             let propertyHeader = document.createElement('th');
-            propertyHeader.innerText = this.#properties[propertyId].name;
+            propertyHeader.innerText = property.name;
             propertyRow.appendChild(propertyHeader);
             let propertyValue = document.createElement('td');
-            propertyValue.innerText = character.properties[propertyId];
+            propertyValue.innerText = characterProperties[propertyId];
             propertyRow.appendChild(propertyValue);
         }
     }
