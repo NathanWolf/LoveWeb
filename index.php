@@ -23,6 +23,7 @@
     <script type="text/javascript" src="js/profile.js"></script>
     <script type="text/javascript" src="js/love.js"></script>
     <script type="text/javascript" src="js/editor.js"></script>
+    <script type="text/javascript" src="js/character_editor.js"></script>
     <script type="text/javascript">
         window.onload = function() {
             let love = new Love();
@@ -45,7 +46,7 @@
                 <div class="tabButton toolbarButton" data-tab="flashCards">Flash Cards</div>
                 <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
                 <div class="tabButton toolbarButton" data-tab="tierLists">Tier Lists</div>
-                <div class="tabButton toolbarButton admin" data-tab="editor" style="display: none">Editor</div>
+                <div class="tabButton toolbarButton admin" data-tab="characterEditor" style="display: none">Character Editor</div>
                 <div class="tabLink toolbarButton"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
             </div>
             <div id="profileButton" class="tabButton toolbarButton loggedout" data-tab="profile">&#128100;&#xfe0e;</div>
@@ -58,6 +59,7 @@
             <div class="tile navigation" data-tab="flashCards">Flash Cards</div>
             <div class="tile navigation" data-tab="relationships">Relationships</div>
             <div class="tile navigation" data-tab="tierLists">Tier Lists</div>
+            <div class="tile navigation admin" data-tab="characterEditor">Character Editor</div>
             <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
         </div>
 
@@ -83,7 +85,7 @@
 
         </div>
 
-        <div class="tab" id="editor" style="display: none">
+        <div class="tab editor" id="characterEditor" style="display: none">
 
         </div>
     </div>
