@@ -54,6 +54,8 @@ class Profile {
         loginButton.innerText = 'Login';
         let profile = this;
         loginForm.addEventListener('submit', () => {
+            loginButton.disabled = true;
+            registerButton.disabled = true;
             profile.#login(emailInput.value, passwordInput.value);
         });
         loginForm.appendChild(loginButton);
@@ -63,6 +65,8 @@ class Profile {
         registerButton.className = 'register';
         registerButton.innerText = 'Register';
         registerButton.addEventListener('click', () => {
+            loginButton.disabled = true;
+            registerButton.disabled = true;
             profile.#showRegister(emailInput.value, passwordInput.value);
         });
         loginForm.appendChild(registerButton);
@@ -83,6 +87,7 @@ class Profile {
         emailInput.type = 'email';
         emailInput.required = true;
         emailInput.autocomplete = 'username';
+        emailInput.value = email;
         emailSection.appendChild(emailLabel);
         emailSection.appendChild(emailInput);
 
@@ -96,6 +101,7 @@ class Profile {
         passwordInput.type = 'password';
         passwordInput.required = true;
         passwordInput.autocomplete = 'current-password';
+        passwordInput.value = password;
         passwordSection.appendChild(passwordLabel);
         passwordSection.appendChild(passwordInput);
 
@@ -126,6 +132,7 @@ class Profile {
         loginButton.innerText = 'Register';
         let profile = this;
         registerForm.addEventListener('submit', () => {
+            loginButton.disabled = true;
             profile.#register(emailInput.value, passwordInput.value, firstInput.value, lastInput.value);
         });
         registerForm.appendChild(loginButton);
@@ -139,7 +146,7 @@ class Profile {
         };
         request.responseType = 'json';
         request.onerror = function() { alert("Failed to register, sorry!"); };
-        request.open("POST", "data/user.php?action=register&user=" + email + "&password=" + password + "&first=" + firstName + "&last=" + lastName, true);
+        request.open("POST", "data/user.php?action=register&email=" + email + "&password=" + password + "&first=" + firstName + "&last=" + lastName, true);
         request.send();
     }
 
@@ -151,14 +158,14 @@ class Profile {
         };
         request.responseType = 'json';
         request.onerror = function() { alert("Failed to login, sorry!"); };
-        request.open("POST", "data/user.php?action=login&user=" + email + "&password=" + password, true);
+        request.open("POST", "data/user.php?action=login&email=" + email + "&password=" + password, true);
         request.send();
     }
 
     #processLogin(response) {
         if (response.success) {
             this.#user = response.user;
-            Utilities.setCookie('email', this.#user.email);
+            Utilities.setCookie('user', this.#user.id);
             Utilities.setCookie('token', this.#user.token);
             Utilities.removeClass(this.#button, 'loggedout');
             Utilities.addClass(this.#button, 'loggedin');
@@ -185,6 +192,12 @@ class Profile {
         });
         logoutForm.appendChild(logoutButton);
         logoutDiv.appendChild(logoutForm);
+
+        if (this.#user != null && this.#user.admin) {
+            this.#showAdmin();
+        } else {
+            this.#hideAdmin();
+        }
     }
 
     #logout() {
@@ -195,14 +208,29 @@ class Profile {
         request.onload = function() {
             profile.#processLogout(this.response);
         };
-        request.open("POST", "data/user.php?action=logout&user=" + this.#user.email + "&token=" + this.#user.token, true);
+        request.open("POST", "data/user.php?action=logout&user=" + this.#user.id + "&token=" + this.#user.token, true);
         request.send();
+    }
+
+    #hideAdmin() {
+        let elements = document.getElementsByClassName('admin');
+        for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
+            elements[elementIndex].style.display = 'none';
+        }
+    }
+
+    #showAdmin() {
+        let elements = document.getElementsByClassName('admin');
+        for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
+            elements[elementIndex].style.display = 'block';
+        }
     }
 
     #processLogout(response) {
         if (response.success) {
             Utilities.removeClass(this.#button, 'loggedin');
             Utilities.addClass(this.#button, 'loggedout');
+            this.#hideAdmin();
             this.#user = null;
             this.#showLogin();
         } else {
@@ -211,9 +239,9 @@ class Profile {
     }
 
     check() {
-        let email = Utilities.getCookie('email');
+        let userId = Utilities.getCookie('user');
         let token = Utilities.getCookie('token');
-        if (email != null && token != null) {
+        if (userId != null && token != null) {
             const request = new XMLHttpRequest();
             let profile = this;
             request.onload = function() {
@@ -221,7 +249,7 @@ class Profile {
             };
             request.responseType = 'json';
             request.onerror = function() { alert("Failed to load user info, sorry!"); };
-            request.open("POST", "data/user.php?action=return&user=" + email + "&token=" + token, true);
+            request.open("POST", "data/user.php?action=return&user=" + userId + "&token=" + token, true);
             request.send();
         } else {
             Utilities.addClass(this.#button, 'loggedout');
@@ -233,7 +261,11 @@ class Profile {
             this.#user = response.user;
             Utilities.removeClass(this.#button, 'loggedout');
             Utilities.addClass(this.#button, 'loggedin');
-            this.#showLogin();
+            this.#showProfile();
         }
+    }
+
+    getUser() {
+        return this.#user;
     }
 }

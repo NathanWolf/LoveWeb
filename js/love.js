@@ -8,6 +8,7 @@ class Love {
     #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
     #relationships = new Relationships(document.getElementById('relationships'), this.#characters);
     #profile = new Profile(document.getElementById('profile'), document.getElementById('profileButton'));
+    #editor = new Editor(document.getElementById('editor'), this.#characters, this.#profile);
 
     register() {
         let love = this;
@@ -85,6 +86,10 @@ class Love {
                 document.title = 'Love (User Profile)';
                 this.#profile.show();
                 break;
+            case 'editor':
+                document.title = 'Love (Editor)';
+                this.#editor.show();
+                break;
         }
 
         this.#tab = tabId;
@@ -116,6 +121,7 @@ class Love {
         this.#characters.addCharacters(data.characters);
         this.#quizzes.addQuizzes(data.quizzes);
         this.#tiers.addTiers(data.tiers);
+        this.#editor.addProperties(data.properties);
 
         this.#loaded = true;
         document.getElementById('loading').style.display = 'none';

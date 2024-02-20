@@ -2,24 +2,19 @@
 header("Content-Type: application/json");
 require_once 'LoveDatabase.class.php';
 
-function mapArray(&$array) {
-    foreach ($array as $id => &$element) {
-        $element['id'] = $id;
-    }
-    return $array;
-}
-
 try {
     $db = new \com\elmakers\love\LoveDatabase();
     $characters = $db->getCharacters();
-    // $quizzes = json_decode(file_get_contents('quizzes.json'), true);
-    $quizzes = array();
     $tiers = $db->getTierLists();
+    $relationships = $db->getRelationships();
+    $properties = $db->getProperties();
     $response = array(
         'success' => true,
-        'characters' => mapArray($characters),
-        'quizzes' => mapArray($quizzes),
-        'tiers' => mapArray($tiers)
+        'characters' => $characters,
+        'quizzes' => array(),
+        'tiers' => $tiers,
+        'relationships' => $relationships,
+        'properties' => $properties
     );
 } catch (Exception $ex) {
     $response = array(

@@ -8,7 +8,7 @@ require_once 'Database.class.php';
 
 class LoveDatabase extends Database {
     public function createUser($email, $password, $firstName, $lastName) {
-        $existing = $this->getUser($email);
+        $existing = $this->lookupUser($email);
         if ($existing) {
             throw new Exception("User $email already exists");
         }
@@ -22,6 +22,7 @@ class LoveDatabase extends Database {
             'token' => $token
         );
         $this->insert('user', $user);
+        $this->sanitize($user);
         return $user;
     }
 
@@ -30,7 +31,7 @@ class LoveDatabase extends Database {
     }
 
     public function login($email, $password) {
-        $user = $this->getUser($email);
+        $user = $this->lookupUser($email);
         if (!$user) {
             throw new Exception("Unknown user $email");
         }
@@ -49,14 +50,14 @@ class LoveDatabase extends Database {
         unset($user['password_hash']);
     }
 
-    public function changePassword($email, $token, $password) {
-        $user = $this->validateLogin($email, $token);
+    public function changePassword($userId, $token, $password) {
+        $user = $this->validateLogin($userId, $token);
         $user['password_hash'] = password_hash($password);
         $this->save('user', $user);
     }
 
     public function forceChangePassword($email, $password) {
-        $user = $this->getUser($email);
+        $user = $this->lookupUser($email);
         if (!$user) {
             throw new Exception("Invalid user $email");
         }
@@ -64,20 +65,26 @@ class LoveDatabase extends Database {
         $this->save('user', $user);
     }
 
-    public function validateLogin($email, $token) {
-        $user = $this->getUser($email);
+    public function validateLogin($userId, $token) {
+        $user = $this->getUser($userId);
         if (!$user || $user['token'] !== $token) {
-            throw new Exception("Invalid login for $email");
+            throw new Exception("Invalid login for $userId");
         }
+        $this->sanitize($user);
         return $user;
     }
 
-    public function logout($email) {
-        $this->execute('UPDATE user SET token=null WHERE email=:email', array('email' => $email));
+    public function logout($userId, $token) {
+        $this->validateLogin($userId, $token);
+        $this->execute('UPDATE user SET token=null WHERE id=:id', array('id' => $userId));
     }
 
-    public function getUser($email) {
+    public function lookupUser($email) {
         return $this->get('user', $email, 'email');
+    }
+
+    public function getUser($userId) {
+        return $this->get('user', $userId);
     }
 
     public function getTierLists() {
@@ -122,10 +129,10 @@ class LoveDatabase extends Database {
             $results[$character['id']] = $character;
         }
         foreach ($relationships as $relationship) {
-            if (isset($results[$relationship['persona_id']]['relationships'][$relationship['id']])) {
-                $results[$relationship['persona_id']]['relationships'][$relationship['id']][] = $relationship['related_persona_id'];
+            if (isset($results[$relationship['persona_id']]['relationships'][$relationship['relationship_id']])) {
+                $results[$relationship['persona_id']]['relationships'][$relationship['relationship_id']][] = $relationship['related_persona_id'];
             } else {
-                $results[$relationship['persona_id']]['relationships'][$relationship['id']] = array($relationship['related_persona_id']);
+                $results[$relationship['persona_id']]['relationships'][$relationship['relationship_id']] = array($relationship['related_persona_id']);
             }
         }
         foreach ($tiers as $tier) {
@@ -136,5 +143,17 @@ class LoveDatabase extends Database {
         }
 
         return $results;
+    }
+
+    public function getRelationships() {
+        $relationships = $this->getAll('relationship');
+        $relationships = $this->index($relationships);
+        return $relationships;
+    }
+
+    public function getProperties() {
+        $properties = $this->getAll('property');
+        $properties = $this->index($properties);
+        return $properties;
     }
 }

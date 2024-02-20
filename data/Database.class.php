@@ -132,6 +132,13 @@ class Database {
         return $this->execute($sql, $data);
     }
 
+    function replace($table, $data) {
+        $fields = array_keys($data);
+        $sql = "REPLACE INTO $table (" . join(',', $fields);
+        $sql .= ') values (:' . join(',:', $fields) . ')';
+        return $this->execute($sql, $data);
+    }
+
     function save($table, $row, $id = 'id') {
         $update = array();
         $parameters = array();
@@ -166,5 +173,12 @@ class Database {
         $connection->commit();
     }
 
-
+    static function index($data, $id = 'id') {
+        $results = array();
+        foreach ($data as $record) {
+            $recordId = $record[$id];
+            $results[$recordId] = $record;
+        }
+        return $results;
+    }
 }

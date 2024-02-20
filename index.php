@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/tiers.css">
     <link rel="stylesheet" href="css/relationships.css">
     <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/editor.css">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js"></script>
     <script type="text/javascript" src="js/characters.js"></script>
@@ -21,6 +22,7 @@
     <script type="text/javascript" src="js/relationships.js"></script>
     <script type="text/javascript" src="js/profile.js"></script>
     <script type="text/javascript" src="js/love.js"></script>
+    <script type="text/javascript" src="js/editor.js"></script>
     <script type="text/javascript">
         window.onload = function() {
             let love = new Love();
@@ -43,6 +45,7 @@
                 <div class="tabButton toolbarButton" data-tab="flashCards">Flash Cards</div>
                 <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
                 <div class="tabButton toolbarButton" data-tab="tierLists">Tier Lists</div>
+                <div class="tabButton toolbarButton admin" data-tab="editor" style="display: none">Editor</div>
                 <div class="tabLink toolbarButton"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
             </div>
             <div id="profileButton" class="tabButton toolbarButton loggedout" data-tab="profile">&#128100;&#xfe0e;</div>
@@ -77,6 +80,10 @@
         </div>
 
         <div class="tab" id="profile" style="display: none">
+
+        </div>
+
+        <div class="tab" id="editor" style="display: none">
 
         </div>
     </div>

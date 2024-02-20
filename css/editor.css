@@ -1,0 +1,24 @@
+#editor {
+    flex-wrap: wrap;
+    justify-content: start;
+    align-content: start;
+}
+
+.editingPortrait {
+    min-width: 64px;
+    min-height: 64px;
+    max-height: 64px;
+    overflow: hidden;
+    margin: 8px;
+    cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 4px solid #DDD;
+}
+
+.editorHeader {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1em;
+}
