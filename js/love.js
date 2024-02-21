@@ -3,7 +3,7 @@ class Love {
     #tab = null;
     #characters = new Characters(document.getElementById('characters'));
     #chat = new Chat(document.getElementById('chat'), this.#characters);
-    #quizzes = new Quizzes(document.getElementById('quizzes'));
+    #quizzes = new Quizzes(document.getElementById('quizzes'), this.#characters);
     #flashcards = new Flashcards(document.getElementById('flashCards'), this.#characters);
     #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
     #relationships = new Relationships(document.getElementById('relationships'), this.#characters);

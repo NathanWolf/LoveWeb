@@ -8,9 +8,9 @@ class Quizzes {
     #wrongAnswers = 0;
     #characterQuiz = null;
 
-    constructor(element) {
+    constructor(element, characters) {
         this.#element = element;
-        this.#characterQuiz = new CharacterQuiz(element);
+        this.#characterQuiz = new CharacterQuiz(element, characters);
     }
 
     addQuizzes(quizzes) {

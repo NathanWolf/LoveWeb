@@ -79,13 +79,20 @@ class Utilities {
         return innerDiv;
     }
 
-    static createDiv(className, parent) {
-        let div = document.createElement('div');
+    static createElement(elementType, className, parent) {
+        let div = document.createElement(elementType);
         div.className = className;
         if (typeof(parent) !== 'undefined') {
             parent.appendChild(div);
         }
         return div;
+    }
+    static createDiv(className, parent) {
+        return this.createElement('div', className, parent);
+    }
+
+    static createSpan(className, parent) {
+        return this.createElement('span', className, parent);
     }
 
     static humanizeKey(str) {
