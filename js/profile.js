@@ -171,7 +171,8 @@ class Profile {
             Utilities.addClass(this.#button, 'loggedin');
             this.#showProfile();
         } else {
-            alert("An error occurred logging you in, please try again: " + response.message)
+            alert("An error occurred logging you in, please try again: " + response.message);
+            this.#showLogin();
         }
     }
 
