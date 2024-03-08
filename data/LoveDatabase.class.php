@@ -52,7 +52,7 @@ class LoveDatabase extends Database {
 
     public function changePassword($userId, $token, $password) {
         $user = $this->validateLogin($userId, $token);
-        $user['password_hash'] = password_hash($password);
+        $user['password_hash'] = password_hash($password, PASSWORD_DEFAULT);
         $this->save('user', $user);
     }
 
@@ -61,7 +61,7 @@ class LoveDatabase extends Database {
         if (!$user) {
             throw new Exception("Invalid user $email");
         }
-        $user['password_hash'] = password_hash($password);
+        $user['password_hash'] = password_hash($password, PASSWORD_DEFAULT);
         $this->save('user', $user);
     }
 
