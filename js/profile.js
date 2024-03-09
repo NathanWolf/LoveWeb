@@ -271,4 +271,8 @@ class Profile extends Component {
     getUser() {
         return this.#user;
     }
+
+    getTitle() {
+        return 'User Profile';
+    }
 }

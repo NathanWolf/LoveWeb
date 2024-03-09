@@ -83,4 +83,8 @@ class Editor extends Component {
             this.#saveButton.disabled = false;
         }
     }
+
+    getTitle() {
+        return 'Editor';
+    }
 }

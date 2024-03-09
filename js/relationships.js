@@ -67,4 +67,8 @@ class Relationships extends Component {
             characterDiv.appendChild(characterTable);
         });
     }
+
+    getTitle() {
+        return 'Relationships';
+    }
 }

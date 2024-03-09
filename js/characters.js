@@ -165,4 +165,8 @@ class Characters extends Component {
     getProperties() {
         return this.#properties;
     }
+
+    getTitle() {
+        return 'Characters';
+    }
 }

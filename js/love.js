@@ -9,6 +9,15 @@ class Love {
     #relationships = new Relationships(this, document.getElementById('relationships'));
     #profile = new Profile(this, document.getElementById('profile'), document.getElementById('profileButton'));
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
+    #tabs = {
+        characters: this.#characters,
+        chat: this.#chat,
+        quizzes: this.#quizzes,
+        flashCards: this.#flashcards,
+        tierLists: this.#tiers,
+        relationships: this.#relationships,
+        editor: this.#characterEditor
+    };
 
     getCharacters() {
         return this.#characters;
@@ -65,41 +74,16 @@ class Love {
             }
         }
 
-        switch (tabId) {
-            case 'quizzes':
-                document.title = 'Love (Quizzes)';
-                this.#quizzes.show();
-                break;
-            case 'chat':
-                document.title = 'Love (Chat)';
-                this.#chat.show();
-                break;
-            case 'flashCards':
-                document.title = 'Love (Flash Cards)';
-                this.#flashcards.show();
-                break;
-            case 'characters':
-                document.title = 'Love (Characters)';
-                this.#characters.show();
-                break;
-            case 'relationships':
-                document.title = 'Love (Relationships)';
-                this.#relationships.show();
-                break;
-            case 'tierLists':
-                document.title = 'Love (Tier Lists)';
-                this.#tiers.show();
-                break;
-            case 'profile':
-                document.title = 'Love (User Profile)';
-                this.#profile.show();
-                break;
-            case 'characterEditor':
-                document.title = 'Love (Editor)';
-                this.#characterEditor.show();
-                break;
+        if (this.#tabs.hasOwnProperty(tabId)) {
+            let tab = this.#tabs[tabId];
+            let title = tab.getTitle();
+            if (title != null) {
+                document.title = 'Love (' + title + ')';
+            } else {
+                document.title = 'Love';
+            }
+            tab.activate();
         }
-
         this.#tab = tabId;
         this.updateHistory();
     }

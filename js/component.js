@@ -20,4 +20,26 @@ class Component {
     getElement() {
         return this.#element;
     }
+
+    getTitle() {
+        return null;
+    }
+
+    show() {
+        Utilities.empty(this.#element);
+        this.#element.innerText = '(Content Missing)';
+    }
+
+    activate() {
+        this.show();
+    }
+
+    hide() {
+        Utilities.empty(this.#element);
+    }
+
+    deactivate() {
+        this.hide();
+    }
+
 }

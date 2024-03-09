@@ -171,4 +171,8 @@ class Tiers extends Component {
             }
         }
     }
+
+    getTitle() {
+        return 'Tier Lists';
+    }
 }

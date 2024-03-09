@@ -127,4 +127,8 @@ class Quizzes extends Component {
         }
         this.#nextQuestion();
     }
+
+    getTitle() {
+        return 'Quizzes';
+    }
 }

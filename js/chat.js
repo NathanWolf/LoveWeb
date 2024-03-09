@@ -188,4 +188,7 @@ class Chat extends Component {
         this.#messageInput.style.height = height + "px";
     }
 
+    getTitle() {
+        return 'Chat';
+    }
 }

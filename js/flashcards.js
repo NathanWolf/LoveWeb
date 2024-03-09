@@ -74,4 +74,8 @@ class Flashcards extends Component {
         }
         this.#nextFlashCard();
     }
+
+    getTitle() {
+        return 'Flash Cards';
+    }
 }
