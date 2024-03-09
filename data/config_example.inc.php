@@ -8,5 +8,8 @@ $_config = array(
         "password" => "",
         "user_admin" => "love_admin",
         "password_admin" => ""
+    ),
+    'openapi' => array(
+        'key' => ''
     )
 );

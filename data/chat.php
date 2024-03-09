@@ -5,7 +5,8 @@ header("Cache-Control: no-cache");
 
 if (ob_get_level()) ob_end_clean();
 
-$settings = require('settings.php');
+require('config.inc.php');
+$SETTINGS = $_config;
 
 $MODEL = 'gpt-4-turbo-preview';
 $STORAGE_TYPE = "session";
@@ -16,16 +17,16 @@ require(__DIR__ . "/autoload.php");
 
 function get_db(): PDO|null {
     global $STORAGE_TYPE;
+    global $SETTINGS;
 
     if ($STORAGE_TYPE === "session" ) {
         return null;
     }
 
-    $settings = require( __DIR__ . "/settings.php" );
     $db = new PDO(
-        $settings["db"]["dsn"],
-        $settings["db"]["username"] ?? null,
-        $settings["db"]["password"] ?? null
+        $SETTINGS["database"]["server"],
+        $SETTINGS["database"]["user"] ?? null,
+        $SETTINGS["database"]["password"] ?? null
     );
 
     $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
@@ -89,7 +90,7 @@ $response_text = '';
 
 // create a new completion
 try {
-    $chatgpt = new ChatGPT($CHATGPT_API_KEY);
+    $chatgpt = new ChatGPT($SETTINGS['openapi']['key']);
 
     $chatgpt->set_model($MODEL);
     $chatgpt->set_params($PARAMETERS);
