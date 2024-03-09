@@ -5,27 +5,19 @@ if (PHP_SAPI !== 'cli') {
 }
 
 if (count($argv) < 3) {
-    die("Usage: create_portraits <character folder> <portrait folder> [width] [height]\n");
+    die("Usage: create_portraits <character folder> <portrait folder> [character] [width] [height]\n");
 }
+
+require_once '../data/LoveDatabase.class.php';
+
+$db = new \com\elmakers\love\LoveDatabase();
+$characters = $db->getCharacters();
 
 $characterFolder = $argv[1];
 $portraitFolder = $argv[2];
-$targetWidth = count($argv) > 3 ? $argv[3] : 256;
-$targetHeight = count($argv) > 4 ? $argv[4] : 256;
-$targetCharacter = null;
-
-if (count($argv) > 5) {
-    $targetCharacter = $argv[5];
-}
-
-$characterFile = dirname(__FILE__) . '/../data/characters.json';
-if (!file_exists($characterFile)) {
-    die("Can not find file: $characterFile\n");
-}
-$characters = json_decode(file_get_contents($characterFile), true);
-if (!$characters) {
-    die("Could not parse file: $characterFile\n");
-}
+$targetCharacter = count($argv) > 3 ? $argv[3] : null;
+$targetWidth = count($argv) > 4 ? $argv[4] : 256;
+$targetHeight = count($argv) > 5 ? $argv[5] : 256;
 
 function endsWith($haystack, $needle){
     $length = strlen($needle);
