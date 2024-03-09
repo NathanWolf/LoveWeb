@@ -38,6 +38,7 @@ class Database {
             } catch (Exception $ex) {
                 // PDO/MySQL error messages have a tendancy to reveal sensitive information.
                 // So don't throw this up, just log it.
+                error_log($ex->getMessage());
                 error_log($ex->getTraceAsString());
                 throw new Exception('Failed to connect to database');
             }

@@ -2,7 +2,7 @@
 // Copy this and fill in the blanks
 $_config = array(
     "database" => array(
-        "server" => "localhost",
+        "server" => "127.0.0.1",
         "database" => "love",
         "user" => "love",
         "password" => "",

@@ -1,12 +1,12 @@
 create schema love;
 use love;
-create user love;
-create user 'love'@'localhost' identified by 'l0veu5er';
-grant select ON love.* to 'love'@'localhost';
-grant update,insert ON love.user to 'love'@'localhost';
 
-create user 'love_admin'@'localhost' identified by 'l0ve4dm!n';
-grant all privileges ON love.* to 'love_admin'@'localhost';
+create user 'love'@'127.0.0.1' identified by 'super-secure-password';
+grant select ON love.* to 'love'@'127.0.0.1';
+grant update,insert ON love.user to 'love'@'127.0.0.1';
+
+create user 'love_admin'@'127.0.0.1' identified by 'super-duper-secure-password';
+grant all privileges ON love.* to 'love_admin'@'127.0.0.1';
 
 create table user
 (
