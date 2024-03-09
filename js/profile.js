@@ -1,10 +1,9 @@
-class Profile {
-    #element;
+class Profile extends Component {
     #button;
     #user;
 
-    constructor(element, button) {
-        this.#element = element;
+    constructor(controller, element, button) {
+        super(controller, element);
         this.#button = button;
     }
 
@@ -18,8 +17,9 @@ class Profile {
     }
 
     #showLogin() {
-        Utilities.empty(this.#element);
-        let loginDiv = Utilities.createDiv('login', this.#element);
+        let element = this.getElement();
+        Utilities.empty(element);
+        let loginDiv = Utilities.createDiv('login', element);
         let loginForm = document.createElement('form');
         loginDiv.appendChild(loginForm);
         let emailSection = document.createElement('section');
@@ -73,8 +73,9 @@ class Profile {
     }
 
     #showRegister(email, password) {
-        Utilities.empty(this.#element);
-        let registerDiv = Utilities.createDiv('register', this.#element);
+        let element = this.getElement();
+        Utilities.empty(element);
+        let registerDiv = Utilities.createDiv('register', element);
         let registerForm = document.createElement('form');
         registerDiv.appendChild(registerForm);
         let emailSection = document.createElement('section');
@@ -177,8 +178,9 @@ class Profile {
     }
 
     #showProfile() {
-        Utilities.empty(this.#element);
-        let profileDiv = Utilities.createDiv('profile', this.#element);
+        let element = this.getElement();
+        Utilities.empty(element);
+        let profileDiv = Utilities.createDiv('profile', element);
         let welcomeDiv = Utilities.createDiv('welcome', profileDiv);
         welcomeDiv.innerText = 'Welcome back, ' + this.#user.first_name + '!';
 

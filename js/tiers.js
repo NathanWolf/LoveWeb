@@ -1,25 +1,18 @@
-class Tiers {
-    #characters = null;
-    #element;
+class Tiers extends Component {
     #defaultGroup = null;
     #tiers = {};
     #clicked = null;
     #dragging = false;
 
-    constructor(element, characters) {
-        this.#element = element;
-        this.#characters = characters;
-        if (this.#element == null) {
-            throw new Error("Element not set");
-        }
-
-        let controller = this;
-        this.#element.addEventListener('mousemove', function(event) {
-            controller.onMouseMove(event.x, event.y);
+    constructor(controller, element) {
+        super(controller, element);
+        let component = this;
+        element.addEventListener('mousemove', function(event) {
+            component.onMouseMove(event.x, event.y);
         });
-        this.#element.addEventListener('touchmove', function(event) {
-            controller.onMouseMove(event.touches[0].clientX, event.touches[0].clientY);
-            if (controller.#dragging) {
+        element.addEventListener('touchmove', function(event) {
+            component.onMouseMove(event.touches[0].clientX, event.touches[0].clientY);
+            if (component.#dragging) {
                 event.preventDefault();
             }
         });
@@ -34,7 +27,8 @@ class Tiers {
     }
 
     show() {
-        Utilities.empty(this.#element);
+        let element = this.getElement();
+        Utilities.empty(element);
         this.release();
         let controller = this;
         for (let tierId in this.#tiers) {
@@ -47,18 +41,19 @@ class Tiers {
             });
             tierOption.className = 'option';
             tierOption.innerText = tier.name;
-            this.#element.appendChild(tierOption);
+            element.appendChild(tierOption);
         }
     }
 
     onSelectTierList(id) {
+        let element = this.getElement();
         let tierList = this.#tiers[id];
         let tiers = Utilities.mapArray(tierList.tiers);
-        Utilities.empty(this.#element);
+        Utilities.empty(element);
         let tierTitle = document.createElement('div');
         tierTitle.className = 'title';
         tierTitle.innerText = tierList.name;
-        this.#element.appendChild(tierTitle);
+        element.appendChild(tierTitle);
         let tierElements = {};
         tiers.unshift({
             'id': 'default',
@@ -77,20 +72,20 @@ class Tiers {
             }
             tierLabel.innerText = tier.name;
             tierDiv.appendChild(tierLabel);
-            this.#element.appendChild(tierDiv);
+            element.appendChild(tierDiv);
             tierElements[tier.id] = tierDiv;
         }
         this.#defaultGroup = tierElements['default'];
 
         let controller = this;
-        let characters = this.#characters.getCharacterList();
+        let characters = this.getController().getCharacters().getCharacterList();
         for (let i = 0; i < characters.length; i++) {
             let character = characters[i];
-            let tier = this.#characters.getTier(character.id, id, 'default');
+            let tier = this.getController().getCharacters().getTier(character.id, id, 'default');
             let tierPortrait = document.createElement('div');
             tierPortrait.className = 'tierPortrait';
             tierPortrait.title = character.name;
-            tierPortrait.style.backgroundImage = 'url(' + this.#characters.getPortrait(character.id) + ')'
+            tierPortrait.style.backgroundImage = 'url(' + this.getController().getCharacters().getPortrait(character.id) + ')'
             tierElements[tier].appendChild(tierPortrait);
 
             tierPortrait.addEventListener('mousedown', function() {

@@ -1,24 +1,22 @@
-class CharacterQuiz {
+class CharacterQuiz extends Component {
     #maxQuestions = 100;
     #maxAnswers = 50;
 
-    #element;
-    #characters;
     #characterScores = {};
     #remainingQuestions = [];
     #currentQuestion = null;
 
-    constructor(element, characters) {
-        this.#element = element;
-        this.#characters = characters;
+    constructor(controller, element) {
+        super(controller, element);
     }
 
     show() {
         this.#characterScores = {};
 
         let usedProperties = {};
-        let allProperties = this.#characters.getProperties();
-        let allCharacters = this.#characters.getCharacterList();
+        let characters = this.getController().getCharacters();
+        let allProperties = characters.getProperties();
+        let allCharacters = characters.getCharacterList();
         for (let i = 0; i < allCharacters.length; i++) {
             let character = allCharacters[i];
             for (let propertyKey in character.properties) {
@@ -48,13 +46,15 @@ class CharacterQuiz {
     }
 
     #nextQuestion() {
-        Utilities.empty(this.#element);
+        let element = this.getElement();
+        let characters = this.getController().getCharacters();
+        Utilities.empty(element);
         if (this.#remainingQuestions.length === 0) {
-            let container = Utilities.createDiv('chosenCharacter', this.#element);
-            let characters = this.#getSortedScores();
-            let chosen = characters[0].character;
+            let container = Utilities.createDiv('chosenCharacter', element);
+            let scores = this.#getSortedScores();
+            let chosen = scores[0].character;
             let portraitContainer = Utilities.createDiv('portrait', container);
-            portraitContainer.style.backgroundImage = 'url(' + this.#characters.getPortrait(chosen.id) + ')';
+            portraitContainer.style.backgroundImage = 'url(' + characters.getPortrait(chosen.id) + ')';
             let chosenContainer = Utilities.createDiv('chosenContainer', container);
             let youAre = Utilities.createSpan('chosenPrefix', chosenContainer);
             youAre.innerText = 'You are';
@@ -68,7 +68,7 @@ class CharacterQuiz {
 
         let nextQuestion = this.#remainingQuestions.pop();
         this.#currentQuestion = nextQuestion;
-        let questionContainer = Utilities.createDiv('quizQuestion', this.#element);
+        let questionContainer = Utilities.createDiv('quizQuestion', element);
         let questionElement = Utilities.createDiv('quizQuestionQuestion', questionContainer);
         let answerElement = Utilities.createDiv('quizQuestionAnswers', questionContainer);
 
@@ -97,7 +97,7 @@ class CharacterQuiz {
                 }
             }
         }
-        let allCharacters = this.#characters.getCharacterList();
+        let allCharacters = characters.getCharacterList();
         for (let i = 0; i < allCharacters.length; i++) {
             if (Object.values(answers).length >= this.#maxAnswers) break;
             let character = allCharacters[i];
@@ -130,7 +130,8 @@ class CharacterQuiz {
 
     onAnswerClick(propertyValue) {
         let propertyId = this.#currentQuestion.id;
-        let allCharacters = this.#characters.getCharacterList();
+        let characters = this.getController().getCharacters();
+        let allCharacters = characters.getCharacterList();
         for (let i = 0; i < allCharacters.length; i++) {
             let character = allCharacters[i];
             if (character.properties.hasOwnProperty(propertyId) && character.properties[propertyId] == propertyValue) {

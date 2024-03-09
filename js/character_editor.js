@@ -1,19 +1,15 @@
 class CharacterEditor extends Editor {
-    #characters = {};
-    #profile = {};
     #characterId = null;
 
-    constructor(element, characters, profile) {
-        super(element);
-        this.#characters = characters;
-        this.#profile = profile;
+    constructor(controller, element) {
+        super(controller, element);
     }
 
     show() {
         let controller = this;
         let container = this.getElement();
         Utilities.empty(container);
-        let characters = this.#characters;
+        let characters = this.getController().getCharacters();
         let characterList = characters.getCharacterList();
         characterList.forEach(function(character){
             let portrait = document.createElement('div');
@@ -64,9 +60,9 @@ class CharacterEditor extends Editor {
     }
 
     onPortraitClick(portrait) {
-        let characters = this.#characters;
+        let characters = this.getController().getCharacters();
         let characterKey = portrait.dataset.character;
-        let character = this.#characters.getCharacter(characterKey);
+        let character = characters.getCharacter(characterKey);
         if (character == null) {
             alert("Sorry, something went wrong!");
             return;
@@ -101,7 +97,7 @@ class CharacterEditor extends Editor {
         let chatInput = this.createLongInput(editorForm, {id: "chat", name: "Chat Prompt"}, character.chat != null ? character.chat.system : null);
 
         let propertyInputs = {};
-        let properties = this.#characters.getProperties();
+        let properties = characters.getProperties();
         for (let propertyId in properties) {
             if (!properties.hasOwnProperty(propertyId)) continue;
             let property = properties[propertyId];
@@ -159,7 +155,8 @@ class CharacterEditor extends Editor {
     }
 
     #save(properties) {
-        let user = this.#profile.getUser();
+        let profile = this.getController().getProfile();
+        let user = profile.getUser();
         if (user == null || !user.admin) {
             alert("Hey, you're not supposed to be doing this!");
             return;

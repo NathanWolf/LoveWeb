@@ -1,14 +1,22 @@
 class Love {
     #loaded = false;
     #tab = null;
-    #characters = new Characters(document.getElementById('characters'));
-    #chat = new Chat(document.getElementById('chat'), this.#characters);
-    #quizzes = new Quizzes(document.getElementById('quizzes'), this.#characters);
-    #flashcards = new Flashcards(document.getElementById('flashCards'), this.#characters);
-    #tiers = new Tiers(document.getElementById('tierLists'), this.#characters);
-    #relationships = new Relationships(document.getElementById('relationships'), this.#characters);
-    #profile = new Profile(document.getElementById('profile'), document.getElementById('profileButton'));
-    #characterEditor = new CharacterEditor(document.getElementById('characterEditor'), this.#characters, this.#profile);
+    #characters = new Characters(this, document.getElementById('characters'));
+    #chat = new Chat(this, document.getElementById('chat'));
+    #quizzes = new Quizzes(this, document.getElementById('quizzes'));
+    #flashcards = new Flashcards(this, document.getElementById('flashCards'));
+    #tiers = new Tiers(this, document.getElementById('tierLists'));
+    #relationships = new Relationships(this, document.getElementById('relationships'));
+    #profile = new Profile(this, document.getElementById('profile'), document.getElementById('profileButton'));
+    #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
+
+    getCharacters() {
+        return this.#characters;
+    }
+
+    getProfile() {
+        return this.#profile;
+    }
 
     register() {
         let love = this;

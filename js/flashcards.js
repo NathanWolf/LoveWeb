@@ -1,18 +1,15 @@
-class Flashcards {
-    #characters;
-    #element;
+class Flashcards extends Component {
     #correctAnswer = 0;
     #correctAnswers = 0;
     #wrongAnswers = 0;
     #currentFlashcards = [];
 
-    constructor(element, characters) {
-        this.#element = element;
-        this.#characters = characters;
+    constructor(controller, element) {
+        super(controller, element);
     }
 
     show() {
-        let characters = this.#characters.getCharacterList();
+        let characters = this.getController().getCharacters().getCharacterList();
         this.#wrongAnswers = 0;
         this.#correctAnswers = 0;
         this.#currentFlashcards = Utilities.shuffle(characters);
@@ -21,10 +18,11 @@ class Flashcards {
 
     #nextFlashCard() {
         let controller = this;
-        Utilities.empty(this.#element);
+        let element = this.getElement();
+        Utilities.empty(element);
 
         if (this.#currentFlashcards.length === 0) {
-            let popup = Utilities.showPopup(this.#element.parentNode);
+            let popup = Utilities.showPopup(element.parentNode);
             Utilities.createDiv('flashCardFinishedTitle', popup).innerText = 'Finished!';
             Utilities.createDiv('flashCardCorrect', popup).innerText = 'Correct: ' + this.#correctAnswers;
             Utilities.createDiv('flashCardWrong', popup).innerText = 'Wrong: ' + this.#wrongAnswers;
@@ -33,14 +31,14 @@ class Flashcards {
 
         let flashCardContainer = Utilities.createDiv('flashCard');
         let answerContainer = Utilities.createDiv('flashCardAnswers');
-        this.#element.appendChild(flashCardContainer);
-        this.#element.appendChild(answerContainer);
+        element.appendChild(flashCardContainer);
+        element.appendChild(answerContainer);
 
         let nextCharacter = this.#currentFlashcards.pop();
-        flashCardContainer.style.backgroundImage = 'url(' + this.#characters.getPortrait(nextCharacter.id) + ')';
+        flashCardContainer.style.backgroundImage = 'url(' + this.getController().getCharacters().getPortrait(nextCharacter.id) + ')';
         let list = document.createElement('ul');
         let answers = [nextCharacter];
-        let characters = this.#characters.getCharacterList();
+        let characters = this.getController().getCharacters().getCharacterList();
         characters = Utilities.shuffle(characters);
         while (answers.length < 5) {
             let answer = characters.pop();
@@ -66,11 +64,12 @@ class Flashcards {
     }
 
     onFlashCardClick(answerIndex) {
+        let element = this.getElement();
         if (answerIndex === this.#correctAnswer) {
-            Utilities.showStatusPopup(this.#element.parentNode, 'flashCardCorrect').innerText = 'CORRECT!';
+            Utilities.showStatusPopup(element.parentNode, 'flashCardCorrect').innerText = 'CORRECT!';
             this.#correctAnswers++;
         } else {
-            Utilities.showStatusPopup(this.#element.parentNode, 'flashCardWrong').innerText = 'Wrong :(';
+            Utilities.showStatusPopup(element.parentNode, 'flashCardWrong').innerText = 'Wrong :(';
             this.#wrongAnswers++;
         }
         this.#nextFlashCard();

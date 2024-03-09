@@ -1,10 +1,9 @@
-class Characters {
+class Characters extends Component {
     #characters = {};
     #properties = {};
-    #element = null;
 
-    constructor(element) {
-        this.#element = element;
+    constructor(controller, element) {
+        super(controller, element);
     }
 
     addCharacters(characters) {
@@ -33,7 +32,7 @@ class Characters {
 
     show() {
         let controller = this;
-        let container = controller.#element;
+        let container = this.getElement();
         Utilities.empty(container);
         let characters = this.getCharacterList();
         characters.forEach(function(character){
@@ -59,7 +58,8 @@ class Characters {
             alert("Sorry, something went wrong!");
             return;
         }
-        let popup = Utilities.showPopup(this.#element.parentNode, 'characterSheet');
+        let element = this.getElement();
+        let popup = Utilities.showPopup(element.parentNode, 'characterSheet');
         let image = Utilities.createDiv('sheetImage', popup);
         image.style.backgroundImage = 'url(' + this.getImage(characterKey) + ')';
         if (character.properties.hasOwnProperty('color')) {

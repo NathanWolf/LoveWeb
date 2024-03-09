@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/editor.css">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js"></script>
+    <script type="text/javascript" src="js/component.js"></script>
     <script type="text/javascript" src="js/characters.js"></script>
     <script type="text/javascript" src="js/chat.js"></script>
     <script type="text/javascript" src="js/character_quiz.js"></script>
@@ -26,10 +27,13 @@
     <script type="text/javascript" src="js/editor.js"></script>
     <script type="text/javascript" src="js/character_editor.js"></script>
     <script type="text/javascript">
+        // For debugging
+        var _love;
         window.onload = function() {
             let love = new Love();
             love.register();
             love.load();
+            _love = love;
         };
     </script>
 

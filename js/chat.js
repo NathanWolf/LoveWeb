@@ -1,21 +1,18 @@
-class Chat {
-    #characters = {};
+class Chat extends Component {
     #messageInput = null;
     #messages = null;
-    #element = null;
     #characterId = null;
     #chatId = 0;
 
-    constructor(element, characters) {
-        this.#element = element;
-        this.#characters = characters;
+    constructor(controller, element) {
+        super(controller, element);
     }
 
     show() {
         let controller = this;
-        let container = controller.#element;
+        let container = this.getElement()
         Utilities.empty(container);
-        let characters = this.#characters;
+        let characters = this.getController().getCharacters();
         let characterList = characters.getCharacterList();
         characterList.forEach(function(character){
             if (character.chat == null) return;
@@ -37,7 +34,8 @@ class Chat {
     onPortraitClick(portrait) {
         let characterKey = portrait.dataset.character;
         let controller = this;
-        let character = this.#characters.getCharacter(characterKey);
+        let characters = this.getController().getCharacters();
+        let character = characters.getCharacter(characterKey);
         if (character == null) {
             alert("Sorry, something went wrong!");
             return;
@@ -45,7 +43,7 @@ class Chat {
 
         this.#characterId = characterKey;
 
-        let container = this.#element;
+        let container = this.getElement();
         Utilities.empty(container);
 
         let chatWindow = Utilities.createDiv('chatContainer', container);
@@ -86,7 +84,8 @@ class Chat {
         let content = Utilities.createDiv('content', messageDiv);
         content.innerHTML = message;
         if (typeof(characterId) !== 'undefined') {
-            icon.style.backgroundImage = 'url(' + this.#characters.getPortrait(characterId) + ')';
+            let characters = this.getController().getCharacters();
+            icon.style.backgroundImage = 'url(' + characters.getPortrait(characterId) + ')';
         }
 
         this.#messages.scrollTop = this.#messages.scrollHeight;
@@ -101,7 +100,8 @@ class Chat {
     async sendMessage() {
         let question = Utilities.escapeHtml(this.#messageInput.value);
         let controller = this;
-        let character = this.#characters.getCharacter(this.#characterId);
+        let characters = this.getController().getCharacters();
+        let character = characters.getCharacter(this.#characterId);
 
         // Add user message to chat list
         this.addMessage('user', question);

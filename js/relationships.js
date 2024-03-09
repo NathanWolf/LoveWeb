@@ -1,19 +1,15 @@
-class Relationships {
-    #element;
-    #characters;
-
-    constructor(element, characters) {
-        this.#element = element;
-        this.#characters = characters;
+class Relationships extends Component {
+    constructor(controller, element) {
+        super(controller, element);
     }
 
     show() {
         const rowsPerRelationship = 3;
 
-        Utilities.empty(this.#element);
-        let characterList = this.#characters.getCharacterList();
-        let characters = this.#characters;
-        let containerElement = this.#element;
+        let containerElement = this.getElement();
+        let characters = this.getController().getCharacters();
+        Utilities.empty(containerElement);
+        let characterList = characters.getCharacterList();
         characterList.forEach(function(character) {
             if (!character.hasOwnProperty('relationships')) return;
 

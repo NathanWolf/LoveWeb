@@ -1,6 +1,5 @@
-class Quizzes {
+class Quizzes extends Component {
     #quizzes = {};
-    #element;
     #currentQuizQuestions = [];
     #currentQuestion = null;
     #correctAnswer = 0;
@@ -8,9 +7,9 @@ class Quizzes {
     #wrongAnswers = 0;
     #characterQuiz = null;
 
-    constructor(element, characters) {
-        this.#element = element;
-        this.#characterQuiz = new CharacterQuiz(element, characters);
+    constructor(controller, element) {
+        super(controller, element)
+        this.#characterQuiz = new CharacterQuiz(controller, element);
     }
 
     addQuizzes(quizzes) {
@@ -24,8 +23,9 @@ class Quizzes {
     show() {
         // Populate quiz list
         let controller = this;
-        Utilities.empty(this.#element);
-        let listElement = Utilities.createDiv('quizList', this.#element);
+        let element = this.getElement();
+        Utilities.empty(element);
+        let listElement = Utilities.createDiv('quizList', element);
 
         // Add extra quizzes
         let characterQuizOption = document.createElement('div');
@@ -60,10 +60,11 @@ class Quizzes {
     }
 
     #nextQuestion() {
-        Utilities.empty(this.#element);
+        let element = this.getElement();
+        Utilities.empty(element);
         if (this.#currentQuizQuestions.length === 0) {
             this.show();
-            let popup = Utilities.showPopup(this.#element.parentNode);
+            let popup = Utilities.showPopup(element.parentNode);
             Utilities.createDiv('quizFinishedTitle', popup).innerText = 'Finished!';
             Utilities.createDiv('quizCorrect', popup).innerText = 'Correct: ' + this.#correctAnswers;
             Utilities.createDiv('quizWrong', popup).innerText = 'Wrong: ' + this.#wrongAnswers;
@@ -72,7 +73,7 @@ class Quizzes {
 
         let nextQuestion = this.#currentQuizQuestions.pop();
         this.#currentQuestion = nextQuestion;
-        let questionContainer = Utilities.createDiv('quizQuestion', this.#element);
+        let questionContainer = Utilities.createDiv('quizQuestion', element);
         let questionElement = Utilities.createDiv('quizQuestionQuestion', questionContainer);
         let answerElement = Utilities.createDiv('quizQuestionAnswers', questionContainer);
 
@@ -98,12 +99,13 @@ class Quizzes {
     }
 
     onAnswerClick(answerIndex) {
+        let element = this.getElement();
         if (answerIndex === this.#correctAnswer) {
-            Utilities.showStatusPopup(this.#element.parentNode, 'quizCorrect').innerText = 'CORRECT!';
+            Utilities.showStatusPopup(element.parentNode, 'quizCorrect').innerText = 'CORRECT!';
             this.#correctAnswers++;
         } else {
             let question = this.#currentQuestion;
-            let popup = Utilities.showStatusPopup(this.#element.parentNode, 'quizWrong', 5000);
+            let popup = Utilities.showStatusPopup(element.parentNode, 'quizWrong', 5000);
             let wrong = Utilities.createDiv('incorrect', popup);
             wrong.innerText = 'Wrong :(';
             let correctAnswer = null;

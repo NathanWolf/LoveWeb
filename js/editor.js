@@ -1,14 +1,9 @@
-class Editor {
-    #element = null;
+class Editor extends Component {
     #saveButton = null;
     #confirmedElement = null;
 
-    constructor(element) {
-        this.#element = element;
-    }
-
-    getElement() {
-        return this.#element;
+    constructor(controller, element) {
+        super(controller, element);
     }
 
     createInput(editorForm, property) {
