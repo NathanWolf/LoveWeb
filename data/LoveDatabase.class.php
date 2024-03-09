@@ -89,7 +89,7 @@ class LoveDatabase extends Database {
 
     public function getTierLists() {
         $tierLists = $this->getAll('tier_list');
-        $tiers = $this->getAll('tier');
+        $tiers = $this->getAll('tier', 'priority desc');
 
         $results = array();
         foreach ($tierLists as $tierList) {

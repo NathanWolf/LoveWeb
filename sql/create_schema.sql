@@ -53,6 +53,9 @@ create table tier
         on update cascade
 );
 
+alter table tier
+    add priority int not null default 0;
+
 create table persona
 (
     id VARCHAR(64) NOT NULL,
@@ -183,6 +186,9 @@ CREATE TABLE persona_tier
         on update cascade
 );
 
+alter table persona_tier
+    add priority int not null default 0;
+
 create table quiz
 (
     id VARCHAR(64) NOT NULL,
@@ -223,3 +229,25 @@ create table quiz_answer
         on delete cascade
         on update cascade
 );
+
+-- Data updates follow
+
+UPDATE persona_tier
+    JOIN (
+        select persona_id, tier_list_id,
+               row_number() over (partition by tier_list_id) as row,
+               count(*) over (partition by tier_list_id) as tot
+        from persona_tier
+    ) priorities
+    ON priorities.persona_id = persona_tier.persona_id and priorities.tier_list_id = persona_tier.tier_list_id
+SET persona_tier.priority = (priorities.tot - priorities.row) * 100;
+
+UPDATE tier
+    JOIN (
+        select id, tier_list_id,
+               row_number() over (partition by tier_list_id) as row,
+               count(*) over (partition by tier_list_id) as tot
+        from tier
+    ) priorities
+    ON priorities.id = tier.id and priorities.tier_list_id = tier.tier_list_id
+SET tier.priority = (priorities.tot - priorities.row) * 100;
