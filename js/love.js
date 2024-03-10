@@ -1,6 +1,7 @@
 class Love {
     #loaded = false;
-    #tab = null;
+    #tab = 'characters';
+    #history = new History();
     #characters = new Characters(this, document.getElementById('characters'));
     #chat = new Chat(this, document.getElementById('chat'));
     #quizzes = new Quizzes(this, document.getElementById('quizzes'));
@@ -18,6 +19,14 @@ class Love {
         relationships: this.#relationships,
         editor: this.#characterEditor
     };
+
+    constructor() {
+        let controller = this;
+        this.#history.setDefault('tab', 'characters');
+        this.#history.onChange(function() {
+            controller.onHistoryChange();
+        });
+    }
 
     getCharacters() {
         return this.#characters;
@@ -93,7 +102,7 @@ class Love {
             tab.activate();
         }
         this.#tab = tabId;
-        this.updateHistory();
+        this.#history.set('tab', this.#tab);
     }
 
     #request(url, callback) {
@@ -125,42 +134,13 @@ class Love {
 
         this.#loaded = true;
         document.getElementById('loading').style.display = 'none';
-        this.checkHistory();
+        this.#history.autoUpdate();
     }
 
-    checkHistory() {
-        if (!this.#loaded) return;
-
-        let hash = window.location.hash;
-        if (hash.startsWith('#')) {
-            hash = hash.substring(1);
-        }
-        let pairs = hash.split('&');
-        let tab = 'characters';
-        for (let i = 0; i < pairs.length; i++) {
-            let kv = pairs[i].split('=');
-            if (kv[0] === 'tab') {
-                tab = kv[1];
-            }
-        }
+    onHistoryChange() {
+        let tab = this.#history.get('tab');
         if (tab !== this.#tab) {
             this.selectTab(tab);
         }
-
-        let love = this;
-        setTimeout(function() {
-            love.checkHistory();
-        }, 500);
-    }
-
-    updateHistory() {
-        if (!this.#loaded) return;
-
-        let hash = '';
-        if (this.#tab !== 'characters') {
-            hash = 'tab=' + this.#tab;
-        }
-
-        window.location.hash = hash;
     }
 }
