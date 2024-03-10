@@ -93,7 +93,7 @@ class CharacterQuiz extends Component {
             portraitContainer.style.backgroundImage = 'url(' + characters.getPortrait(extraCharacter.id) + ')';
             portraitContainer.title = extraCharacter.full_name;
             let matchLabel = Utilities.createDiv('matchLabel', match);
-            matchLabel.innerText = "Matched with " + extraCharacter.full_name + ": " + percentage.toFixed(0) + "%";
+            matchLabel.innerText = "Matched with " + extraCharacter.full_name + ": " + extraPercentage.toFixed(0) + "%";
         }
     }
 
