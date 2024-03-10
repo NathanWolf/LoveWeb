@@ -40,6 +40,10 @@ class Love {
         return this.#tiers;
     }
 
+    getHistory() {
+        return this.#history;
+    }
+
     register() {
         let love = this;
         Utilities.addHandlerToClass('tabButton', function() {
@@ -142,5 +146,6 @@ class Love {
         if (tab !== this.#tab) {
             this.selectTab(tab);
         }
+        this.#tabs[tab].onHistoryChange();
     }
 }

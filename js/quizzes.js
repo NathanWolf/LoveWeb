@@ -1,5 +1,6 @@
 class Quizzes extends Component {
     #quizzes = {};
+    #currentQuiz = null;
     #currentQuizQuestions = [];
     #currentQuestion = null;
     #correctAnswer = 0;
@@ -26,19 +27,21 @@ class Quizzes extends Component {
         let element = this.getElement();
         Utilities.empty(element);
         let listElement = Utilities.createDiv('quizList', element);
-
+        let quizzes = [];
         // Add extra quizzes
-        let characterQuizOption = document.createElement('div');
-        characterQuizOption.addEventListener('click', function() {
-            controller.#characterQuiz.show();
+        quizzes.push({
+            id: 'character',
+            name: 'Which character are you?'
         });
-        characterQuizOption.className = 'quizOption';
-        characterQuizOption.innerText = 'Which character are you?'
-        listElement.appendChild(characterQuizOption);
+        for (let quizId in this.#quizzes) {
+            if (this.#quizzes.hasOwnProperty(quizId)) {
+                quizzes.push(this.#quizzes[quizId]);
+            }
+        }
 
-        for (let quizKey in this.#quizzes) {
-            if (!this.#quizzes.hasOwnProperty(quizKey)) continue;
-            let quiz = this.#quizzes[quizKey];
+        for (let i = 0; i < quizzes.length; i++) {
+            let quiz = quizzes[i];
+            let quizKey = quiz.id;
             let quizOption = document.createElement('div');
             quizOption.dataset.quiz = quizKey;
             quizOption.addEventListener('click', function() {
@@ -51,12 +54,23 @@ class Quizzes extends Component {
     }
 
     onSelectQuiz(quizKey) {
+        this.#currentQuiz = quizKey;
         this.#correctAnswers = 0;
         this.#wrongAnswers = 0;
-        let quiz = this.#quizzes[quizKey];
-        let questions = [...quiz.questions];
-        this.#currentQuizQuestions = Utilities.shuffle(questions);
-        this.#nextQuestion();
+        this.getController().getHistory().set('quiz', quizKey);
+
+        // Check for special-case quizzes
+        switch (quizKey) {
+            case 'character':
+                this.#characterQuiz.show();
+                break;
+            default:
+                let quiz = this.#quizzes[quizKey];
+                let questions = [...quiz.questions];
+                this.#currentQuizQuestions = Utilities.shuffle(questions);
+                this.#nextQuestion();
+
+        }
     }
 
     #nextQuestion() {
@@ -130,5 +144,17 @@ class Quizzes extends Component {
 
     getTitle() {
         return 'Quizzes';
+    }
+
+    onHistoryChange() {
+        let history = this.getController().getHistory();
+        let quiz = history.get('quiz');
+        if (this.#currentQuiz != quiz) {
+            this.onSelectQuiz(quiz);
+        }
+    }
+
+    deactivate() {
+        this.getController().getHistory().unset('quiz');
     }
 }

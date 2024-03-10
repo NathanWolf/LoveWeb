@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/editor.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/history.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/component.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/characters.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/chat.js?v=<?=VERSION?>"></script>
