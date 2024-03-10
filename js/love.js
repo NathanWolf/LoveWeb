@@ -27,6 +27,10 @@ class Love {
         return this.#profile;
     }
 
+    getTiers() {
+        return this.#tiers;
+    }
+
     register() {
         let love = this;
         Utilities.addHandlerToClass('tabButton', function() {

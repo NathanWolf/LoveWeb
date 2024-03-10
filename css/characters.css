@@ -87,3 +87,10 @@ table.properties th {
     white-space: nowrap;
     padding-right: 1em;
 }
+
+.characterGroupHeader {
+    margin: 1em 2em;
+    width: 100%;
+    padding: 8px;
+    font-size: 2em;
+}
