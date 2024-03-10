@@ -3,12 +3,16 @@ class Tiers extends Component {
     #tiers = {};
     #clicked = null;
     #dragging = false;
+    #scrollThreshold = 0.20;
+    #scrollSpeed = 100;
+    #scrolling = 0;
+    #scrollTimer = null;
 
     constructor(controller, element) {
         super(controller, element);
         let component = this;
         element.addEventListener('mousemove', function(event) {
-            component.onMouseMove(event.x, event.y);
+            component.onMouseMove(event.clientX, event.clientY);
         });
         element.addEventListener('touchmove', function(event) {
             component.onMouseMove(event.touches[0].clientX, event.touches[0].clientY);
@@ -173,19 +177,62 @@ class Tiers extends Component {
 
     onMouseMove(x, y) {
         if (this.#clicked != null) {
-            x -= 64;
-            y -= 64;
-            this.#clicked.style.left = x + 'px';
-            this.#clicked.style.top = y + 'px';
+            this.#clicked.style.left = (x - 64) + 'px';
+            this.#clicked.style.top = (y - 64) + 'px';
+
+            // Auto-scroll
+            let percentage = y / window.innerHeight;
+            let topThreshold = this.#scrollThreshold;
+            let bottomThreshold = 1 - this.#scrollThreshold;
+
+            if (percentage < topThreshold) {
+                this.#scrolling = -this.#scrollSpeed * (topThreshold - percentage) / topThreshold;
+            } else if (percentage > bottomThreshold) {
+                this.#scrolling = this.#scrollSpeed * (percentage - bottomThreshold) / this.#scrollThreshold;
+            } else {
+                this.#scrolling = 0;
+            }
 
             if (!this.#dragging) {
                 this.#dragging = true;
                 Utilities.addClass(this.#clicked, 'dragging');
             }
+        } else {
+            this.#scrolling = 0;
         }
     }
 
     getTitle() {
         return 'Tier Lists';
+    }
+
+    activate() {
+        super.activate();
+        this.#startScrollTimer();
+    }
+
+    deactivate() {
+        super.deactivate();
+        clearTimeout(this.#scrollTimer);
+        this.#scrolling = 0;
+        this.#clicked = null;
+        this.#dragging = false;
+    }
+
+    #checkScroll() {
+        let element = this.getElement();
+        let maxScroll = element.scrollHeight - element.offsetHeight;
+
+        if (this.#scrolling != 0) {
+            element.scrollTop = Math.max(Math.min(element.scrollTop + this.#scrolling, maxScroll), 0);
+        }
+        this.#startScrollTimer();
+    }
+
+    #startScrollTimer() {
+        let component = this;
+        this.#scrollTimer = setTimeout(function() {
+            component.#checkScroll();
+        }, 50);
     }
 }

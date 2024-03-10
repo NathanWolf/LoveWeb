@@ -78,6 +78,10 @@ class Love {
             }
         }
 
+        if (this.#tabs.hasOwnProperty(this.#tab)) {
+            this.#tabs[this.#tab].deactivate();
+        }
+
         if (this.#tabs.hasOwnProperty(tabId)) {
             let tab = this.#tabs[tabId];
             let title = tab.getTitle();
