@@ -156,6 +156,7 @@ class CharacterQuiz extends Component {
         let list = document.createElement('ul');
         answers = Object.keys(answers);
         answers = Utilities.shuffle(answers);
+        answers.push('None of the above');
         for (let i = 0; i < answers.length; i++) {
             let answer = document.createElement('li');
             let option = answers[i];
