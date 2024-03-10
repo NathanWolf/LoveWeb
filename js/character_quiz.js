@@ -1,8 +1,12 @@
 class CharacterQuiz extends Component {
-    #maxQuestions = 100;
-    #maxAnswers = 50;
+    #maxQuestions = 30;
+    #maxAnswers = 20;
+    // How far below a match can be (in percentage) from the winner to show in details
+    #extraCutoff = 25;
+    #extraCount = 5;
 
     #characterScores = {};
+    #questionCount = 0;
     #remainingQuestions = [];
     #currentQuestion = null;
 
@@ -12,6 +16,7 @@ class CharacterQuiz extends Component {
 
     show() {
         this.#characterScores = {};
+        this.#questionCount = 0;
 
         let usedProperties = {};
         let characters = this.getController().getCharacters();
@@ -45,28 +50,64 @@ class CharacterQuiz extends Component {
         return characters;
     }
 
+    #showResults() {
+        let element = this.getElement();
+        let characters = this.getController().getCharacters();
+        let container = Utilities.createDiv('chosenCharacter', element);
+        let scores = this.#getSortedScores();
+        let chosen = scores[0];
+        let chosenCharacter = chosen.character;
+        let portraitContainer = Utilities.createDiv('portrait', container);
+        portraitContainer.style.backgroundImage = 'url(' + characters.getPortrait(chosenCharacter.id) + ')';
+        let chosenContainer = Utilities.createDiv('chosenContainer', container);
+        let youAre = Utilities.createSpan('chosenPrefix', chosenContainer);
+        youAre.innerText = 'You are';
+        let nameLabel = Utilities.createSpan('chosenName', chosenContainer);
+        nameLabel.innerText = chosenCharacter.full_name;
+        if (chosenCharacter.description != null) {
+            Utilities.createDiv('chosenDescription', container).innerText = chosenCharacter.description;
+        }
+        let showDetailsButton = Utilities.createDiv('detailsButton', container);
+        showDetailsButton.innerText = 'Show Details...';
+        let detailsContainer = Utilities.createDiv('details', container);
+        detailsContainer.style.display = 'none';
+
+        showDetailsButton.addEventListener('click', function() {
+            showDetailsButton.style.display = 'none';
+            detailsContainer.style.display = 'inherit';
+        });
+
+        let percentage = 100 * (chosen.score / this.#questionCount);
+        let match = Utilities.createDiv('primaryMatch', detailsContainer);
+        match.innerText = "Match: " + percentage.toFixed(0) + "%";
+        let secondaryMatches = Utilities.createDiv('secondaryMatches', detailsContainer);
+
+        for (let i = 1; i < scores.length && i <= this.#extraCount; i++) {
+            let extra = scores[i];
+            let extraPercentage = 100 * (extra.score / this.#questionCount);
+            let extraCharacter = extra.character;
+            if (percentage - extraPercentage > this.#extraCutoff) break;
+
+            let match = Utilities.createDiv('secondaryMatch', secondaryMatches);
+            let portraitContainer = Utilities.createDiv('portrait small', match);
+            portraitContainer.style.backgroundImage = 'url(' + characters.getPortrait(extraCharacter.id) + ')';
+            portraitContainer.title = extraCharacter.full_name;
+            let matchLabel = Utilities.createDiv('matchLabel', match);
+            matchLabel.innerText = "Matched with " + extraCharacter.full_name + ": " + percentage.toFixed(0) + "%";
+        }
+    }
+
     #nextQuestion() {
         let element = this.getElement();
         let characters = this.getController().getCharacters();
         Utilities.empty(element);
         if (this.#remainingQuestions.length === 0) {
-            let container = Utilities.createDiv('chosenCharacter', element);
-            let scores = this.#getSortedScores();
-            let chosen = scores[0].character;
-            let portraitContainer = Utilities.createDiv('portrait', container);
-            portraitContainer.style.backgroundImage = 'url(' + characters.getPortrait(chosen.id) + ')';
-            let chosenContainer = Utilities.createDiv('chosenContainer', container);
-            let youAre = Utilities.createSpan('chosenPrefix', chosenContainer);
-            youAre.innerText = 'You are';
-            let nameLabel = Utilities.createSpan('chosenName', chosenContainer);
-            nameLabel.innerText = chosen.full_name;
-            if (chosen.description != null) {
-                Utilities.createDiv('chosenDescription', container).innerText = chosen.description;
-            }
+            this.#showResults();
             return;
         }
 
         let nextQuestion = this.#remainingQuestions.pop();
+        this.#questionCount++;
         this.#currentQuestion = nextQuestion;
         let questionContainer = Utilities.createDiv('quizQuestion', element);
         let questionElement = Utilities.createDiv('quizQuestionQuestion', questionContainer);

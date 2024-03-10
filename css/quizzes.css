@@ -85,3 +85,44 @@
     font-weight: bold;
     margin-left: 8px;
 }
+
+.detailsButton {
+    cursor: pointer;
+    color: blue;
+}
+
+.detailsButton:hover {
+    text-decoration: underline;
+    color: black;
+}
+
+.details {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.primaryMatch {
+    font-weight: bold;
+    font-size: 1.5em;
+    color: #888;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.secondaryMatch {
+    color: #AAA;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.secondaryMatches {
+    overflow: auto;
+    flex: 1;
+}
+
+.matchLabel {
+    color: #AAA;
+}
