@@ -55,14 +55,15 @@ class Characters extends Component {
             }
         }
         characterGroups['unknown'] = {name: 'Unknown', characters: [], color: 'grey', dark: 0};
+        let defaultTier = {tier_id: 'unknown', priority: 0};
         for (let characterId in characters) {
             if (characters.hasOwnProperty(characterId)) {
                 let character = characters[characterId];
-                let tier = character.tiers.hasOwnProperty(this.#groupTierList) ? character.tiers[this.#groupTierList] : 'unknown';
-                if (!characterGroups.hasOwnProperty(tier)) {
-                    tier = 'unknown';
+                let tier = character.tiers.hasOwnProperty(this.#groupTierList) ? character.tiers[this.#groupTierList] : defaultTier;
+                if (!characterGroups.hasOwnProperty(tier.tier_id)) {
+                    tier = defaultTier;
                 }
-                characterGroups[tier].characters.push(character);
+                characterGroups[tier.tier_id].characters.push(tier);
             }
         }
 
@@ -76,7 +77,12 @@ class Characters extends Component {
             if (group.dark) {
                 header.style.color = 'white';
             }
-            group.characters.forEach(function(character) {
+            let characters = group.characters;
+            characters.sort(function(a, b) {
+                return b.priority - a.priority;
+            });
+            characters.forEach(function(characterTier) {
+                let character = controller.getCharacter(characterTier.persona_id);
                 let portrait = document.createElement('div');
                 portrait.className = 'portrait';
                 portrait.style.backgroundImage = 'url(' + controller.getPortrait(character.id) + ')';
@@ -197,7 +203,7 @@ class Characters extends Component {
         if (character == null || !character.hasOwnProperty('tiers')) {
             return defaultTier;
         }
-        return character.tiers.hasOwnProperty(tierList) ? character.tiers[tierList] : defaultTier;
+        return character.tiers.hasOwnProperty(tierList) ? character.tiers[tierList] : {tier_id: defaultTier, priority: 0};
     }
 
     getProperties() {

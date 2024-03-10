@@ -83,9 +83,18 @@ class Tiers extends Component {
 
         let controller = this;
         let characters = this.getController().getCharacters().getCharacterList();
+        let characterTiers = [];
         for (let i = 0; i < characters.length; i++) {
             let character = characters[i];
             let tier = this.getController().getCharacters().getTier(character.id, id, 'default');
+            characterTiers.push({character: character, tier: tier});
+        }
+        characterTiers.sort(function(a, b) {
+            return b.tier.priority - a.tier.priority;
+        });
+        for (let i = 0; i < characterTiers.length; i++) {
+            let character = characterTiers[i].character;
+            let tier = characterTiers[i].tier.tier_id;
             let tierPortrait = document.createElement('div');
             tierPortrait.className = 'tierPortrait';
             tierPortrait.title = character.name;

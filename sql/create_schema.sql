@@ -234,12 +234,14 @@ create table quiz_answer
 
 UPDATE persona_tier
     JOIN (
-        select persona_id, tier_list_id,
-               row_number() over (partition by tier_list_id) as row,
-               count(*) over (partition by tier_list_id) as tot
+        select persona_id, tier_list_id, tier_id,
+               row_number() over (partition by tier_list_id, tier_id) as row,
+               count(*) over (partition by tier_list_id, tier_id) as tot
         from persona_tier
     ) priorities
-    ON priorities.persona_id = persona_tier.persona_id and priorities.tier_list_id = persona_tier.tier_list_id
+    ON priorities.persona_id = persona_tier.persona_id
+       and priorities.tier_list_id = persona_tier.tier_list_id
+       and priorities.tier_id = persona_tier.tier_id
 SET persona_tier.priority = (priorities.tot - priorities.row) * 100;
 
 UPDATE tier

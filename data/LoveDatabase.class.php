@@ -136,7 +136,7 @@ class LoveDatabase extends Database {
             }
         }
         foreach ($tiers as $tier) {
-            $results[$tier['persona_id']]['tiers'][$tier['tier_list_id']] = $tier['tier_id'];
+            $results[$tier['persona_id']]['tiers'][$tier['tier_list_id']] = $tier;
         }
         foreach ($properties as $property) {
             $results[$property['persona_id']]['properties'][$property['property_id']] = $property['value'];
