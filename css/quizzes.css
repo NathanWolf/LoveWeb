@@ -126,3 +126,9 @@
 .matchLabel {
     color: #AAA;
 }
+
+.noMatch {
+    font-size: 2em;
+    font-weight: bold;
+    color: darkred;
+}

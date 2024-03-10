@@ -55,7 +55,12 @@ class CharacterQuiz extends Component {
         let characters = this.getController().getCharacters();
         let container = Utilities.createDiv('chosenCharacter', element);
         let scores = this.#getSortedScores();
-        let chosen = scores[0];
+        let chosen = scores.length == 0 ? null : scores[0];
+        if (chosen == null || chosen.score == 0) {
+            let oops = Utilities.createDiv('noMatch', container);
+            oops.innerText = "Sorry, you didn't match with anyone!";
+            return;
+        }
         let chosenCharacter = chosen.character;
         let portraitContainer = Utilities.createDiv('portrait', container);
         portraitContainer.style.backgroundImage = 'url(' + characters.getPortrait(chosenCharacter.id) + ')';
