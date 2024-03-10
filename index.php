@@ -1,31 +1,33 @@
-<?php ?>
+<?php
+    require_once('data/version.inc.php');
+?>
 <html lang="en-us">
 <head>
     <title>Love</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-    <link rel="stylesheet" href="css/love.css">
-    <link rel="stylesheet" href="css/characters.css">
-    <link rel="stylesheet" href="css/chat.css">
-    <link rel="stylesheet" href="css/quizzes.css">
-    <link rel="stylesheet" href="css/flashcards.css">
-    <link rel="stylesheet" href="css/tiers.css">
-    <link rel="stylesheet" href="css/relationships.css">
-    <link rel="stylesheet" href="css/profile.css">
-    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/love.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/characters.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/chat.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/quizzes.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/flashcards.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/tiers.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/relationships.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/profile.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/editor.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
-    <script type="text/javascript" src="js/utilities.js"></script>
-    <script type="text/javascript" src="js/component.js"></script>
-    <script type="text/javascript" src="js/characters.js"></script>
-    <script type="text/javascript" src="js/chat.js"></script>
-    <script type="text/javascript" src="js/character_quiz.js"></script>
-    <script type="text/javascript" src="js/quizzes.js"></script>
-    <script type="text/javascript" src="js/flashcards.js"></script>
-    <script type="text/javascript" src="js/tiers.js"></script>
-    <script type="text/javascript" src="js/relationships.js"></script>
-    <script type="text/javascript" src="js/profile.js"></script>
-    <script type="text/javascript" src="js/love.js"></script>
-    <script type="text/javascript" src="js/editor.js"></script>
-    <script type="text/javascript" src="js/character_editor.js"></script>
+    <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/component.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/characters.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/chat.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/character_quiz.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/quizzes.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/flashcards.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/tiers.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/relationships.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/profile.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/love.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/editor.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/character_editor.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
         var _love;
