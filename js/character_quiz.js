@@ -52,8 +52,8 @@ class CharacterQuiz extends Component {
 
     #showResults() {
         let element = this.getElement();
+        Utilities.empty(element);
         let characters = this.getController().getCharacters();
-        let container = Utilities.createDiv('chosenCharacter', element);
         let scores = this.#getSortedScores();
         let chosen = scores.length == 0 ? null : scores[0];
         if (chosen == null || chosen.score == 0) {
@@ -61,6 +61,12 @@ class CharacterQuiz extends Component {
             oops.innerText = "Sorry, you didn't match with anyone!";
             return;
         }
+        if (scores.length > 1 && scores[1].score == chosen.score) {
+            this.#showTiebreaker(scores);
+            return
+        }
+
+        let container = Utilities.createDiv('chosenCharacter', element);
         let chosenCharacter = chosen.character;
         let portraitContainer = Utilities.createDiv('portrait', container);
         portraitContainer.style.backgroundImage = 'url(' + characters.getPortrait(chosenCharacter.id) + ')';
@@ -100,6 +106,46 @@ class CharacterQuiz extends Component {
             let matchLabel = Utilities.createDiv('matchLabel', match);
             matchLabel.innerText = "Matched with " + extraCharacter.full_name + ": " + extraPercentage.toFixed(0) + "%";
         }
+    }
+
+    #showTiebreaker(scores) {
+        let tied = [];
+        let score = scores[0].score;
+        for (let i = 0; i < scores.length; i++) {
+            if (scores[i].score == score) {
+                tied.push(scores[i]);
+            } else {
+                break;
+            }
+        }
+
+        this.#questionCount++;
+        this.#currentQuestion = null;
+        let element = this.getElement();
+        let questionContainer = Utilities.createDiv('quizQuestion', element);
+        let questionElement = Utilities.createDiv('quizQuestionQuestion', questionContainer);
+        let answerElement = Utilities.createDiv('quizQuestionAnswers', questionContainer);
+        let list = document.createElement('ul');
+        questionElement.innerText = 'Which name speaks to you more?';
+
+        let controller = this;
+        for (let i = 0; i < tied.length; i++) {
+            let tiedCharacter = tied[i].character;
+            let answer = document.createElement('li');
+            answer.innerText = tiedCharacter.first_name;
+            answer.dataset.character = tiedCharacter.id;
+            answer.addEventListener('click', function() {
+                controller.#onTiebreakerClick(this.dataset.character);
+            });
+            list.appendChild(answer);
+        }
+        answerElement.appendChild(list);
+    }
+
+    #onTiebreakerClick(characterId) {
+        let character = this.getController().getCharacters().getCharacter(characterId);
+        this.#addCharacterScore(character);
+        this.#showResults();
     }
 
     #nextQuestion() {
@@ -175,6 +221,17 @@ class CharacterQuiz extends Component {
         answerElement.appendChild(list);
     }
 
+    #addCharacterScore(character) {
+        if (this.#characterScores.hasOwnProperty(character.id)) {
+            this.#characterScores[character.id].score++;
+        } else {
+            this.#characterScores[character.id] = {
+                score: 1,
+                character: character
+            }
+        }
+    }
+
     onAnswerClick(propertyValue) {
         let propertyId = this.#currentQuestion.id;
         let characters = this.getController().getCharacters();
@@ -182,14 +239,7 @@ class CharacterQuiz extends Component {
         for (let i = 0; i < allCharacters.length; i++) {
             let character = allCharacters[i];
             if (character.properties.hasOwnProperty(propertyId) && character.properties[propertyId] == propertyValue) {
-                if (this.#characterScores.hasOwnProperty(character.id)) {
-                    this.#characterScores[character.id].score++;
-                } else {
-                    this.#characterScores[character.id] = {
-                        score: 1,
-                        character: character
-                    }
-                }
+                this.#addCharacterScore(character);
             }
         }
         this.#nextQuestion();

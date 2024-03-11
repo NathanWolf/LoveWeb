@@ -132,3 +132,7 @@
     font-weight: bold;
     color: darkred;
 }
+
+.chosenDescription {
+    max-width: 50%;
+}
