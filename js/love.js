@@ -18,7 +18,8 @@ class Love {
         tierLists: this.#tiers,
         relationships: this.#relationships,
         characterEditor: this.#characterEditor,
-        profile: this.#profile
+        profile: this.#profile,
+        home: null
     };
 
     constructor() {
@@ -95,20 +96,21 @@ class Love {
             }
         }
 
-        if (this.#tabs.hasOwnProperty(this.#tab)) {
-            this.#tabs[this.#tab].deactivate();
+        let previousTab = this.#tabs.hasOwnProperty(this.#tab) ? this.#tabs[this.#tab] : null;
+        if (previousTab != null) {
+            previousTab.deactivate();
         }
 
-        if (this.#tabs.hasOwnProperty(tabId)) {
-            let tab = this.#tabs[tabId];
-            let title = tab.getTitle();
-            if (title != null) {
-                document.title = 'Love (' + title + ')';
-            } else {
-                document.title = 'Love';
+        let tab = this.#tabs[tabId];
+        let title = 'Love';
+        if (tab != null) {
+            let tabTitle = tab.getTitle();
+            if (tabTitle != null) {
+                title += ' (' + tabTitle + ')';
             }
             tab.activate();
         }
+        document.title = title;
         this.#tab = tabId;
         this.#history.set('tab', this.#tab);
     }
