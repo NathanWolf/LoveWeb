@@ -5,6 +5,7 @@ class Profile extends Component {
     constructor(controller, element, button) {
         super(controller, element);
         this.#button = button;
+        this.#updateButton();
     }
 
     show() {
@@ -201,6 +202,7 @@ class Profile extends Component {
         } else {
             this.#hideAdmin();
         }
+        this.#updateButton();
     }
 
     #logout() {
@@ -235,6 +237,7 @@ class Profile extends Component {
             Utilities.addClass(this.#button, 'loggedout');
             this.#hideAdmin();
             this.#user = null;
+            this.#updateButton();
             this.#showLogin();
         } else {
             alert("Failed to logout, please try again!");
@@ -276,10 +279,34 @@ class Profile extends Component {
         return 'User Profile';
     }
 
+    #updateButton() {
+        Utilities.empty(this.#button);
+        let portrait = null;
+        let characters = this.getController().getCharacters();
+        if (this.#user != null && this.#user.properties.hasOwnProperty('persona_id')) {
+            let selectedCharacter = this.#user.properties['persona_id'].value;
+            portrait = characters.getPortrait(selectedCharacter)
+        }
+
+        if (portrait != null) {
+            let portraitContainer = Utilities.createDiv('portrait tiny', this.#button);
+            portraitContainer.style.backgroundImage = 'url(' + portrait + ')';
+        } else {
+            this.#button.innerHTML = '&#128100;&#xfe0e;';
+        }
+    }
+
+    loaded() {
+        this.#updateButton();
+    }
+
     save(property, value) {
         if (this.#user == null) return;
         let user = this.#user;
         this.#user['properties'][property] = value;
+        if (property == 'persona_id') {
+            this.#updateButton();
+        }
         const request = new XMLHttpRequest();
         request.responseType = 'json';
         request.onerror = function() {

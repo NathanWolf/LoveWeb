@@ -143,6 +143,7 @@ class Love {
         this.#loaded = true;
         document.getElementById('loading').style.display = 'none';
         this.#history.autoUpdate();
+        this.#profile.loaded();
     }
 
     onHistoryChange() {

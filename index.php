@@ -65,7 +65,7 @@
                 <div class="tabButton toolbarButton admin" data-tab="characterEditor" style="display: none">Character Editor</div>
                 <div class="tabLink toolbarButton"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
             </div>
-            <div id="profileButton" class="tabButton toolbarButton loggedout" data-tab="profile">&#128100;&#xfe0e;</div>
+            <div id="profileButton" class="tabButton toolbarButton loggedout" data-tab="profile"></div>
         </div>
 
         <div class="tab" id="home">
