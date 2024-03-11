@@ -79,10 +79,10 @@
             <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
         </div>
 
-        <div class="tab" id="characters">
+        <div class="tab" id="characters" style="display: none">
         </div>
 
-        <div class="tab" id="chat">
+        <div class="tab" id="chat" style="display: none">
         </div>
 
         <div class="tab" id="relationships" style="display: none">
