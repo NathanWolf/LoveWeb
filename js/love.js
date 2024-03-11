@@ -17,7 +17,8 @@ class Love {
         flashCards: this.#flashcards,
         tierLists: this.#tiers,
         relationships: this.#relationships,
-        editor: this.#characterEditor
+        characterEditor: this.#characterEditor,
+        profile: this.#profile
     };
 
     constructor() {
@@ -72,6 +73,9 @@ class Love {
     }
 
     selectTab(tabId) {
+        if (!this.#tabs.hasOwnProperty(tabId)) {
+            throw new Error("Selecting unknown tab: " + tabId);
+        }
         let tabButtons = document.getElementsByClassName('tabButton');
         for (let i = 0; i < tabButtons.length; i++) {
             let tabButton = tabButtons[i];
