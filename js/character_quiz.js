@@ -106,6 +106,9 @@ class CharacterQuiz extends Component {
             let matchLabel = Utilities.createDiv('matchLabel', match);
             matchLabel.innerText = "Matched with " + extraCharacter.full_name + ": " + extraPercentage.toFixed(0) + "%";
         }
+
+        // TODO: Make this optional when replacing?
+        this.getController().getProfile().save('persona_id', chosenCharacter.id);
     }
 
     #showTiebreaker(scores) {
