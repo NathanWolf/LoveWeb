@@ -22,6 +22,10 @@ class LoveDatabase extends Database {
             'token' => $token
         );
         $this->insert('user', $user);
+        $user = $this->lookupUser($email);
+        if (!$user) {
+            throw new Exception("Failed to create new user account");
+        }
         $this->sanitize($user);
         $user['properties'] = array();
         return $user;
