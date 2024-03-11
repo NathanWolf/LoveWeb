@@ -161,7 +161,7 @@ class Database {
         if (!isset($row[$id]) || !$row[$id]) {
             throw new Exception("Trying to save a row to $table without an id ($id)");
         }
-        if ($id2 && !isset($row[$id2]) || !$row[$id2]) {
+        if ($id2 && (!isset($row[$id2]) || !$row[$id2])) {
             throw new Exception("Trying to save a row to $table without an secondary id ($id2)");
         }
 
