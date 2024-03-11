@@ -303,7 +303,7 @@ class Profile extends Component {
     save(property, value) {
         if (this.#user == null) return;
         let user = this.#user;
-        this.#user['properties'][property] = value;
+        this.#user['properties'][property] = {property_id: property, value: value};
         if (property == 'persona_id') {
             this.#updateButton();
         }
