@@ -51,11 +51,11 @@ section {
 
 
 .loggedout {
-    background-color: darkred;
+    background-color: darkred !important;
 }
 
 .loggedin {
-    background-color: darkcyan;
+    background-color: darkcyan !important;
 }
 
 .profile {
