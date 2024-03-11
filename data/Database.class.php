@@ -68,6 +68,11 @@ class Database {
         return $records;
     }
 
+    public function queryOne($table, $filter, $parameters = array()) {
+        $rows = $this->query("SELECT * FROM $table WHERE $filter", $parameters);
+        return $rows ? $rows[0] : null;
+    }
+
     public function get($table, $id, $idField = 'id') {
         $rows = $this->query("SELECT * FROM $table WHERE $idField=:id", array('id' => $id));
         if ($rows) {
@@ -144,21 +149,28 @@ class Database {
         return $this->execute($sql, $data);
     }
 
-    function save($table, $row, $id = 'id') {
+    function save($table, $row, $id = 'id', $id2 = null) {
         $update = array();
         $parameters = array();
         foreach ($row as $key => $value) {
-            if ($key != $id) {
+            if ($key != $id && $key != $id2) {
                 $update[] = "$key = :$key";
                 $parameters[$key] = $value;
             }
         }
         if (!isset($row[$id]) || !$row[$id]) {
-            throw new Exception("Trying to save a row to $table without an id");
+            throw new Exception("Trying to save a row to $table without an id ($id)");
+        }
+        if ($id2 && !isset($row[$id2]) || !$row[$id2]) {
+            throw new Exception("Trying to save a row to $table without an secondary id ($id2)");
         }
 
-        $sql = "update $table set " . implode(',', $update) . " where $id = :$id";
-        $parameters[$id] = $row[$id];
+        $sql = "update $table set " . implode(',', $update) . " where $id = :id";
+        $parameters['id'] = $row[$id];
+        if ($id2) {
+            $sql .= " AND $id2 = :id2";
+            $parameters['id2'] = $row[$id2];
+        }
         $this->execute($sql, $parameters);
         return true;
     }
