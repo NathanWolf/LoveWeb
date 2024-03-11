@@ -27,38 +27,6 @@ class CharacterEditor extends Editor {
         });
     }
 
-    #createInput(editorForm, property) {
-        let propertySection = document.createElement('section');
-        editorForm.appendChild(propertySection);
-        let propertyLabel = document.createElement('label');
-        propertyLabel.for = 'propertyInput-' + property.id;
-        propertyLabel.innerText = property.name;
-        let propertyInput = document.createElement('input');
-        propertyInput.id = 'propertyInput-' + property.id;
-        propertyInput.size = 50;
-        propertySection.appendChild(propertyLabel);
-        propertySection.appendChild(propertyInput);
-        return propertyInput;
-    }
-
-    #createLongInput(editorForm, property, value) {
-        let section = document.createElement('section');
-        editorForm.appendChild(section);
-        let label = document.createElement('label');
-        label.for = 'input-' + property.id;
-        label.innerText = property.name;
-        let input = document.createElement('textarea');
-        input.id = 'input-' + property.id;
-        input.rows = 10;
-        input.cols = 80;
-        section.appendChild(label);
-        section.appendChild(input);
-        if (value != null) {
-            input.value = value;
-        }
-        return input;
-    }
-
     onPortraitClick(portrait) {
         let characters = this.getController().getCharacters();
         let characterKey = portrait.dataset.character;
