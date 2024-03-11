@@ -41,7 +41,7 @@ class LoveDatabase extends Database {
         }
         if (!$user['token']) {
             $user['token'] = $this->generateToken();
-            $this->save('user', $user);
+            $this->saveUser($user);
         }
         $this->sanitize($user);
         return $user;
@@ -54,7 +54,7 @@ class LoveDatabase extends Database {
     public function changePassword($userId, $token, $password) {
         $user = $this->validateLogin($userId, $token);
         $user['password_hash'] = password_hash($password, PASSWORD_DEFAULT);
-        $this->save('user', $user);
+        $this->saveUser($user);
     }
 
     public function forceChangePassword($email, $password) {
@@ -63,7 +63,7 @@ class LoveDatabase extends Database {
             throw new Exception("Invalid user $email");
         }
         $user['password_hash'] = password_hash($password, PASSWORD_DEFAULT);
-        $this->save('user', $user);
+        $this->saveUser($user);
     }
 
     public function validateLogin($userId, $token) {
@@ -80,16 +80,27 @@ class LoveDatabase extends Database {
         $this->execute('UPDATE user SET token=null WHERE id=:id', array('id' => $userId));
     }
 
+    private function processUser(&$user) {
+        if ($user) {
+            $user['properties'] = $this->getUserProperties($user['id']);
+        }
+    }
+
     public function lookupUser($email) {
-        return $this->get('user', $email, 'email');
+        $user = $this->get('user', $email, 'email');
+        $this->processUser($user);
+        return $user;
     }
 
     public function getUser($userId) {
         $user = $this->get('user', $userId);
-        if ($user) {
-            $user['properties'] = $this->getUserProperties($userId);
-        }
+        $this->processUser($user);
         return $user;
+    }
+
+    public function saveUser($user) {
+        unset($user['properties']);
+        $this->save('user', $user);
     }
 
     public function getUserProperties($userId) {
