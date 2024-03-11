@@ -281,14 +281,14 @@ class Profile extends Component {
 
     #updateButton() {
         Utilities.empty(this.#button);
-        let portrait = null;
+        let portrait = '';
         let characters = this.getController().getCharacters();
         if (this.#user != null && this.#user.properties.hasOwnProperty('persona_id')) {
             let selectedCharacter = this.#user.properties['persona_id'].value;
             portrait = characters.getPortrait(selectedCharacter)
         }
 
-        if (portrait != null) {
+        if (portrait != '') {
             let portraitContainer = Utilities.createDiv('portrait tiny', this.#button);
             portraitContainer.style.backgroundImage = 'url(' + portrait + ')';
         } else {
