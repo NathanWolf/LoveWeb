@@ -4,6 +4,7 @@ use love;
 create user 'love'@'127.0.0.1' identified by 'super-secure-password';
 grant select ON love.* to 'love'@'127.0.0.1';
 grant update,insert ON love.user to 'love'@'127.0.0.1';
+grant update,insert ON love.user_property to 'love'@'127.0.0.1';
 
 create user 'love_admin'@'127.0.0.1' identified by 'super-duper-secure-password';
 grant all privileges ON love.* to 'love_admin'@'127.0.0.1';
@@ -21,6 +22,21 @@ create table user
 
     constraint user_pk
         primary key (id)
+);
+
+CREATE TABLE user_property
+(
+    user_id VARCHAR(64) NOT NULL,
+    property_id VARCHAR(64) NOT NULL,
+    value varchar(255) NOT NULL,
+
+    constraint user_property_pk
+        primary key (user_id, property_id),
+
+    foreign key (user_id)
+        references user(id)
+        on delete cascade
+        on update cascade
 );
 
 create table tier_list

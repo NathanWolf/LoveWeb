@@ -23,6 +23,7 @@ class LoveDatabase extends Database {
         );
         $this->insert('user', $user);
         $this->sanitize($user);
+        $user['properties'] = array();
         return $user;
     }
 
@@ -84,7 +85,18 @@ class LoveDatabase extends Database {
     }
 
     public function getUser($userId) {
-        return $this->get('user', $userId);
+        $user = $this->get('user', $userId);
+        if ($user) {
+            $user['properties'] = $this->getUserProperties($userId);
+        }
+        return $user;
+    }
+
+    public function getUserProperties($userId) {
+        $properties = $this->query('SELECT property_id, value FROM user_property WHERE user_id = :id',
+            array('id' => $userId)
+        );
+        return $this->index($properties, 'property_id');
     }
 
     public function getTierLists() {
@@ -180,5 +192,21 @@ class LoveDatabase extends Database {
         $properties = $this->getAll('property', 'question, priority desc');
         $properties = $this->index($properties);
         return $properties;
+    }
+
+
+    public function saveUserProperty($userId, $propertyId, $value) {
+        $property = $this->queryOne(
+            'user_property',
+            'user_id = :user AND property_id = :property',
+            array('user' => $userId, 'property' => $propertyId)
+        );
+        if (!$property) {
+            $property = array('user_id' => $userId, 'property_id' => $propertyId, 'value' => $value);
+            $this->insert('user_property', $property);
+        } else {
+            $property['value'] = $value;
+            $this->save('user_property', $property, 'user_id', 'property_id');
+        }
     }
 }

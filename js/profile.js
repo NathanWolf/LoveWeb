@@ -275,4 +275,21 @@ class Profile extends Component {
     getTitle() {
         return 'User Profile';
     }
+
+    save(property, value) {
+        if (this.#user == null) return;
+        let user = this.#user;
+        this.#user['properties'][property] = value;
+        const request = new XMLHttpRequest();
+        request.responseType = 'json';
+        request.onerror = function() {
+            console.log("Error saving profile");
+        };
+
+        request.open("POST", "data/user.php?action=save&property=" + property
+            + '&user=' + user.id
+            + '&token=' + user.token
+            + '&value=' + encodeURIComponent(value), true);
+        request.send();
+    }
 }

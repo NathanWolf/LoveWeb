@@ -24,6 +24,18 @@ try {
             $lastName = getParameter('last', '');
             $user = $db->createUser($email, $password, $firstName, $lastName);
             die(json_encode(array('success' => true, 'user' => $user)));
+        case 'save';
+            $userId = getParameter('user');
+            $token = getParameter('token');
+            $user = $db->validateLogin($userId, $token);
+            $property = getParameter('property');
+            $value = getParameter('value');
+            $db->saveUserProperty($userId, $property, $value);
+            $user['properties'][$property] = array(
+                'property_id' => $property,
+                'value' => $value
+            );
+            die(json_encode(array('success' => true, 'user' => $user)));
         case 'return':
             $userId = getParameter('user');
             $token = getParameter('token');
