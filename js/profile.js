@@ -1,6 +1,7 @@
 class Profile extends Component {
     #button;
     #user;
+    #formButtons = [];
 
     constructor(controller, element, button) {
         super(controller, element);
@@ -71,6 +72,8 @@ class Profile extends Component {
             profile.#showRegister(emailInput.value, passwordInput.value);
         });
         loginForm.appendChild(registerButton);
+
+        this.#formButtons = [registerButton, loginButton];
     }
 
     #showRegister(email, password) {
@@ -129,15 +132,23 @@ class Profile extends Component {
         lastSection.appendChild(lastLabel);
         lastSection.appendChild(lastInput);
 
-        let loginButton = document.createElement('button');
-        loginButton.className = 'register';
-        loginButton.innerText = 'Register';
+        let registerButton = document.createElement('button');
+        registerButton.className = 'register';
+        registerButton.innerText = 'Register';
         let profile = this;
         registerForm.addEventListener('submit', () => {
-            loginButton.disabled = true;
+            registerButton.disabled = true;
             profile.#register(emailInput.value, passwordInput.value, firstInput.value, lastInput.value);
         });
-        registerForm.appendChild(loginButton);
+        registerForm.appendChild(registerButton);
+
+        this.#formButtons = [registerButton];
+    }
+
+    #enableFormButtons() {
+        for (let i = 0; i < this.#formButtons.length; i++) {
+            this.#formButtons[i].disabled = false;
+        }
     }
 
     #register(email, password, firstName, lastName) {
@@ -174,7 +185,7 @@ class Profile extends Component {
             this.#showProfile();
         } else {
             alert("An error occurred logging you in, please try again: " + response.message);
-            this.#showLogin();
+            this.#enableFormButtons();
         }
     }
 
@@ -192,6 +203,7 @@ class Profile extends Component {
         logoutButton.innerText = 'Logout';
         let profile = this;
         logoutForm.addEventListener('submit', () => {
+            logoutButton.disabled = true;
             profile.#logout();
         });
         logoutForm.appendChild(logoutButton);
@@ -203,6 +215,7 @@ class Profile extends Component {
             this.#hideAdmin();
         }
         this.#updateButton();
+        this.#formButtons = [logoutButton];
     }
 
     #logout() {
@@ -241,6 +254,7 @@ class Profile extends Component {
             this.#showLogin();
         } else {
             alert("Failed to logout, please try again!");
+            this.#enableFormButtons();
         }
     }
 
