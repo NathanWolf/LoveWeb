@@ -149,7 +149,7 @@ class Quizzes extends Component {
     onHistoryChange() {
         let history = this.getController().getHistory();
         let quiz = history.get('quiz');
-        if (this.#currentQuiz != quiz) {
+        if (quiz && this.#currentQuiz != quiz) {
             this.onSelectQuiz(quiz);
         }
     }
