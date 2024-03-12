@@ -59,7 +59,7 @@ class Utilities {
         return innerDiv;
     }
 
-    static showPopup(parent, innerClass) {
+    static showPopup(parent, innerClass, callback) {
         if (typeof(innerClass) === 'undefined') {
             innerClass = 'popupInnerContent';
         }
@@ -75,8 +75,18 @@ class Utilities {
 
         popupDiv.addEventListener('click', function() {
             this.remove();
+            if (typeof(callback) !== 'undefined' && callback != null) {
+                callback(popupDiv);
+            }
         });
         return innerDiv;
+    }
+
+    static closePopups() {
+        let elements = document.getElementsByClassName('popup');
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].dispatchEvent(new Event("click"));
+        }
     }
 
     static createElement(elementType, className, parent) {

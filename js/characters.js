@@ -1,5 +1,6 @@
 class Characters extends Component {
     #groupTierList = 'renown';
+    #popupCharacterId = null;
     #characters = {};
     #properties = {};
 
@@ -69,13 +70,23 @@ class Characters extends Component {
 
     onPortraitClick(portrait) {
         let characterKey = portrait.dataset.character;
+        this.#showCharacterPopup(characterKey);
+    }
+
+    #showCharacterPopup(characterKey) {
         let character = this.getCharacter(characterKey);
         if (character == null) {
             alert("Sorry, something went wrong!");
             return;
         }
+        this.#popupCharacterId = characterKey;
+        this.getController().getHistory().set('character', characterKey);
         let element = this.getElement();
-        let popup = Utilities.showPopup(element.parentNode, 'characterSheet');
+        let characterController = this;
+        let popup = Utilities.showPopup(element.parentNode, 'characterSheet', function() {
+            characterController.#popupCharacterId = null;
+            characterController.getController().getHistory().unset('character');
+        });
         let image = Utilities.createDiv('sheetImage', popup);
         image.style.backgroundImage = 'url(' + this.getImage(characterKey) + ')';
         if (character.properties.hasOwnProperty('color')) {
@@ -180,5 +191,21 @@ class Characters extends Component {
 
     getTitle() {
         return 'Characters';
+    }
+
+    onHistoryChange() {
+        let history = this.getController().getHistory();
+        let character = history.get('character');
+        if (this.#popupCharacterId != character) {
+            if (character == null) {
+                Utilities.closePopups();
+            } else {
+                this.#showCharacterPopup(character);
+            }
+        }
+    }
+
+    deactivate() {
+        this.getController().getHistory().unset('character');
     }
 }
