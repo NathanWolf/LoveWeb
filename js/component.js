@@ -26,8 +26,6 @@ class Component {
     }
 
     show() {
-        Utilities.empty(this.#element);
-        this.#element.innerText = '(Content Missing)';
     }
 
     activate() {
@@ -35,7 +33,6 @@ class Component {
     }
 
     hide() {
-        Utilities.empty(this.#element);
     }
 
     deactivate() {
@@ -43,6 +40,5 @@ class Component {
     }
 
     onHistoryChange() {
-
     }
 }

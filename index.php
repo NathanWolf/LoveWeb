@@ -29,6 +29,7 @@
     <script type="text/javascript" src="js/love.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/editor.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/character_editor.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/home.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
         var _love;

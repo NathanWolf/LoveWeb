@@ -10,6 +10,7 @@ class Love {
     #relationships = new Relationships(this, document.getElementById('relationships'));
     #profile = new Profile(this, document.getElementById('profile'), document.getElementById('profileButton'));
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
+    #home = new Home(this, document.getElementById('home'));
     #tabs = {
         characters: this.#characters,
         chat: this.#chat,
@@ -19,7 +20,7 @@ class Love {
         relationships: this.#relationships,
         characterEditor: this.#characterEditor,
         profile: this.#profile,
-        home: null
+        home: this.#home
     };
 
     constructor() {
@@ -103,13 +104,11 @@ class Love {
 
         let tab = this.#tabs[tabId];
         let title = 'Love';
-        if (tab != null) {
-            let tabTitle = tab.getTitle();
-            if (tabTitle != null) {
-                title += ' (' + tabTitle + ')';
-            }
-            tab.activate();
+        let tabTitle = tab.getTitle();
+        if (tabTitle != null) {
+            title += ' (' + tabTitle + ')';
         }
+        tab.activate();
         document.title = title;
         this.#tab = tabId;
         this.#history.set('tab', this.#tab);
