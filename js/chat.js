@@ -33,6 +33,10 @@ class Chat extends Component {
 
     onPortraitClick(portrait) {
         let characterKey = portrait.dataset.character;
+        this.#selectCharacter(characterKey);
+    }
+
+    #selectCharacter(characterKey) {
         let controller = this;
         let characters = this.getController().getCharacters();
         let character = characters.getCharacter(characterKey);
@@ -42,6 +46,7 @@ class Chat extends Component {
         }
 
         this.#characterId = characterKey;
+        this.getController().getHistory().set('character', characterKey);
 
         let container = this.getElement();
         Utilities.empty(container);
@@ -190,5 +195,21 @@ class Chat extends Component {
 
     getTitle() {
         return 'Chat';
+    }
+
+    onHistoryChange() {
+        let history = this.getController().getHistory();
+        let character = history.get('character');
+        if (this.#characterId != character) {
+            if (character == null) {
+                this.show();
+            } else {
+                this.#selectCharacter(character);
+            }
+        }
+    }
+
+    deactivate() {
+        this.getController().getHistory().unset('character');
     }
 }
