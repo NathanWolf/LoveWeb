@@ -86,6 +86,14 @@ class Chat extends Component {
     addMessage(role, message, characterId) {
         let messageDiv = Utilities.createDiv('message ' + role, this.#messages);
         let icon = Utilities.createDiv('identity', messageDiv);
+        let userCharacter = this.getController().getProfile().getCharacterId();
+        if (userCharacter != null) {
+            Utilities.addClass(icon, 'portrait');
+            Utilities.addClass(icon, 'small');
+            let portrait = this.getController().getCharacters().getPortrait(userCharacter)
+            icon.style.backgroundImage = 'url(' + portrait + ')';
+        }
+
         let content = Utilities.createDiv('content', messageDiv);
         content.innerHTML = message;
         if (typeof(characterId) !== 'undefined') {

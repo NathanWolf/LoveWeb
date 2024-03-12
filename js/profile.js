@@ -311,6 +311,13 @@ class Profile extends Component {
         }
     }
 
+    getCharacterId() {
+        if (this.#user != null && this.#user.properties.hasOwnProperty('persona_id')) {
+            return this.#user.properties['persona_id'].value;
+        }
+        return null;
+    }
+
     loaded() {
         this.#updateButton();
     }
