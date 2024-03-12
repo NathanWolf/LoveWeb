@@ -151,9 +151,11 @@ class Love {
         document.getElementById('loading').style.display = 'none';
         this.#profile.loaded();
 
-        // Reactivate current tab
+        // Activate current tab
         let tab = this.#tabs[this.#tab];
         tab.activate();
+        // We also skip having tabs process history until data is loaded
+        tab.onHistoryChange();
     }
 
     onHistoryChange() {
@@ -161,6 +163,8 @@ class Love {
         if (tab !== this.#tab) {
             this.selectTab(tab);
         }
-        this.#tabs[tab].onHistoryChange();
+        if (this.#loaded) {
+            this.#tabs[tab].onHistoryChange();
+        }
     }
 }
