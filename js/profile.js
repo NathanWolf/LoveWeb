@@ -259,6 +259,7 @@ class Profile extends Component {
     }
 
     check() {
+        this.#hideAdmin();
         let userId = Utilities.getCookie('user');
         let token = Utilities.getCookie('token');
         if (userId != null && token != null) {

@@ -76,7 +76,7 @@
             <div class="tile navigation" data-tab="flashCards">Flash Cards</div>
             <div class="tile navigation" data-tab="relationships">Relationships</div>
             <div class="tile navigation" data-tab="tierLists">Tier Lists</div>
-            <div class="tile navigation admin" data-tab="characterEditor">Character Editor</div>
+            <div class="tile navigation admin" data-tab="characterEditor" style="display: none">Character Editor</div>
             <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
         </div>
 
