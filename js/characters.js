@@ -32,40 +32,12 @@ class Characters extends Component {
     }
 
     show() {
-        let controller = this;
+        let characterController = this;
         let container = this.getElement();
         let tiers = this.getController().getTiers();
-        let renownTierList = tiers.getTierList(this.#groupTierList);
-        if (renownTierList == null) {
-            renownTierList = {};
-        }
 
         // Group characters by the grouping tier
-        let characterGroups = {};
-        let characters = this.getCharacterList();
-        for (let tierId in renownTierList.tiers) {
-            if (renownTierList.tiers.hasOwnProperty(tierId)) {
-                let tier = renownTierList.tiers[tierId];
-                characterGroups[tier.id] = {
-                    name: tier.name,
-                    color: tier.color,
-                    dark: 1,
-                    characters: []
-                };
-            }
-        }
-        characterGroups['unknown'] = {name: 'Unknown', characters: [], color: 'grey', dark: 0};
-        let defaultTier = {tier_id: 'unknown', priority: 0};
-        for (let characterId in characters) {
-            if (characters.hasOwnProperty(characterId)) {
-                let character = characters[characterId];
-                let tier = character.tiers.hasOwnProperty(this.#groupTierList) ? character.tiers[this.#groupTierList] : defaultTier;
-                if (!characterGroups.hasOwnProperty(tier.tier_id)) {
-                    tier = defaultTier;
-                }
-                characterGroups[tier.tier_id].characters.push(tier);
-            }
-        }
+        let characterGroups = tiers.getGroupedCharacters(this.#groupTierList);
 
         // Show grouped characters with group banners
         Utilities.empty(container);
@@ -77,22 +49,18 @@ class Characters extends Component {
             if (group.dark) {
                 header.style.color = 'white';
             }
-            let characters = group.characters;
-            characters.sort(function(a, b) {
-                return b.priority - a.priority;
-            });
-            characters.forEach(function(characterTier) {
-                let character = controller.getCharacter(characterTier.persona_id);
+            group.characters.forEach(function(characterTier) {
+                let character = characterController.getCharacter(characterTier.persona_id);
                 let portrait = document.createElement('div');
                 portrait.className = 'portrait';
-                portrait.style.backgroundImage = 'url(' + controller.getPortrait(character.id) + ')';
+                portrait.style.backgroundImage = 'url(' + characterController.getPortrait(character.id) + ')';
                 container.appendChild(portrait);
                 let portraitName = document.createElement('div');
                 portraitName.className = 'portraitName';
                 portraitName.dataset.character = character.id;
                 portraitName.innerText = character.name;
                 portraitName.addEventListener('click', function(event) {
-                    controller.onPortraitClick(event.target);
+                    characterController.onPortraitClick(event.target);
                 })
                 container.appendChild(portraitName);
             });

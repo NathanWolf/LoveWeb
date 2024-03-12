@@ -235,4 +235,53 @@ class Tiers extends Component {
             component.#checkScroll();
         }, 50);
     }
+
+    getGroupedCharacters(tierListId) {
+        let characterController = this.getController().getCharacters();
+        let tierList = this.getTierList(tierListId);
+        if (tierList == null) {
+            tierList = {};
+        }
+
+        // Group characters by the grouping tier
+        let characterGroups = {};
+        let characters = characterController.getCharacterList();
+        for (let tierId in tierList.tiers) {
+            if (tierList.tiers.hasOwnProperty(tierId)) {
+                let tier = tierList.tiers[tierId];
+                characterGroups[tier.id] = {
+                    name: tier.name,
+                    color: tier.color,
+                    dark: 1,
+                    characters: []
+                };
+            }
+        }
+        characterGroups['unknown'] = {name: 'Unknown', characters: [], color: 'grey', dark: 0};
+        let defaultTier = {tier_id: 'unknown', priority: 0};
+        for (let characterId in characters) {
+            if (characters.hasOwnProperty(characterId)) {
+                let character = characters[characterId];
+                let tier = defaultTier;
+                if (character.tiers.hasOwnProperty(tierListId)) {
+                    tier = character.tiers[tierListId];
+                } else {
+                    tier = {...tier};
+                    tier.persona_id = character.id;
+                }
+                characterGroups[tier.tier_id].characters.push(tier);
+            }
+        }
+
+        // Sort by prority
+        for (let tierId in characterGroups) {
+            if (characterGroups.hasOwnProperty(tierId)) {
+                characterGroups[tierId].characters.sort(function(a, b) {
+                    return b.priority - a.priority;
+                });
+            }
+        }
+
+        return characterGroups;
+    }
 }
