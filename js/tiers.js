@@ -1,5 +1,6 @@
 class Tiers extends Component {
     #defaultGroup = null;
+    #currentList = null;
     #tiers = {};
     #clicked = null;
     #dragging = false;
@@ -62,6 +63,7 @@ class Tiers extends Component {
         tierTitle.className = 'title';
         tierTitle.innerText = tierList.name;
         element.appendChild(tierTitle);
+        this.getController().getHistory().set('list', id);
         let tierElements = {};
         tiers.unshift({
             'id': 'default',
@@ -273,7 +275,7 @@ class Tiers extends Component {
             }
         }
 
-        // Sort by prority
+        // Sort by priority
         for (let tierId in characterGroups) {
             if (characterGroups.hasOwnProperty(tierId)) {
                 characterGroups[tierId].characters.sort(function(a, b) {
@@ -283,5 +285,17 @@ class Tiers extends Component {
         }
 
         return characterGroups;
+    }
+
+    onHistoryChange() {
+        let history = this.getController().getHistory();
+        let list = history.get('list');
+        if (list && this.#currentList != list) {
+            this.onSelectTierList(list);
+        }
+    }
+
+    deactivate() {
+        this.getController().getHistory().unset('list');
     }
 }
