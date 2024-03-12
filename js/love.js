@@ -29,6 +29,7 @@ class Love {
         this.#history.onChange(function() {
             controller.onHistoryChange();
         });
+        this.#history.autoUpdate();
     }
 
     getCharacters() {
@@ -97,21 +98,26 @@ class Love {
             }
         }
 
-        let previousTab = this.#tabs.hasOwnProperty(this.#tab) ? this.#tabs[this.#tab] : null;
-        if (previousTab != null) {
-            previousTab.deactivate();
-        }
-
         let tab = this.#tabs[tabId];
         let title = 'Love';
         let tabTitle = tab.getTitle();
         if (tabTitle != null) {
             title += ' (' + tabTitle + ')';
         }
-        tab.activate();
         document.title = title;
         this.#tab = tabId;
         this.#history.set('tab', this.#tab);
+
+        // Don't activate the tab until data is loaded
+        if (!this.#loaded) {
+            return;
+        }
+
+        let previousTab = this.#tabs.hasOwnProperty(this.#tab) ? this.#tabs[this.#tab] : null;
+        if (previousTab != null) {
+            previousTab.deactivate();
+        }
+        tab.activate();
     }
 
     #request(url, callback) {
@@ -143,8 +149,11 @@ class Love {
 
         this.#loaded = true;
         document.getElementById('loading').style.display = 'none';
-        this.#history.autoUpdate();
         this.#profile.loaded();
+
+        // Reactivate current tab
+        let tab = this.#tabs[this.#tab];
+        tab.activate();
     }
 
     onHistoryChange() {
