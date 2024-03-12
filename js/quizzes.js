@@ -28,6 +28,7 @@ class Quizzes extends Component {
         Utilities.empty(element);
         let listElement = Utilities.createDiv('quizList', element);
         let quizzes = [];
+        this.#currentQuiz = null;
         // Add extra quizzes
         quizzes.push({
             id: 'character',
@@ -149,8 +150,12 @@ class Quizzes extends Component {
     onHistoryChange() {
         let history = this.getController().getHistory();
         let quiz = history.get('quiz');
-        if (quiz && this.#currentQuiz != quiz) {
-            this.onSelectQuiz(quiz);
+        if (this.#currentQuiz != quiz) {
+            if (quiz == null) {
+                this.show();
+            } else {
+                this.onSelectQuiz(quiz);
+            }
         }
     }
 

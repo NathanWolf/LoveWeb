@@ -35,6 +35,7 @@ class Tiers extends Component {
         let element = this.getElement();
         Utilities.empty(element);
         this.release();
+        this.#currentList = null;
         let controller = this;
         for (let tierId in this.#tiers) {
             if (!this.#tiers.hasOwnProperty(tierId)) continue;
@@ -58,6 +59,7 @@ class Tiers extends Component {
         let element = this.getElement();
         let tierList = this.#tiers[id];
         let tiers = Utilities.mapArray(tierList.tiers);
+        this.#currentList = id;
         Utilities.empty(element);
         let tierTitle = document.createElement('div');
         tierTitle.className = 'title';
@@ -290,8 +292,12 @@ class Tiers extends Component {
     onHistoryChange() {
         let history = this.getController().getHistory();
         let list = history.get('list');
-        if (list && this.#currentList != list) {
-            this.onSelectTierList(list);
+        if (this.#currentList != list) {
+            if (list == null) {
+                this.show();
+            } else {
+                this.onSelectTierList(list);
+            }
         }
     }
 

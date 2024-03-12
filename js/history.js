@@ -44,12 +44,12 @@ class History {
     }
 
     get(key) {
-        let defaultValue = this.#defaults.hasOwnProperty(key) ? this.#defaults[key] : false;
+        let defaultValue = this.#defaults.hasOwnProperty(key) ? this.#defaults[key] : null;
         let value = this.#parameters.hasOwnProperty(key) ? this.#parameters[key] : defaultValue;
         if (typeof(value) === 'boolean') {
             return value;
         }
-        return decodeURIComponent(value);
+        return value == null ? null : decodeURIComponent(value);
     }
 
     set(key, value) {
