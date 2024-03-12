@@ -1,6 +1,6 @@
 class Love {
     #loaded = false;
-    #tab = 'characters';
+    #tab = 'home';
     #history = new History();
     #characters = new Characters(this, document.getElementById('characters'));
     #chat = new Chat(this, document.getElementById('chat'));
@@ -25,7 +25,7 @@ class Love {
 
     constructor() {
         let controller = this;
-        this.#history.setDefault('tab', 'characters');
+        this.#history.setDefault('tab', 'home');
         this.#history.onChange(function() {
             controller.onHistoryChange();
         });
