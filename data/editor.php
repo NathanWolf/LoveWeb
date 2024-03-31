@@ -32,6 +32,8 @@ try {
                     } else {
                         $character['chat'] = null;
                     }
+                } else if ($propertyId == 'portraitOffset') {
+                    $character['portrait'] = json_encode(array('offset' => $value));
                 } else {
                     if (!isset($allProperties[$propertyId])) {
                         throw new Exception("Unknown property: $propertyId");
@@ -54,7 +56,7 @@ try {
                 throw new Exception("No data to save");
             }
             $db->save('persona', $character);
-            die(json_encode(array('success' => true, 'user' => $user)));
+            die(json_encode(array('success' => true, 'user' => $user, 'character' => $character)));
         default:
             throw new Exception("Invalid action: $action");
     }

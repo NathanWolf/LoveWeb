@@ -1,5 +1,6 @@
 class CharacterEditor extends Editor {
     #characterId = null;
+    #portraitOffset = null;
 
     constructor(controller, element) {
         super(controller, element);
@@ -37,6 +38,7 @@ class CharacterEditor extends Editor {
         }
 
         this.#characterId = characterKey;
+        this.#portraitOffset = null;
 
         let container = this.getElement();
         Utilities.empty(container);
@@ -44,8 +46,34 @@ class CharacterEditor extends Editor {
         let headerContainer = Utilities.createDiv('editorHeader', container);
         let portraitImage = document.createElement('div');
         portraitImage.className = 'editingPortrait';
-        portraitImage.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+        portraitImage.style.backgroundImage = 'url(' + characters.getImage(character.id) + ')';
         headerContainer.appendChild(portraitImage);
+
+        let editor = this;
+        let portraitStyle = getComputedStyle(portraitImage);
+        let borderSize = 2 * parseFloat(portraitStyle.borderWidth);
+        let portraitWidth = portraitImage.offsetWidth - borderSize;
+        let portraitHeight = portraitImage.offsetHeight - borderSize;
+        let portraitCenter = Utilities.createDiv('portraitCenter', portraitImage);
+        let offset = character.hasOwnProperty('portrait') && character.portrait.hasOwnProperty('offset') ? character.portrait.offset : [0.5, 0.1];
+
+        portraitImage.addEventListener('click', function(event) {
+            editor.#movePortraitOffset(event.offsetX, event.offsetY, portraitWidth, portraitHeight, portraitCenter);
+        });
+        portraitCenter.style.left = (offset[0] * portraitWidth - 8) + 'px';
+        portraitCenter.style.top = (offset[1] * portraitHeight - 8) + 'px';
+
+        // I couldn't figure out a simpler way to get the size of this image
+        // didn't end up using this, but keeping it here just in case.
+        /*
+        let imageSrc = portraitImage.style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
+        let loadImage = new Image();
+        loadImage.onload = function () {
+            portraitCenter.style.left = (offset[0] * loadImage.width) + 'px';
+            portraitCenter.style.top = (offset[1] * loadImage.height) + 'px';
+        };
+        loadImage.src = imageSrc;
+        */
 
         let portraitName = document.createElement('div');
         portraitName.innerText = 'Editing ' + character.name;
@@ -76,7 +104,6 @@ class CharacterEditor extends Editor {
             propertyInputs[propertyId] = propertyInput;
         }
 
-        let editor = this;
         editorForm.addEventListener('submit', () => {
             let properties = {};
             for (let key in propertyInputs) {
@@ -108,6 +135,9 @@ class CharacterEditor extends Editor {
             if (lastNameInput.value.length > 0) {
                 character.full_name += ' ' + lastNameInput.value;
             }
+            if (editor.#portraitOffset != null) {
+                properties.portraitOffset = editor.#portraitOffset;
+            }
             editor.beginSave();
             editor.#save(properties);
         });
@@ -120,6 +150,13 @@ class CharacterEditor extends Editor {
 
         saveContainer.appendChild(saveButton);
         saveContainer.appendChild(confirmedDiv);
+    }
+
+    #movePortraitOffset(offsetX, offsetY, portraitWidth, portraitHeight, portraitCenter) {
+        portraitCenter.style.left = (offsetX - 8) + 'px';
+        portraitCenter.style.top = (offsetY - 8) + 'px';
+
+        this.#portraitOffset = [offsetX / portraitWidth, offsetY / portraitHeight];
     }
 
     #save(properties) {
