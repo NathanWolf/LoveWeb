@@ -32,7 +32,7 @@ foreach ($iterator as $fileInfo) {
     $characterId = basename($filename, '.' . $info['extension']);
     if (!isset($characters[$characterId])) {
         $name = ucfirst($characterId);
-        echo "INSERT INTO persona (id, first_name, portrait) values ('$characterId', '$name', '{\"offset\":[0.5,0.1]}')\n";
-        echo "INSERT INTO persona_tier (persona_id, tier_list_id, tier_id) values ('$characterId', 'renown', 'minor')\n";
+        echo "INSERT INTO persona (id, first_name, portrait) values ('$characterId', '$name', '{\"offset\":[0.5,0.1]}');\n";
+        echo "INSERT INTO persona_tier (persona_id, tier_list_id, tier_id) values ('$characterId', 'renown', 'minor');\n";
     }
 }
