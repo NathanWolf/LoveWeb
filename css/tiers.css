@@ -4,6 +4,7 @@
     height: 100%;
     overscroll-behavior: none;
     padding-bottom: 64px;
+    padding-right: 100px;
 }
 
 #tierLists .option {
