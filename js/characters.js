@@ -163,10 +163,14 @@ class Characters extends Component {
         if (character == null) {
             return '';
         }
-        if (character.hasOwnProperty(dataKey) && character[dataKey].hasOwnProperty('url')) {
-            return 'image/' + folder + '/' + character[dataKey].url;
+        let version = 0;
+        if (character.hasOwnProperty(dataKey) && character[dataKey] != null && character[dataKey].hasOwnProperty('version')) {
+            version = character[dataKey].version;
         }
-        return 'image/' + folder + '/' + characterId + '.png'
+        if (character.hasOwnProperty(dataKey) && character[dataKey] != null && character[dataKey].hasOwnProperty('url')) {
+            return 'image/' + folder + '/' + character[dataKey].url + '?v=' + version;
+        }
+        return 'image/' + folder + '/' + characterId + '.png?v=' + version;
     }
 
     getPortrait(characterId) {

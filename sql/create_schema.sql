@@ -90,6 +90,9 @@ create table persona
 alter table persona
     add column description LONGTEXT null;
 
+alter table persona
+    add column image JSON null;
+
 create table property
 (
     id VARCHAR(64) NOT NULL,
