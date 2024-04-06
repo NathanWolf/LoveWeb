@@ -82,6 +82,10 @@ class Utilities {
         return innerDiv;
     }
 
+    static setVisible(element, visible) {
+        element.style.display = visible ? '' : 'none';
+    }
+
     static closePopups() {
         let elements = document.getElementsByClassName('popup');
         for (let i = 0; i < elements.length; i++) {

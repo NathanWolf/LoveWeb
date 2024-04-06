@@ -1,7 +1,21 @@
 #characters {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.characterToolbar {
+    border: 1px solid grey;
+    margin: 16px;
+    padding: 16px;
+}
+
+.characterList {
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-content: start;
+    overflow: auto;
 }
 
 th {

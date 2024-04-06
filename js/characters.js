@@ -3,6 +3,7 @@ class Characters extends Component {
     #popupCharacterId = null;
     #characters = {};
     #properties = {};
+    #filters = {};
 
     constructor(controller, element) {
         super(controller, element);
@@ -32,19 +33,123 @@ class Characters extends Component {
         return this.#characters.hasOwnProperty(id) ? this.#characters[id] : null;
     }
 
+    getProperty(characterId, propertyKey) {
+        let value = null;
+        if (this.#characters.hasOwnProperty(characterId)) {
+            let character = this.#characters[characterId];
+            if (character.hasOwnProperty('properties') &&
+                character.properties != null &&
+                typeof character.properties === 'object' &&
+                character.properties.hasOwnProperty(propertyKey)
+            ) {
+                    value = character.properties[propertyKey];
+            }
+        }
+        return value;
+    }
+
+    getPropertyName(propertyKey) {
+        return this.#properties.hasOwnProperty(propertyKey) ? this.#properties[propertyKey].name : propertyKey;
+    }
+
+    getAllProperties(propertyKey) {
+        let propertyMap = {};
+        for (let id in this.#characters) {
+            let value = this.getProperty(id, propertyKey);
+            if (value != null) {
+                propertyMap[value] = true;
+            }
+        }
+        let values = Object.keys(propertyMap);
+        values.sort();
+        return values;
+    }
+
+    filter(filter, value) {
+        if (value === '*') {
+            delete this.#filters[filter];
+        } else {
+            this.#filters[filter] = value;
+        }
+        this.#updateFilters();
+    }
+
+    #updateFilters() {
+        for (let id in this.#characters) {
+            if (this.#characters.hasOwnProperty(id)) {
+                let character = this.#characters[id];
+                if (!character.hasOwnProperty('containers')) continue;
+                let properties = character.hasOwnProperty('properties') && character.properties != null ? character.properties : {};
+                let shouldShow = true;
+                for (let filterKey in this.#filters) {
+                    if (this.#filters.hasOwnProperty(filterKey)) {
+                        let filterValue = this.#filters[filterKey];
+                        if (properties.hasOwnProperty(filterKey)) {
+                            if (properties[filterKey] != filterValue) {
+                                shouldShow = false;
+                            }
+                        } else if (filterValue != '?') {
+                            shouldShow = false;
+                        }
+                    }
+                }
+                for (let containerId in character.containers) {
+                    if (character.containers.hasOwnProperty(containerId)) {
+                        Utilities.setVisible(character.containers[containerId], shouldShow);
+                    }
+                }
+            }
+        }
+    }
+
+    #createFilterBox(propertyKey) {
+        let filterSelect = document.createElement('select');
+        let propertyName = this.getPropertyName(propertyKey);
+        let allOption = document.createElement('option');
+        allOption.value = '*';
+        allOption.innerText = 'All ' + propertyName;
+        filterSelect.appendChild(allOption);
+        let unknownOption = document.createElement('option');
+        unknownOption.value = '?';
+        unknownOption.innerText = 'Unknown ' + propertyName;
+        filterSelect.appendChild(unknownOption);
+        let allSpecies = this.getAllProperties(propertyKey);
+        for (let i = 0; i < allSpecies.length; i++) {
+            let option = document.createElement('option');
+            option.innerText = allSpecies[i];
+            filterSelect.appendChild(option);
+        }
+        let characterController = this;
+        filterSelect.addEventListener('change', function() {
+            characterController.filter(propertyKey, this.value);
+        });
+
+        return filterSelect;
+    }
+
     show() {
         let characterController = this;
         let container = this.getElement();
         let tiers = this.getController().getTiers();
+        this.#filters = {};
+        Utilities.empty(container);
+
+        // Add filter boxes
+        let characterToolbar = Utilities.createDiv('characterToolbar', container);
+        characterToolbar.appendChild(this.#createFilterBox('species'));
+        characterToolbar.appendChild(this.#createFilterBox('pronouns'));
+        characterToolbar.appendChild(this.#createFilterBox('sexuality'));
+
+        // Create inner div to hold items
+        let characterList = Utilities.createDiv('characterList', container);
 
         // Group characters by the grouping tier
         let characterGroups = tiers.getGroupedCharacters(this.#groupTierList);
 
         // Show grouped characters with group banners
-        Utilities.empty(container);
         Object.values(characterGroups).forEach(function(group) {
             if (group.characters.length == 0) return;
-            let header = Utilities.createDiv('characterGroupHeader', container);
+            let header = Utilities.createDiv('characterGroupHeader', characterList);
             header.innerText = group.name;
             header.style.backgroundColor = group.color;
             if (group.dark) {
@@ -55,7 +160,7 @@ class Characters extends Component {
                 let portrait = document.createElement('div');
                 portrait.className = 'portrait';
                 portrait.style.backgroundImage = 'url(' + characterController.getPortrait(character.id) + ')';
-                container.appendChild(portrait);
+                characterList.appendChild(portrait);
                 let portraitName = document.createElement('div');
                 portraitName.className = 'portraitName';
                 portraitName.dataset.character = character.id;
@@ -63,7 +168,11 @@ class Characters extends Component {
                 portraitName.addEventListener('click', function(event) {
                     characterController.onPortraitClick(event.target);
                 })
-                container.appendChild(portraitName);
+                characterList.appendChild(portraitName);
+                character.containers = {
+                    portrait: portrait,
+                    name: portraitName
+                };
             });
         });
     }
