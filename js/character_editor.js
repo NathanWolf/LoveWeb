@@ -44,6 +44,10 @@ class CharacterEditor extends Editor {
         Utilities.empty(container);
 
         let headerContainer = Utilities.createDiv('editorHeader', container);
+
+        let portraitName = Utilities.createDiv('editorName', headerContainer);
+        portraitName.innerText = 'Editing ' + character.name;
+
         let portraitImage = document.createElement('div');
         portraitImage.className = 'editingPortrait';
         portraitImage.style.backgroundImage = 'url(' + characters.getImage(character.id) + ')';
@@ -75,23 +79,19 @@ class CharacterEditor extends Editor {
         loadImage.src = imageSrc;
         */
 
-        let portraitName = document.createElement('div');
-        portraitName.innerText = 'Editing ' + character.name;
-        headerContainer.appendChild(portraitName);
+        let saveContainer = Utilities.createDiv('save', headerContainer);
+        let saveButton = this.createSaveButton(saveContainer);
+        this.createSaveConfirm(saveContainer);
 
         let editorContainer = Utilities.createDiv('editing', container);
         let editorForm = document.createElement('form');
+        editorForm.id = 'characterForm';
         editorContainer.appendChild(editorForm);
 
         let firstNameInput = this.createInput(editorForm, {id: 'first_name', name: 'First Name'});
         firstNameInput.value = character.first_name;
         let lastNameInput = this.createInput(editorForm, {id: 'last_name', name: 'Last Name'});
         lastNameInput.value = character.last_name;
-
-        let descriptionInput = this.createLongInput(editorForm, {id: "description", name: "Description"}, character.description);
-        let backstoryInput = this.createLongInput(editorForm, {id: "backstory", name: "Backstory"}, character.backstory);
-        let chatInput = this.createLongInput(editorForm, {id: "chat", name: "Chat Prompt"}, character.chat != null ? character.chat.system : null);
-
         let propertyInputs = {};
         let properties = characters.getProperties();
         for (let propertyId in properties) {
@@ -104,7 +104,11 @@ class CharacterEditor extends Editor {
             propertyInputs[propertyId] = propertyInput;
         }
 
-        editorForm.addEventListener('submit', () => {
+        let descriptionInput = this.createLongInput(editorForm, {id: "description", name: "Description"}, character.description);
+        let backstoryInput = this.createLongInput(editorForm, {id: "backstory", name: "Backstory"}, character.backstory);
+        let chatInput = this.createLongInput(editorForm, {id: "chat", name: "Chat Prompt"}, character.chat != null ? character.chat.system : null);
+
+        saveButton.addEventListener('click', () => {
             let properties = {};
             for (let key in propertyInputs) {
                 if (propertyInputs.hasOwnProperty(key)) {
@@ -144,12 +148,6 @@ class CharacterEditor extends Editor {
         editorForm.addEventListener('keyup', () => {
             editor.clearSaved();
         });
-        let saveContainer = Utilities.createDiv('save', editorForm);
-        let saveButton = this.createSaveButton(editorForm);
-        let confirmedDiv = this.createSaveConfirm(editorForm);
-
-        saveContainer.appendChild(saveButton);
-        saveContainer.appendChild(confirmedDiv);
     }
 
     #movePortraitOffset(offsetX, offsetY, portraitWidth, portraitHeight, portraitCenter) {
