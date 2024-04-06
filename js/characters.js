@@ -236,6 +236,20 @@ class Characters extends Component {
             propertyValue.innerText = characterProperties[propertyId];
             propertyRow.appendChild(propertyValue);
         }
+
+        let relationships = this.getRelationshipList(characterKey);
+        for (let i = 0; i < relationships.length; i++) {
+            let relationship = relationships[i];
+            let propertyRow = document.createElement('tr');
+            propertiesBody.appendChild(propertyRow);
+            let propertyHeader = document.createElement('th');
+            propertyHeader.innerText = relationship.name;
+            propertyRow.appendChild(propertyHeader);
+            let propertyValue = document.createElement('td');
+            let related = this.getCharacter(relationship.character);
+            propertyValue.innerText = related.name;
+            propertyRow.appendChild(propertyValue);
+        }
     }
 
     static getRelationshipName(relationshipId) {
