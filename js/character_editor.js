@@ -18,7 +18,7 @@ class CharacterEditor extends Editor {
             portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
             container.appendChild(portrait);
             let portraitName = document.createElement('div');
-            portraitName.className = 'portraitName';
+            portraitName.className = 'portraitNameVisible';
             portraitName.dataset.character = character.id;
             portraitName.innerText = character.name;
             portraitName.addEventListener('click', function(event) {
