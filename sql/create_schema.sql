@@ -19,6 +19,7 @@ create table user
     updated timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     password_hash varchar(255) not null,
     admin bool default false,
+    token varchar(255) null,
 
     constraint user_pk
         primary key (id)
