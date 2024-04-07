@@ -25,6 +25,9 @@ create table user
         primary key (id)
 );
 
+alter table user
+    add column middle_name varchar(255) null;
+
 CREATE TABLE user_property
 (
     user_id VARCHAR(64) NOT NULL,
@@ -93,6 +96,9 @@ alter table persona
 
 alter table persona
     add column image JSON null;
+
+alter table persona
+    add column middle_name varchar(255) null;
 
 create table property
 (

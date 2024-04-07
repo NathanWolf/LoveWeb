@@ -25,6 +25,8 @@ try {
                     $character['first_name'] = $value;
                 } else if ($propertyId == 'last_name') {
                     $character['last_name'] = $value;
+                } else if ($propertyId == 'middle_name') {
+                    $character['middle_name'] = $value;
                 } else if ($propertyId == 'chat') {
                     if ($value) {
                         $value = array('system' => $value);
