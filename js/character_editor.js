@@ -29,8 +29,12 @@ class CharacterEditor extends Editor {
     }
 
     onPortraitClick(portrait) {
-        let characters = this.getController().getCharacters();
         let characterKey = portrait.dataset.character;
+        this.showCharacter(characterKey);
+    }
+
+    showCharacter(characterKey) {
+        let characters = this.getController().getCharacters();
         let character = characters.getCharacter(characterKey);
         if (character == null) {
             alert("Sorry, something went wrong!");
@@ -82,6 +86,20 @@ class CharacterEditor extends Editor {
         let saveContainer = Utilities.createDiv('save', headerContainer);
         let saveButton = this.createSaveButton(saveContainer);
         this.createSaveConfirm(saveContainer);
+        let backButton = document.createElement('button');
+        backButton.className = 'back';
+        backButton.innerText = '< Back';
+        saveContainer.appendChild(backButton);
+        backButton.addEventListener('click', () => {
+            editor.onPreviousCharacter();
+        });
+        let nextButton = document.createElement('button');
+        nextButton.className = 'next';
+        nextButton.innerText = 'Next >';
+        saveContainer.appendChild(nextButton);
+        nextButton.addEventListener('click', () => {
+            editor.onNextCharacter();
+        });
 
         let editorContainer = Utilities.createDiv('editing', container);
         let editorForm = document.createElement('form');
@@ -152,6 +170,27 @@ class CharacterEditor extends Editor {
         editorForm.addEventListener('keyup', () => {
             editor.clearSaved();
         });
+    }
+
+    onNextCharacter() {
+        this.#goCharacter(1);
+    }
+
+    onPreviousCharacter() {
+        this.#goCharacter(-1);
+    }
+
+    #goCharacter(direction) {
+        let characterList = this.getController().getCharacters().getCharacterList();
+        let index = 0;
+        for (let i = 0; i < characterList.length; i++) {
+            if (characterList[i].id == this.#characterId) {
+                index = i;
+                break;
+            }
+        }
+        index = (index + direction + characterList.length) % characterList.length;
+        this.showCharacter(characterList[index].id);
     }
 
     #movePortraitOffset(offsetX, offsetY, portraitWidth, portraitHeight, portraitCenter) {
