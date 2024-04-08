@@ -40,6 +40,7 @@ class CharacterEditor extends Editor {
             alert("Sorry, something went wrong!");
             return;
         }
+        let characterList = characters.getCharacterList();
 
         this.#characterId = characterKey;
         this.#portraitOffset = null;
@@ -110,14 +111,21 @@ class CharacterEditor extends Editor {
         firstNameInput.value = character.first_name;
         let middleNameInput = this.createInput(editorForm, {id: 'middle_name', name: 'Middle Name'});
         middleNameInput.value = character.middle_name;
-        let lastNameInput = this.createInput(editorForm, {id: 'last_name', name: 'Last Name'});
+        let lastNames = {};
+        for (let i = 0; i < characterList.length; i++) {
+            if (characterList[i].last_name == null || characterList[i].last_name.length == 0) continue;
+            lastNames[characterList[i].last_name] = true;
+        }
+        lastNames = Object.keys(lastNames);
+        let lastNameInput = this.createInput(editorForm, {id: 'last_name', name: 'Last Name'}, lastNames);
         lastNameInput.value = character.last_name;
         let propertyInputs = {};
         let properties = characters.getProperties();
         for (let propertyId in properties) {
             if (!properties.hasOwnProperty(propertyId)) continue;
             let property = properties[propertyId];
-            let propertyInput = this.createInput(editorForm, property);
+            let options = characters.getAllProperties(propertyId);
+            let propertyInput = this.createInput(editorForm, property, options);
             if (character.properties != null && character.properties.hasOwnProperty(propertyId)) {
                 propertyInput.value = character.properties[propertyId];
             }

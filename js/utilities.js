@@ -210,4 +210,37 @@ class Utilities {
         }
         return null;
     }
+
+    static filterOptions(select, value) {
+        let selected = false;
+        for (let i = 0; i < select.children.length; i++) {
+            let option = select.children[i];
+            if (value.length > 0 && option.innerText.toLowerCase().indexOf(value) === -1) {
+                option.style.display = 'none';
+                option.selected = false;
+            } else {
+                option.style.display = 'block';
+                option.selected = !selected;
+                if (!selected) {
+                    selected = true;
+                }
+            }
+        }
+    }
+
+    static nextOption(select, direction) {
+        let previousSelection = select.selectedIndex;
+        let selected = previousSelection + direction;
+        while (selected < select.children.length && selected >= 0 && select.children[selected].style.display == 'none') {
+            selected += direction;
+        }
+        if (selected < select.children.length && selected >= 0) {
+            select.selectedIndex = selected;
+            return true;
+        } else {
+            select.selectedIndex = previousSelection;
+        }
+
+        return false;
+    }
 }

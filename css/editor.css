@@ -43,3 +43,17 @@ div.save {
     display: flex;
     align-items: center;
 }
+
+.propertySelectContainer {
+    margin-top: -20px;
+    margin-bottom: 64px;
+}
+
+.propertySelectContainer select {
+    width: 640px;
+}
+
+.propertySelectContainer select option {
+    font-size: 1.5em;
+    padding: 4px;
+}
