@@ -85,7 +85,6 @@ class CharacterEditor extends Editor {
 
         let saveContainer = Utilities.createDiv('save', headerContainer);
         let saveButton = this.createSaveButton(saveContainer);
-        this.createSaveConfirm(saveContainer);
         let backButton = document.createElement('button');
         backButton.className = 'back';
         backButton.innerText = '< Back';
@@ -100,6 +99,7 @@ class CharacterEditor extends Editor {
         nextButton.addEventListener('click', () => {
             editor.onNextCharacter();
         });
+        this.createSaveConfirm(saveContainer);
 
         let editorContainer = Utilities.createDiv('editing', container);
         let editorForm = document.createElement('form');
