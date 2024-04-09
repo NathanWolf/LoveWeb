@@ -27,12 +27,12 @@ th {
     min-height: 256px;
     max-height: 256px;
     overflow: hidden;
-    margin: 8px;
     cursor: pointer;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     border: 4px solid #DDD;
+    margin: 24px 8px 8px;
 }
 
 .portrait.small {
@@ -53,17 +53,17 @@ th {
 
 .portraitName {
     min-width: 256px;
-    min-height: 256px;
-    max-height: 256px;
-    margin-top: 8px;
+    min-height: 286px;
+    max-height: 286px;
+    margin-top: -10px;
     margin-left: -272px;
-    text-align: center;
+    text-align: right;
     vertical-align: middle;
     font-size: 2em;
-    background: rgba(0,0,0,0);
-    color: rgba(0,0,0,0);
+    background: rgba(0, 0, 0, 0);
+    color: black;
     cursor: pointer;
-    border: 4px solid rgba(0,0,0,0);
+    border: 4px solid rgba(0, 0, 0, 0);
 }
 
 .portraitNameVisible {
