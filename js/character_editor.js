@@ -60,30 +60,35 @@ class CharacterEditor extends Editor {
         headerContainer.appendChild(portraitImage);
 
         let editor = this;
-        let portraitStyle = getComputedStyle(portraitImage);
-        let borderSize = 2 * parseFloat(portraitStyle.borderWidth);
-        let portraitWidth = portraitImage.offsetWidth - borderSize;
-        let portraitHeight = portraitImage.offsetHeight - borderSize;
-        let portraitCenter = Utilities.createDiv('portraitCenter', portraitImage);
-        let offset = character.hasOwnProperty('portrait') && character.portrait.hasOwnProperty('offset') ? character.portrait.offset : [0.5, 0.1];
 
-        portraitImage.addEventListener('click', function(event) {
-            editor.#movePortraitOffset(event.offsetX, event.offsetY, portraitWidth, portraitHeight, portraitCenter);
-        });
-        portraitCenter.style.left = (offset[0] * portraitWidth - 8) + 'px';
-        portraitCenter.style.top = (offset[1] * portraitHeight - 8) + 'px';
-
-        // I couldn't figure out a simpler way to get the size of this image
-        // didn't end up using this, but keeping it here just in case.
-        /*
+        // Load the image directly to get the dimensions
         let imageSrc = portraitImage.style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
         let loadImage = new Image();
         loadImage.onload = function () {
-            portraitCenter.style.left = (offset[0] * loadImage.width) + 'px';
-            portraitCenter.style.top = (offset[1] * loadImage.height) + 'px';
+            if (loadImage.width == 0 || loadImage.height == 0) return;
+
+            let portraitStyle = getComputedStyle(portraitImage);
+            let borderSize = 2 * parseFloat(portraitStyle.borderWidth);
+            let portraitWidth = portraitImage.offsetWidth - borderSize;
+            let portraitHeight = portraitImage.offsetHeight - borderSize;
+            let portraitCenter = Utilities.createDiv('portraitCenter', portraitImage);
+            let offset = character.hasOwnProperty('portrait') && character.portrait.hasOwnProperty('offset') ? character.portrait.offset : [0.5, 0.1];
+
+            // Adjust portrait width/height based on loaded image
+            let widthRatio = portraitWidth / loadImage.width;
+            let heightRatio = portraitHeight / loadImage.height;
+            let ratio = Math.min(widthRatio, heightRatio);
+            portraitWidth = loadImage.width * ratio;
+            portraitHeight = loadImage.height * ratio;
+
+            portraitImage.style.backgroundSize = portraitWidth + 'px ' + portraitHeight + 'px';
+            portraitImage.addEventListener('click', function(event) {
+                editor.#movePortraitOffset(event.offsetX, event.offsetY, portraitWidth, portraitHeight, portraitCenter);
+            });
+            portraitCenter.style.left = (offset[0] * portraitWidth - 8) + 'px';
+            portraitCenter.style.top = (offset[1] * portraitHeight - 8) + 'px';
         };
         loadImage.src = imageSrc;
-        */
 
         let saveContainer = Utilities.createDiv('save', headerContainer);
         let saveButton = this.createSaveButton(saveContainer);
