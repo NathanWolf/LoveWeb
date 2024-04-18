@@ -277,10 +277,13 @@ class Tiers extends Component {
             }
         }
 
-        // Sort by priority
+        // Sort by priority, then by name
         for (let tierId in characterGroups) {
             if (characterGroups.hasOwnProperty(tierId)) {
                 characterGroups[tierId].characters.sort(function(a, b) {
+                    if (b.priority == a.priority) {
+                        return a.persona_id.localeCompare(b.persona_id);
+                    }
                     return b.priority - a.priority;
                 });
             }
