@@ -32,8 +32,8 @@ th {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    border: 4px solid #DDD;
-    margin: 24px 8px 8px;
+    border: 4px solid #444;
+    margin: 0px 20px 20px 0px;
 }
 
 .portrait.small {
@@ -53,18 +53,18 @@ th {
 }
 
 .portraitName {
-    min-width: 256px;
-    min-height: 286px;
-    max-height: 286px;
-    margin-top: -10px;
-    margin-left: -272px;
+    padding-bottom: 10px;
+    min-height: 246px;
+    max-height: 246px;
     text-align: right;
     vertical-align: middle;
     font-size: 2em;
-    background: rgba(0, 0, 0, 0);
-    color: black;
+    background: black;
+    color: white;
     cursor: pointer;
     border: 4px solid rgba(0, 0, 0, 0);
+    transform: rotate(180deg);
+    writing-mode: vertical-lr;
 }
 
 .portraitNameVisible {
@@ -84,8 +84,12 @@ th {
 }
 
 .portraitName:hover {
-    background: rgba(0,0,0,0.75);
-    color: white;
+    background: #888;
+    color: black;
+}
+
+.portrait:hover {
+    background: #444;
 }
 
 .characterSheet {
