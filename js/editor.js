@@ -39,6 +39,12 @@ class Editor extends Component {
                     propertyInput.value = select.value;
                 }
             });
+            select.addEventListener('click', function() {
+                propertySelectContainer.style.display = 'none';
+                if (select.selectedIndex >= 0) {
+                    propertyInput.value = select.value;
+                }
+            });
             propertySelectContainer.append(select);
             editorForm.appendChild(propertySelectContainer);
 
