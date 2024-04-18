@@ -136,7 +136,8 @@ class Profile extends Component {
         registerButton.className = 'register';
         registerButton.innerText = 'Register';
         let profile = this;
-        registerForm.addEventListener('submit', () => {
+        registerForm.addEventListener('submit', (event) => {
+            event.preventDefault();
             registerButton.disabled = true;
             profile.#register(emailInput.value, passwordInput.value, firstInput.value, lastInput.value);
         });
@@ -202,7 +203,8 @@ class Profile extends Component {
         logoutButton.className = 'logout';
         logoutButton.innerText = 'Logout';
         let profile = this;
-        logoutForm.addEventListener('submit', () => {
+        logoutForm.addEventListener('submit', (event) => {
+            event.preventDefault();
             logoutButton.disabled = true;
             profile.#logout();
         });
