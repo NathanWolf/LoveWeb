@@ -48,7 +48,8 @@ class CharacterEditor extends Editor {
         let container = this.getElement();
         Utilities.empty(container);
 
-        let headerContainer = Utilities.createDiv('editorHeader', container);
+        let outerContainer = Utilities.createDiv('editorContainer', container);
+        let headerContainer = Utilities.createDiv('editorHeader', outerContainer);
 
         let portraitName = Utilities.createDiv('editorName', headerContainer);
         portraitName.innerText = 'Editing ' + character.name;
@@ -102,7 +103,7 @@ class CharacterEditor extends Editor {
         });
         this.createSaveConfirm(saveContainer);
 
-        let editorContainer = Utilities.createDiv('editing', container);
+        let editorContainer = Utilities.createDiv('editing', outerContainer);
         let editorForm = document.createElement('form');
         editorForm.id = 'characterForm';
         editorContainer.appendChild(editorForm);

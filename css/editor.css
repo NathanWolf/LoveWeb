@@ -1,7 +1,17 @@
+.editorContainer {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
 .editor {
     flex-wrap: wrap;
     justify-content: start;
     align-content: start;
+}
+
+.editing {
+    overflow: auto;
 }
 
 .editingPortrait {
