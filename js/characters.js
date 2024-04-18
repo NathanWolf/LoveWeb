@@ -238,6 +238,16 @@ class Characters extends Component {
         }
 
         let relationships = this.getRelationshipList(characterKey);
+        if (relationships.length > 0) {
+            let propertyRow = document.createElement('tr');
+            propertyRow.className = 'headerRow';
+            propertiesBody.appendChild(propertyRow);
+            let propertyHeader = document.createElement('th');
+            propertyHeader.colSpan = 2;
+            propertyRow.appendChild(propertyHeader);
+            propertyHeader.innerText = 'Relationships';
+            propertyRow.appendChild(propertyHeader);
+        }
         for (let i = 0; i < relationships.length; i++) {
             let relationship = relationships[i];
             let propertyRow = document.createElement('tr');
