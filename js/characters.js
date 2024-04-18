@@ -157,24 +157,23 @@ class Characters extends Component {
             }
             group.characters.forEach(function(characterTier) {
                 let character = characterController.getCharacter(characterTier.persona_id);
+                let portraitContainer = document.createElement('div');
+                portraitContainer.className = 'portraitContainer';
+                portraitContainer.addEventListener('click', function() {
+                    characterController.#showCharacterPopup(character.id);
+                });
 
                 let portraitName = document.createElement('div');
                 portraitName.className = 'portraitName';
-                portraitName.dataset.character = character.id;
                 portraitName.innerText = character.name;
-                portraitName.addEventListener('click', function(event) {
-                    characterController.onPortraitClick(event.target);
-                });
-                characterList.appendChild(portraitName);
+                portraitContainer.appendChild(portraitName);
 
                 let portrait = document.createElement('div');
                 portrait.className = 'portrait';
-                portrait.dataset.character = character.id;
                 portrait.style.backgroundImage = 'url(' + characterController.getPortrait(character.id) + ')';
-                portrait.addEventListener('click', function(event) {
-                    characterController.onPortraitClick(event.target);
-                });
-                characterList.appendChild(portrait);
+                portraitContainer.appendChild(portrait);
+
+                characterList.appendChild(portraitContainer);
 
                 character.containers = {
                     portrait: portrait,
@@ -182,11 +181,6 @@ class Characters extends Component {
                 };
             });
         });
-    }
-
-    onPortraitClick(portrait) {
-        let characterKey = portrait.dataset.character;
-        this.#showCharacterPopup(characterKey);
     }
 
     #showCharacterPopup(characterKey) {
