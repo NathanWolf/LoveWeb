@@ -12,6 +12,9 @@ class CharacterEditor extends Editor {
         Utilities.empty(container);
         let characters = this.getController().getCharacters();
         let characterList = characters.getCharacterList();
+        characterList.sort(function(a, b) {
+            return a.name.localeCompare(b.name);
+        });
         characterList.forEach(function(character){
             let portrait = document.createElement('div');
             portrait.className = 'portrait';
@@ -125,6 +128,8 @@ class CharacterEditor extends Editor {
         lastNames = Object.keys(lastNames);
         let lastNameInput = this.createInput(editorForm, {id: 'last_name', name: 'Last Name'}, lastNames);
         lastNameInput.value = character.last_name;
+        let nickNameInput = this.createInput(editorForm, {id: 'nick_name', name: 'Nickname'});
+        nickNameInput.value = character.nick_name;
         let propertyInputs = {};
         let properties = characters.getProperties();
         for (let propertyId in properties) {
@@ -167,10 +172,15 @@ class CharacterEditor extends Editor {
             properties['first_name'] = firstNameInput.value;
             properties['last_name'] = lastNameInput.value;
             properties['middle_name'] = middleNameInput.value;
+            properties['nick_name'] = nickNameInput.value;
             character.first_name = firstNameInput.value;
             character.last_name = lastNameInput.value;
+            character.nick_name = nickNameInput.value;
             character.middle_name = middleNameInput.value;
             character.name = character.first_name;
+            if (nickNameInput.value.length > 0) {
+                character.name = nickNameInput.value;
+            }
             character.full_name = character.first_name;
             if (lastNameInput.value.length > 0) {
                 character.full_name += ' ' + lastNameInput.value;

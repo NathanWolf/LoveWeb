@@ -143,6 +143,9 @@ class LoveDatabase extends Database {
             $character['relationships'] = array();
             $character['properties'] = array();
             $character['name'] = $character['first_name'];
+            if ($character['nick_name']) {
+                $character['name'] = $character['nick_name'];
+            }
             $character['full_name'] = $character['first_name'];
             if ($character['last_name']) {
                 $character['full_name'] .= ' ' . $character['last_name'];

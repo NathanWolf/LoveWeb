@@ -21,6 +21,8 @@ try {
                     $character['backstory'] = $value;
                 } else if ($propertyId == 'description') {
                     $character['description'] = $value;
+                } else if ($propertyId == 'nick_name') {
+                    $character['nick_name'] = $value;
                 } else if ($propertyId == 'first_name') {
                     $character['first_name'] = $value;
                 } else if ($propertyId == 'last_name') {
