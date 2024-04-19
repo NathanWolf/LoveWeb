@@ -27,7 +27,7 @@ class Editor extends Component {
             propertySelectContainer.className = 'propertySelectContainer';
             propertySelectContainer.style.display = 'none';
             let select = document.createElement('select');
-            select.size = 8;
+            select.size = 4;
             for (let i = 0; i < showOptions.length; i++) {
                 let option = document.createElement('option');
                 option.innerText = showOptions[i];

@@ -216,9 +216,11 @@ class Utilities {
             let option = select.children[i];
             option.selected = false;
             if (value.length > 0 && option.innerText.toLowerCase().indexOf(value) === -1) {
-                option.style.display = 'none';
+                option.hidden = true;
+                option.disabled = true;
             } else {
-                option.style.display = 'block';
+                option.hidden = false;
+                option.disabled = false;
             }
         }
     }
