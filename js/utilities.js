@@ -228,7 +228,7 @@ class Utilities {
     static nextOption(select, direction) {
         let previousSelection = select.selectedIndex;
         let selected = previousSelection + direction;
-        while (selected < select.children.length && selected >= 0 && select.children[selected].style.display == 'none') {
+        while (selected < select.children.length && selected >= 0 && select.children[selected].disabled) {
             selected += direction;
         }
         if (selected < select.children.length && selected >= 0) {
