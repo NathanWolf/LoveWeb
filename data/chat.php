@@ -8,7 +8,7 @@ if (ob_get_level()) ob_end_clean();
 require('config.inc.php');
 $SETTINGS = $_config;
 
-$MODEL = 'gpt-4-turbo-preview';
+$MODEL = 'gpt-4o';
 $STORAGE_TYPE = "session";
 $PARAMETERS = array();
 
