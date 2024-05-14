@@ -16,24 +16,25 @@ class Chat extends Component {
         let characterList = characters.getCharacterList();
         characterList.forEach(function(character){
             if (character.chat == null) return;
-            let portrait = document.createElement('div');
-            portrait.className = 'portrait';
-            portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
-            container.appendChild(portrait);
+            let portraitContainer = document.createElement('div');
+            portraitContainer.className = 'portraitContainer';
+            portraitContainer.addEventListener('click', function() {
+                controller.#selectCharacter(character.id);
+            });
+
             let portraitName = document.createElement('div');
             portraitName.className = 'portraitName';
             portraitName.dataset.character = character.id;
             portraitName.innerText = character.name;
-            portraitName.addEventListener('click', function(event) {
-                controller.onPortraitClick(event.target);
-            })
-            container.appendChild(portraitName);
-        });
-    }
+            portraitContainer.appendChild(portraitName);
 
-    onPortraitClick(portrait) {
-        let characterKey = portrait.dataset.character;
-        this.#selectCharacter(characterKey);
+            let portrait = document.createElement('div');
+            portrait.className = 'portrait';
+            portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+            portraitContainer.appendChild(portrait);
+
+            container.appendChild(portraitContainer);
+        });
     }
 
     #selectCharacter(characterKey) {
