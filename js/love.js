@@ -99,7 +99,7 @@ class Love {
         }
 
         let tab = this.#tabs[tabId];
-        let title = 'Love';
+        let title = 'Diviinity';
         let tabTitle = tab.getTitle();
         if (tabTitle != null) {
             title += ' (' + tabTitle + ')';
