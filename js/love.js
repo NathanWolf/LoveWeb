@@ -11,6 +11,7 @@ class Love {
     #profile = new Profile(this, document.getElementById('profile'), document.getElementById('profileButton'));
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
     #home = new Home(this, document.getElementById('home'));
+    #info = new Info(this, document.getElementById('info'));
     #tabs = {
         characters: this.#characters,
         chat: this.#chat,
@@ -20,7 +21,8 @@ class Love {
         relationships: this.#relationships,
         characterEditor: this.#characterEditor,
         profile: this.#profile,
-        home: this.#home
+        home: this.#home,
+        info: this.#info
     };
 
     constructor() {

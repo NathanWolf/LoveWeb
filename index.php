@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/relationships.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/profile.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/editor.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/info.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/history.js?v=<?=VERSION?>"></script>
@@ -30,6 +31,7 @@
     <script type="text/javascript" src="js/editor.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/character_editor.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/home.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/info.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
         var _love;
@@ -57,6 +59,7 @@
         <div class="toolbar">
             <div class="tabButton active toolbarButton" data-tab="home">&#8962;</div>
             <div class="tabButtons">
+                <div class="tabButton toolbarButton" data-tab="info">Info</div>
                 <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
                 <div class="tabButton toolbarButton" data-tab="chat">Chat</div>
                 <div class="tabButton toolbarButton" data-tab="quizzes">Quizzes</div>
@@ -70,14 +73,60 @@
         </div>
 
         <div class="tab" id="home">
-            <div class="tile navigation" data-tab="characters">Characters</div>
-            <div class="tile navigation" data-tab="chat">Chat</div>
-            <div class="tile navigation" data-tab="quizzes">Quizzes</div>
-            <div class="tile navigation" data-tab="flashCards">Flash Cards</div>
-            <div class="tile navigation" data-tab="relationships">Relationships</div>
-            <div class="tile navigation" data-tab="tierLists">Tier Lists</div>
-            <div class="tile navigation admin" data-tab="characterEditor" style="display: none">Character Editor</div>
-            <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
+            <div class="infoButton">
+                <div class="tile navigation" data-tab="info">Info</div>
+            </div>
+            <div class="buttonContainer">
+                <div class="tile navigation" data-tab="characters">Characters</div>
+                <div class="tile navigation" data-tab="chat">Chat</div>
+                <div class="tile navigation" data-tab="quizzes">Quizzes</div>
+                <div class="tile navigation" data-tab="flashCards">Flash Cards</div>
+                <div class="tile navigation" data-tab="relationships">Relationships</div>
+                <div class="tile navigation" data-tab="tierLists">Tier Lists</div>
+                <div class="tile navigation admin" data-tab="characterEditor" style="display: none">Character Editor</div>
+                <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
+            </div>
+        </div>
+
+        <div class="tab" id="info" style="display: none">
+            <div class="horizontal">
+                <div>
+                Diviinity is the book I’m writing! This is the official website, about its plot and its characters. Thank you for checking it out!
+                </div>
+                <div>
+                Diviinity is about the Overlord of the four realms, Thirteen Diviine, the most powerful being ever. Thirteen was imprisoned in the clouds for eternity, on an accusation she destroyed the Shadowrealms. Thirteen’s daughter, the Goddess of Death, Celeste Diviine, goes on a mission to free her mother.
+                </div>
+                <div>
+                Each chapter is a different perspective from a characters point of view, starting off with Cymbeline, the Queen of the Shadowrealms. Each character has their own story in their chapters, whether that being them learning a lesson, making up with a family member or friend, or just goofing off. The chapters may not make sense at first, like a book of short stories, but it all comes together at the end.
+                </div>
+            </div>
+            <div class="horizontal">
+                <div>
+                    <a href="https://www.instagram.com/cupcakeebug?igsh=ajNyMWdpNjZsZWk1&utm_source=qr" target="_blank" class="contact">
+                    <span class="icon" style="background-image: url('image/logos/instagram.png')"></span>@cupcakeebug
+                    </a>
+                </div>
+                <div>
+                    <a href="https://youtube.com/@cupcakeebug?feature=shared" target="_blank" class="contact">
+                    <span class="icon" style="background-image: url('image/logos/youtube.png')"></span>@cupcakeebug
+                    </a>
+                </div>
+                <div>
+                    <a href="https://cara.app/cupcakeebug" target="_blank" class="contact">
+                        <span class="icon" style="background-image: url('image/logos/cara.png')"></span>@cupcakeebug
+                    </a>
+                </div>
+                <div>
+                    <a href="https://discordapp.com/users/691020896588136529" target="_blank" class="contact">
+                        <span class="icon" style="background-image: url('image/logos/discord.png')"></span>@thebugwhisperer
+                    </a>
+                </div>
+                <div>
+                    <a href="mailto:cupcakeebug@gmail.com" target="_blank" class="contact">
+                        <span class="icon" style="background-image: url('image/logos/email.png')"></span>cupcakeebug@gmail.com
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="tab" id="characters" style="display: none">

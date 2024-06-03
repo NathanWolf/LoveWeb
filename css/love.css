@@ -178,3 +178,12 @@ body {
     flex-wrap: wrap;
     align-content: start;
 }
+
+.infoButton {
+    flex: 1;
+    display: flex;
+}
+
+.infoButton .navigation {
+    flex: 1;
+}

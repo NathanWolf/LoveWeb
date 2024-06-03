@@ -1,0 +1,31 @@
+#info {
+    margin: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.horizontal {
+    display: flex;
+}
+
+.horizontal div {
+    margin: 1em;
+}
+
+.icon {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.contact {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    font-size: 1.2em;
+}
