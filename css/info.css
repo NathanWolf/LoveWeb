@@ -22,8 +22,28 @@
     background-position: center;
 }
 
+.icon.large {
+    width: 400px;
+    height: 400px;
+}
+
+.icon.game {
+    text-align: center;
+    vertical-align: middle;
+}
+
 .contact {
     display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    font-size: 1.2em;
+}
+
+.game {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
     align-items: center;
     text-decoration: none;
     color: black;

@@ -67,7 +67,6 @@
                 <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
                 <div class="tabButton toolbarButton" data-tab="tierLists">Tier Lists</div>
                 <div class="tabButton toolbarButton admin" data-tab="characterEditor" style="display: none">Character Editor</div>
-                <div class="tabLink toolbarButton"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
             </div>
             <div id="profileButton" class="tabButton toolbarButton loggedout" data-tab="profile"></div>
         </div>
@@ -97,7 +96,7 @@
                 Diviinity is about the Overlord of the four realms, Thirteen Diviine, the most powerful being ever. Thirteen was imprisoned in the clouds for eternity, on an accusation she destroyed the Shadowrealms. Thirteen’s daughter, the Goddess of Death, Celeste Diviine, goes on a mission to free her mother.
                 </div>
                 <div>
-                Each chapter is a different perspective from a characters point of view, starting off with Cymbeline, the Queen of the Shadowrealms. Each character has their own story in their chapters, whether that being them learning a lesson, making up with a family member or friend, or just goofing off. The chapters may not make sense at first, like a book of short stories, but it all comes together at the end.
+                Each chapter is a different perspective from a characters point of view, starting off with Cymbeline, the Queen of the Shadowrealms. Each character has their own story in their chapters, whether that be them learning a lesson, making up with a family member or friend, or just goofing off. The chapters may not make sense at first, like a book of short stories, but it all comes together in the end.
                 </div>
             </div>
             <div class="horizontal">
@@ -118,12 +117,24 @@
                 </div>
                 <div>
                     <a href="https://discordapp.com/users/691020896588136529" target="_blank" class="contact">
-                        <span class="icon" style="background-image: url('image/logos/discord.png')"></span>@thebugwhisperer
+                        <span class="icon" style="background-image: url('image/logos/discord.png')"></span>@cupcakeebug
                     </a>
                 </div>
                 <div>
                     <a href="mailto:cupcakeebug@gmail.com" target="_blank" class="contact">
                         <span class="icon" style="background-image: url('image/logos/email.png')"></span>cupcakeebug@gmail.com
+                    </a>
+                </div>
+            </div>
+            <div class="horizontal">
+                <div>
+                    <a href="https://docs.google.com/presentation/d/1jsL8S7O4h97xAPOIn6EuA04muXjWPZw66I7bLUQlNTc" target="_blank" class="contact">
+                        <span class="icon large" style="background-image: url('image/logos/slideshow.png')"></span>
+                    </a>
+                </div>
+                <div>
+                    <a href="https://games.elmakers.com/love" target="_blank" class="game">
+                        <span class="icon large game">Play Game</span>
                     </a>
                 </div>
             </div>
