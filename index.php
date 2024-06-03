@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/profile.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/editor.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/info.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/slideshow.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/history.js?v=<?=VERSION?>"></script>
@@ -32,6 +33,7 @@
     <script type="text/javascript" src="js/character_editor.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/home.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/info.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/slideshow.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
         var _love;
@@ -60,6 +62,7 @@
             <div class="tabButton active toolbarButton" data-tab="home">&#8962;</div>
             <div class="tabButtons">
                 <div class="tabButton toolbarButton" data-tab="info">Info</div>
+                <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
                 <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
                 <div class="tabButton toolbarButton" data-tab="chat">Chat</div>
                 <div class="tabButton toolbarButton" data-tab="quizzes">Quizzes</div>
@@ -137,6 +140,12 @@
                         <span class="icon large game">Play Game</span>
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <div class="tab" id="slideshow" style="display: none">
+            <div class="slideshowContainer">
+                <iframe clsas="slideshow" src="https://docs.google.com/presentation/d/e/2PACX-1vRD5y05HHTih4jtnBj1cZgZcD5dt9avkwJmSeqQSnVyIYUzbDvL48sYhSo9jVr5V1DJeFIjWc6fT23u/embed?start=false&loop=false&delayms=60000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
             </div>
         </div>
 

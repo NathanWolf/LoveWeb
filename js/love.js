@@ -12,6 +12,7 @@ class Love {
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
     #home = new Home(this, document.getElementById('home'));
     #info = new Info(this, document.getElementById('info'));
+    #slideshow = new Info(this, document.getElementById('slideshow'));
     #tabs = {
         characters: this.#characters,
         chat: this.#chat,
@@ -22,7 +23,8 @@ class Love {
         characterEditor: this.#characterEditor,
         profile: this.#profile,
         home: this.#home,
-        info: this.#info
+        info: this.#info,
+        slideshow: this.#slideshow
     };
 
     constructor() {

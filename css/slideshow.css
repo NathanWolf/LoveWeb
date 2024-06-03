@@ -1,0 +1,9 @@
+.slideshowContainer {
+    text-align: center;
+    flex: auto;
+    margin-top: 1em;
+}
+
+.slideshow {
+    margin: auto;
+}

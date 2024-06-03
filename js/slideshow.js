@@ -1,0 +1,3 @@
+class Slideshow extends Component {
+
+}
