@@ -29,8 +29,13 @@
     padding: 17px 85px 17px 15px;
     font-family: inherit;
     font-size: 1em;
-    box-shadow: rgba(0,0,0,0.2) 0 0 45px;
     outline: none;
+    background: #FFEBC3;
+    color: #B1693B;
+}
+
+.chatInput textarea::placeholder {
+    color: rgba(177, 105, 59, 0.38);
 }
 
 .chatInputContainer {
@@ -48,7 +53,7 @@
 
 .chatInput button {
     position: absolute;
-    background: lime;
+    background: #F6C181;
     cursor: pointer;
     right: 15px;
     top: 50%;

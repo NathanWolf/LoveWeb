@@ -9,7 +9,9 @@
     padding: 16px;
     margin: 32px;
     cursor: pointer;
-    background: #ddd;
+    background: #FEE4AF;
+    color: #B1693B;
+    border-radius: 20px;
 }
 
 .quizQuestion {
@@ -17,8 +19,8 @@
 }
 
 .quizOption:hover {
-    background: #448844;
-    color: white;
+    background: #F6C181;
+    color: black;
 }
 
 .quizQuestionQuestion {
@@ -28,6 +30,7 @@
 }
 
 .quizQuestionAnswers ul li {
+    color: #B1693B;
     font-size: 1.5em;
     cursor: pointer;
     padding-top: 0.5em;
@@ -37,8 +40,9 @@
 }
 
 .quizQuestionAnswers ul li:hover {
-    background-color: #448844;
-    color: white;
+    background: #F6C181;
+    color: black;
+    border-radius: 20px;
 }
 
 @media (hover: none) {
@@ -57,7 +61,7 @@
 }
 
 .quizCorrect {
-    background: lime;
+    background: #8FC346;
     color: black;
     width: 100%;
     text-align: center;
@@ -65,7 +69,7 @@
 }
 
 .quizWrong {
-    background: red;
+    background: #DB512D;
     color: white;
     width: 100%;
     text-align: center;

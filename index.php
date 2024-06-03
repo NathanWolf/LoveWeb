@@ -99,7 +99,7 @@
                 Each chapter is a different perspective from a characters point of view, starting off with Cymbeline, the Queen of the Shadowrealms. Each character has their own story in their chapters, whether that be them learning a lesson, making up with a family member or friend, or just goofing off. The chapters may not make sense at first, like a book of short stories, but it all comes together in the end.
                 </div>
             </div>
-            <div class="horizontal">
+            <div class="horizontal contact">
                 <div>
                     <a href="https://www.instagram.com/cupcakeebug?igsh=ajNyMWdpNjZsZWk1&utm_source=qr" target="_blank" class="contact">
                     <span class="icon" style="background-image: url('image/logos/instagram.png')"></span>@cupcakeebug
@@ -126,9 +126,9 @@
                     </a>
                 </div>
             </div>
-            <div class="horizontal">
+            <div class="horizontal large">
                 <div>
-                    <a href="https://docs.google.com/presentation/d/1jsL8S7O4h97xAPOIn6EuA04muXjWPZw66I7bLUQlNTc" target="_blank" class="contact">
+                    <a href="https://docs.google.com/presentation/d/1jsL8S7O4h97xAPOIn6EuA04muXjWPZw66I7bLUQlNTc" target="_blank" class="contact slideshow">
                         <span class="icon large" style="background-image: url('image/logos/slideshow.png')"></span>
                     </a>
                 </div>

@@ -2,10 +2,15 @@
     min-width: 256px;
     min-height: 256px;
     overflow: hidden;
-    margin: 8px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.flashCardContainer {
+    border: 4px solid #CE8746;
+    margin: 8px;
+    background-color: #FFF2CE;
 }
 
 #flashCards {
@@ -14,13 +19,15 @@
 }
 
 .flashCardAnswers ul li {
+    color: #B1693B;
     font-size: 1.5em;
     cursor: pointer;
 }
 
 .flashCardAnswers ul li:hover {
-    background-color: grey;
-    color: white;
+    background: #F6C181;
+    color: black;
+    border-radius: 20px;
 }
 
 .flashCardFinishedTitle {
@@ -28,7 +35,7 @@
 }
 
 .flashCardCorrect {
-    background: lime;
+    background: #8FC346;
     color: black;
     width: 100%;
     text-align: center;
@@ -36,7 +43,7 @@
 }
 
 .flashCardWrong {
-    background: red;
+    background: #DB512D;
     color: white;
     width: 100%;
     text-align: center;

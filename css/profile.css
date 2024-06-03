@@ -4,7 +4,7 @@
 }
 
 button {
-    background-color: #eee;
+    background-color: #F6C181;
     border: 1px solid #ccc;
     border-radius: 2px;
     color: #444;
@@ -17,7 +17,7 @@ button {
 }
 
 button:hover {
-    background-color: #ccc;
+    background-color: #DF9750;
     color: black;
 }
 
@@ -28,6 +28,7 @@ input {
     padding: 15px;
     width: 90%; /* fallback */
     width: calc(100% - 30px); /* full width minus padding */
+    background-color: #FEE4AF;
 }
 
 input[type=email]:not(:focus):invalid,
@@ -37,6 +38,7 @@ input[type=password]:not(:focus):invalid {
 }
 
 label {
+    color: #B1693B;
     display: block;
     font-size: 20px;
     font-size: var(--mobile-font-size);
@@ -51,11 +53,11 @@ section {
 
 
 .loggedout {
-    background-color: darkred !important;
+    background-color: #C53737 !important;
 }
 
 .loggedin {
-    background-color: darkcyan !important;
+    background-color: #FFA64A !important;
 }
 
 .profile {

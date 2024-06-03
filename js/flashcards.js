@@ -29,9 +29,10 @@ class Flashcards extends Component {
             return;
         }
 
-        let flashCardContainer = Utilities.createDiv('flashCard');
+        let flashCardOuterContainer = Utilities.createDiv('flashCardContainer');
+        let flashCardContainer = Utilities.createDiv('flashCard', flashCardOuterContainer);
         let answerContainer = Utilities.createDiv('flashCardAnswers');
-        element.appendChild(flashCardContainer);
+        element.appendChild(flashCardOuterContainer);
         element.appendChild(answerContainer);
 
         let nextCharacter = this.#currentFlashcards.pop();

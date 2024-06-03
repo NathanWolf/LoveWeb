@@ -5,10 +5,14 @@ html,body {
 }
 
 body {
-    background: #EEE;
+    background: #FFFADF;
     overscroll-behavior-y: none;
     overflow: hidden;
     user-select: none;
+}
+
+select {
+    background-color: #FFFAE0;
 }
 
 .tile {
@@ -30,7 +34,7 @@ body {
 
 .tile:hover {
     text-decoration: underline;
-    background-color: cyan;
+    background-color: #FEE4AF;
 }
 
 .tile a {
@@ -72,6 +76,7 @@ body {
 .toolbar {
     display: flex;
     border: 1px solid black;
+    background: #F8D8A4;
 }
 
 .tabButtons {
@@ -81,17 +86,17 @@ body {
 }
 
 .toolbarButton {
-    background: #888;
+    background: #FFBF80;
     border: 1px solid darkblue;
     padding: 2px 12px;
     cursor: pointer;
-    color: black;
+    color: #B1693B;
     white-space: nowrap;
 }
 
 .toolbarButton:hover {
-    background: #444;
-    color: white;
+    background: #E8A25E;
+    color: #9E542C;
 }
 
 .tabLink a {
@@ -109,9 +114,9 @@ body {
 }
 
 .tabButton.active {
-    background: black;
+    background: #FF7851;
     cursor: default;
-    color: white;
+    color: black;
 }
 
 .tab {
@@ -186,4 +191,12 @@ body {
 
 .infoButton .navigation {
     flex: 1;
+}
+
+.buttonContainer {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 }

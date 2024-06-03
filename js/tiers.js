@@ -256,7 +256,7 @@ class Tiers extends Component {
                 characterGroups[tier.id] = {
                     name: tier.name,
                     color: tier.color,
-                    dark: 1,
+                    dark: tier.dark,
                     characters: []
                 };
             }

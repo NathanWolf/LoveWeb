@@ -153,7 +153,7 @@ class Characters extends Component {
             header.innerText = group.name;
             header.style.backgroundColor = group.color;
             if (group.dark) {
-                header.style.color = 'white';
+                Utilities.addClass(header, 'dark');
             }
             group.characters.forEach(function(characterTier) {
                 let character = characterController.getCharacter(characterTier.persona_id);
