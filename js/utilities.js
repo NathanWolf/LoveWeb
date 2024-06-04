@@ -59,7 +59,11 @@ class Utilities {
         return innerDiv;
     }
 
-    static showPopup(parent, innerClass, callback) {
+    static showPopupWithCloseButton(parent, innerClass, callback) {
+        return Utilities.showPopup(parent, innerClass, callback, true);
+    }
+
+    static showPopup(parent, innerClass, callback, addCloseButton) {
         if (typeof(innerClass) === 'undefined') {
             innerClass = 'popupInnerContent';
         }
@@ -73,16 +77,25 @@ class Utilities {
         contentDiv.appendChild(innerDiv);
         parent.appendChild(popupDiv);
 
-        let closeButton = document.createElement('button');
-        closeButton.innerText = 'OK';
-        contentDiv.appendChild(closeButton);
+        if (addCloseButton) {
+            let closeButton = document.createElement('button');
+            closeButton.innerText = 'OK';
+            contentDiv.appendChild(closeButton);
 
-        closeButton.addEventListener('click', function() {
-            popupDiv.remove();
-            if (typeof(callback) !== 'undefined' && callback != null) {
-                callback(popupDiv);
-            }
-        });
+            closeButton.addEventListener('click', function() {
+                popupDiv.remove();
+                if (typeof(callback) !== 'undefined' && callback != null) {
+                    callback(popupDiv);
+                }
+            });
+        } else {
+            popupDiv.addEventListener('click', function() {
+                this.remove();
+                if (typeof(callback) !== 'undefined' && callback != null) {
+                    callback(popupDiv);
+                }
+            });
+        }
         return innerDiv;
     }
 

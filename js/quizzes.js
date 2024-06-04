@@ -79,7 +79,7 @@ class Quizzes extends Component {
         Utilities.empty(element);
         if (this.#currentQuizQuestions.length === 0) {
             this.show();
-            let popup = Utilities.showPopup(element.parentNode);
+            let popup = Utilities.showPopupWithCloseButton(element.parentNode);
             Utilities.createDiv('quizFinishedTitle', popup).innerText = 'Finished!';
             Utilities.createDiv('quizCorrect', popup).innerText = 'Correct: ' + this.#correctAnswers;
             Utilities.createDiv('quizWrong', popup).innerText = 'Wrong: ' + this.#wrongAnswers;
