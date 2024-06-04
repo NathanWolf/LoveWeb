@@ -7,6 +7,7 @@
 
 .horizontal {
     display: flex;
+    color: #B34E24;
 }
 
 .horizontal.contact {
@@ -45,6 +46,7 @@
     align-items: center;
     text-decoration: none;
     color: black;
+    font-weight: bold;
     font-size: 1.1em;
 }
 
