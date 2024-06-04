@@ -26,7 +26,7 @@ class Characters extends Component {
     }
 
     getCharacterList() {
-        return Object.values(this.#characters);
+        return Object.values(this.#characters).filter((character) => !character.hidden);
     }
 
     getCharacter(id) {

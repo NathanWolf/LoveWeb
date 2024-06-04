@@ -264,7 +264,7 @@ class Tiers extends Component {
         characterGroups['unknown'] = {name: 'Unknown', characters: [], color: 'grey', dark: 0};
         let defaultTier = {tier_id: 'unknown', priority: 0};
         for (let characterId in characters) {
-            if (characters.hasOwnProperty(characterId)) {
+            if (characters.hasOwnProperty(characterId) && !characters[characterId].hidden) {
                 let character = characters[characterId];
                 let tier = defaultTier;
                 if (character.tiers.hasOwnProperty(tierListId)) {

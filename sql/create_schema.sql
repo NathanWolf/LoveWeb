@@ -103,6 +103,9 @@ alter table persona
 alter table persona
     add column nick_name varchar(255) null;
 
+alter table persona
+    add column hidden boolean default false not null;
+
 create table property
 (
     id VARCHAR(64) NOT NULL,
