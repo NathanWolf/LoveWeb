@@ -31,13 +31,15 @@
 }
 
 .flashCardFinishedTitle {
+    background-color: #FFF2CE;
+    padding: 0.5em;
     font-size: 1.5em;
+    margin-bottom: 1em;
 }
 
 .flashCardCorrect {
     background: #8FC346;
     color: black;
-    width: 100%;
     text-align: center;
     padding: 8px;
 }
@@ -45,7 +47,6 @@
 .flashCardWrong {
     background: #DB512D;
     color: white;
-    width: 100%;
     text-align: center;
     padding: 8px;
 }
@@ -57,4 +58,5 @@
     padding-bottom: 0.5em;
     padding-left: 0.2em;
     list-style-type: square;
+    width: 10em;
 }

@@ -57,13 +57,15 @@
 }
 
 .quizFinishedTitle {
+    background-color: #FFF2CE;
+    padding: 0.5em;
     font-size: 1.5em;
+    margin-bottom: 1em;
 }
 
 .quizCorrect {
     background: #8FC346;
     color: black;
-    width: 100%;
     text-align: center;
     padding: 8px;
 }
@@ -71,9 +73,15 @@
 .quizWrong {
     background: #DB512D;
     color: white;
-    width: 100%;
     text-align: center;
     padding: 8px;
+}
+
+.chosenContainer {
+    color: #B34E24;
+    background-color: #FFF2CE;
+    padding: 1em;
+    border-radius: 25px;
 }
 
 .chosenCharacter {
@@ -92,7 +100,7 @@
 
 .detailsButton {
     cursor: pointer;
-    color: blue;
+    color: #E2A36A;
 }
 
 .detailsButton:hover {
@@ -110,13 +118,13 @@
 .primaryMatch {
     font-weight: bold;
     font-size: 1.5em;
-    color: #888;
+    color: #D08856;
     text-align: center;
     margin-bottom: 1em;
 }
 
 .secondaryMatch {
-    color: #AAA;
+    color: #E2A36A;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -125,10 +133,13 @@
 .secondaryMatches {
     overflow: auto;
     flex: 1;
+    background-color: #FFF2CE;
+    border-radius: 24px;
+    padding: 1em;
 }
 
 .matchLabel {
-    color: #AAA;
+    color: #E2A36A;
 }
 
 .noMatch {

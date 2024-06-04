@@ -22,7 +22,7 @@ button:hover {
 }
 
 input {
-    border: 1px solid #ccc;
+    border: 1px solid #D08856;
     font-size: 22px; /* fallback */
     font-size: var(--mobile-font-size);
     padding: 15px;

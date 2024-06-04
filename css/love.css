@@ -15,6 +15,11 @@ select {
     background-color: #FFFAE0;
 }
 
+textarea {
+    background-color: #FEE4AF;
+    border: 1px solid #D08856;
+}
+
 .tile {
     color: black;
     width: 5em;
@@ -63,8 +68,10 @@ select {
 }
 
 .popupInnerContent {
-    background: white;
+    background: #FFF8E0;
+    color: #BE6E42;
     padding: 2em;
+    border-radius: 25px;
 }
 
 .tabContainer {
@@ -87,7 +94,7 @@ select {
 
 .toolbarButton {
     background: #FFBF80;
-    border: 1px solid darkblue;
+    border: 1px solid #752C0E;
     padding: 2px 12px;
     cursor: pointer;
     color: #B1693B;

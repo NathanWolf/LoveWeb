@@ -14,6 +14,7 @@
     cursor: pointer;
     background: #FEE4AF;
     color: #B1693B;
+    border-radius: 25px;
 }
 
 #tierLists .option:hover {
@@ -22,7 +23,10 @@
 }
 
 #tierLists .title {
-    font-size: 2em;
+    font-size: 3em;
+    font-weight: bold;
+    padding: 0.2em;
+    color: #B34E24;
 }
 
 #tierLists .tier {
@@ -33,12 +37,12 @@
 #tierLists .tier .label {
     padding: 4px;
     height: 128px;
-    color: rgba(0,0,0,0.75);
+    color: #B34E24;
     max-width: 64px;
 }
 
 #tierLists .tier .label.dark {
-    color: rgba(255,255,255,0.75);
+    color: #FEE4AF;
 }
 
 .tierPortrait {
