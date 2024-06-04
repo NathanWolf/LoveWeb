@@ -73,8 +73,12 @@ class Utilities {
         contentDiv.appendChild(innerDiv);
         parent.appendChild(popupDiv);
 
-        popupDiv.addEventListener('click', function() {
-            this.remove();
+        let closeButton = document.createElement('button');
+        closeButton.innerText = 'OK';
+        contentDiv.appendChild(closeButton);
+
+        closeButton.addEventListener('click', function() {
+            popupDiv.remove();
             if (typeof(callback) !== 'undefined' && callback != null) {
                 callback(popupDiv);
             }
