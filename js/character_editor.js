@@ -16,23 +16,27 @@ class CharacterEditor extends Editor {
             return a.name.localeCompare(b.name);
         });
         characterList.forEach(function(character){
+            let portraitContainer = document.createElement('div');
+            portraitContainer.className = 'portraitContainer';
+            portraitContainer.addEventListener('click', function(event) {
+                controller.onPortraitClick(character.id);
+            });
+
+            let portraitName = document.createElement('div');
+            portraitName.className = 'portraitName';
+            portraitName.innerText = character.name;
+            portraitContainer.appendChild(portraitName);
+
             let portrait = document.createElement('div');
             portrait.className = 'portrait';
             portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
-            container.appendChild(portrait);
-            let portraitName = document.createElement('div');
-            portraitName.className = 'portraitNameVisible';
-            portraitName.dataset.character = character.id;
-            portraitName.innerText = character.name;
-            portraitName.addEventListener('click', function(event) {
-                controller.onPortraitClick(event.target);
-            })
-            container.appendChild(portraitName);
+            portraitContainer.appendChild(portrait);
+
+            container.appendChild(portraitContainer);
         });
     }
 
-    onPortraitClick(portrait) {
-        let characterKey = portrait.dataset.character;
+    onPortraitClick(characterKey) {
         this.showCharacter(characterKey);
     }
 
