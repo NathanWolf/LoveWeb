@@ -70,7 +70,7 @@ class Tiers extends Component {
         tiers.unshift({
             'id': 'default',
             'name': '',
-            'color': 'white'
+            'color': '#FFF2CE'
         });
         for (let i = 0; i < tiers.length; i++) {
             let tier = tiers[i];
