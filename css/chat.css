@@ -19,6 +19,9 @@
     background: #FFFCED;
 }
 
+#chat .portraitContainer {
+    margin-top: 1em;
+}
 
 .chatInput textarea {
     height: 55px;
