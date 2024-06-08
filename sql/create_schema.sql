@@ -130,6 +130,9 @@ alter table property
     add column priority int default 0,
     add column plural boolean default false;
 
+alter table property
+    add hidden boolean default 0 not null;
+
 CREATE TABLE persona_property
 (
     persona_id VARCHAR(64) NOT NULL,
