@@ -33,7 +33,9 @@ class CharacterQuiz extends Component {
         this.#remainingQuestions = [];
         for (let propertyKey in usedProperties) {
             if (usedProperties.hasOwnProperty(propertyKey)) {
-                this.#remainingQuestions.push(allProperties[propertyKey]);
+                let property = allProperties[propertyKey];
+                if (property.hidden) continue;
+                this.#remainingQuestions.push(property);
             }
         }
 
