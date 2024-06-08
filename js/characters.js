@@ -370,6 +370,7 @@ class Characters extends Component {
     }
 
     getRelationshipList(characterId) {
+        let characters = this.#characters;
         let character = this.#characters[characterId];
         let relationshipList = [];
         if (!character.hasOwnProperty('relationships')) {
@@ -382,6 +383,7 @@ class Characters extends Component {
                 relationshipTargets = [relationshipTargets];
             }
             relationshipTargets.forEach(function(target) {
+                if (!characters.hasOwnProperty(target) || characters[target].hidden) return;
                 let relationship = {
                     id: relationshipId,
                     name: Characters.getRelationshipName(relationshipId),
