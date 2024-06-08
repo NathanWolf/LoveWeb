@@ -106,6 +106,11 @@ alter table persona
 alter table persona
     add column hidden boolean default false not null;
 
+alter table persona
+    add birth_name varchar(255) null,
+    add birth_realm varchar(255) null,
+    add home_realm varchar(255) null;
+
 create table property
 (
     id VARCHAR(64) NOT NULL,
