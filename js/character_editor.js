@@ -1,4 +1,5 @@
 class CharacterEditor extends Editor {
+    #groupTierList = 'renown';
     #characterId = null;
     #portraitOffset = null;
 
@@ -10,33 +11,55 @@ class CharacterEditor extends Editor {
         let controller = this;
         let container = this.getElement();
         Utilities.empty(container);
+        let tiers = this.getController().getTiers();
         let characters = this.getController().getCharacters();
-        let characterList = characters.getCharacterList();
-        characterList.sort(function(a, b) {
-            return a.name.localeCompare(b.name);
-        });
-        characterList.forEach(function(character){
-            let portraitContainer = document.createElement('div');
-            portraitContainer.className = 'portraitContainer';
-            portraitContainer.addEventListener('click', function(event) {
-                controller.onPortraitClick(character.id);
+
+        // TODO: Centralize this so it's not copied from the character list
+
+        // Create inner div to hold items
+        let characterList = Utilities.createDiv('characterList', container);
+
+        // Group characters by the grouping tier
+        let characterGroups = tiers.getGroupedCharacters(this.#groupTierList);
+
+        // Show grouped characters with group banners
+        Object.values(characterGroups).forEach(function(group) {
+            if (group.characters.length == 0) return;
+            let header = Utilities.createDiv('characterGroupHeader', characterList);
+            header.innerText = group.name;
+            header.style.backgroundColor = group.color;
+            if (group.dark) {
+                Utilities.addClass(header, 'dark');
+            }
+            group.characters.forEach(function(characterTier) {
+                let character = characters.getCharacter(characterTier.persona_id);
+                let portraitContainer = document.createElement('div');
+                portraitContainer.className = 'portraitContainer';
+                portraitContainer.addEventListener('click', function() {
+                    controller.#selectCharacter(character.id);
+                });
+
+                let portraitName = document.createElement('div');
+                portraitName.className = 'portraitName';
+                portraitName.innerText = character.name;
+                portraitContainer.appendChild(portraitName);
+
+                let portrait = document.createElement('div');
+                portrait.className = 'portrait';
+                portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+                portraitContainer.appendChild(portrait);
+
+                characterList.appendChild(portraitContainer);
+
+                character.containers = {
+                    portrait: portrait,
+                    name: portraitName
+                };
             });
-
-            let portraitName = document.createElement('div');
-            portraitName.className = 'portraitName';
-            portraitName.innerText = character.name;
-            portraitContainer.appendChild(portraitName);
-
-            let portrait = document.createElement('div');
-            portrait.className = 'portrait';
-            portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
-            portraitContainer.appendChild(portrait);
-
-            container.appendChild(portraitContainer);
         });
     }
 
-    onPortraitClick(characterKey) {
+    #selectCharacter(characterKey) {
         this.showCharacter(characterKey);
     }
 
