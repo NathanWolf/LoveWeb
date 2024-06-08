@@ -192,7 +192,7 @@ ul.traits li.value {
     padding: 0;
 }
 
-.characterSheet .section.flags {
+.characterSheet .flags {
     display: flex;
     max-width: 220px;
     min-width: 220px;
@@ -209,6 +209,28 @@ ul.traits li.value {
 
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+.characterSheet .preferences {
+    display: flex;
+}
+
+.characterSheet .preferences > div {
+    background-color: #FFFBE0;
+    border: 2px solid #B44D21;
+}
+
+.characterSheet .relationships {
+    flex: auto;
+    background-color: #F7C280;
+}
+
+.characterSheet .relationships .section.label {
+    text-align: left;
+}
+
+.characterSheet hr {
+    border: 2px solid #B34E24;
 }
 
 .sheetImage {

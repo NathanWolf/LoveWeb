@@ -253,7 +253,8 @@ class Characters extends Component {
         let traits = character.properties.hasOwnProperty('traits') ? character.properties.traits : '';
         let traitsList = Utilities.createElement('ul', 'traits', personalityDiv);
         traits = traits.split(',');
-        for (let i = 0; i < 5; i++) {
+        let traitCount = Math.max(traits.length, 5);
+        for (let i = 0; i < traitCount; i++) {
             let trait = i < traits.length ? traits[i] : '';
             Utilities.createElement('li', 'value', traitsList, trait);
         }
@@ -266,11 +267,10 @@ class Characters extends Component {
         this.#addCharacterPropertyInfo(character, favoritesDiv, 'activity');
         this.#addCharacterPropertyInfo(character, favoritesDiv, 'fears');
 
-
         // Column 3
         let properties = this.getProperties();
         let column3 = Utilities.createDiv('column column_3', popup);
-        let flagsDiv = Utilities.createDiv('section flags', column3);
+        let flagsDiv = Utilities.createDiv('flags', column3);
         let flags = ['birth_realm', 'sexuality', 'home_realm', 'pronouns'];
 
         for (let i = 0; i < flags.length; i++) {
@@ -283,6 +283,43 @@ class Characters extends Component {
             imageDiv.title = value;
             imageDiv.style.backgroundImage = 'url(image/flags/' + this.#translateToFlag(value) + '.png)';
         }
+
+        let preferencesDiv = Utilities.createDiv('preferences', column3);
+        let likesDiv = Utilities.createDiv('section likes', preferencesDiv);
+        Utilities.createDiv('label', likesDiv).innerHTML = 'Likes &#x1F496;';
+
+        let likes = character.properties.hasOwnProperty('likes') ? character.properties.likes : '';
+        likes = likes.split(',');
+        let likesCount = Math.max(likes.length, 6);
+        for (let i = 0; i < likesCount; i++) {
+            let like = i < likes.length ? likes[i] : '';
+            Utilities.createDiv('value', likesDiv, like);
+        }
+
+        let dislikesDiv = Utilities.createDiv('section dislikes', preferencesDiv);
+        Utilities.createDiv('label', dislikesDiv).innerHTML = '&#128148;Dislikes';
+
+        let dislikes = character.properties.hasOwnProperty('dislikes') ? character.properties.dislikes : '';
+        dislikes = dislikes.split(',');
+        let dislikesCount = Math.max(dislikes.length, 6);
+        for (let i = 0; i < dislikesCount; i++) {
+            let dislike = i < dislikes.length ? dislikes[i] : '';
+            Utilities.createDiv('value', dislikesDiv, dislike);
+        }
+
+        let relationshipsDiv =  Utilities.createDiv('section relationships', column3);
+        Utilities.createDiv('label section', relationshipsDiv, 'Relationships');
+        Utilities.createElement('hr', '', relationshipsDiv);
+        let relationships = this.getRelationshipList(characterKey);
+        for (let i = 0; i < relationships.length; i++) {
+            let relationship = relationships[i];
+            let related = this.getCharacter(relationship.character);
+            Utilities.createDiv('label', relationshipsDiv, relationship.name);
+            Utilities.createDiv('value', relationshipsDiv, related.name);
+        }
+
+
+
 
         // Column 4
         let column4 = Utilities.createDiv('column column_4', popup);
@@ -321,30 +358,6 @@ class Characters extends Component {
             propertyRow.appendChild(propertyHeader);
             let propertyValue = document.createElement('td');
             propertyValue.innerText = characterProperties[propertyId];
-            propertyRow.appendChild(propertyValue);
-        }
-
-        let relationships = this.getRelationshipList(characterKey);
-        if (relationships.length > 0) {
-            let propertyRow = document.createElement('tr');
-            propertyRow.className = 'headerRow';
-            propertiesBody.appendChild(propertyRow);
-            let propertyHeader = document.createElement('th');
-            propertyHeader.colSpan = 2;
-            propertyRow.appendChild(propertyHeader);
-            propertyHeader.innerText = 'Relationships';
-            propertyRow.appendChild(propertyHeader);
-        }
-        for (let i = 0; i < relationships.length; i++) {
-            let relationship = relationships[i];
-            let propertyRow = document.createElement('tr');
-            propertiesBody.appendChild(propertyRow);
-            let propertyHeader = document.createElement('th');
-            propertyHeader.innerText = relationship.name;
-            propertyRow.appendChild(propertyHeader);
-            let propertyValue = document.createElement('td');
-            let related = this.getCharacter(relationship.character);
-            propertyValue.innerText = related.name;
             propertyRow.appendChild(propertyValue);
         }
 
