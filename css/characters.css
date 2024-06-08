@@ -278,6 +278,12 @@ th {
     white-space: nowrap
 }
 
+.characterSheet .row3 .section {
+    flex-basis: 50%;
+    background-color: #FFFBE0;
+    border: 2px solid #B44D21;
+}
+
 .sheetImage {
     flex-basis: 60%;
     background-repeat: no-repeat;

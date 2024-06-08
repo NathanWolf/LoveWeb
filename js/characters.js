@@ -370,10 +370,21 @@ class Characters extends Component {
             }
             let religionRow = Utilities.createDiv('', religionDiv);
             religionRow.appendChild(checkbox);
-            let religionSpan = Utilities.createSpan('', religionRow, religion);
+            Utilities.createSpan('', religionRow, religion);
         }
 
-        let c4r3 = Utilities.createDiv('row cor3', column4);
+        let c4r3 = Utilities.createDiv('row row3', column4);
+        let behaviorDiv = Utilities.createDiv('section behavior', c4r3);
+        Utilities.createDiv('label', behaviorDiv, 'Behavior');
+        Utilities.createElement('hr', '', behaviorDiv);
+        this.#addCharacterPropertyInfo(character, behaviorDiv, 'perception');
+        this.#addCharacterPropertyInfo(character, behaviorDiv, 'coping');
+
+        let miscDic = Utilities.createDiv('section misc', c4r3);
+        this.#addCharacterPropertyInfo(character, miscDic, 'comfort_item');
+        this.#addCharacterPropertyInfo(character, miscDic, 'weapon');
+        this.#addCharacterPropertyInfo(character, miscDic, 'carries');
+        this.#addCharacterPropertyInfo(character, miscDic, 'accessories');
     }
 
     static getRelationshipName(relationshipId) {
