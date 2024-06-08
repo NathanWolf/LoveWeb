@@ -1,2 +1,2 @@
 <?php
-const VERSION = 16;
+const VERSION = 18;

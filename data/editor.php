@@ -23,6 +23,8 @@ try {
                     $character['description'] = $value;
                 } else if ($propertyId == 'nick_name') {
                     $character['nick_name'] = $value;
+                } else if ($propertyId == 'birth_name') {
+                    $character['birth_name'] = $value;
                 } else if ($propertyId == 'first_name') {
                     $character['first_name'] = $value;
                 } else if ($propertyId == 'last_name') {

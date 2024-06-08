@@ -101,24 +101,126 @@ th {
 }
 
 .characterSheet {
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 90%;
     display: flex;
-    background: white;
-    border: 2px solid black;
+    background: #FFE5B0;
+    border: 8px solid black;
+}
+
+.characterSheet .label {
+    font-weight: bold;
+}
+
+.characterSheet .value {
+    border-bottom: 1px solid #742A00;
+    min-height: 1em;
+}
+
+.characterSheet .section {
+    margin: 0.5em;
+    padding: 0.5em;
+    overflow-y: auto;
+}
+
+.characterSheet .section.label {
+    text-align: center;
+    border: 0px;
+    padding: 0;
+}
+
+.characterSheet .section.label.below {
+    margin-top: -0.6em;
+}
+
+.characterSheet .section.label.above {
+    margin-bottom: -0.6em;
+}
+
+.characterSheet .column {
+    display: flex;
+    flex-direction: column;
+}
+
+.characterSheet .column_1 {
+    flex-basis: 20%;
+}
+
+.characterSheet .column_2 {
+    flex-basis: 20%;
+}
+
+.characterSheet .column_3 {
+    flex-basis: 20%;
+}
+
+.characterSheet .column_4 {
+    flex-basis: 40%;
+}
+
+.characterSheet .section.backstory {
+    border: 2px solid #B44D21;
+    background-color: #FFFBE0;
+    padding: 0.5em;
+    flex: auto;
+}
+
+.characterSheet .section.info {
+    background-color: #F7C280;
+}
+
+.characterSheet .section.personality {
+    border: 2px solid #B44D21;
+    background-color: #FFFBE0;
+}
+
+ul.traits {
+    direction: rtl;
+    padding-right: 12px;
+}
+
+ul.traits li.value {
+    text-align: left;
+}
+
+.characterSheet .label.flag {
+    text-align: center;
+}
+
+.characterSheet .section.flag {
+    margin: 0;
+    padding: 0;
+}
+
+.characterSheet .section.flags {
+    display: flex;
+    max-width: 220px;
+    min-width: 220px;
+    flex-wrap: wrap;
+}
+
+.characterSheet .flagImage {
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 50px;
+    max-height: 50px;
+    margin-right: 4px;
+    margin-left: 4px;
+
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .sheetImage {
-    min-width: 200px;
-    max-width: 200px;
+    flex-basis: 60%;
     background-repeat: no-repeat;
     background-size: contain;
-    border: 8px solid black;
+    background-color: #FFFBE0;
+    border: 2px solid #B44D21;
 }
 
 .sheetName {
     font-size: 3em;
-    font-family: cursive;
 }
 
 .sheetProperties {

@@ -110,20 +110,23 @@ class Utilities {
         }
     }
 
-    static createElement(elementType, className, parent) {
+    static createElement(elementType, className, parent, text) {
         let div = document.createElement(elementType);
         div.className = className;
         if (typeof(parent) !== 'undefined') {
             parent.appendChild(div);
         }
+        if (typeof(text) !== 'undefined' && text != null) {
+            div.innerText = text;
+        }
         return div;
     }
-    static createDiv(className, parent) {
-        return this.createElement('div', className, parent);
+    static createDiv(className, parent, text) {
+        return this.createElement('div', className, parent, text);
     }
 
-    static createSpan(className, parent) {
-        return this.createElement('span', className, parent);
+    static createSpan(className, parent, text) {
+        return this.createElement('span', className, parent, text);
     }
 
     static humanizeKey(str) {

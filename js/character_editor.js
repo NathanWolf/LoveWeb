@@ -157,6 +157,8 @@ class CharacterEditor extends Editor {
         lastNameInput.value = character.last_name;
         let nickNameInput = this.createInput(editorForm, {id: 'nick_name', name: 'Nickname'});
         nickNameInput.value = character.nick_name;
+        let birthNameInput = this.createInput(editorForm, {id: 'birth_name', name: 'Birth Name'});
+        birthNameInput.value = character.birth_name;
         let propertyInputs = {};
         let properties = characters.getProperties();
         for (let propertyId in properties) {
@@ -200,10 +202,12 @@ class CharacterEditor extends Editor {
             properties['last_name'] = lastNameInput.value;
             properties['middle_name'] = middleNameInput.value;
             properties['nick_name'] = nickNameInput.value;
+            properties['birth_name'] = birthNameInput.value;
             character.first_name = firstNameInput.value;
             character.last_name = lastNameInput.value;
             character.nick_name = nickNameInput.value;
             character.middle_name = middleNameInput.value;
+            character.birth_name = birthNameInput.value;
             character.name = character.first_name;
             if (nickNameInput.value.length > 0) {
                 character.name = nickNameInput.value;

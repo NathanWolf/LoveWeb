@@ -183,6 +183,25 @@ class Characters extends Component {
         });
     }
 
+    #addCharacterPropertyInfo(character, container, property, label) {
+        if (typeof(label) === 'undefined') {
+            let properties = this.getProperties();
+            if (properties.hasOwnProperty(property)) {
+                label = properties[property].name;
+            } else {
+                label = '?';
+            }
+        }
+        Utilities.createDiv('label', container, label);
+        Utilities.createDiv('value', container, character.properties.hasOwnProperty(property) ? character.properties[property] : null);
+    }
+
+    #translateToFlag(value) {
+        value = value.replaceAll(" ", "_");
+        value = value.replaceAll("/", "_");
+        return value.toLowerCase();
+    }
+
     #showCharacterPopup(characterKey) {
         let character = this.getCharacter(characterKey);
         if (character == null) {
@@ -197,11 +216,78 @@ class Characters extends Component {
             characterController.#popupCharacterId = null;
             characterController.getController().getHistory().unset('character');
         });
-        let image = Utilities.createDiv('sheetImage', popup);
-        image.style.backgroundImage = 'url(' + this.getImage(characterKey) + ')';
         if (character.properties.hasOwnProperty('color')) {
-            image.style.borderColor = character.properties.color.toLowerCase().replace(' ', '');
+            popup.style.borderColor = character.properties.color.toLowerCase().replace(' ', '');
         }
+
+        // Column 1:
+        // Images, Backstory
+        let column1 = Utilities.createDiv('column column_1', popup);
+
+        Utilities.createDiv('label section above', column1, 'Headshot');
+        let image = Utilities.createDiv('sheetImage section', column1);
+        image.style.backgroundImage = 'url(' + this.getImage(characterKey) + ')';
+
+        Utilities.createDiv('backstory section', column1, character.backstory);
+        Utilities.createDiv('label section below', column1, 'Backstory');
+
+        // Column 2
+        // Info
+        // Personality
+        // Favorites
+        let column2 = Utilities.createDiv('column column_2', popup);
+
+        // Info
+        let infoDiv = Utilities.createDiv('info section', column2);
+        Utilities.createDiv('label', infoDiv, 'Name');
+        Utilities.createDiv('value', infoDiv, character.full_name);
+        Utilities.createDiv('label', infoDiv, 'Birth Name');
+        Utilities.createDiv('value', infoDiv, character.birth_name);
+        this.#addCharacterPropertyInfo(character, infoDiv, 'title');
+        this.#addCharacterPropertyInfo(character, infoDiv, 'species');
+        this.#addCharacterPropertyInfo(character, infoDiv, 'age');
+        this.#addCharacterPropertyInfo(character, infoDiv, 'birthday');
+
+        let personalityDiv = Utilities.createDiv('personality section', column2);
+        Utilities.createDiv('label', personalityDiv, 'Personality');
+        let traits = character.properties.hasOwnProperty('traits') ? character.properties.traits : '';
+        let traitsList = Utilities.createElement('ul', 'traits', personalityDiv);
+        traits = traits.split(',');
+        for (let i = 0; i < 5; i++) {
+            let trait = i < traits.length ? traits[i] : '';
+            Utilities.createElement('li', 'value', traitsList, trait);
+        }
+
+        let favoritesDiv = Utilities.createDiv('favorites section', column2);
+        this.#addCharacterPropertyInfo(character, favoritesDiv, 'job');
+        this.#addCharacterPropertyInfo(character, favoritesDiv, 'color');
+        this.#addCharacterPropertyInfo(character, favoritesDiv, 'food');
+        this.#addCharacterPropertyInfo(character, favoritesDiv, 'habits');
+        this.#addCharacterPropertyInfo(character, favoritesDiv, 'activity');
+        this.#addCharacterPropertyInfo(character, favoritesDiv, 'fears');
+
+
+        // Column 3
+        let properties = this.getProperties();
+        let column3 = Utilities.createDiv('column column_3', popup);
+        let flagsDiv = Utilities.createDiv('section flags', column3);
+        let flags = ['birth_realm', 'sexuality', 'home_realm', 'pronouns'];
+
+        for (let i = 0; i < flags.length; i++) {
+            let flagId = flags[i];
+            let flagDiv = Utilities.createDiv('section flag', flagsDiv);
+            let propertyLabel = properties.hasOwnProperty(flagId) ? properties[flagId].name : '?';
+            Utilities.createDiv('label flag', flagDiv, propertyLabel);
+            let value = character.properties.hasOwnProperty(flagId) ? character.properties[flagId] : null;
+            let imageDiv = Utilities.createDiv('flagImage', flagDiv);
+            imageDiv.title = value;
+            imageDiv.style.backgroundImage = 'url(image/flags/' + this.#translateToFlag(value) + '.png)';
+        }
+
+        // Column 4
+        let column4 = Utilities.createDiv('column column_4', popup);
+
+        /*
         let propertiesDiv = Utilities.createDiv('sheetProperties', popup);
         let nameDiv = Utilities.createDiv('sheetName', propertiesDiv);
         nameDiv.innerText = character.full_name;
@@ -261,6 +347,8 @@ class Characters extends Component {
             propertyValue.innerText = related.name;
             propertyRow.appendChild(propertyValue);
         }
+
+        */
     }
 
     static getRelationshipName(relationshipId) {
