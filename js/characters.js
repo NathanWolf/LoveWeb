@@ -196,6 +196,32 @@ class Characters extends Component {
         Utilities.createDiv('value', container, character.properties.hasOwnProperty(property) ? character.properties[property] : null);
     }
 
+    #addCharacterPropertyList(listDiv, character, property, maxRows, label, divider) {
+        if (typeof(label) === 'undefined') {
+            let properties = this.getProperties();
+            if (properties.hasOwnProperty(property)) {
+                label = properties[property].name;
+            } else {
+                label = '?';
+            }
+        }
+        Utilities.createDiv('label', listDiv).innerHTML = label;
+        if (typeof(divider) !== 'undefined') {
+            Utilities.createElement(divider, 'divider', listDiv);
+        }
+
+        let list = character.properties.hasOwnProperty(property) ? character.properties[property] : '';
+        list = list.split(',');
+        let listCount = list.length;
+        if (maxRows > 0) {
+            listCount = Math.max(maxRows, listCount);
+        }
+        for (let i = 0; i < listCount; i++) {
+            let value = i < list.length ? list[i] : '';
+            Utilities.createDiv('value', listDiv, value);
+        }
+    }
+
     #translateToFlag(value) {
         value = value.replaceAll(" ", "_");
         value = value.replaceAll("/", "_");
@@ -249,15 +275,7 @@ class Characters extends Component {
         this.#addCharacterPropertyInfo(character, infoDiv, 'birthday');
 
         let personalityDiv = Utilities.createDiv('personality section', column2);
-        Utilities.createDiv('label', personalityDiv, 'Personality');
-        let traits = character.properties.hasOwnProperty('traits') ? character.properties.traits : '';
-        let traitsList = Utilities.createElement('ul', 'traits', personalityDiv);
-        traits = traits.split(',');
-        let traitCount = Math.max(traits.length, 5);
-        for (let i = 0; i < traitCount; i++) {
-            let trait = i < traits.length ? traits[i] : '';
-            Utilities.createElement('li', 'value', traitsList, trait);
-        }
+        this.#addCharacterPropertyList(personalityDiv, character, 'traits', 2);
 
         let favoritesDiv = Utilities.createDiv('favorites section', column2);
         this.#addCharacterPropertyInfo(character, favoritesDiv, 'job');
@@ -286,26 +304,9 @@ class Characters extends Component {
 
         let preferencesDiv = Utilities.createDiv('preferences', column3);
         let likesDiv = Utilities.createDiv('section likes', preferencesDiv);
-        Utilities.createDiv('label', likesDiv).innerHTML = 'Likes &#x1F496;';
-
-        let likes = character.properties.hasOwnProperty('likes') ? character.properties.likes : '';
-        likes = likes.split(',');
-        let likesCount = Math.max(likes.length, 6);
-        for (let i = 0; i < likesCount; i++) {
-            let like = i < likes.length ? likes[i] : '';
-            Utilities.createDiv('value', likesDiv, like);
-        }
-
+        this.#addCharacterPropertyList(likesDiv, character, 'likes', 6, 'Likes &#x1F496;');
         let dislikesDiv = Utilities.createDiv('section dislikes', preferencesDiv);
-        Utilities.createDiv('label', dislikesDiv).innerHTML = '&#128148;Dislikes';
-
-        let dislikes = character.properties.hasOwnProperty('dislikes') ? character.properties.dislikes : '';
-        dislikes = dislikes.split(',');
-        let dislikesCount = Math.max(dislikes.length, 6);
-        for (let i = 0; i < dislikesCount; i++) {
-            let dislike = i < dislikes.length ? dislikes[i] : '';
-            Utilities.createDiv('value', dislikesDiv, dislike);
-        }
+        this.#addCharacterPropertyList(dislikesDiv, character, 'dislikes', 6, '&#128148;Dislikes');
 
         let relationshipsDiv =  Utilities.createDiv('section relationships', column3);
         Utilities.createDiv('label section', relationshipsDiv, 'Relationships');
@@ -318,50 +319,61 @@ class Characters extends Component {
             Utilities.createDiv('value', relationshipsDiv, related.name);
         }
 
-
-
-
         // Column 4
         let column4 = Utilities.createDiv('column column_4', popup);
 
-        /*
-        let propertiesDiv = Utilities.createDiv('sheetProperties', popup);
-        let nameDiv = Utilities.createDiv('sheetName', propertiesDiv);
-        nameDiv.innerText = character.full_name;
-        let divider = document.createElement('hr');
-        divider.className = 'separator';
-        propertiesDiv.appendChild(divider);
-        let propertiesTable = document.createElement('table');
-        propertiesTable.className = 'properties';
-        propertiesDiv.appendChild(propertiesTable);
-        let propertiesBody = document.createElement('tbody');
-        propertiesTable.appendChild(propertiesBody);
-        let properties = {... this.getProperties() };
-        let characterProperties = {... character.properties };
-        if (character.description != null && character.description.length > 0) {
-            properties['description'] = {name: 'Description', question: null};
-            characterProperties['description'] = character.description;
+        // Row 1
+        let c4r1 = Utilities.createDiv('row row1', column4);
+
+        // Health
+        let healthDiv = Utilities.createDiv('section health', c4r1);
+        Utilities.createDiv('label', healthDiv, 'Health');
+        Utilities.createElement('hr', '', healthDiv);
+        Utilities.createDiv('label above', healthDiv, 'Physical');
+        let physicalHealthValue = character.properties.hasOwnProperty('physical_health') ? character.properties.physical_health : '?';
+        Utilities.createDiv('value', healthDiv, physicalHealthValue + ' / 10');
+        Utilities.createDiv('label above', healthDiv, 'Mental');
+        let mentalHealthValue = character.properties.hasOwnProperty('mental_health') ? character.properties.mental_health : '?';
+        Utilities.createDiv('value', healthDiv, mentalHealthValue + ' / 10');
+        this.#addCharacterPropertyList(healthDiv, character, 'disorders', 2);
+        this.#addCharacterPropertyList(healthDiv, character, 'illnesses', 2);
+
+        // Guilt
+        let guiltDiv = Utilities.createDiv('section guilt', c4r1);
+        this.#addCharacterPropertyList(guiltDiv, character, 'guilt', 2);
+        this.#addCharacterPropertyList(guiltDiv, character, 'secret', 2);
+
+        let c4r2 = Utilities.createDiv('row row2', column4);
+
+        // Skills
+        let skillsDiv = Utilities.createDiv('section skills', c4r2);
+        this.#addCharacterPropertyList(skillsDiv, character, 'skills', 2, undefined, 'hr');
+        let aliveDiv = Utilities.createDiv('section alive', c4r2);
+        Utilities.createSpan('', aliveDiv, character.properties.hasOwnProperty('living_status') ? character.properties['living_status'] : '');
+        let religionDiv = Utilities.createDiv('section religion', c4r2);
+        Utilities.createDiv('label', religionDiv, 'Religion');
+        Utilities.createElement('hr', '', religionDiv);
+        let religionList = character.properties.hasOwnProperty('religion') ? character.properties.religion : '';
+        religionList = religionList.split(',');
+        let religionMap = {};
+        for (let i = 0; i < religionList.length; i++) {
+            let item = religionList[i];
+            if (item != '') religionMap[item] = true;
         }
-        if (character.backstory != null && character.backstory.length > 0) {
-            properties['backstory'] =  {name: 'Backstory', question: null};
-            characterProperties['backstory'] = character.backstory;
-        }
-        for (let propertyId in properties) {
-            if (!properties.hasOwnProperty(propertyId)) continue;
-            if (!characterProperties.hasOwnProperty(propertyId)) continue;
-            let property = properties[propertyId];
-            if (property.question != null) continue;
-            let propertyRow = document.createElement('tr');
-            propertiesBody.appendChild(propertyRow);
-            let propertyHeader = document.createElement('th');
-            propertyHeader.innerText = property.name;
-            propertyRow.appendChild(propertyHeader);
-            let propertyValue = document.createElement('td');
-            propertyValue.innerText = characterProperties[propertyId];
-            propertyRow.appendChild(propertyValue);
+        let religions = ['Love', 'Life', 'Death', 'Chaos', 'None'];
+        for (let i = 0; i < religions.length; i++) {
+            let religion = religions[i];
+            let checkbox = Utilities.createElement('input');
+            checkbox.type = 'checkbox';
+            if (religionMap.hasOwnProperty(religion)) {
+                checkbox.checked = true;
+            }
+            let religionRow = Utilities.createDiv('', religionDiv);
+            religionRow.appendChild(checkbox);
+            let religionSpan = Utilities.createSpan('', religionRow, religion);
         }
 
-        */
+        let c4r3 = Utilities.createDiv('row cor3', column4);
     }
 
     static getRelationshipName(relationshipId) {

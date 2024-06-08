@@ -112,7 +112,9 @@ class Utilities {
 
     static createElement(elementType, className, parent, text) {
         let div = document.createElement(elementType);
-        div.className = className;
+        if (typeof(className) !== 'undefined') {
+            div.className = className;
+        }
         if (typeof(parent) !== 'undefined') {
             parent.appendChild(div);
         }
