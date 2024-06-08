@@ -278,7 +278,7 @@ class Characters extends Component {
             let flagDiv = Utilities.createDiv('section flag', flagsDiv);
             let propertyLabel = properties.hasOwnProperty(flagId) ? properties[flagId].name : '?';
             Utilities.createDiv('label flag', flagDiv, propertyLabel);
-            let value = character.properties.hasOwnProperty(flagId) ? character.properties[flagId] : null;
+            let value = character.properties.hasOwnProperty(flagId) ? character.properties[flagId] : 'none';
             let imageDiv = Utilities.createDiv('flagImage', flagDiv);
             imageDiv.title = value;
             imageDiv.style.backgroundImage = 'url(image/flags/' + this.#translateToFlag(value) + '.png)';
