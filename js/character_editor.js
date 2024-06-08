@@ -161,9 +161,15 @@ class CharacterEditor extends Editor {
         birthNameInput.value = character.birth_name;
         let propertyInputs = {};
         let properties = characters.getProperties();
+        let wasQuestion = false;
         for (let propertyId in properties) {
             if (!properties.hasOwnProperty(propertyId)) continue;
             let property = properties[propertyId];
+            let isQuestion = property.question != null;
+            if (!wasQuestion && isQuestion) {
+                Utilities.createElement('hr', '', editorForm);
+                wasQuestion = true;
+            }
             let options = characters.getAllProperties(propertyId);
             let propertyInput = this.createInput(editorForm, property, options);
             if (character.properties != null && character.properties.hasOwnProperty(propertyId)) {
