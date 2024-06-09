@@ -2,6 +2,7 @@ class CharacterEditor extends Editor {
     #groupTierList = 'renown';
     #characterId = null;
     #portraitOffset = null;
+    #portraitRadius = 0;
 
     constructor(controller, element) {
         super(controller, element);
@@ -102,7 +103,9 @@ class CharacterEditor extends Editor {
             let portraitWidth = portraitImage.offsetWidth - borderSize;
             let portraitHeight = portraitImage.offsetHeight - borderSize;
             let portraitCenter = Utilities.createDiv('portraitCenter', portraitImage);
-            let offset = character.hasOwnProperty('portrait') && character.portrait.hasOwnProperty('offset') ? character.portrait.offset : [0.5, 0.1];
+            let portraitInfo = character.hasOwnProperty('portrait') ? character.portrait : {};
+            let center = portraitInfo.hasOwnProperty('center') ? portraitInfo.center : [loadImage.width * 0.5, loadImage.height * 0.1];
+            let radius = portraitInfo.hasOwnProperty('radius') ? portraitInfo.radius : loadImage.width * 0.5;
 
             // Adjust portrait width/height based on loaded image
             let widthRatio = portraitWidth / loadImage.width;
@@ -115,8 +118,13 @@ class CharacterEditor extends Editor {
             portraitImage.addEventListener('click', function(event) {
                 editor.#movePortraitOffset(event.offsetX, event.offsetY, portraitWidth, portraitHeight, portraitCenter);
             });
-            portraitCenter.style.left = (offset[0] * portraitWidth - 8) + 'px';
-            portraitCenter.style.top = (offset[1] * portraitHeight - 8) + 'px';
+
+            editor.#portraitRadius = radius * ratio;
+            portraitCenter.style.left = (center[0] * ratio - editor.#portraitRadius) + 'px';
+            portraitCenter.style.top = (center[1] * ratio - editor.#portraitRadius) + 'px';
+
+            portraitCenter.style.width = (editor.#portraitRadius * 2) + 'px';
+            portraitCenter.style.height = (editor.#portraitRadius * 2) + 'px';
         };
         loadImage.src = imageSrc;
 
@@ -255,8 +263,8 @@ class CharacterEditor extends Editor {
     }
 
     #movePortraitOffset(offsetX, offsetY, portraitWidth, portraitHeight, portraitCenter) {
-        portraitCenter.style.left = (offsetX - 8) + 'px';
-        portraitCenter.style.top = (offsetY - 8) + 'px';
+        portraitCenter.style.left = (offsetX - this.#portraitRadius) + 'px';
+        portraitCenter.style.top = (offsetY - this.#portraitRadius) + 'px';
 
         this.#portraitOffset = [offsetX / portraitWidth, offsetY / portraitHeight];
     }
