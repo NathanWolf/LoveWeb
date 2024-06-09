@@ -38,8 +38,13 @@ try {
                     } else {
                         $character['chat'] = null;
                     }
-                } else if ($propertyId == 'portraitOffset') {
-                    $character['portrait'] = json_encode(array('offset' => $value));
+                } else if ($propertyId == 'portrait') {
+                    $portrait = json_decode($value, true);
+                    $existing = $db->getCharacter($characterId);
+                    if ($existing && $existing['portrait']) {
+                        $portrait = array_merge($existing['portrait'], $portrait);
+                    }
+                    $character['portrait'] = json_encode($portrait);
                 } else {
                     if (!isset($allProperties[$propertyId])) {
                         throw new Exception("Unknown property: $propertyId");

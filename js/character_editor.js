@@ -1,8 +1,9 @@
 class CharacterEditor extends Editor {
     #groupTierList = 'renown';
     #characterId = null;
-    #portraitOffset = null;
+    #portraitCenter = null;
     #portraitRadius = 0;
+    #portraitRatio = 0;
 
     constructor(controller, element) {
         super(controller, element);
@@ -74,7 +75,8 @@ class CharacterEditor extends Editor {
         let characterList = characters.getCharacterList();
 
         this.#characterId = characterKey;
-        this.#portraitOffset = null;
+        this.#portraitCenter = null;
+        this.#portraitRatio = 0;
 
         let container = this.getElement();
         Utilities.empty(container);
@@ -116,15 +118,16 @@ class CharacterEditor extends Editor {
 
             portraitImage.style.backgroundSize = portraitWidth + 'px ' + portraitHeight + 'px';
             portraitImage.addEventListener('click', function(event) {
-                editor.#movePortraitOffset(event.offsetX, event.offsetY, portraitWidth, portraitHeight, portraitCenter);
+                editor.#movePortraitCenter(event.offsetX, event.offsetY, portraitWidth, portraitHeight, portraitCenter);
             });
 
-            editor.#portraitRadius = radius * ratio;
-            portraitCenter.style.left = (center[0] * ratio - editor.#portraitRadius) + 'px';
-            portraitCenter.style.top = (center[1] * ratio - editor.#portraitRadius) + 'px';
+            editor.#portraitRatio = ratio;
+            editor.#portraitRadius = radius;
+            portraitCenter.style.left = (center[0] * ratio - editor.#portraitRadius * editor.#portraitRatio) + 'px';
+            portraitCenter.style.top = (center[1] * ratio - editor.#portraitRadius * editor.#portraitRatio) + 'px';
 
-            portraitCenter.style.width = (editor.#portraitRadius * 2) + 'px';
-            portraitCenter.style.height = (editor.#portraitRadius * 2) + 'px';
+            portraitCenter.style.width = (editor.#portraitRadius * editor.#portraitRatio * 2) + 'px';
+            portraitCenter.style.height = (editor.#portraitRadius * editor.#portraitRatio * 2) + 'px';
         };
         loadImage.src = imageSrc;
 
@@ -230,8 +233,9 @@ class CharacterEditor extends Editor {
             if (lastNameInput.value.length > 0) {
                 character.full_name += ' ' + lastNameInput.value;
             }
-            if (editor.#portraitOffset != null) {
-                properties.portraitOffset = editor.#portraitOffset;
+            if (editor.#portraitCenter != null && editor.#portraitRadius > 0) {
+                let portrait = {center: editor.#portraitCenter, radius: editor.#portraitRadius};
+                properties.portrait = JSON.stringify(portrait);
             }
             editor.beginSave();
             editor.#save(properties);
@@ -262,11 +266,13 @@ class CharacterEditor extends Editor {
         this.showCharacter(characterList[index].id);
     }
 
-    #movePortraitOffset(offsetX, offsetY, portraitWidth, portraitHeight, portraitCenter) {
-        portraitCenter.style.left = (offsetX - this.#portraitRadius) + 'px';
-        portraitCenter.style.top = (offsetY - this.#portraitRadius) + 'px';
+    #movePortraitCenter(offsetX, offsetY, portraitWidth, portraitHeight, portraitCenter) {
+        if (this.#portraitRatio == 0) return;
 
-        this.#portraitOffset = [offsetX / portraitWidth, offsetY / portraitHeight];
+        portraitCenter.style.left = (offsetX - this.#portraitRadius * this.#portraitRatio) + 'px';
+        portraitCenter.style.top = (offsetY - this.#portraitRadius * this.#portraitRatio) + 'px';
+
+        this.#portraitCenter = [offsetX / this.#portraitRatio, offsetY / this.#portraitRatio];
     }
 
     #save(properties) {

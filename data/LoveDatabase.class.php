@@ -130,6 +130,31 @@ class LoveDatabase extends Database {
         return $results;
     }
 
+    public function getCharacter($id) {
+        return $this->fixupCharacter($this->get('persona', $id));
+    }
+
+    private function fixupCharacter($character) {
+        $character['tiers'] = array();
+        $character['relationships'] = array();
+        $character['properties'] = array();
+        $character['name'] = $character['first_name'];
+        if ($character['nick_name']) {
+            $character['name'] = $character['nick_name'];
+        }
+        $character['full_name'] = $character['first_name'];
+        if ($character['last_name']) {
+            $character['full_name'] .= ' ' . $character['last_name'];
+        }
+        if ($character['chat']) {
+            $character['chat'] = json_decode($character['chat'], true);
+        }
+        if ($character['portrait']) {
+            $character['portrait'] = json_decode($character['portrait'], true);
+        }
+        return $character;
+    }
+
     public function getCharacters() {
         // Note that the db name is "persona" to avoid issues with "character" being a reserved word.
         $characters = $this->getAll('persona');
@@ -139,24 +164,7 @@ class LoveDatabase extends Database {
 
         $results = array();
         foreach ($characters as $character) {
-            $character['tiers'] = array();
-            $character['relationships'] = array();
-            $character['properties'] = array();
-            $character['name'] = $character['first_name'];
-            if ($character['nick_name']) {
-                $character['name'] = $character['nick_name'];
-            }
-            $character['full_name'] = $character['first_name'];
-            if ($character['last_name']) {
-                $character['full_name'] .= ' ' . $character['last_name'];
-            }
-            if ($character['chat']) {
-                $character['chat'] = json_decode($character['chat'], true);
-            }
-            if ($character['portrait']) {
-                $character['portrait'] = json_decode($character['portrait'], true);
-            }
-            $results[$character['id']] = $character;
+            $results[$character['id']] = $this->fixupCharacter($character);
         }
         foreach ($relationships as $relationship) {
             if (isset($results[$relationship['persona_id']]['relationships'][$relationship['relationship_id']])) {
