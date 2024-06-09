@@ -265,7 +265,9 @@ class LoveDatabase extends Database {
         imagesavealpha($scaled, true);
         $outputFolder = dirname(__FILE__) . '/../image/dynamic/characters/' . $characterId;
         $outputFilename = $outputFolder . '/portrait.png';
-        mkdir($outputFolder, 0777, true);
+        if (!file_exists($outputFolder)) {
+            @mkdir($outputFolder, 0777, true);
+        }
         imagepng($scaled, $outputFilename);
     }
 }
