@@ -1,6 +1,7 @@
 class Editor extends Component {
     #saveButton = null;
     #confirmedElement = null;
+    #modified = {};
 
     constructor(controller, element) {
         super(controller, element);
@@ -139,6 +140,7 @@ class Editor extends Component {
 
         this.#saveButton.disabled = false;
         this.#confirmedElement.style.display = 'block';
+        this.clearModified();
     }
 
     clearSaved() {
@@ -156,5 +158,17 @@ class Editor extends Component {
 
     getTitle() {
         return 'Editor';
+    }
+
+    clearModified() {
+        this.#modified = {};
+    }
+
+    isModified(key) {
+        return this.#modified.hasOwnProperty(key);
+    }
+
+    setModified(key) {
+        this.#modified[key] = true;
     }
 }
