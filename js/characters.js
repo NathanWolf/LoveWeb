@@ -418,7 +418,11 @@ class Characters extends Component {
         return relationshipList;
     }
 
-    #getImage(characterId, folder, dataKey) {
+    #getImage(characterId, dataKey, dynamic) {
+        let folder = '';
+        if (dynamic) {
+            folder = '/dynamic';
+        }
         let character = this.getCharacter(characterId);
         if (character == null) {
             return '';
@@ -427,18 +431,15 @@ class Characters extends Component {
         if (character.hasOwnProperty(dataKey) && character[dataKey] != null && character[dataKey].hasOwnProperty('version')) {
             version = character[dataKey].version;
         }
-        if (character.hasOwnProperty(dataKey) && character[dataKey] != null && character[dataKey].hasOwnProperty('url')) {
-            return 'image/' + folder + '/' + character[dataKey].url + '?v=' + version;
-        }
-        return 'image/' + folder + '/' + characterId + '.png?v=' + version;
+        return 'image' + folder + '/characters/' + characterId + '/' + dataKey + '.png?v=' + version;
     }
 
     getPortrait(characterId) {
-        return this.#getImage(characterId, 'portraits', 'portrait');
+        return this.#getImage(characterId, 'portrait', true);
     }
 
     getImage(characterId) {
-        return this.#getImage(characterId, 'characters', 'image');
+        return this.#getImage(characterId, 'full');
     }
 
     getTier(characterId, tierList, defaultTier) {
