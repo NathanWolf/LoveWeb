@@ -220,7 +220,6 @@ class LoveDatabase extends Database {
         return $properties;
     }
 
-
     public function saveUserProperty($userId, $propertyId, $value) {
         $property = $this->queryOne(
             'user_property',
@@ -234,5 +233,39 @@ class LoveDatabase extends Database {
             $property['value'] = $value;
             $this->save('user_property', $property, 'user_id', 'property_id');
         }
+    }
+
+    public function createPortrait($character, $targetWidth = 256, $targetHeight = 256) {
+        if (!isset($character['id'])) {
+            throw new Exception("Invalid character: " . json_encode($character));
+        }
+        if (!isset($character['portrait']) || !isset($character['portrait']['center']) || !isset($character['portrait']['radius'])) {
+            throw new Exception("Character {$character['id']} missing portrait info: " . json_encode($character));
+        }
+        $characterId = $character['id'];
+        $fullImage = dirname(__FILE__) . '/../image/characters/' . $characterId . '/full.png';
+        if (!file_exists($fullImage)) {
+            throw new Exception("No character image found at: $fullImage");
+        }
+
+        $image = imagecreatefrompng($fullImage);
+        if (!$fullImage) {
+            throw new Exception(" Error loading $fullImage");
+        }
+        list($centerX, $centerY) = $character['portrait']['center'];
+        $radius = $character['portrait']['radius'];
+        $crop = array(
+            'x' => $centerX - $radius,
+            'y' => $centerY - $radius,
+            'width' => $radius * 2,
+            'height' => $radius * 2
+        );
+        $cropped = imagecrop($image, $crop);
+        $scaled = imagescale($cropped, $targetWidth, $targetHeight);
+        imagesavealpha($scaled, true);
+        $outputFolder = dirname(__FILE__) . '/../image/dynamic/characters/' . $characterId;
+        $outputFilename = $outputFolder . '/portrait.png';
+        mkdir($outputFolder, 0777, true);
+        imagepng($scaled, $outputFilename);
     }
 }

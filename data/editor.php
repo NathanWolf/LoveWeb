@@ -41,10 +41,17 @@ try {
                 } else if ($propertyId == 'portrait') {
                     $portrait = json_decode($value, true);
                     $existing = $db->getCharacter($characterId);
+                    $version = 1;
                     if ($existing && $existing['portrait']) {
                         $portrait = array_merge($existing['portrait'], $portrait);
+                        if (isset($existing['version'])) {
+                            $version = $existing['version'] + 1;
+                        }
                     }
-                    $character['portrait'] = json_encode($portrait);
+                    $portrait['version'] = $version;
+                    $character['portrait'] = $portrait;
+                    $db->createPortrait($character);
+                    $character['portrait'] = json_encode($character['portrait']);
                 } else {
                     if (!isset($allProperties[$propertyId])) {
                         throw new Exception("Unknown property: $propertyId");
