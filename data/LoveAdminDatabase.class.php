@@ -15,4 +15,9 @@ class LoveAdminDatabase extends LoveDatabase {
             throw new Exception("Unauthorized user");
         }
     }
+
+    public function updatePortrait($characterId, $portrait) {
+        $record = array('id' => $characterId, 'portrait' => json_encode($portrait) );
+        $this->save('persona', $record);
+    }
 }
