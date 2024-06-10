@@ -223,9 +223,13 @@ class Characters extends Component {
     }
 
     #translateToFlag(value) {
+        value = value.toLowerCase();
         value = value.replaceAll(" ", "_");
         value = value.replaceAll("/", "_");
-        return value.toLowerCase();
+        value = value.replaceAll(")", "");
+        value = value.replaceAll("(", "");
+        value = value.replaceAll("the_", "");
+        return value;
     }
 
     #showCharacterPopup(characterKey) {
@@ -299,7 +303,7 @@ class Characters extends Component {
             let value = character.properties.hasOwnProperty(flagId) ? character.properties[flagId] : 'none';
             let imageDiv = Utilities.createDiv('flagImage', flagDiv);
             imageDiv.title = value;
-            imageDiv.style.backgroundImage = 'url(image/flags/' + this.#translateToFlag(value) + '.png)';
+            imageDiv.style.backgroundImage = 'url(image/flags/' + this.#translateToFlag(value) + '.jpg)';
         }
 
         let preferencesDiv = Utilities.createDiv('preferences', column3);
