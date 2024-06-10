@@ -43,10 +43,10 @@ try {
                     $existing = $db->getCharacter($characterId);
                     $version = 1;
                     if ($existing && $existing['portrait']) {
-                        $portrait = array_merge($existing['portrait'], $portrait);
-                        if (isset($existing['version'])) {
-                            $version = $existing['version'] + 1;
+                        if (isset($existing['portrait']['version'])) {
+                            $version = $existing['portrait']['version'] + 1;
                         }
+                        $portrait = array_merge($existing['portrait'], $portrait);
                     }
                     $portrait['version'] = $version;
                     $character['portrait'] = $portrait;
