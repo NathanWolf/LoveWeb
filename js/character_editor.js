@@ -130,14 +130,11 @@ class CharacterEditor extends Editor {
                 event.stopPropagation();
                 editor.#startPortraitMove(event.screenX, event.screenY);
             });
-            portraitCenter.addEventListener('mouseup', function(event) {
-                editor.#stopPortraitDrag(event.screenX, event.screenY);
-            });
             portraitHandles.addEventListener('mousedown', function(event) {
                 event.stopPropagation();
                 editor.#startPortraitResize(event.screenX, event.screenY);
             });
-            portraitHandles.addEventListener('mouseup', function(event) {
+            portraitImage.addEventListener('mouseup', function(event) {
                 editor.#stopPortraitDrag(event.screenX, event.screenY);
             });
             portraitImage.addEventListener('mousemove', function(event) {
@@ -358,8 +355,10 @@ class CharacterEditor extends Editor {
                 this.#movePortraitFromDrag(offsetX, offsetY);
                 break;
             case 'resize':
-                this.#movePortraitFromDrag(offsetX, offsetY);
+                this.#resizePortraitFromDrag(offsetX, offsetY);
                 break;
+            case 'none':
+                return;
         }
         this.#updatePortraitSelector();
         this.#portraitCenterStart = this.#portraitCenter;
