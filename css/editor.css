@@ -20,7 +20,6 @@
     max-height: 512px;
     overflow: hidden;
     margin: 8px;
-    cursor: pointer;
     background-repeat: no-repeat;
     background-position: left top;
     border: 4px solid #D08856;
@@ -35,8 +34,17 @@
 
 .portraitCenter {
     position: relative;
-    border: 2px solid red;
-    pointer-events: none;
+    background-color: rgba(0,0,0,0.1);
+    cursor: move;
+    z-index: 150;
+}
+
+.portraitHandles {
+    position: relative;
+    border: 4px solid rgba(255,0,0,0.5);
+    box-sizing: border-box;
+    cursor: nesw-resize;
+    z-index: 100;
 }
 
 .editorHeader {
