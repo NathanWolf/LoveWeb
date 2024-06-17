@@ -270,6 +270,31 @@ create table quiz_answer
         on update cascade
 );
 
+CREATE TABLE persona_image
+(
+    persona_id VARCHAR(64) NOT NULL,
+    image_id VARCHAR(64) NOT NULL,
+
+    constraint persona_image_pk
+        primary key (persona_id, image_id),
+
+    foreign key (persona_id)
+        references persona(id)
+        on delete cascade
+        on update cascade,
+
+    created timestamp not null default CURRENT_TIMESTAMP,
+    updated timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+
+    priority int not null default 0,
+    tags varchar(255) NOT NULL DEFAULT '',
+    title varchar(255) NULL,
+    description TEXT NOT NULL,
+    drawn date NULL,
+    version int default 0 not null,
+    metadata JSON NULL
+);
+
 -- Data updates follow
 
 UPDATE persona_tier

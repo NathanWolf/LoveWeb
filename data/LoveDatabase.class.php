@@ -138,6 +138,7 @@ class LoveDatabase extends Database {
         $character['tiers'] = array();
         $character['relationships'] = array();
         $character['properties'] = array();
+        $character['images'] = array();
         $character['name'] = $character['first_name'];
         if ($character['nick_name']) {
             $character['name'] = $character['nick_name'];
@@ -161,6 +162,7 @@ class LoveDatabase extends Database {
         $relationships = $this->getAll('persona_relationship');
         $tiers = $this->getAll('persona_tier');
         $properties = $this->getAll('persona_property');
+        $images = $this->getAll('persona_image');
 
         $results = array();
         foreach ($characters as $character) {
@@ -178,6 +180,9 @@ class LoveDatabase extends Database {
         }
         foreach ($properties as $property) {
             $results[$property['persona_id']]['properties'][$property['property_id']] = $property['value'];
+        }
+        foreach ($images as $image) {
+            $results[$image['persona_id']]['images'][$image['image_id']] = $image;
         }
 
         return $results;
