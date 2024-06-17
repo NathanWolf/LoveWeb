@@ -471,4 +471,12 @@ class Characters extends Component {
     deactivate() {
         this.getController().getHistory().unset('character');
     }
+
+    updateCharacter(characterInfo) {
+        if (this.#characters.hasOwnProperty(characterInfo.id)) {
+            this.#characters[characterInfo.id] = Utilities.merge(this.#characters[characterInfo.id], characterInfo);
+        } else {
+            this.#characters[characterInfo.id] = characterInfo;
+        }
+    }
 }

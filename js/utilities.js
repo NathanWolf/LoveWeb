@@ -23,6 +23,28 @@ class Utilities {
         return a;
     }
 
+    static isObject(item) {
+        return (item && typeof item === 'object' && !Array.isArray(item));
+    }
+
+    static merge(target, ...sources) {
+        if (!sources.length) return target;
+        const source = sources.shift();
+
+        if (this.isObject(target) && this.isObject(source)) {
+            for (const key in source) {
+                if (this.isObject(source[key])) {
+                    if (!target[key]) Object.assign(target, { [key]: {} });
+                    this.merge(target[key], source[key]);
+                } else {
+                    Object.assign(target, { [key]: source[key] });
+                }
+            }
+        }
+
+        return this.merge(target, ...sources);
+    }
+
     static empty = function(node) {
         while (node.firstChild) {
             node.removeChild(node.lastChild);
@@ -123,6 +145,7 @@ class Utilities {
         }
         return div;
     }
+
     static createDiv(className, parent, text) {
         return this.createElement('div', className, parent, text);
     }

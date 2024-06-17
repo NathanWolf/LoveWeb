@@ -114,7 +114,7 @@ class CharacterEditor extends Editor {
             let portraitHeight = portraitImage.offsetHeight - borderSize;
             let portraitHandles = Utilities.createDiv('portraitHandles', portraitImage);
             let portraitCenter = Utilities.createDiv('portraitCenter', portraitHandles);
-            let portraitInfo = character.hasOwnProperty('portrait') ? character.portrait : {};
+            let portraitInfo = character.images.hasOwnProperty('portrait') && character.images.portrait.metadata != null ? JSON.parse(character.images.portrait.metadata) : {};
             let center = portraitInfo.hasOwnProperty('center') ? portraitInfo.center : [loadImage.width * 0.5, loadImage.height * 0.1];
             let radius = portraitInfo.hasOwnProperty('radius') ? portraitInfo.radius : loadImage.width * 0.5;
 

@@ -136,6 +136,8 @@ class Editor extends Component {
     processSave(response) {
         if (!response.success) {
             alert("An error occurred saving, please try again: " + response.message)
+        } else {
+            this.getController().getCharacters().updateCharacter(response.character);
         }
 
         this.#saveButton.disabled = false;

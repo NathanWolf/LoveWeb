@@ -20,6 +20,7 @@ try {
                 throw new Exception("Unknown character: $characterId");
             }
             $character = array('id' => $characterId);
+            $images = array();
             foreach ($properties as $propertyId => $value) {
                 if ($propertyId == 'backstory') {
                     $character['backstory'] = $value;
@@ -60,7 +61,7 @@ try {
                         );
                         $db->insert('persona_image', $imageRecord);
                     }
-                    $character['images'] = array('portrait' => $imageRecord);
+                    $images = array('portrait' => $imageRecord);
                     $db->createPortrait($imageRecord);
                 } else {
                     if (!isset($allProperties[$propertyId])) {
@@ -84,6 +85,9 @@ try {
                 throw new Exception("No data to save");
             }
             $db->save('persona', $character);
+            if ($images) {
+                $character['images'] = $images;
+            }
             die(json_encode(array('success' => true, 'user' => $user, 'character' => $character)));
         default:
             throw new Exception("Invalid action: $action");
