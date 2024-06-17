@@ -86,7 +86,7 @@
 }
 
 .message.user .identity {
-    background-image: url('../image/blank-profile.png');
+    background-image: url('../image/ui/blank-profile.png');
 }
 
 .message.assistant {
