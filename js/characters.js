@@ -254,7 +254,7 @@ class Characters extends Component {
         // Images, Backstory
         let column1 = Utilities.createDiv('column column_1', popup);
 
-        Utilities.createDiv('label section above', column1, 'Headshot');
+        Utilities.createDiv('label section above', column1, 'Images');
         let image = Utilities.createDiv('sheetImage section', column1);
         image.style.backgroundImage = 'url(' + this.getImage(characterKey) + ')';
 
@@ -423,15 +423,13 @@ class Characters extends Component {
     }
 
     #getImage(characterId, dataKey) {
+        let image = 'image/ui/missing.png';
         let character = this.getCharacter(characterId);
-        if (character == null) {
-            return '';
+        if (character != null && character.images.hasOwnProperty(dataKey)) {
+            let version = character.images[dataKey].version;
+            image = 'image/dynamic/characters/' + characterId + '/' + dataKey + '.png?v=' + version;
         }
-        let version = 0;
-        if (character.hasOwnProperty(dataKey) && character[dataKey] != null && character[dataKey].hasOwnProperty('version')) {
-            version = character[dataKey].version;
-        }
-        return 'image/dynamic/characters/' + characterId + '/' + dataKey + '.png?v=' + version;
+        return image;
     }
 
     getPortrait(characterId) {
