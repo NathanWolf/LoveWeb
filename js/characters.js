@@ -422,11 +422,7 @@ class Characters extends Component {
         return relationshipList;
     }
 
-    #getImage(characterId, dataKey, dynamic) {
-        let folder = '';
-        if (dynamic) {
-            folder = '/dynamic';
-        }
+    #getImage(characterId, dataKey) {
         let character = this.getCharacter(characterId);
         if (character == null) {
             return '';
@@ -435,11 +431,11 @@ class Characters extends Component {
         if (character.hasOwnProperty(dataKey) && character[dataKey] != null && character[dataKey].hasOwnProperty('version')) {
             version = character[dataKey].version;
         }
-        return 'image' + folder + '/characters/' + characterId + '/' + dataKey + '.png?v=' + version;
+        return 'image/dynamic/characters/' + characterId + '/' + dataKey + '.png?v=' + version;
     }
 
     getPortrait(characterId) {
-        return this.#getImage(characterId, 'portrait', true);
+        return this.#getImage(characterId, 'portrait');
     }
 
     getImage(characterId) {
