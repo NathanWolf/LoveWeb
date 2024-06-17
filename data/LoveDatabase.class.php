@@ -134,6 +134,15 @@ class LoveDatabase extends Database {
         return $this->fixupCharacter($this->get('persona', $id));
     }
 
+    public function getCharacterImages($characterId) {
+        $images = $this->get('persona_image', $characterId, 'persona_id');
+        return self::index($images, 'image_id');
+    }
+
+    public function getCharacterImage($characterId, $imageId) {
+        return $this->queryOne('persona_image', 'persona_id=:persona AND image_id=:image', array('persona' => $characterId, 'image' => $imageId));
+    }
+
     private function fixupCharacter($character) {
         $character['tiers'] = array();
         $character['relationships'] = array();
@@ -240,15 +249,17 @@ class LoveDatabase extends Database {
         }
     }
 
-    public function createPortrait($character, $targetWidth = 256, $targetHeight = 256) {
-        if (!isset($character['id'])) {
-            throw new Exception("Invalid character: " . json_encode($character));
+    public function createPortrait($characterImage, $targetWidth = 256, $targetHeight = 256) {
+        if (!isset($characterImage['persona_id'])) {
+            throw new Exception("Invalid character image record: " . json_encode($characterImage));
         }
-        if (!isset($character['portrait']) || !isset($character['portrait']['center']) || !isset($character['portrait']['radius'])) {
-            throw new Exception("Character {$character['id']} missing portrait info: " . json_encode($character));
+        $characterId = $characterImage['persona_id'];
+        $metadata = $characterImage['metadata'];
+        $metadata = $metadata ? json_decode($metadata, true) : array();
+        if (!isset($metadata['center']) || !isset($metadata['radius'])) {
+            throw new Exception("Character $characterImage missing portrait info: " . json_encode($characterImage));
         }
-        $characterId = $character['id'];
-        $fullImage = dirname(__FILE__) . '/../image/characters/' . $characterId . '/full.png';
+        $fullImage = dirname(__FILE__) . '/../image/dynamic/characters/' . $characterId . '/full.png';
         if (!file_exists($fullImage)) {
             throw new Exception("No character image found at: $fullImage");
         }
@@ -257,8 +268,8 @@ class LoveDatabase extends Database {
         if (!$fullImage) {
             throw new Exception(" Error loading $fullImage");
         }
-        list($centerX, $centerY) = $character['portrait']['center'];
-        $radius = $character['portrait']['radius'];
+        list($centerX, $centerY) = $metadata['center'];
+        $radius = $metadata['radius'];
         $crop = array(
             'x' => $centerX - $radius,
             'y' => $centerY - $radius,

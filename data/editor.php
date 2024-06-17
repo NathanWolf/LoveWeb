@@ -15,6 +15,10 @@ try {
             $characterId = getParameter('character');
             $properties = getParameter('properties');
             $properties = json_decode($properties, true);
+            $existing = $db->getCharacter($characterId);
+            if (!$existing) {
+                throw new Exception("Unknown character: $characterId");
+            }
             $character = array('id' => $characterId);
             foreach ($properties as $propertyId => $value) {
                 if ($propertyId == 'backstory') {
@@ -40,18 +44,24 @@ try {
                     }
                 } else if ($propertyId == 'portrait') {
                     $portrait = json_decode($value, true);
-                    $existing = $db->getCharacter($characterId);
+                    $imageRecord = $db->getCharacterImage($characterId, 'portrait');
                     $version = 1;
-                    if ($existing && $existing['portrait']) {
-                        if (isset($existing['portrait']['version'])) {
-                            $version = $existing['portrait']['version'] + 1;
-                        }
-                        $portrait = array_merge($existing['portrait'], $portrait);
+                    if ($imageRecord) {
+                        $imageRecord['version']++;
+                        $metadata = $imageRecord['metadata'] ? json_decode($imageRecord['metadata'], true) : array();
+                        $metadata = array_merge($metadata, $portrait);
+                        $imageRecord['metadata'] = json_encode($metadata);
+                        $db->save('persona_image', $imageRecord, 'persona_id', 'image_id');
+                    } else {
+                        $imageRecord = array(
+                            'persona_id' => $characterId,
+                            'image_id' => $portrait,
+                            'metadata' => json_encode($portrait)
+                        );
+                        $db->insert('persona_image', $imageRecord);
                     }
-                    $portrait['version'] = $version;
-                    $character['portrait'] = $portrait;
-                    $db->createPortrait($character);
-                    $character['portrait'] = json_encode($character['portrait']);
+                    $character['images'] = array('portrait' => $imageRecord);
+                    $db->createPortrait($imageRecord);
                 } else {
                     if (!isset($allProperties[$propertyId])) {
                         throw new Exception("Unknown property: $propertyId");
