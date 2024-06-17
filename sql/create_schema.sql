@@ -291,7 +291,7 @@ CREATE TABLE persona_image
     title varchar(255) NULL,
     description TEXT NOT NULL,
     drawn date NULL,
-    version int default 0 not null,
+    version int default 1 not null,
     metadata JSON NULL
 );
 
