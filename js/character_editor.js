@@ -1,6 +1,7 @@
 class CharacterEditor extends Editor {
     #groupTierList = 'renown';
     #characterId = null;
+    #characterIdList = [];
 
     #portraitSelector = null
     #portraitCenter = null;
@@ -31,6 +32,7 @@ class CharacterEditor extends Editor {
         let characterGroups = tiers.getGroupedCharacters(this.#groupTierList);
 
         // Show grouped characters with group banners
+        this.#characterIdList = [];
         Object.values(characterGroups).forEach(function(group) {
             if (group.characters.length == 0) return;
             let header = Utilities.createDiv('characterGroupHeader', characterList);
@@ -63,6 +65,7 @@ class CharacterEditor extends Editor {
                     portrait: portrait,
                     name: portraitName
                 };
+                controller.#characterIdList.push(character.id);
             });
         });
     }
@@ -274,16 +277,16 @@ class CharacterEditor extends Editor {
     }
 
     #goCharacter(direction) {
-        let characterList = this.getController().getCharacters().getCharacterList();
+        let characterList = this.#characterIdList;
         let index = 0;
         for (let i = 0; i < characterList.length; i++) {
-            if (characterList[i].id == this.#characterId) {
+            if (characterList[i] == this.#characterId) {
                 index = i;
                 break;
             }
         }
         index = (index + direction + characterList.length) % characterList.length;
-        this.showCharacter(characterList[index].id);
+        this.showCharacter(characterList[index]);
     }
 
     #updatePortraitSelector() {
