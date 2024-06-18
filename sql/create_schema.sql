@@ -76,6 +76,9 @@ create table tier
 alter table tier
     add priority int not null default 0;
 
+alter table tier
+    add name_singular varchar(255);
+
 create table persona
 (
     id VARCHAR(64) NOT NULL,

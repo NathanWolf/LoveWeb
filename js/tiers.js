@@ -55,6 +55,11 @@ class Tiers extends Component {
         return this.#tiers.hasOwnProperty(id) ? this.#tiers[id] : null;
     }
 
+    getTier(tierListId, tierId) {
+        let list = this.getTierList(tierListId);
+        return list != null && list.tiers.hasOwnProperty(tierId) ? list.tiers[tierId] : null;
+    }
+
     onSelectTierList(id) {
         let element = this.getElement();
         let tierList = this.#tiers[id];

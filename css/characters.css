@@ -284,6 +284,15 @@ th {
     border: 2px solid #B44D21;
 }
 
+.characterSheet .row4 .section {
+    flex-basis: 100%;
+    background-color: #FFFBE0;
+    border: 2px solid #B44D21;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
 .sheetImage {
     flex-basis: 60%;
     background-repeat: no-repeat;

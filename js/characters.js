@@ -389,6 +389,15 @@ class Characters extends Component {
         this.#addCharacterPropertyInfo(character, miscDic, 'weapon');
         this.#addCharacterPropertyInfo(character, miscDic, 'carries');
         this.#addCharacterPropertyInfo(character, miscDic, 'accessories');
+
+        let c4r4 = Utilities.createDiv('row row4', column4);
+        let renownDiv = Utilities.createDiv('section reknown', c4r4);
+        let renownTier = this.getTier(character.id, 'renown');
+        renownTier = renownTier != null ? this.getController().getTiers().getTier('renown', renownTier.tier_id) : null;
+        if (renownTier != null && renownTier.name_singular != null) {
+            renownDiv.innerText = renownTier.name_singular;
+            renownDiv.style.color = renownTier.color;
+        }
     }
 
     static getRelationshipName(relationshipId) {
@@ -445,7 +454,13 @@ class Characters extends Component {
         if (character == null || !character.hasOwnProperty('tiers')) {
             return defaultTier;
         }
-        return character.tiers.hasOwnProperty(tierList) ? character.tiers[tierList] : {tier_id: defaultTier, priority: 0};
+        if (character.tiers.hasOwnProperty(tierList)) {
+            return character.tiers[tierList];
+        }
+        if (defaultTier) {
+            return {tier_id: defaultTier, priority: 0};
+        }
+        return null;
     }
 
     getProperties() {
