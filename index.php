@@ -6,6 +6,7 @@
     <title>Diviinity</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <link rel="stylesheet" href="css/love.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/popup.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/characters.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/chat.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/quizzes.css?v=<?=VERSION?>">

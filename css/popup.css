@@ -1,0 +1,46 @@
+.popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.popupContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 64px;
+}
+
+.popupInnerContent {
+    background: #FFF8E0;
+    color: #BE6E42;
+    padding: 2em;
+    border-radius: 25px;
+}
+
+.buttonContainer {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.dialogButtons {
+    align-self: stretch;
+    margin-top: 2em;
+}
+
+.closeButton {
+    background-image: url('../image/ui/close.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 64px;
+    height: 64px;
+}
