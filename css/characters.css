@@ -302,6 +302,7 @@ th {
     background-repeat: no-repeat;
     background-size: contain;
     background-color: #FFFBE0;
+    background-position: center;
     border: 2px solid #B44D21;
     cursor: pointer;
 }
