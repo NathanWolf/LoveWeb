@@ -183,6 +183,7 @@ class CharacterQuiz extends Component {
         let used = {};
         let answers = {};
         let maxTop = this.#maxAnswers / 2;
+        let hasMissingAnswers = false;
         for (let i = 0; i < scored.length; i++) {
             if (Object.values(answers).length > maxTop) break;
             let character = scored[i].character;
@@ -192,6 +193,8 @@ class CharacterQuiz extends Component {
                     used[character.id] = true;
                     answers[value] = true;
                 }
+            } else {
+                hasMissingAnswers = true;
             }
         }
         let allCharacters = characters.getCharacterList();
@@ -205,6 +208,8 @@ class CharacterQuiz extends Component {
                     used[character.id] = true;
                     answers[value] = true;
                 }
+            } else {
+                hasMissingAnswers = true;
             }
         }
 
@@ -212,7 +217,9 @@ class CharacterQuiz extends Component {
         let list = document.createElement('ul');
         answers = Object.keys(answers);
         answers = Utilities.shuffle(answers);
-        answers.push('None of the above');
+        if (hasMissingAnswers) {
+            answers.push('None of the above');
+        }
         for (let i = 0; i < answers.length; i++) {
             let answer = document.createElement('li');
             let option = answers[i];
