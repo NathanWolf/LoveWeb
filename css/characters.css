@@ -230,6 +230,10 @@ th {
     background-color: #F7C280;
 }
 
+.characterSheet .notes {
+    background-color: #F7C280;
+}
+
 .characterSheet .relationships .section.label {
     text-align: left;
 }

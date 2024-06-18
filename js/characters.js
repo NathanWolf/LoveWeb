@@ -322,6 +322,7 @@ class Characters extends Component {
             Utilities.createDiv('label', relationshipsDiv, relationship.name);
             Utilities.createDiv('value', relationshipsDiv, related.name);
         }
+        Utilities.createDiv('section notes', column3, character.notes);
 
         // Column 4
         let column4 = Utilities.createDiv('column column_4', popup);
