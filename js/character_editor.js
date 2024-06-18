@@ -2,6 +2,7 @@ class CharacterEditor extends Editor {
     #groupTierList = 'renown';
     #characterId = null;
     #characterIdList = [];
+    #scrollPosition = 0;
 
     #portraitSelector = null
     #portraitCenter = null;
@@ -68,6 +69,9 @@ class CharacterEditor extends Editor {
                 controller.#characterIdList.push(character.id);
             });
         });
+
+        container.scrollTop = this.#scrollPosition;
+        this.#scrollPosition = 0;
     }
 
     #selectCharacter(characterKey) {
@@ -90,6 +94,7 @@ class CharacterEditor extends Editor {
         this.clearModified();
 
         let container = this.getElement();
+        this.#scrollPosition = container.scrollTop;
         Utilities.empty(container);
 
         let outerContainer = Utilities.createDiv('editorContainer', container);
