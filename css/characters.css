@@ -101,7 +101,7 @@ th {
 }
 
 .characterSheet {
-    width: 90vw;
+    width: 90%;
     height: 90vh;
     display: flex;
     background: #FFE5B0;

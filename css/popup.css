@@ -19,6 +19,11 @@
     max-height: 100%;
 }
 
+.popupFullscreen {
+    min-width: 100%;
+    min-height: 100%;
+}
+
 .popupInnerContent {
     background: #FFF8E0;
     color: #BE6E42;
@@ -34,15 +39,33 @@
     flex-direction: row;
 }
 
-.dialogButtons {
+.leftDialogButtons, .rightDialogButtons {
     align-self: stretch;
     margin-top: 2em;
+    display: flex;
+    flex-direction: column;
 }
 
-.closeButton {
-    background-image: url('../image/ui/close.png');
+.closeButtonContainer, .nextButtonContainer, .previousButtonContainer, .emptyButtonContainer {
+    flex-basis: 50%;
+}
+
+.closeButton, .nextButton, .previousButton {
     background-size: contain;
     background-repeat: no-repeat;
     width: 64px;
     height: 64px;
+    margin: 0;
+}
+
+.closeButton {
+    background-image: url('../image/ui/close.png');
+}
+
+.nextButton {
+    background-image: url('../image/ui/next.png');
+}
+
+.previousButton {
+    background-image: url('../image/ui/previous.png');
 }

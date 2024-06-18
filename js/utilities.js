@@ -81,40 +81,91 @@ class Utilities {
         return innerDiv;
     }
 
-    static showPopupWithCloseButton(parent, innerClass, callback) {
-        return Utilities.showPopup(parent, innerClass, callback, true);
-    }
-
-    static showPopup(parent, innerClass, callback, addCloseButton) {
+    static showPopup(parent, innerClass, buttons) {
+        let innerClassName = 'popupContent';
+        if (typeof(buttons) === 'undefined') {
+            // default to showing a close button
+            buttons = {close: null};
+        } else {
+            // This is kind of a hack for now to trigger full-screen popups only when
+            // Navigation buttons are used
+            innerClassName += ' popupFullscreen';
+        }
         if (typeof(innerClass) === 'undefined') {
             innerClass = 'popupInnerContent';
         }
         let popupDiv = document.createElement('div');
         popupDiv.className = 'popup';
         let contentDiv = document.createElement('div');
-        contentDiv.className = 'popupContent';
+        contentDiv.className = innerClassName;
         popupDiv.appendChild(contentDiv);
         let innerDiv = document.createElement('div');
         innerDiv.className = innerClass;
-        contentDiv.appendChild(innerDiv);
         parent.appendChild(popupDiv);
 
-        if (addCloseButton) {
-            let closeContainer = this.createDiv('dialogButtons', contentDiv);
-            let closeButton = this.createElement('button', 'closeButton', closeContainer);
-            closeButton.title = 'Close Popup';
-            closeButton.addEventListener('click', function() {
-                popupDiv.remove();
-                if (typeof(callback) !== 'undefined' && callback != null) {
-                    callback(popupDiv);
-                }
-            });
-        } else {
+        let hasPreviousButton = buttons.hasOwnProperty('previous') && buttons.previous !== false;
+        let hasLeftButtons = hasPreviousButton;
+        let hasNextButton = buttons.hasOwnProperty('next') && buttons.previous !== false;
+        let hasCloseButton = buttons.hasOwnProperty('close') && buttons.close !== false;
+        let hasRightButtons = hasNextButton || hasCloseButton;
+
+        if (hasLeftButtons) {
+            let leftContainer = this.createDiv('leftDialogButtons', contentDiv);
+            this.createDiv('emptyButtonContainer', leftContainer);
+            if (hasPreviousButton) {
+                let callback = buttons.previous;
+                if (callback === true) callback = null;
+                let previousContainer = this.createDiv('previousButtonContainer', leftContainer);
+                let previousButton = this.createElement('button', 'previousButton', previousContainer);
+                previousButton.title = 'Previous';
+                previousButton.addEventListener('click', function() {
+                    popupDiv.remove();
+                    if (callback != null) {
+                        callback(popupDiv);
+                    }
+                });
+            }
+        }
+
+        contentDiv.appendChild(innerDiv);
+
+        if (hasRightButtons) {
+            let rightContainer = this.createDiv('rightDialogButtons', contentDiv);
+            if (hasCloseButton) {
+                let callback = buttons.close;
+                if (callback === true) callback = null;
+                let closeContainer = this.createDiv('closeButtonContainer', rightContainer);
+                let closeButton = this.createElement('button', 'closeButton', closeContainer);
+                closeButton.title = 'Close Popup';
+                closeButton.addEventListener('click', function() {
+                    popupDiv.remove();
+                    if (callback != null) {
+                        callback(popupDiv);
+                    }
+                });
+            } else {
+                this.createDiv('emptyButtonContainer', rightContainer);
+            }
+            if (hasNextButton) {
+                let callback = buttons.next;
+                if (callback === true) callback = null;
+                let nextContainer = this.createDiv('nextButtonContainer', rightContainer);
+                let nextButton = this.createElement('button', 'nextButton', nextContainer);
+                nextButton.title = 'Next';
+                nextButton.addEventListener('click', function() {
+                    popupDiv.remove();
+                    if (callback != null) {
+                        callback(popupDiv);
+                    }
+                });
+            }
+        }
+
+        // Must be able to close the dialog
+        // Note that there is no way to get a callback this way.
+        if (!hasCloseButton) {
             popupDiv.addEventListener('click', function() {
                 this.remove();
-                if (typeof(callback) !== 'undefined' && callback != null) {
-                    callback(popupDiv);
-                }
             });
         }
         return innerDiv;

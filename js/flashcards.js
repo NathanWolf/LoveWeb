@@ -22,7 +22,7 @@ class Flashcards extends Component {
         Utilities.empty(element);
 
         if (this.#currentFlashcards.length === 0) {
-            let popup = Utilities.showPopupWithCloseButton(element.parentNode);
+            let popup = Utilities.showPopup(element.parentNode);
             Utilities.createDiv('flashCardFinishedTitle', popup).innerText = 'Finished!';
             Utilities.createDiv('flashCardCorrect', popup).innerText = 'Correct: ' + this.#correctAnswers;
             Utilities.createDiv('flashCardWrong', popup).innerText = 'Wrong: ' + this.#wrongAnswers;

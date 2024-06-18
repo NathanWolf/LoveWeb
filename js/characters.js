@@ -1,5 +1,6 @@
 class Characters extends Component {
     #groupTierList = 'renown';
+    #characterIdList = [];
     #popupCharacterId = null;
     #characters = {};
     #properties = {};
@@ -132,6 +133,7 @@ class Characters extends Component {
         let container = this.getElement();
         let tiers = this.getController().getTiers();
         this.#filters = {};
+        this.#characterIdList = [];
         Utilities.empty(container);
 
         // Add filter boxes
@@ -179,6 +181,7 @@ class Characters extends Component {
                     portrait: portrait,
                     name: portraitName
                 };
+                characterController.#characterIdList.push(character.id);
             });
         });
     }
@@ -242,10 +245,19 @@ class Characters extends Component {
         this.getController().getHistory().set('character', characterKey);
         let element = this.getElement();
         let characterController = this;
-        let popup = Utilities.showPopup(element.parentNode, 'characterSheet', function() {
-            characterController.#popupCharacterId = null;
-            characterController.getController().getHistory().unset('character');
-        }, true);
+        let buttons = {
+            close: function() {
+                characterController.#popupCharacterId = null;
+                characterController.getController().getHistory().unset('character');
+            },
+            next: function() {
+                characterController.onNextCharacter();
+            },
+            previous: function() {
+                characterController.onPreviousCharacter();
+            }
+        };
+        let popup = Utilities.showPopup(element.parentNode, 'characterSheet', buttons);
         if (character.properties.hasOwnProperty('color')) {
             popup.style.borderColor = character.properties.color.toLowerCase().replace(' ', '');
         }
@@ -399,6 +411,27 @@ class Characters extends Component {
             renownDiv.innerText = renownTier.name_singular;
             renownDiv.style.color = renownTier.color;
         }
+    }
+
+    onNextCharacter() {
+        this.#goCharacter(1);
+    }
+
+    onPreviousCharacter() {
+        this.#goCharacter(-1);
+    }
+
+    #goCharacter(direction) {
+        let characterList = this.#characterIdList;
+        let index = 0;
+        for (let i = 0; i < characterList.length; i++) {
+            if (characterList[i] == this.#popupCharacterId) {
+                index = i;
+                break;
+            }
+        }
+        index = (index + direction + characterList.length) % characterList.length;
+        this.#showCharacterPopup(characterList[index]);
     }
 
     static getRelationshipName(relationshipId) {
