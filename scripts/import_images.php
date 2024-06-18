@@ -5,7 +5,7 @@ if (PHP_SAPI !== 'cli') {
 }
 
 if (count($argv) < 3) {
-    die("Usage: create_portraits <import folder> <character folder>\n");
+    die("Usage: import_images <import folder> <character folder>\n");
 }
 
 $importFolder = $argv[1];
@@ -23,6 +23,8 @@ foreach ($iterator as $fileInfo) {
         mkdir($targetfolder);
     }
     $target =  $targetfolder . '/full.png';
+    $target = str_replace('.png.PNG', '.png', $target);
+    $target = strtolower($target);
     echo "Copying $pathname to $target\n";
     copy($pathname, $target);
 }
