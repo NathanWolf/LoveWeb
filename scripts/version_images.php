@@ -5,7 +5,7 @@ if (PHP_SAPI !== 'cli') {
 }
 
 if (count($argv) < 2) {
-    die("Usage: create_portraits <character folder>\n");
+    die("Usage: version_images <character folder>\n");
 }
 
 $characterFolder = $argv[1];
