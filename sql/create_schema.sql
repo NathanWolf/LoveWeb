@@ -292,7 +292,9 @@ CREATE TABLE persona_image
     description TEXT NOT NULL,
     drawn date NULL,
     version int default 1 not null,
-    metadata JSON NULL
+    metadata JSON NULL,
+    width int null,
+    height int null
 );
 
 -- Data updates follow
