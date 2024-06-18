@@ -356,3 +356,23 @@ tr.headerRow th {
     padding-top: 1em;
     vertical-align: bottom;
 }
+
+.column_4 .row1 {
+    flex-basis: 30%;
+    overflow-y: auto;
+}
+
+.column_4 .row2 {
+    flex-basis: 30%;
+    overflow-y: auto;
+}
+
+.column_4 .row3 {
+    flex-basis: 30%;
+    overflow-y: auto;
+}
+
+.column_4 .row4 {
+    flex-basis: 10%;
+    overflow-y: auto;
+}
