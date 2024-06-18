@@ -219,6 +219,7 @@ class CharacterEditor extends Editor {
 
         let descriptionInput = this.createLongInput(editorForm, {id: "description", name: "Description"}, character.description);
         let backstoryInput = this.createLongInput(editorForm, {id: "backstory", name: "Backstory"}, character.backstory);
+        let notesInput = this.createLongInput(editorForm, {id: "notes", name: "Notes"}, character.notes);
         let chatInput = this.createLongInput(editorForm, {id: "chat", name: "Chat Prompt"}, character.chat != null ? character.chat.system : null);
 
         saveButton.addEventListener('click', () => {
@@ -237,6 +238,8 @@ class CharacterEditor extends Editor {
             properties['description'] = descriptionInput.value;
             character.backstory = backstoryInput.value;
             properties['backstory'] = backstoryInput.value;
+            character.notes = notesInput.value;
+            properties['notes'] = notesInput.value;
             if (chatInput.value.length > 0) {
                 character.chat = {system: chatInput.value};
             } else {

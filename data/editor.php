@@ -24,6 +24,8 @@ try {
             foreach ($properties as $propertyId => $value) {
                 if ($propertyId == 'backstory') {
                     $character['backstory'] = $value;
+                } else if ($propertyId == 'notes') {
+                    $character['notes'] = $value;
                 } else if ($propertyId == 'description') {
                     $character['description'] = $value;
                 } else if ($propertyId == 'nick_name') {
