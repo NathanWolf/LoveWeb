@@ -94,6 +94,17 @@
         <div class="tab" id="info" style="display: none">
             <div class="horizontal">
                 <div>
+                    Hello, I’m Cupcakeebug, or Bug for short! I’m an artist,
+                    I digitally draw and animate in my free time, and I do writing as well.
+                    <br/>
+                    I’ve been working on Diviinity since August 3rd, 2023.
+                    <br/>
+                    I use Krita for my drawing, and Flipaclip for my animation.
+                    I use Google docs and Pages for my writing!
+                </div>
+            </div>
+            <div class="horizontal">
+                <div>
                 Diviinity is the book I’m writing! This is the official website, about its plot and its characters. Thank you for checking it out!
                 </div>
                 <div>
