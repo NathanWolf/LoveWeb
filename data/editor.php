@@ -56,7 +56,10 @@ try {
                     } else {
                         $imageRecord = array(
                             'persona_id' => $characterId,
-                            'image_id' => $portrait,
+                            'image_id' => 'portrait',
+                            'title' => 'Portrait',
+                            'description' => "This character's headshot",
+                            'tags' => 'portrait,current',
                             'metadata' => json_encode($portrait)
                         );
                         $db->insert('persona_image', $imageRecord);
