@@ -245,7 +245,7 @@ class Characters extends Component {
         let popup = Utilities.showPopup(element.parentNode, 'characterSheet', function() {
             characterController.#popupCharacterId = null;
             characterController.getController().getHistory().unset('character');
-        });
+        }, true);
         if (character.properties.hasOwnProperty('color')) {
             popup.style.borderColor = character.properties.color.toLowerCase().replace(' ', '');
         }

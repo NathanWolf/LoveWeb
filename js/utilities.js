@@ -100,10 +100,9 @@ class Utilities {
         parent.appendChild(popupDiv);
 
         if (addCloseButton) {
-            let closeButton = document.createElement('button');
-            closeButton.innerText = 'OK';
-            contentDiv.appendChild(closeButton);
-
+            let closeContainer = this.createDiv('dialogButtons', contentDiv);
+            let closeButton = this.createElement('button', 'closeButton', closeContainer);
+            closeButton.title = 'Close Popup';
             closeButton.addEventListener('click', function() {
                 popupDiv.remove();
                 if (typeof(callback) !== 'undefined' && callback != null) {

@@ -207,3 +207,16 @@ textarea {
     flex-wrap: wrap;
     flex-direction: row;
 }
+
+.dialogButtons {
+    height: 90%;
+}
+
+.closeButton {
+    background-image: url('../image/ui/close.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 64px;
+    height: 64px;
+}
+
