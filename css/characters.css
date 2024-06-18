@@ -378,13 +378,32 @@ tr.headerRow th {
     overflow-y: auto;
 }
 
-.characterImage {
+.characterImageContainer {
     width: 90%;
     height: 90vh;
     display: flex;
     background: #FFE5B0;
-    border: 8px solid black;
+    border: 8px solid #742A00;
+    flex-direction: column;
+}
+
+.characterImage {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    flex: auto;
+}
+
+.characterImageTitle {
+    text-align: center;
+    font-size: 2em;
+    border-bottom: 2px solid #742A00;
+    margin-bottom: 8px;
+}
+
+.characterImageDescription {
+    text-align: center;
+    font-style: italic;
+    border-top: 1px solid #742A00;
+    margin-top: 8px;
 }

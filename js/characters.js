@@ -438,13 +438,21 @@ class Characters extends Component {
             }
         };
         this.#popupImageId = 'full';
-        this.#popupImageElement = Utilities.showPopup(element.parentNode, 'characterImage', buttons);
+        this.#popupImageElement = Utilities.showPopup(element.parentNode, 'characterImageContainer', buttons);
         this.#updatePopupImage();
     }
 
     #updatePopupImage() {
         if (this.#popupImageElement == null) return;
-        this.#popupImageElement.style.backgroundImage = 'url(' + this.#getImage(this.#popupCharacterId, this.#popupImageId) + ')';
+        Utilities.empty(this.#popupImageElement);
+        let character = this.getCharacter(this.#popupCharacterId);
+        if (character == null || !character.images.hasOwnProperty(this.#popupImageId)) return;
+        let image = character.images[this.#popupImageId];
+        let title = character.name + ' ' + image.title;
+        Utilities.createDiv('characterImageTitle', this.#popupImageElement, title);
+        let imageContainer = Utilities.createDiv('characterImage', this.#popupImageElement);
+        Utilities.createDiv('characterImageDescription', this.#popupImageElement, image.description);
+        imageContainer.style.backgroundImage = 'url(' + this.#getImage(this.#popupCharacterId, this.#popupImageId) + ')';
     }
 
     onNextImage() {
