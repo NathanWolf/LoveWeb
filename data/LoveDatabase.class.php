@@ -249,7 +249,7 @@ class LoveDatabase extends Database {
         }
     }
 
-    public function createPortrait($characterImage, $targetWidth = 256, $targetHeight = 256) {
+    public function createPortrait($characterImage, $targetWidth = 256, $targetHeight = 256, $outputFilename = null) {
         if (!isset($characterImage['persona_id'])) {
             throw new Exception("Invalid character image record: " . json_encode($characterImage));
         }
@@ -279,10 +279,12 @@ class LoveDatabase extends Database {
         $cropped = imagecrop($image, $crop);
         $scaled = imagescale($cropped, $targetWidth, $targetHeight);
         imagesavealpha($scaled, true);
-        $outputFolder = dirname(__FILE__) . '/../image/dynamic/characters/' . $characterId;
-        $outputFilename = $outputFolder . '/portrait.png';
-        if (!file_exists($outputFolder)) {
-            @mkdir($outputFolder, 0777, true);
+        if (!$outputFilename) {
+            $outputFolder = dirname(__FILE__) . '/../image/dynamic/characters/' . $characterId;
+            if (!file_exists($outputFolder)) {
+                @mkdir($outputFolder, 0777, true);
+            }
+            $outputFilename = $outputFolder . '/portrait.png';
         }
         imagepng($scaled, $outputFilename);
     }
