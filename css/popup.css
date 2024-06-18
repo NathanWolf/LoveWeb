@@ -69,3 +69,7 @@
 .previousButton {
     background-image: url('../image/ui/previous.png');
 }
+
+.clickable {
+    cursor: pointer;
+}

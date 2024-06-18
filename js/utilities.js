@@ -119,9 +119,10 @@ class Utilities {
                 let previousButton = this.createElement('button', 'previousButton', previousContainer);
                 previousButton.title = 'Previous';
                 previousButton.addEventListener('click', function() {
-                    popupDiv.remove();
                     if (callback != null) {
-                        callback(popupDiv);
+                        if (callback(popupDiv)) {
+                            popupDiv.remove();
+                        }
                     }
                 });
             }
@@ -153,9 +154,10 @@ class Utilities {
                 let nextButton = this.createElement('button', 'nextButton', nextContainer);
                 nextButton.title = 'Next';
                 nextButton.addEventListener('click', function() {
-                    popupDiv.remove();
                     if (callback != null) {
-                        callback(popupDiv);
+                        if (callback(popupDiv)) {
+                            popupDiv.remove();
+                        }
                     }
                 });
             }

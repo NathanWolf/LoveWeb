@@ -303,6 +303,7 @@ th {
     background-size: contain;
     background-color: #FFFBE0;
     border: 2px solid #B44D21;
+    cursor: pointer;
 }
 
 .sheetName {
@@ -375,4 +376,15 @@ tr.headerRow th {
 .column_4 .row4 {
     flex-basis: 10%;
     overflow-y: auto;
+}
+
+.characterImage {
+    width: 90%;
+    height: 90vh;
+    display: flex;
+    background: #FFE5B0;
+    border: 8px solid black;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }

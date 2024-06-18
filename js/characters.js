@@ -2,6 +2,8 @@ class Characters extends Component {
     #groupTierList = 'renown';
     #characterIdList = [];
     #popupCharacterId = null;
+    #popupImageId = null;
+    #popupImageElement = null;
     #characters = {};
     #properties = {};
     #filters = {};
@@ -252,9 +254,13 @@ class Characters extends Component {
             },
             next: function() {
                 characterController.onNextCharacter();
+                // Close the popup and make a new one
+                return true;
             },
             previous: function() {
                 characterController.onPreviousCharacter();
+                // Close the popup and make a new one
+                return true;
             }
         };
         let popup = Utilities.showPopup(element.parentNode, 'characterSheet', buttons);
@@ -266,9 +272,15 @@ class Characters extends Component {
         // Images, Backstory
         let column1 = Utilities.createDiv('column column_1', popup);
 
-        Utilities.createDiv('label section above', column1, 'Images');
+        let imageLabel = Utilities.createDiv('label section above clickable', column1, 'Click to View Images');
+        imageLabel.addEventListener('click', function() {
+            characterController.onShowImages();
+        });
         let image = Utilities.createDiv('sheetImage section', column1);
         image.style.backgroundImage = 'url(' + this.getImage(characterKey) + ')';
+        image.addEventListener('click', function() {
+            characterController.onShowImages();
+        });
 
         Utilities.createDiv('backstory section', column1, character.backstory);
         Utilities.createDiv('label section below', column1, 'Backstory');
@@ -411,6 +423,52 @@ class Characters extends Component {
             renownDiv.innerText = renownTier.name_singular;
             renownDiv.style.color = renownTier.color;
         }
+    }
+
+    onShowImages() {
+        let element = this.getElement();
+        let characterController = this;
+        let buttons = {
+            close: true,
+            next: function() {
+                characterController.onNextImage();
+            },
+            previous: function() {
+                characterController.onPreviousImage();
+            }
+        };
+        this.#popupImageId = 'full';
+        this.#popupImageElement = Utilities.showPopup(element.parentNode, 'characterImage', buttons);
+        this.#updatePopupImage();
+    }
+
+    #updatePopupImage() {
+        if (this.#popupImageElement == null) return;
+        this.#popupImageElement.style.backgroundImage = 'url(' + this.#getImage(this.#popupCharacterId, this.#popupImageId) + ')';
+    }
+
+    onNextImage() {
+        this.#goImage(1);
+    }
+
+    onPreviousImage() {
+        this.#goImage(-1);
+    }
+
+    #goImage(direction) {
+        let character = this.getCharacter(this.#popupCharacterId);
+        let imageList = Object.values(character.images);
+        if (imageList.length == 0) return;
+        let index = 0;
+        for (let i = 0; i < imageList.length; i++) {
+            if (imageList[i].image_id == this.#popupImageId) {
+                index = i;
+                break;
+            }
+        }
+        index = (index + direction + imageList.length) % imageList.length;
+        this.#popupImageId = imageList[index].image_id;
+        this.#updatePopupImage();
     }
 
     onNextCharacter() {
