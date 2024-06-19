@@ -94,7 +94,7 @@ th {
 .portraitContainer:hover .portraitName {
     background: #ECA15E;
     border-color: #ECA15E;
-    color: black;
+    color: #742A00z;
 }
 
 .portraitContainer:hover .portrait {
@@ -106,7 +106,7 @@ th {
     height: 90vh;
     display: flex;
     background: #FFE5B0;
-    border: 8px solid black;
+    border: 8px solid #742A00;
 }
 
 .characterSheet .label {
@@ -408,4 +408,23 @@ tr.headerRow th {
     font-style: italic;
     border-top: 1px solid #742A00;
     margin-top: 8px;
+}
+
+.allCharacters {
+    width: 90%;
+    height: 90vh;
+    display: flex;
+    background: #FFE5B0;
+    border: 8px solid #742A00;
+    overflow: auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+}
+
+div.characterFull {
+    display: flex;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
 }

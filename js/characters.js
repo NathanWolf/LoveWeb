@@ -77,26 +77,31 @@ class Characters extends Component {
         this.#updateFilters();
     }
 
+    #shouldShow(character) {
+        let properties = character.hasOwnProperty('properties') && character.properties != null ? character.properties : {};
+        let shouldShow = true;
+        for (let filterKey in this.#filters) {
+            if (this.#filters.hasOwnProperty(filterKey)) {
+                let filterValue = this.#filters[filterKey];
+                if (properties.hasOwnProperty(filterKey)) {
+                    if (properties[filterKey] != filterValue) {
+                        shouldShow = false;
+                    }
+                } else if (filterValue != '?') {
+                    shouldShow = false;
+                }
+            }
+        }
+        return shouldShow;
+    }
+
     #updateFilters() {
         for (let id in this.#characters) {
             if (this.#characters.hasOwnProperty(id)) {
                 let character = this.#characters[id];
-                if (!character.hasOwnProperty('containers')) continue;
-                let properties = character.hasOwnProperty('properties') && character.properties != null ? character.properties : {};
-                let shouldShow = true;
-                for (let filterKey in this.#filters) {
-                    if (this.#filters.hasOwnProperty(filterKey)) {
-                        let filterValue = this.#filters[filterKey];
-                        if (properties.hasOwnProperty(filterKey)) {
-                            if (properties[filterKey] != filterValue) {
-                                shouldShow = false;
-                            }
-                        } else if (filterValue != '?') {
-                            shouldShow = false;
-                        }
-                    }
-                }
                 for (let containerId in character.containers) {
+                    if (!character.hasOwnProperty('containers')) continuel
+                    let shouldShow = this.#shouldShow(character);
                     if (character.containers.hasOwnProperty(containerId)) {
                         Utilities.setVisible(character.containers[containerId], shouldShow);
                     }
@@ -140,6 +145,10 @@ class Characters extends Component {
 
         // Add filter boxes
         let characterToolbar = Utilities.createDiv('characterToolbar', container);
+        let showAllButton = Utilities.createElement('button', 'showAll', characterToolbar, 'View All Characters')
+        showAllButton.addEventListener('click', function() {
+            characterController.#showAllCharacters();
+        });
         characterToolbar.appendChild(this.#createFilterBox('species'));
         characterToolbar.appendChild(this.#createFilterBox('pronouns'));
         characterToolbar.appendChild(this.#createFilterBox('sexuality'));
@@ -235,6 +244,34 @@ class Characters extends Component {
         value = value.replaceAll("(", "");
         value = value.replaceAll("the_", "");
         return value;
+    }
+
+    #showAllCharacters() {
+        let element = this.getElement();
+        let popup = Utilities.showPopup(element.parentNode, 'allCharacters');
+        let characterController = this;
+        let tiers = this.getController().getTiers();
+        let characterGroups = tiers.getGroupedCharacters(this.#groupTierList);
+        let scale = 0.2;
+        Object.values(characterGroups).forEach(function(group) {
+            if (group.characters.length == 0) return;
+            // TODO: group separation?
+            group.characters.forEach(function(characterTier) {
+                let character = characterController.getCharacter(characterTier.persona_id);
+                if (!characterController.#shouldShow(character)) return;
+                if (!character.images.hasOwnProperty('full')) return;
+                let fullImage = character.images.full;
+                if (fullImage.width == null || fullImage.height == null) return;
+
+                let characterImage = Utilities.createDiv('characterFull', popup);
+                characterImage.style.minWidth = fullImage.width * scale;
+                characterImage.style.minHeight = fullImage.height * scale;
+                characterImage.style.maxWidth = fullImage.width * scale;
+                characterImage.style.maxHeight = fullImage.height * scale;
+                characterImage.style.backgroundImage = 'url(' + characterController.getImage(character.id) + ')';
+            });
+        });
+        popup.scrollTop = popup.scrollHeight;
     }
 
     #showCharacterPopup(characterKey) {
