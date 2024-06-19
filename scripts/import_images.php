@@ -17,14 +17,20 @@ foreach ($iterator as $fileInfo) {
     $pathname = $fileInfo->getPathname();
     $info = pathinfo($pathname);
     $filename = $info['filename'];
-    $targetfolder = $characterFolder . '/' . $filename;
-    if (!file_exists($targetfolder)) {
-        echo "Creating $filename, target folder doesn't exist\n";
-        mkdir($targetfolder);
+    $filename = strtolower($filename);
+    if ($filename == 'other' || $filename == 'background') {
+        echo "Skipping $filename\n";
+        continue;
     }
-    $target =  $targetfolder . '/full.png';
+    // Ughhh rename the layer please XD
+    if ($filename == 'mable-anne') $filename = 'anne';
+    $targetFolder = $characterFolder . '/' . $filename;
+    if (!file_exists($targetFolder)) {
+        echo "Creating $filename, target folder doesn't exist\n";
+        mkdir($targetFolder);
+    }
+    $target =  $targetFolder . '/full.png';
     $target = str_replace('.png.PNG', '.png', $target);
-    $target = strtolower($target);
     echo "Copying $pathname to $target\n";
     copy($pathname, $target);
 }

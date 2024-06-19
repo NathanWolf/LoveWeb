@@ -19,13 +19,15 @@ foreach ($iterator as $fileInfo) {
     if ($fileInfo->isDot()) continue;
     if (!$fileInfo->isDir()) continue;
     $pathname = $fileInfo->getPathname();
-    if (!file_exists($pathname . '/full.png')) continue;
+    $fullImage = $pathname . '/full.png';
+    if (!file_exists($fullImage)) continue;
+    list($width, $height, $type, $attr) = getimagesize($fullImage);
     $info = pathinfo($pathname);
     $characterId = $info['filename'];
     if (!isset($characters[$characterId])) {
         $name = ucfirst($characterId);
         echo "INSERT INTO persona (id, first_name) values ('$characterId', '$name');\n";
         echo "INSERT INTO persona_tier (persona_id, tier_list_id, tier_id) values ('$characterId', 'renown', 'minor');\n";
-        echo "INSERT INTO persona_image (persona_id, image_id, title, description, metadata, tags) values ('$characterId', 'full', 'Full Body', 'This character\\'s full body image', '{\"center\":[256,256]}', 'full,current');\n";
+        echo "INSERT INTO persona_image (persona_id, image_id, title, description, metadata, tags, width, height) values ('$characterId', 'full', 'Full Body', 'This character\\'s full body image', '{\"center\":[256,256]}', 'full,current', $width, $height);\n";
     }
 }

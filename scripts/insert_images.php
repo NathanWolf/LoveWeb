@@ -39,9 +39,10 @@ foreach ($iterator as $fileInfo) {
         $info = pathinfo($pathname);
         $imageId = $info['filename'];
         if (isset($character['images'][$imageId])) {
-            echo "Skipping $characterId $imageId, already exists\n";
+            // echo "Skipping $characterId $imageId, already exists\n";
             continue;
         }
+        list($width, $height, $type, $attr) = getimagesize($pathname);
         $title = 'Unknown Image';
         $description = '';
         $tags = '';
@@ -53,15 +54,27 @@ foreach ($iterator as $fileInfo) {
             } else {
                 $tags = 'old';
             }
+        } else {
+            if (strpos($imageId, 'full') !== FALSE) {
+                $description = "This character's full body image";
+                $title = 'Full Body';
+                $tags = 'full,current';
+            } else if (strpos($imageId, 'portrait') !== FALSE) {
+                $description = "This character's headshot";
+                $title = 'Portrait';
+                $tags = 'portrait,current';
+            }
         }
         $newRecord = array(
             'image_id' => $imageId,
             'persona_id' => $characterId,
             'title' => $title,
             'description' => $description,
-            'tags' => $tags
+            'tags' => $tags,
+            'width' => $width,
+            'height' => $height
         );
-        $admin->insert('persona_image', $newRecord);
+        // $admin->insert('persona_image', $newRecord);
         echo "Saving image for $characterId $imageId as $title\n";
     }
 }
