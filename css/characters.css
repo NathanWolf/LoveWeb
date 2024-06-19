@@ -427,6 +427,7 @@ div.characterFull {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: bottom;
+    cursor: pointer;
 }
 
 div.characterFullContainer {

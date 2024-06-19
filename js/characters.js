@@ -275,6 +275,10 @@ class Characters extends Component {
                 if (character.properties.hasOwnProperty('color')) {
                     characterName.style.color = character.properties.color.toLowerCase().replace(' ', '');
                 }
+
+                characterContainer.addEventListener('click', function() {
+                    characterController.#showCharacterPopup(character.id);
+                });
             });
         });
         popup.scrollTop = popup.scrollHeight;
