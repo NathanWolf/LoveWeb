@@ -263,12 +263,18 @@ class Characters extends Component {
                 let fullImage = character.images.full;
                 if (fullImage.width == null || fullImage.height == null) return;
 
-                let characterImage = Utilities.createDiv('characterFull', popup);
+                let characterContainer = Utilities.createDiv('characterFullContainer', popup);
+                let characterImage = Utilities.createDiv('characterFull', characterContainer);
                 characterImage.style.minWidth = fullImage.width * scale;
                 characterImage.style.minHeight = fullImage.height * scale;
                 characterImage.style.maxWidth = fullImage.width * scale;
                 characterImage.style.maxHeight = fullImage.height * scale;
                 characterImage.style.backgroundImage = 'url(' + characterController.getImage(character.id) + ')';
+                let characterName = Utilities.createDiv('characterFullName', characterContainer, character.name);
+
+                if (character.properties.hasOwnProperty('color')) {
+                    characterName.style.color = character.properties.color.toLowerCase().replace(' ', '');
+                }
             });
         });
         popup.scrollTop = popup.scrollHeight;

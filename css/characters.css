@@ -428,3 +428,13 @@ div.characterFull {
     background-repeat: no-repeat;
     background-position: bottom;
 }
+
+div.characterFullContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+div.characterFullName {
+    font-family: cursive;
+    text-align: center;
+}
