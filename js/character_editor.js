@@ -30,7 +30,7 @@ class CharacterEditor extends Editor {
         let characterList = Utilities.createDiv('characterList', container);
 
         // Group characters by the grouping tier
-        let characterGroups = tiers.getGroupedCharacters(this.#groupTierList);
+        let characterGroups = tiers.getGroupedCharacters(this.#groupTierList, true);
 
         // Show grouped characters with group banners
         this.#characterIdList = [];
@@ -85,7 +85,7 @@ class CharacterEditor extends Editor {
             alert("Sorry, something went wrong!");
             return;
         }
-        let characterList = characters.getCharacterList();
+        let characterList = characters.getCharacterList(true);
 
         this.#characterId = characterKey;
         this.#portraitCenter = null;

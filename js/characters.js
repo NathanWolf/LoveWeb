@@ -28,8 +28,12 @@ class Characters extends Component {
         }
     }
 
-    getCharacterList() {
-        return Object.values(this.#characters).filter((character) => !character.hidden);
+    getCharacterList(showHidden) {
+        let characterList = Object.values(this.#characters);
+        if (!showHidden) {
+            characterList = characterList.filter((character) => !character.hidden);;
+        }
+        return characterList;
     }
 
     getCharacter(id) {
