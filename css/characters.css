@@ -18,6 +18,7 @@
     align-content: start;
     overflow: auto;
     padding-bottom: 128px;
+    margin-top: -2em;
 }
 
 th {
