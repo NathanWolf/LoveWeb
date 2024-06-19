@@ -62,6 +62,8 @@ try {
                             'title' => 'Portrait',
                             'description' => "This character's headshot",
                             'tags' => 'portrait,current',
+                            'width' => 256,
+                            'height' => 256,
                             'metadata' => json_encode($portrait)
                         );
                         $db->insert('persona_image', $imageRecord);
