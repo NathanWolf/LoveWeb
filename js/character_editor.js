@@ -3,6 +3,7 @@ class CharacterEditor extends Editor {
     #characterId = null;
     #characterIdList = [];
     #scrollPosition = 0;
+    #filterProperty = '*';
 
     #portraitSelector = null
     #portraitCenter = null;
@@ -26,6 +27,34 @@ class CharacterEditor extends Editor {
 
         // TODO: Centralize this so it's not copied from the character list
 
+        let characterToolbar = Utilities.createDiv('characterToolbar', container);
+        Utilities.createSpan('', characterToolbar, 'Show only characters missing: ');
+        let properties = characters.getProperties();
+        let filterSelect = document.createElement('select');
+        let allOption = document.createElement('option');
+        allOption.value = '*';
+        allOption.innerText = '(Showing all characters)';
+        filterSelect.appendChild(allOption);
+
+        for (let propertyId in properties) {
+            if (!properties.hasOwnProperty(propertyId)) continue;
+            let property = properties[propertyId];
+            let propertyOption = document.createElement('option');
+            propertyOption.value = property.id;
+            propertyOption.innerText = property.name;
+            if (property.question != null) {
+                propertyOption.innerText += ': ' + property.question;
+            }
+            if (this.#filterProperty == property.id) {
+                propertyOption.selected = true;
+            }
+            filterSelect.appendChild(propertyOption);
+        }
+        characterToolbar.appendChild(filterSelect);
+        filterSelect.addEventListener('change', function() {
+            controller.#filter(this.value);
+        });
+
         // Create inner div to hold items
         let characterList = Utilities.createDiv('characterList', container);
 
@@ -44,6 +73,9 @@ class CharacterEditor extends Editor {
             }
             group.characters.forEach(function(characterTier) {
                 let character = characters.getCharacter(characterTier.persona_id);
+
+                if (controller.#filterProperty != '*' && character.properties.hasOwnProperty(controller.#filterProperty)) return;
+
                 let portraitContainer = document.createElement('div');
                 portraitContainer.className = 'portraitContainer';
                 portraitContainer.addEventListener('click', function() {
@@ -72,6 +104,11 @@ class CharacterEditor extends Editor {
 
         container.scrollTop = this.#scrollPosition;
         this.#scrollPosition = 0;
+    }
+
+    #filter(filterProperty) {
+        this.#filterProperty = filterProperty;
+        this.show();
     }
 
     #selectCharacter(characterKey) {

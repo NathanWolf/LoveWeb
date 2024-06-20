@@ -5,7 +5,6 @@
 }
 
 .editor {
-    flex-wrap: wrap;
     justify-content: start;
     align-content: start;
 }
@@ -74,5 +73,7 @@ div.save {
 }
 
 div#characterEditor {
-    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
