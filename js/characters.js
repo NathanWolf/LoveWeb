@@ -153,9 +153,16 @@ class Characters extends Component {
         showAllButton.addEventListener('click', function() {
             characterController.#showAllCharacters();
         });
-        characterToolbar.appendChild(this.#createFilterBox('species'));
-        characterToolbar.appendChild(this.#createFilterBox('pronouns'));
-        characterToolbar.appendChild(this.#createFilterBox('sexuality'));
+        let filters = Utilities.createDiv('characterFilters', characterToolbar);
+        filters.style.display = 'none';
+        filters.appendChild(this.#createFilterBox('species'));
+        filters.appendChild(this.#createFilterBox('pronouns'));
+        filters.appendChild(this.#createFilterBox('sexuality'));
+        let filterButton = Utilities.createElement('button', 'filter', characterToolbar, 'Search...')
+        filterButton.addEventListener('click', function() {
+            filterButton.style.display = 'none';
+            filters.style.display = 'flex';
+        });
 
         // Create inner div to hold items
         let characterList = Utilities.createDiv('characterList', container);

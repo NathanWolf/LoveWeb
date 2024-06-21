@@ -9,6 +9,15 @@
     margin: 16px;
     padding: 16px;
     background-color: #FEE4Af;
+    display: flex;
+}
+
+.characterFilters {
+    flex-wrap: wrap;
+}
+
+.characterFilters select {
+    margin-right: 1em;
 }
 
 .characterList {
