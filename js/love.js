@@ -48,6 +48,10 @@ class Love {
         return this.#tiers;
     }
 
+    getRelationships() {
+        return this.#relationships;
+    }
+
     getHistory() {
         return this.#history;
     }
@@ -148,6 +152,7 @@ class Love {
 
         this.#characters.addProperties(data.properties);
         this.#characters.addCharacters(data.characters);
+        this.#relationships.addRelationships(data.relationships);
         this.#quizzes.addQuizzes(data.quizzes);
         this.#tiers.addTiers(data.tiers);
 

@@ -1,8 +1,49 @@
 class Relationships extends Component {
     #groupTierList = 'renown';
+    #relationships = {};
 
     constructor(controller, element) {
         super(controller, element);
+    }
+
+    addRelationships(relationships) {
+        for (let id in relationships) {
+            if (relationships.hasOwnProperty(id)) {
+                this.#relationships[id] = relationships[id];
+            }
+        }
+    }
+
+    getRelationshipName(relationshipId) {
+        return this.#relationships.hasOwnProperty(relationshipId) ? this.#relationships[relationshipId].name : Utilities.humanizeKey(relationshipId);
+    }
+
+    getRelationshipList(characterId, showHidden) {
+        let characters = this.getController().getCharacters();
+        let character = characters.getCharacter(characterId);
+        let relationshipController = this;
+        let relationshipList = [];
+        if (!character.hasOwnProperty('relationships')) {
+            return relationshipList;
+        }
+        let relationships = character.relationships;
+        for (let relationshipId in relationships) {
+            let relationshipTargets = relationships[relationshipId];
+            if (!Array.isArray(relationshipTargets)) {
+                relationshipTargets = [relationshipTargets];
+            }
+            relationshipTargets.forEach(function(target) {
+                let targetCharacter = characters.getCharacter(target);
+                if (targetCharacter == null || (!showHidden && targetCharacter.hidden)) return;
+                let relationship = {
+                    id: relationshipId,
+                    name: relationshipController.getRelationshipName(relationshipId),
+                    character: target
+                };
+                relationshipList.push(relationship);
+            });
+        }
+        return relationshipList;
     }
 
     show() {
@@ -14,6 +55,7 @@ class Relationships extends Component {
         let characterGroups = tiers.getGroupedCharacters(this.#groupTierList);
         let containerElement = this.getElement();
         let characters = this.getController().getCharacters();
+        let relationshipController = this;
         Utilities.empty(containerElement);
 
         Object.values(characterGroups).forEach(function(group) {
@@ -33,7 +75,7 @@ class Relationships extends Component {
                 let characterTable = document.createElement('table');
                 let characterBody = document.createElement('tbody');
                 characterTable.appendChild(characterBody);
-                let relationships = characters.getRelationshipList(character.id);
+                let relationships = relationshipController.getRelationshipList(character.id);
                 let relationshipCount = relationships.length;
                 let rowCount = relationshipCount * rowsPerRelationship;
                 for (let relationShipIndex = 0; relationShipIndex < relationshipCount; relationShipIndex++) {

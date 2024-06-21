@@ -397,7 +397,7 @@ class Characters extends Component {
         let relationshipsDiv =  Utilities.createDiv('section relationships', column3);
         Utilities.createDiv('label section', relationshipsDiv, 'Relationships');
         Utilities.createElement('hr', '', relationshipsDiv);
-        let relationships = this.getRelationshipList(characterKey);
+        let relationships = this.getController().getRelationships().getRelationshipList(characterKey);
         for (let i = 0; i < relationships.length; i++) {
             let relationship = relationships[i];
             let related = this.getCharacter(relationship.character);
@@ -556,37 +556,6 @@ class Characters extends Component {
         }
         index = (index + direction + characterList.length) % characterList.length;
         this.#showCharacterPopup(characterList[index]);
-    }
-
-    static getRelationshipName(relationshipId) {
-        // Maybe add a relationships.json?
-        return Utilities.humanizeKey(relationshipId);
-    }
-
-    getRelationshipList(characterId) {
-        let characters = this.#characters;
-        let character = this.#characters[characterId];
-        let relationshipList = [];
-        if (!character.hasOwnProperty('relationships')) {
-            return relationshipList;
-        }
-        let relationships = character.relationships;
-        for (let relationshipId in relationships) {
-            let relationshipTargets = relationships[relationshipId];
-            if (!Array.isArray(relationshipTargets)) {
-                relationshipTargets = [relationshipTargets];
-            }
-            relationshipTargets.forEach(function(target) {
-                if (!characters.hasOwnProperty(target) || characters[target].hidden) return;
-                let relationship = {
-                    id: relationshipId,
-                    name: Characters.getRelationshipName(relationshipId),
-                    character: target
-                };
-                relationshipList.push(relationship);
-            });
-        }
-        return relationshipList;
     }
 
     #getImage(characterId, dataKey) {
