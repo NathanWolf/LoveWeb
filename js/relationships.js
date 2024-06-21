@@ -14,6 +14,10 @@ class Relationships extends Component {
         }
     }
 
+    getRelationships() {
+        return this.#relationships;
+    }
+
     getRelationshipName(relationshipId) {
         return this.#relationships.hasOwnProperty(relationshipId) ? this.#relationships[relationshipId].name : Utilities.humanizeKey(relationshipId);
     }

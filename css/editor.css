@@ -77,3 +77,25 @@ div#characterEditor {
     flex-direction: column;
     overflow: hidden;
 }
+
+table.relationshipTable {
+    border-collapse: collapse;
+}
+
+table.relationshipTable tbody tr td {
+    border-collapse: collapse;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+table.relationshipTable tbody tr td span {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.relationshipSaveButton {
+    max-width: 5em;
+    min-width: 5em;
+}
