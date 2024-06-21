@@ -11,6 +11,7 @@ try {
 
     switch ($action) {
         case 'save_character':
+            $debug = array();
             $allProperties = $db->getProperties();
             $characterId = getParameter('character');
             $properties = getParameter('properties');
@@ -21,6 +22,7 @@ try {
             }
             $character = array('id' => $characterId);
             $images = array();
+            $relationships = array();
             foreach ($properties as $propertyId => $value) {
                 if ($propertyId == 'backstory') {
                     $character['backstory'] = $value;
@@ -70,6 +72,32 @@ try {
                     }
                     $images = array('portrait' => $imageRecord);
                     $db->createPortrait($imageRecord);
+                } else if ($propertyId == 'relationships') {
+                    $relationships = json_decode($value, true);
+                    $existingRelationships = $db->getCharacterRelationships($characterId);
+                    $existingMap = array();
+                    foreach ($existingRelationships as $existingRelationship) {
+                        $key = $existingRelationship['relationship_id'] . ':' . $existingRelationship['related_persona_id'];
+                        $existingMap[$key] = $existingRelationship;
+                    }
+                    foreach ($relationships as $relationshipType => $targetList) {
+                        foreach ($targetList as $target) {
+                            $key = $relationshipType . ':' . $target;
+                            if (isset($existingMap[$key])) {
+                                unset($existingMap[$key]);
+                            } else {
+                                $debug[] = "Adding new relationship for $characterId: $relationshipType $target";
+                                $db->addCharacterRelationship($characterId, $relationshipType, $target);
+                            }
+                        }
+                    }
+                    // Remove any that aren't valid anymore
+                    foreach ($existingMap as $remove) {
+                        $removeRelationshipId = $remove['relationship_id'];
+                        $removeCharacterId = $remove['related_persona_id'];
+                        $debug[] = "Removing relationship for $characterId: $removeRelationshipId $removeCharacterId";
+                        $db->removeCharacterRelationship($characterId, $removeRelationshipId, $removeCharacterId);
+                    }
                 } else {
                     if (!isset($allProperties[$propertyId])) {
                         throw new Exception("Unknown property: $propertyId");
@@ -95,7 +123,10 @@ try {
             if ($images) {
                 $character['images'] = $images;
             }
-            die(json_encode(array('success' => true, 'user' => $user, 'character' => $character)));
+            if ($relationships) {
+                $character['relationships'] = $relationships;
+            }
+            die(json_encode(array('success' => true, 'user' => $user, 'character' => $character, 'debug' => $debug)));
         default:
             throw new Exception("Invalid action: $action");
     }

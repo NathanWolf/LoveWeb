@@ -11,6 +11,11 @@
 
 .editing {
     overflow: auto;
+    flex-basis: 40%;
+}
+
+.relationshipContainer {
+    flex-basis: 40%;
 }
 
 .editingPortrait {
@@ -95,7 +100,6 @@ table.relationshipTable tbody tr td span {
     padding-right: 1em;
 }
 
-.relationshipSaveButton {
-    max-width: 5em;
-    min-width: 5em;
+.modified {
+    background-color: lightgreen;
 }

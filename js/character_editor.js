@@ -4,6 +4,7 @@ class CharacterEditor extends Editor {
     #characterIdList = [];
     #scrollPosition = 0;
     #filterProperty = '*';
+    #relationshipInputs = [];
 
     #portraitSelector = null
     #portraitCenter = null;
@@ -128,6 +129,7 @@ class CharacterEditor extends Editor {
         this.#portraitCenter = null;
         this.#portraitSelector = null;
         this.#portraitRatio = 0;
+        this.#relationshipInputs = [];
         this.clearModified();
 
         let container = this.getElement();
@@ -305,12 +307,134 @@ class CharacterEditor extends Editor {
                 let portrait = {center: editor.#portraitCenter, radius: editor.#portraitRadius};
                 properties.portrait = JSON.stringify(portrait);
             }
+            if (editor.isModified('relationships')) {
+                let relationships = {};
+                for (let relationshipIndex = 0; relationshipIndex < this.#relationshipInputs.length; relationshipIndex++) {
+                    let relationship = this.#relationshipInputs[relationshipIndex];
+                    let relationshipType = relationship.relationshipSelect.value;
+                    let relationshipTarget = relationship.characterSelect.value;
+                    if (!relationships.hasOwnProperty(relationshipType)) {
+                        relationships[relationshipType] = [];
+                    }
+                    relationships[relationshipType].push(relationshipTarget);
+                }
+                properties.relationships = JSON.stringify(relationships);
+            }
             editor.beginSave();
             editor.#save(properties);
         });
         editorForm.addEventListener('keyup', () => {
             editor.clearSaved();
         });
+
+        let relationshipContainer = Utilities.createDiv('relationshipContainer', outerContainer);
+
+        let relationshipTable = Utilities.createElement('table', 'relationshipTable', relationshipContainer);
+        let relationshipBody = Utilities.createElement('tbody', '', relationshipTable);
+
+        let newRow = Utilities.createElement('tr', '', relationshipBody);
+        let relationshipCell = Utilities.createElement('td', '', newRow);
+        Utilities.createSpan('', relationshipCell, 'has a');
+        let newRelationship = this.#createRelationshipSelect(relationshipCell);
+        Utilities.createSpan('', relationshipCell, 'named');
+        let toCell = Utilities.createElement('td', '', newRow);
+        let newTarget = this.#createCharacterSelect(toCell);
+        newRelationship.addEventListener('change', function() {
+            editor.#checkNewRow(newRow, newRelationship, newTarget);
+        });
+        newTarget.addEventListener('change', function() {
+            editor.#checkNewRow(newRow, newRelationship, newTarget);
+        });
+
+        let relationships = character.relationships;
+        for (let relationshipType in relationships) {
+            if (!character.relationships.hasOwnProperty(relationshipType)) continue;
+            let related = relationships[relationshipType];
+            for (let relatedIndex = 0; relatedIndex < related.length; relatedIndex++) {
+                let relatedCharacter = characters.getCharacter(related[relatedIndex]);
+                if (relatedCharacter == null) continue;
+                this.#createRelationshipRow(relationshipBody, relationshipType, relatedCharacter.id);
+            }
+        }
+    }
+
+    #createRelationshipRow(relationshipBody, relationshipType, relatedCharacterId) {
+        let relationshipRow = Utilities.createElement('tr', '', relationshipBody);
+        let relationshipCell = Utilities.createElement('td', '', relationshipRow);
+        Utilities.createSpan('', relationshipCell, 'has a');
+        let relationshipSelect = this.#createRelationshipSelect(relationshipCell, relationshipType)
+        Utilities.createSpan('', relationshipCell, 'named');
+        let toCell = Utilities.createElement('td', '', relationshipRow);
+        let characterSelect = this.#createCharacterSelect(toCell, relatedCharacterId);
+        let editor = this;
+        relationshipSelect.addEventListener('change', function() {
+            editor.#modifyRelationship(relationshipRow);
+        });
+        characterSelect.addEventListener('change', function() {
+            editor.#modifyRelationship(relationshipRow);
+        });
+        this.#relationshipInputs.push({
+            relationshipSelect: relationshipSelect,
+            characterSelect: characterSelect
+        });
+
+        return relationshipRow;
+    }
+
+    #modifyRelationship(row) {
+        this.setModified('relationships');
+        row.className = 'modified';
+    }
+
+    #checkNewRow(row, relationshipSelect, characterSelect) {
+        let relationship = relationshipSelect.value;
+        let character = characterSelect.value;
+        if (relationship != '' && character != '') {
+            relationshipSelect.value = '';
+            characterSelect.value = '';
+            let tbody = row.parentElement;
+            let newRow = this.#createRelationshipRow(tbody, relationship, character);
+            this.#modifyRelationship(newRow);
+        }
+    }
+
+    #createRelationshipSelect(container, selectedId) {
+        let select = Utilities.createElement('select', '', container);
+        if (!selectedId) {
+            Utilities.createElement('option', '', select, '(Choose)').value = '';
+        }
+        let relationships = this.getController().getRelationships().getRelationships();
+        let ids = Object.keys(relationships);
+        ids.sort();
+        for (let idIndex = 0; idIndex < ids.length; idIndex++) {
+            let id = ids[idIndex];
+            let option = Utilities.createElement('option', '', select, relationships[id].name);
+            option.value = id;
+            if (selectedId == id) {
+                option.selected = true;
+            }
+        }
+        return select;
+    }
+
+    #createCharacterSelect(container, selectedId) {
+        let select = Utilities.createElement('select', '', container);
+        if (!selectedId) {
+            Utilities.createElement('option', '', select, '(Choose)').value = '';
+        }
+        let characterList = this.getController().getCharacters().getCharacterList(true);
+        characterList.sort(function(a, b) {
+            return a.name.localeCompare(b.name);
+        });
+        for (let characterIndex = 0; characterIndex < characterList.length; characterIndex++) {
+            let character = characterList[characterIndex];
+            let option = Utilities.createElement('option', '', select, character.name);
+            option.value = character.id;
+            if (selectedId == character.id) {
+                option.selected = true;
+            }
+        }
+        return select;
     }
 
     onNextCharacter() {

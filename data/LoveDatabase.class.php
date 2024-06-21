@@ -139,6 +139,26 @@ class LoveDatabase extends Database {
         return self::index($images, 'image_id');
     }
 
+    public function getCharacterRelationships($characterId) {
+        return $this->query('SELECT * FROM persona_relationship WHERE persona_id = :id', array('id' => $characterId));
+    }
+
+    public function addCharacterRelationship($characterId, $relationshipId, $targetId) {
+        $record = array(
+            'persona_id' => $characterId,
+            'relationship_id' => $relationshipId,
+            'related_persona_id' => $targetId
+        );
+        $this->insert('persona_relationship', $record);
+    }
+
+    public function removeCharacterRelationship($characterId, $relationshipId, $targetId) {
+        $this->execute(
+            'DELETE FROM  persona_relationship WHERE persona_id = :id AND relationship_id = :relationship AND related_persona_id = :target',
+            array('id' => $characterId, 'relationship' => $relationshipId, 'target' => $targetId)
+        );
+    }
+
     public function getCharacterImage($characterId, $imageId) {
         return $this->queryOne('persona_image', 'persona_id=:persona AND image_id=:image', array('persona' => $characterId, 'image' => $imageId));
     }
