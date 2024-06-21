@@ -94,7 +94,7 @@ th {
 .portraitContainer:hover .portraitName {
     background: #ECA15E;
     border-color: #ECA15E;
-    color: #742A00z;
+    color: #742A00;
 }
 
 .portraitContainer:hover .portrait {
@@ -107,6 +107,7 @@ th {
     display: flex;
     background: #FFE5B0;
     border: 8px solid #742A00;
+    overflow: auto;
 }
 
 .characterSheet .label {
