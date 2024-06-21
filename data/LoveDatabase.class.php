@@ -143,6 +143,14 @@ class LoveDatabase extends Database {
         return $this->query('SELECT * FROM persona_relationship WHERE persona_id = :id', array('id' => $characterId));
     }
 
+    public function getCharacterRelationship($characterId, $relationshipId, $targetId) {
+        $records = $this->query(
+            'SELECT * FROM  persona_relationship WHERE persona_id = :id AND relationship_id = :relationship AND related_persona_id = :target',
+            array('id' => $characterId, 'relationship' => $relationshipId, 'target' => $targetId)
+        );
+        return $records ? $records[0] : null;
+    }
+
     public function addCharacterRelationship($characterId, $relationshipId, $targetId) {
         $record = array(
             'persona_id' => $characterId,

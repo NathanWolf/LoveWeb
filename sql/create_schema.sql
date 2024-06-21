@@ -168,6 +168,13 @@ create table relationship
         primary key (id)
 );
 
+alter table relationship
+    add inverse_relationship_id varchar(64) null;
+
+alter table relationship
+    add constraint relationship_inverse_relationship_id_fk
+        foreign key (inverse_relationship_id) references relationship (id);
+
 insert into property (id, name) values ('partner', 'Partner');
 insert into property (id, name) values ('ex_partner', 'Ex-Partner');
 insert into property (id, name) values ('parent', 'Parent');

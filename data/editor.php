@@ -23,6 +23,7 @@ try {
             $character = array('id' => $characterId);
             $images = array();
             $relationships = array();
+            $newRelationships = array();
             foreach ($properties as $propertyId => $value) {
                 if ($propertyId == 'backstory') {
                     $character['backstory'] = $value;
@@ -75,6 +76,7 @@ try {
                 } else if ($propertyId == 'relationships') {
                     $relationships = json_decode($value, true);
                     $existingRelationships = $db->getCharacterRelationships($characterId);
+                    $relationshipTypes = $db->getRelationships();
                     $existingMap = array();
                     foreach ($existingRelationships as $existingRelationship) {
                         $key = $existingRelationship['relationship_id'] . ':' . $existingRelationship['related_persona_id'];
@@ -85,9 +87,21 @@ try {
                             $key = $relationshipType . ':' . $target;
                             if (isset($existingMap[$key])) {
                                 unset($existingMap[$key]);
-                            } else {
+                            } else if (isset($relationshipTypes[$relationshipType])) {
                                 $debug[] = "Adding new relationship for $characterId: $relationshipType $target";
                                 $db->addCharacterRelationship($characterId, $relationshipType, $target);
+                                $relationshipTypeRecord = $relationshipTypes[$relationshipType];
+                                if ($relationshipTypeRecord['inverse_relationship_id']) {
+                                    $inverseType = $relationshipTypeRecord['inverse_relationship_id'];
+                                    $existing = $db->getCharacterRelationship($target, $inverseType, $characterId);
+                                    if (!$existing) {
+                                        $debug[] = "Adding new inverse relationship for $target: $inverseType $characterId";
+                                        $db->addCharacterRelationship($target, $inverseType, $characterId);
+                                        $newRelationships[] = array('persona_id' => $target, 'relationship_id' => $inverseType, 'related_persona_id' => $characterId);
+                                    }
+                                }
+                            } else {
+                                throw new Exception("Unknown relationship type: $relationshipType");
                             }
                         }
                     }
@@ -126,7 +140,7 @@ try {
             if ($relationships) {
                 $character['relationships'] = $relationships;
             }
-            die(json_encode(array('success' => true, 'user' => $user, 'character' => $character, 'debug' => $debug)));
+            die(json_encode(array('success' => true, 'user' => $user, 'character' => $character, 'debug' => $debug, 'relationships' => $newRelationships)));
         default:
             throw new Exception("Invalid action: $action");
     }

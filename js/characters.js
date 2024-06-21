@@ -621,4 +621,19 @@ class Characters extends Component {
             this.#characters[characterInfo.id] = characterInfo;
         }
     }
+
+    addRelationship(relationship) {
+        let characterId = relationship.persona_id;
+        if (this.#characters.hasOwnProperty(characterId)) {
+            let character = this.#characters[characterId];
+            if (character.relationships.hasOwnProperty(relationship.relationship_id)) {
+                if (!character.relationships[relationship.relationship_id].includes(relationship.related_persona_id)) {
+                    character.relationships[relationship.relationship_id].push(relationship.related_persona_id);
+                }
+            } else {
+                character.relationships[relationship.relationship_id] = [relationship.related_persona_id];
+            }
+            this.#characters[characterId].relationships.push(relationship);
+        }
+    }
 }
