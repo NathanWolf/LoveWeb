@@ -136,12 +136,6 @@ class Editor extends Component {
     processSave(response) {
         if (!response.success) {
             alert("An error occurred saving, please try again: " + response.message)
-        } else {
-            this.getController().getCharacters().updateCharacter(response.character);
-            for (let i = 0; i < response.relationships.length; i++) {
-                let relationship = response.relationships[i];
-                this.getController().getCharacters().addRelationship(relationship);
-            }
         }
 
         this.#saveButton.disabled = false;

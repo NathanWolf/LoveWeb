@@ -540,6 +540,18 @@ class CharacterEditor extends Editor {
         this.setModified('portrait');
     }
 
+    processSave(response) {
+        super.processSave(response);
+
+        if (response.success) {
+            this.getController().getCharacters().updateCharacter(response.character);
+            for (let i = 0; i < response.relationships.length; i++) {
+                let relationship = response.relationships[i];
+                this.getController().getCharacters().addRelationship(relationship);
+            }
+        }
+    }
+
     #save(properties) {
         let profile = this.getController().getProfile();
         let user = profile.getUser();
