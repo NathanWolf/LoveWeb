@@ -103,7 +103,7 @@ class CharacterEditor extends Editor {
             });
         });
 
-        container.scrollTop = this.#scrollPosition;
+        characterList.scrollTop = this.#scrollPosition;
         this.#scrollPosition = 0;
     }
 
@@ -133,7 +133,8 @@ class CharacterEditor extends Editor {
         this.clearModified();
 
         let container = this.getElement();
-        this.#scrollPosition = container.scrollTop;
+        let characterListContainer = container.children[1];
+        this.#scrollPosition = characterListContainer.scrollTop;
         Utilities.empty(container);
 
         let outerContainer = Utilities.createDiv('editorContainer', container);
