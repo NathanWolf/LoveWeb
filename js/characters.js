@@ -404,7 +404,12 @@ class Characters extends Component {
             Utilities.createDiv('label', relationshipsDiv, relationship.name);
             Utilities.createDiv('value', relationshipsDiv, related.name);
         }
-        Utilities.createDiv('section notes', column3, character.notes);
+        if (character.notes != null && character.notes.length > 0) {
+            let notesDiv = Utilities.createDiv('section notes', column3);
+            Utilities.createDiv('label', notesDiv, 'Fun Facts');
+            Utilities.createElement('hr', '', notesDiv);
+            Utilities.createDiv('value', notesDiv, character.notes);
+        }
 
         // Column 4
         let column4 = Utilities.createDiv('column column_4', popup);
