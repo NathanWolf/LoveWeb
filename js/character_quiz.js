@@ -155,6 +155,7 @@ class CharacterQuiz extends Component {
 
     #nextQuestion() {
         let element = this.getElement();
+        element.scrollTop = 0;
         let characters = this.getController().getCharacters();
         Utilities.empty(element);
         if (this.#remainingQuestions.length === 0) {

@@ -76,6 +76,7 @@ class Quizzes extends Component {
 
     #nextQuestion() {
         let element = this.getElement();
+        element.scrollTop = 0;
         Utilities.empty(element);
         if (this.#currentQuizQuestions.length === 0) {
             this.show();
