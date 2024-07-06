@@ -41,14 +41,16 @@
     background: #8FC346;
     color: black;
     text-align: center;
-    padding: 8px;
+    padding: 2em 20em;
+    width: 10em;
 }
 
 .flashCardWrong {
     background: #DB512D;
     color: white;
     text-align: center;
-    padding: 8px;
+    padding: 2em 20em;
+    width: 10em;
 }
 
 .flashCardAnswers ul li {
