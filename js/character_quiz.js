@@ -183,18 +183,13 @@ class CharacterQuiz extends Component {
         let used = {};
         let answers = {};
         let maxTop = this.#maxAnswers / 2;
-        let hasMissingAnswers = false;
         for (let i = 0; i < scored.length; i++) {
             if (Object.values(answers).length > maxTop) break;
             let character = scored[i].character;
-            if (character.properties.hasOwnProperty(nextQuestion.id)) {
-                let value = character.properties[nextQuestion.id];
-                if (!answers.hasOwnProperty(value)) {
-                    used[character.id] = true;
-                    answers[value] = true;
-                }
-            } else {
-                hasMissingAnswers = true;
+            let value = character.properties.hasOwnProperty(nextQuestion.id) ? character.properties[nextQuestion.id] : 'None';
+            if (!answers.hasOwnProperty(value)) {
+                used[character.id] = true;
+                answers[value] = true;
             }
         }
         let allCharacters = characters.getCharacterList();
@@ -202,14 +197,10 @@ class CharacterQuiz extends Component {
             if (Object.values(answers).length >= this.#maxAnswers) break;
             let character = allCharacters[i];
             if (used.hasOwnProperty(character.id)) continue;
-            if (character.properties.hasOwnProperty(nextQuestion.id)) {
-                let value = character.properties[nextQuestion.id];
-                if (!answers.hasOwnProperty(value)) {
-                    used[character.id] = true;
-                    answers[value] = true;
-                }
-            } else {
-                hasMissingAnswers = true;
+            let value = character.properties.hasOwnProperty(nextQuestion.id) ? character.properties[nextQuestion.id] : 'None';
+            if (!answers.hasOwnProperty(value)) {
+                used[character.id] = true;
+                answers[value] = true;
             }
         }
 
@@ -217,9 +208,6 @@ class CharacterQuiz extends Component {
         let list = document.createElement('ul');
         answers = Object.keys(answers);
         answers = Utilities.shuffle(answers);
-        if (hasMissingAnswers) {
-            answers.push('None of the above');
-        }
         for (let i = 0; i < answers.length; i++) {
             let answer = document.createElement('li');
             let option = answers[i];
@@ -250,7 +238,8 @@ class CharacterQuiz extends Component {
         let allCharacters = characters.getCharacterList();
         for (let i = 0; i < allCharacters.length; i++) {
             let character = allCharacters[i];
-            if (character.properties.hasOwnProperty(propertyId) && character.properties[propertyId] == propertyValue) {
+            let characterValue = character.properties.hasOwnProperty(propertyId) ? character.properties[propertyId] : 'None';
+            if (characterValue == propertyValue) {
                 this.#addCharacterScore(character);
             }
         }
