@@ -449,3 +449,7 @@ div.characterFullName {
     font-family: cursive;
     text-align: center;
 }
+
+div.following {
+    white-space: nowrap;
+}

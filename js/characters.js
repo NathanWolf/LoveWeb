@@ -474,6 +474,31 @@ class Characters extends Component {
         this.#addCharacterPropertyInfo(character, miscDic, 'carries');
         this.#addCharacterPropertyInfo(character, miscDic, 'accessories');
 
+        let followingDiv = Utilities.createDiv('section following', c4r2);
+        Utilities.createDiv('label', followingDiv, 'Following');
+        Utilities.createElement('hr', '', followingDiv);
+
+        let followingList = character.properties.hasOwnProperty('following') ? character.properties.following : '';
+        followingList = followingList.split(',');
+        let followingMap = {};
+        for (let i = 0; i < followingList.length; i++) {
+            let item = followingList[i];
+            if (item != '') followingMap[item] = true;
+        }
+        let followings = ['Wrath', 'Lust', 'Gluttony', 'Sloth', 'Envy', 'Pride', 'Greed'];
+        for (let i = 0; i < followings.length; i++) {
+            let following = followings[i];
+            let checkbox = Utilities.createElement('input');
+            checkbox.type = 'checkbox';
+            if (followingMap.hasOwnProperty(following)) {
+                checkbox.checked = true;
+            }
+            checkbox.disabled = true;
+            let followingRow = Utilities.createDiv('', followingDiv);
+            followingRow.appendChild(checkbox);
+            Utilities.createSpan('', followingRow, following);
+        }
+
         let c4r4 = Utilities.createDiv('row row4', column4);
         let renownDiv = Utilities.createDiv('section reknown', c4r4);
         let renownTier = this.getTier(character.id, 'renown');
