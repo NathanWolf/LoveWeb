@@ -38,6 +38,9 @@ foreach ($iterator as $fileInfo) {
         $pathname = $characterFileInfo->getPathname();
         $info = pathinfo($pathname);
         $imageId = $info['filename'];
+        if (!$imageId) {
+            continue;
+        }
         if (isset($character['images'][$imageId])) {
             // echo "Skipping $characterId $imageId, already exists\n";
             continue;
@@ -74,7 +77,7 @@ foreach ($iterator as $fileInfo) {
             'width' => $width,
             'height' => $height
         );
-        // $admin->insert('persona_image', $newRecord);
+        $admin->insert('persona_image', $newRecord);
         echo "Saving image for $characterId $imageId as $title\n";
     }
 }
