@@ -455,6 +455,7 @@ class Characters extends Component {
             if (religionMap.hasOwnProperty(religion)) {
                 checkbox.checked = true;
             }
+            checkbox.disabled = true;
             let religionRow = Utilities.createDiv('', religionDiv);
             religionRow.appendChild(checkbox);
             Utilities.createSpan('', religionRow, religion);
