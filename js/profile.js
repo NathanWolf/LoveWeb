@@ -52,6 +52,7 @@ class Profile extends Component {
         passwordSection.appendChild(passwordInput);
 
         let loginButton = document.createElement('button');
+        loginButton.type = 'button';
         loginButton.className = 'login';
         loginButton.innerText = 'Login';
         let profile = this;
