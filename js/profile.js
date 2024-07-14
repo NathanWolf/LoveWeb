@@ -243,7 +243,7 @@ class Profile extends Component {
     #showAdmin() {
         let elements = document.getElementsByClassName('admin');
         for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
-            elements[elementIndex].style.display = 'block';
+            elements[elementIndex].style.display = 'flex';
         }
     }
 

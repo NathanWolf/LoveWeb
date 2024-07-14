@@ -41,7 +41,6 @@ textarea {
 .tile div {
     display: flex;
     text-align: center;
-    white-space: nowrap;
 }
 
 .tile:hover {
