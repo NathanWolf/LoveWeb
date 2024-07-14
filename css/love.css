@@ -21,17 +21,18 @@ textarea {
 }
 
 .tile {
-    color: black;
+    color: #752C0E;
     width: 5em;
     min-width: 5em;
     height: 5em;
+    min-height: 5em;
     text-align: center;
     vertical-align: middle;
-    border: 1px solid black;
+    border: 1px solid #752C0E;
     padding: 1em;
     margin: 1em;
     text-decoration: none;
-    font-size: 1.5em;
+    font-size: 1.2em;
     display: inline-block;
     background-color: white;
     cursor: pointer;
@@ -54,7 +55,7 @@ textarea {
 
 .toolbar {
     display: flex;
-    border: 1px solid black;
+    border: 1px solid #752C0E;
     background: #F8D8A4;
 }
 
@@ -160,7 +161,7 @@ textarea {
     overflow-x: hidden;
     overflow-y: auto;
     flex-wrap: wrap;
-    align-content: start;
+    flex-direction: row;
 }
 
 .infoButton {
@@ -170,4 +171,24 @@ textarea {
 
 .infoButton .navigation {
     flex: 1;
+    background: url('../image/logos/diviinity.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: white;
+    width: 614px;
+    height: 429px;
+    min-width: 614px;
+    min-height: 429px;
 }
+
+
+.buttonContainer {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    flex: auto;
+}
+

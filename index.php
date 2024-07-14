@@ -75,7 +75,7 @@
 
         <div class="tab" id="home">
             <div class="infoButton">
-                <div class="tile navigation" data-tab="info">Info</div>
+                <div class="tile navigation" data-tab="info" title="My Information!"></div>
             </div>
             <div class="buttonContainer">
                 <div class="tile navigation" data-tab="characters">Characters</div>

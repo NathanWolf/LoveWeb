@@ -31,14 +31,6 @@
     border-radius: 25px;
 }
 
-.buttonContainer {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-}
-
 .leftDialogButtons, .rightDialogButtons {
     align-self: stretch;
     margin-top: 2em;
