@@ -78,14 +78,14 @@
                 <div class="tile navigation" data-tab="info" title="My Information!"></div>
             </div>
             <div class="buttonContainer">
-                <div class="tile navigation" data-tab="characters">Characters</div>
-                <div class="tile navigation" data-tab="chat">Chat</div>
-                <div class="tile navigation" data-tab="quizzes">Quizzes</div>
-                <div class="tile navigation" data-tab="flashCards">Flash Cards</div>
-                <div class="tile navigation" data-tab="relationships">Relationships</div>
-                <div class="tile navigation" data-tab="tierLists">Tier Lists</div>
-                <div class="tile navigation admin" data-tab="characterEditor" style="display: none">Character Editor</div>
-                <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Play Game &#128279;</a></div>
+                <div class="tile navigation" data-tab="characters"><div>Characters</div></div>
+                <div class="tile navigation" data-tab="chat"><div>Chat</div></div>
+                <div class="tile navigation" data-tab="quizzes"><div>Quizzes</div></div>
+                <div class="tile navigation" data-tab="flashCards"><div>Flash Cards</div></div>
+                <div class="tile navigation" data-tab="relationships"><div>Relationships</div></div>
+                <div class="tile navigation" data-tab="tierLists"><div>Tier Lists</div></div>
+                <div class="tile navigation admin" data-tab="characterEditor" style="display: none"><div>Character Editor</div></div>
+                <div class="tile"><a href="https://games.elmakers.com/love" target="_blank"><div>Play Game &#128279;</a></div></div>
             </div>
         </div>
 

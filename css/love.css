@@ -26,21 +26,27 @@ textarea {
     min-width: 5em;
     height: 5em;
     min-height: 5em;
-    text-align: center;
-    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
     border: 1px solid #752C0E;
     padding: 1em;
     margin: 1em;
     text-decoration: none;
-    font-size: 1.2em;
-    display: inline-block;
+    font-size: 1em;
+    display: flex;
     background-color: white;
     cursor: pointer;
 }
 
+.tile div {
+    display: flex;
+    text-align: center;
+    white-space: nowrap;
+}
+
 .tile:hover {
     text-decoration: underline;
-    background-color: #FEE4AF;
+    background-color: #FEE4AF !important;
 }
 
 .tile a {
@@ -181,7 +187,6 @@ textarea {
     min-width: 614px;
     min-height: 429px;
 }
-
 
 .buttonContainer {
     justify-content: center;
