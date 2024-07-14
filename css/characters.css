@@ -443,6 +443,7 @@ div.characterFull {
 div.characterFullContainer {
     display: flex;
     flex-direction: column;
+    margin-bottom: 32px;
 }
 
 div.characterFullName {
