@@ -22,10 +22,8 @@ class Profile extends Component {
         let element = this.getElement();
         Utilities.empty(element);
         let loginDiv = Utilities.createDiv('login', element);
-        let loginForm = document.createElement('form');
-        loginDiv.appendChild(loginForm);
         let emailSection = document.createElement('section');
-        loginForm.appendChild(emailSection);
+        loginDiv.appendChild(emailSection);
         let emailLabel = document.createElement('label');
         emailLabel.for = 'emailInput';
         emailLabel.innerText = 'Email Address';
@@ -39,7 +37,7 @@ class Profile extends Component {
         emailSection.appendChild(emailInput);
 
         let passwordSection = document.createElement('section');
-        loginForm.appendChild(passwordSection);
+        loginDiv.appendChild(passwordSection);
         let passwordLabel = document.createElement('label');
         passwordLabel.for = 'passwordInput';
         passwordLabel.innerText = 'Password';
@@ -56,12 +54,12 @@ class Profile extends Component {
         loginButton.className = 'login';
         loginButton.innerText = 'Login';
         let profile = this;
-        loginForm.addEventListener('submit', () => {
+        loginButton.addEventListener('click', () => {
             loginButton.disabled = true;
             registerButton.disabled = true;
             profile.#login(emailInput.value, passwordInput.value);
         });
-        loginForm.appendChild(loginButton);
+        loginDiv.appendChild(loginButton);
 
         let registerButton = document.createElement('button');
         registerButton.type = 'button';
@@ -72,7 +70,7 @@ class Profile extends Component {
             registerButton.disabled = true;
             profile.#showRegister(emailInput.value, passwordInput.value);
         });
-        loginForm.appendChild(registerButton);
+        loginDiv.appendChild(registerButton);
 
         this.#formButtons = [registerButton, loginButton];
     }
@@ -81,10 +79,8 @@ class Profile extends Component {
         let element = this.getElement();
         Utilities.empty(element);
         let registerDiv = Utilities.createDiv('register', element);
-        let registerForm = document.createElement('form');
-        registerDiv.appendChild(registerForm);
         let emailSection = document.createElement('section');
-        registerForm.appendChild(emailSection);
+        registerDiv.appendChild(emailSection);
         let emailLabel = document.createElement('label');
         emailLabel.for = 'emailInput';
         emailLabel.innerText = 'Email Address';
@@ -98,7 +94,7 @@ class Profile extends Component {
         emailSection.appendChild(emailInput);
 
         let passwordSection = document.createElement('section');
-        registerForm.appendChild(passwordSection);
+        registerDiv.appendChild(passwordSection);
         let passwordLabel = document.createElement('label');
         passwordLabel.for = 'passwordInput';
         passwordLabel.innerText = 'Password';
@@ -112,7 +108,7 @@ class Profile extends Component {
         passwordSection.appendChild(passwordInput);
 
         let firstSection = document.createElement('section');
-        registerForm.appendChild(firstSection);
+        registerDiv.appendChild(firstSection);
         let firstLabel = document.createElement('label');
         firstLabel.for = 'firstInput';
         firstLabel.innerText = 'First Name';
@@ -123,7 +119,7 @@ class Profile extends Component {
         firstSection.appendChild(firstInput);
 
         let lastSection = document.createElement('section');
-        registerForm.appendChild(lastSection);
+        registerDiv.appendChild(lastSection);
         let lastLabel = document.createElement('label');
         lastLabel.for = 'lastInput';
         lastLabel.innerText = 'Last Name';
@@ -134,15 +130,15 @@ class Profile extends Component {
         lastSection.appendChild(lastInput);
 
         let registerButton = document.createElement('button');
+        registerButton.type = 'button';
         registerButton.className = 'register';
         registerButton.innerText = 'Register';
         let profile = this;
-        registerForm.addEventListener('submit', (event) => {
-            event.preventDefault();
+        registerButton.addEventListener('click', (event) => {
             registerButton.disabled = true;
             profile.#register(emailInput.value, passwordInput.value, firstInput.value, lastInput.value);
         });
-        registerForm.appendChild(registerButton);
+        registerDiv.appendChild(registerButton);
 
         this.#formButtons = [registerButton];
     }
@@ -199,18 +195,16 @@ class Profile extends Component {
         welcomeDiv.innerText = 'Welcome back, ' + this.#user.first_name + '!';
 
         let logoutDiv = Utilities.createDiv('logout', profileDiv);
-        let logoutForm = document.createElement('form');
         let logoutButton = document.createElement('button');
+        logoutButton.type = 'button';
         logoutButton.className = 'logout';
         logoutButton.innerText = 'Logout';
         let profile = this;
-        logoutForm.addEventListener('submit', (event) => {
-            event.preventDefault();
+        logoutButton.addEventListener('click', (event) => {
             logoutButton.disabled = true;
             profile.#logout();
         });
-        logoutForm.appendChild(logoutButton);
-        logoutDiv.appendChild(logoutForm);
+        logoutDiv.appendChild(logoutButton);
 
         if (this.#user != null && this.#user.admin) {
             this.#showAdmin();
