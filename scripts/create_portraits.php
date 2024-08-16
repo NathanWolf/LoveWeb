@@ -18,8 +18,8 @@ $outputFolder = $argv[2];
 if (!file_exists($outputFolder)) {
     die("Output folder does not exist: $outputFolder\n");
 }
-$targetWidth = count($argv) > 3 ? $argv[3] : 256;
-$targetHeight = count($argv) > 4 ? $argv[4] : 256;
+$targetWidth = count($argv) > 3 ? $argv[3] : 1024;
+$targetHeight = count($argv) > 4 ? $argv[4] : 1024;
 
 foreach ($characters as $character) {
     $characterId = $character['id'];
@@ -33,5 +33,5 @@ foreach ($characters as $character) {
         continue;
     }
     echo "Creating $outputFilename\n";
-    $db->createPortrait($character['images']['portrait'], 1024, 1024, $outputFilename);
+    $db->createPortrait($character['images']['portrait'], $targetWidth, $targetHeight, $outputFilename);
 }
