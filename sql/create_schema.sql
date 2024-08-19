@@ -310,6 +310,14 @@ CREATE TABLE persona_image
     height int null
 );
 
+ALTER TABLE persona_image
+    ADD hidden boolean not null default false,
+    ADD next_image_id VARCHAR(64),
+    ADD previous_image_id VARCHAR(64),
+    ADD offset_x int not null default 0,
+    ADD offset_y int not null default 0
+    ;
+
 -- Data updates follow
 
 UPDATE persona_tier
