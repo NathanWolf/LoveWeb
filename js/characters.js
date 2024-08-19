@@ -626,6 +626,9 @@ class Characters extends Component {
             }
         }
         if (imageList.length == 0) return;
+        imageList = imageList.sort(function(a, b) {
+            return a.priority - b.priority;
+        });
         let index = 0;
         for (let i = 0; i < imageList.length; i++) {
             if (imageList[i].image_id == this.#popupImageId) {
