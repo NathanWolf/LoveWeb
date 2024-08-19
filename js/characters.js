@@ -603,7 +603,12 @@ class Characters extends Component {
         let imageContainer = Utilities.createDiv('characterImage', this.#popupImageElement);
         Utilities.createDiv('characterImageDescription', this.#popupImageElement, image.description);
         imageContainer.style.backgroundImage = 'url(' + this.#getImage(this.#popupCharacterId, imageId) + ')';
-
+        if (image.offset_x != 0) {
+            imageContainer.style.marginLeft = image.offset_x;
+        }
+        if (image.offset_y != 0) {
+            imageContainer.style.marginTop = image.offset_y;
+        }
         if (image.previous_image_id != null && image.next_image_id != null) {
             Utilities.createDiv('characterRotateHint', this.#popupImageElement, 'Drag to rotate!');
         }
