@@ -454,3 +454,12 @@ div.characterFullName {
 div.following {
     white-space: nowrap;
 }
+
+div.characterRotateHint {
+    font-weight: bold;
+    color: #742A00;
+    text-align: center;
+    font-style: italic;
+    border-top: 1px solid #742A00;
+    margin-top: 8px;
+}

@@ -3,10 +3,14 @@ class Characters extends Component {
     #characterIdList = [];
     #popupCharacterId = null;
     #popupImageId = null;
+    #popupSecondaryImageId = null;
     #popupImageElement = null;
     #characters = {};
     #properties = {};
     #filters = {};
+    #mouseStart = {x: 0, y: 0};
+    #rotating = false;
+    #moveDistance = 50;
 
     constructor(controller, element) {
         super(controller, element);
@@ -527,21 +531,82 @@ class Characters extends Component {
             }
         };
         this.#popupImageId = 'full';
+        this.#popupSecondaryImageId = null;
         this.#popupImageElement = Utilities.showPopup(element.parentNode, 'characterImageContainer', buttons);
+
+        this.#popupImageElement.addEventListener('mousemove', function(event) {
+            characterController.onImageMove(event.clientX, event.clientY);
+        });
+        this.#popupImageElement.addEventListener('touchmove', function(event) {
+            characterController.onImageMove(event.touches[0].clientX, event.touches[0].clientY);
+        });
+        this.#popupImageElement.addEventListener('mousedown', function(event) {
+            characterController.onImageDown(event.clientX, event.clientY);
+        });
+        this.#popupImageElement.addEventListener('touchstart', function(event) {
+            characterController.onImageDown(event.touches[0].clientX, event.touches[0].clientY);
+        });
+        this.#popupImageElement.addEventListener('touchend', function() {
+            characterController.onImageUp();
+        });
+        this.#popupImageElement.addEventListener('touchcancel', function() {
+            characterController.onImageUp();
+        });
+        this.#popupImageElement.addEventListener('mouseup', function() {
+            characterController.onImageUp();
+        });
+
         this.#updatePopupImage();
+    }
+
+    onImageDown(x, y) {
+        this.#rotating = true;
+        this.#mouseStart.x = x;
+        this.#mouseStart.y = y;
+    }
+
+    onImageMove(x, y) {
+        if (!this.#rotating) return;
+
+        let character = this.getCharacter(this.#popupCharacterId);
+        let imageId = this.#popupSecondaryImageId != null ? this.#popupSecondaryImageId : this.#popupImageId;
+        if (character == null || !character.images.hasOwnProperty(imageId)) return;
+        let image = character.images[imageId];
+
+        if (x > this.#mouseStart.x + this.#moveDistance) {
+            this.#popupSecondaryImageId = image.next_image_id;
+        } else if (x < this.#mouseStart.x - this.#moveDistance) {
+            this.#popupSecondaryImageId = image.previous_image_id;
+        } else {
+            return;
+        }
+        this.#mouseStart.x = x;
+        this.#mouseStart.y = y;
+        if (this.#popupSecondaryImageId != null) {
+            this.#updatePopupImage();
+        }
+    }
+
+    onImageUp() {
+        this.#rotating = false;
     }
 
     #updatePopupImage() {
         if (this.#popupImageElement == null) return;
         Utilities.empty(this.#popupImageElement);
+        let imageId = this.#popupSecondaryImageId != null ? this.#popupSecondaryImageId : this.#popupImageId;
         let character = this.getCharacter(this.#popupCharacterId);
-        if (character == null || !character.images.hasOwnProperty(this.#popupImageId)) return;
-        let image = character.images[this.#popupImageId];
+        if (character == null || !character.images.hasOwnProperty(imageId)) return;
+        let image = character.images[imageId];
         let title = character.name + ' ' + image.title;
         Utilities.createDiv('characterImageTitle', this.#popupImageElement, title);
         let imageContainer = Utilities.createDiv('characterImage', this.#popupImageElement);
         Utilities.createDiv('characterImageDescription', this.#popupImageElement, image.description);
-        imageContainer.style.backgroundImage = 'url(' + this.#getImage(this.#popupCharacterId, this.#popupImageId) + ')';
+        imageContainer.style.backgroundImage = 'url(' + this.#getImage(this.#popupCharacterId, imageId) + ')';
+
+        if (image.previous_image_id != null && image.next_image_id != null) {
+            Utilities.createDiv('characterRotateHint', this.#popupImageElement, 'Drag to rotate!');
+        }
     }
 
     onNextImage() {
@@ -570,6 +635,7 @@ class Characters extends Component {
         }
         index = (index + direction + imageList.length) % imageList.length;
         this.#popupImageId = imageList[index].image_id;
+        this.#popupSecondaryImageId = null;
         this.#updatePopupImage();
     }
 
