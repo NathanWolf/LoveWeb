@@ -554,7 +554,12 @@ class Characters extends Component {
 
     #goImage(direction) {
         let character = this.getCharacter(this.#popupCharacterId);
-        let imageList = Object.values(character.images);
+        let imageList = [];
+        for (let imageKey in character.images) {
+            if (character.images.hasOwnProperty(imageKey) && !character.images[imageKey].hidden) {
+                imageList.push(character.images[imageKey]);
+            }
+        }
         if (imageList.length == 0) return;
         let index = 0;
         for (let i = 0; i < imageList.length; i++) {
