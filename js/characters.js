@@ -5,12 +5,14 @@ class Characters extends Component {
     #popupImageId = null;
     #popupSecondaryImageId = null;
     #popupImageElement = null;
+    #characterImageElement = null;
     #characters = {};
     #properties = {};
     #filters = {};
     #mouseStart = {x: 0, y: 0};
     #rotating = false;
-    #moveDistance = 50;
+    #moveMinDistance = 20;
+    #moveMinPercent = 5;
 
     constructor(controller, element) {
         super(controller, element);
@@ -572,10 +574,11 @@ class Characters extends Component {
         let imageId = this.#popupSecondaryImageId != null ? this.#popupSecondaryImageId : this.#popupImageId;
         if (character == null || !character.images.hasOwnProperty(imageId)) return;
         let image = character.images[imageId];
-
-        if (x > this.#mouseStart.x + this.#moveDistance) {
+        let screenRatio = this.#moveMinPercent * window.innerWidth / 100;
+        let moveDistance = Math.max(this.#moveMinDistance, screenRatio);
+        if (x > this.#mouseStart.x + moveDistance) {
             this.#popupSecondaryImageId = image.next_image_id;
-        } else if (x < this.#mouseStart.x - this.#moveDistance) {
+        } else if (x < this.#mouseStart.x - moveDistance) {
             this.#popupSecondaryImageId = image.previous_image_id;
         } else {
             return;
@@ -583,12 +586,28 @@ class Characters extends Component {
         this.#mouseStart.x = x;
         this.#mouseStart.y = y;
         if (this.#popupSecondaryImageId != null) {
-            this.#updatePopupImage();
+            this.#updatePopupFrame();
         }
     }
 
     onImageUp() {
         this.#rotating = false;
+    }
+
+    #updatePopupFrame() {
+        if (this.#characterImageElement == null) return;
+        let imageContainer = this.#characterImageElement;
+        let imageId = this.#popupSecondaryImageId != null ? this.#popupSecondaryImageId : this.#popupImageId;
+        let character = this.getCharacter(this.#popupCharacterId);
+        if (character == null || !character.images.hasOwnProperty(imageId)) return;
+        let image = character.images[imageId];
+        imageContainer.style.backgroundImage = 'url(' + this.#getImage(this.#popupCharacterId, imageId) + ')';
+        if (image.offset_x != 0) {
+            imageContainer.style.marginLeft = image.offset_x;
+        }
+        if (image.offset_y != 0) {
+            imageContainer.style.marginTop = image.offset_y;
+        }
     }
 
     #updatePopupImage() {
@@ -600,15 +619,9 @@ class Characters extends Component {
         let image = character.images[imageId];
         let title = character.name + ' ' + image.title;
         Utilities.createDiv('characterImageTitle', this.#popupImageElement, title);
-        let imageContainer = Utilities.createDiv('characterImage', this.#popupImageElement);
+        this.#characterImageElement = Utilities.createDiv('characterImage', this.#popupImageElement);
         Utilities.createDiv('characterImageDescription', this.#popupImageElement, image.description);
-        imageContainer.style.backgroundImage = 'url(' + this.#getImage(this.#popupCharacterId, imageId) + ')';
-        if (image.offset_x != 0) {
-            imageContainer.style.marginLeft = image.offset_x;
-        }
-        if (image.offset_y != 0) {
-            imageContainer.style.marginTop = image.offset_y;
-        }
+        this.#updatePopupFrame();
         if (image.previous_image_id != null && image.next_image_id != null) {
             Utilities.createDiv('characterRotateHint', this.#popupImageElement, 'Drag to rotate!');
         }
