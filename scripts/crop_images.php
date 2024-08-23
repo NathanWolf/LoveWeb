@@ -107,8 +107,8 @@ function processFolder($folder, $indent = '') {
             continue;
         }
         if ($scale) {
-            $targetWidth = $width * $scale;
-            $targetHeight = $height * $scale;
+            $targetWidth = ceil($width * $scale);
+            $targetHeight = ceil($height * $scale);
             $cropped = imagescale($cropped, $targetWidth, $targetHeight);
             if (!$cropped) {
                 echo "$indent Failed to scale $filename\n";
