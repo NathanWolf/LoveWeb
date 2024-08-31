@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/flashcards.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/tiers.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/relationships.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/timeline.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/profile.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/editor.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/info.css?v=<?=VERSION?>">
@@ -27,6 +28,7 @@
     <script type="text/javascript" src="js/flashcards.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/tiers.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/relationships.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/timeline.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/profile.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/love.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/editor.js?v=<?=VERSION?>"></script>
@@ -68,6 +70,7 @@
                 <div class="tabButton toolbarButton" data-tab="quizzes">Quizzes</div>
                 <div class="tabButton toolbarButton" data-tab="flashCards">Flash Cards</div>
                 <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
+                <div class="tabButton toolbarButton" data-tab="timeline">Timeline</div>
                 <div class="tabButton toolbarButton" data-tab="tierLists">Tier Lists</div>
                 <div class="tabButton toolbarButton admin" data-tab="characterEditor" style="display: none">Character Editor</div>
                 <div class="tabButton toolbarButton admin" data-tab="timelineEditor" style="display: none">Timeline Editor</div>
@@ -85,6 +88,7 @@
                 <div class="tile navigation" data-tab="quizzes"><div>Quizzes</div></div>
                 <div class="tile navigation" data-tab="flashCards"><div>Flash Cards</div></div>
                 <div class="tile navigation" data-tab="relationships"><div>Relationships</div></div>
+                <div class="tile navigation" data-tab="timeline"><div>Timeline</div></div>
                 <div class="tile navigation" data-tab="tierLists"><div>Tier Lists</div></div>
                 <div class="tile navigation admin" data-tab="characterEditor" style="display: none"><div>Character Editor</div></div>
                 <div class="tile navigation admin" data-tab="timelineEditor" style="display: none"><div>Timeline Editor</div></div>
@@ -172,6 +176,9 @@
         </div>
 
         <div class="tab" id="quizzes" style="display: none">
+        </div>
+
+        <div class="tab" id="timeline" style="display: none">
         </div>
 
         <div class="tab" id="profile" style="display: none">

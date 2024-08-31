@@ -346,6 +346,10 @@ CREATE TABLE timeline_event
         on update cascade
 );
 
+create index timeline_event_chronological_index
+    on timeline_event (year, month, day, priority);
+
+
 -- Data updates follow
 
 UPDATE persona_tier

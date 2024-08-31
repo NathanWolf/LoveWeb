@@ -8,6 +8,7 @@ class Love {
     #flashcards = new Flashcards(this, document.getElementById('flashCards'));
     #tiers = new Tiers(this, document.getElementById('tierLists'));
     #relationships = new Relationships(this, document.getElementById('relationships'));
+    #timeline = new Timeline(this, document.getElementById('timeline'));
     #profile = new Profile(this, document.getElementById('profile'), document.getElementById('profileButton'));
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
     #timelineEditor = new TimelineEditor(this, document.getElementById('timelineEditor'));
@@ -20,6 +21,7 @@ class Love {
         flashCards: this.#flashcards,
         tierLists: this.#tiers,
         relationships: this.#relationships,
+        timeline: this.#timeline,
         characterEditor: this.#characterEditor,
         timelineEditor: this.#timelineEditor,
         profile: this.#profile,
@@ -152,6 +154,7 @@ class Love {
 
         this.#characters.addProperties(data.properties);
         this.#characters.addCharacters(data.characters);
+
         this.#relationships.addRelationships(data.relationships);
         this.#quizzes.addQuizzes(data.quizzes);
         this.#tiers.addTiers(data.tiers);
