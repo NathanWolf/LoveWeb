@@ -318,6 +318,34 @@ ALTER TABLE persona_image
     ADD offset_y int not null default 0
     ;
 
+CREATE TABLE month
+(
+    id int not null primary key,
+    name varchar(255) not null,
+
+    created timestamp not null default CURRENT_TIMESTAMP,
+    updated timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+);
+
+CREATE TABLE timeline_event
+(
+    id int auto_increment not null primary key,
+    name varchar(255) not null,
+    description text not null default '',
+    day int not null,
+    month int not null,
+    year int not null,
+    priority int not null default 0,
+
+    created timestamp not null default CURRENT_TIMESTAMP,
+    updated timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+
+    foreign key (month)
+        references month(id)
+        on delete restrict
+        on update cascade
+);
+
 -- Data updates follow
 
 UPDATE persona_tier
