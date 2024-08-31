@@ -16,6 +16,7 @@
 
 .relationshipContainer {
     flex-basis: 40%;
+    overflow: auto;
 }
 
 .editingPortrait {

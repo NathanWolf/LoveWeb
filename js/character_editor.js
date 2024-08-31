@@ -337,8 +337,8 @@ class CharacterEditor extends Editor {
         let relationshipCell = Utilities.createElement('td', '', newRow);
         Utilities.createSpan('', relationshipCell, 'has a');
         let newRelationship = this.#createRelationshipSelect(relationshipCell);
-        Utilities.createSpan('', relationshipCell, 'named');
         let toCell = Utilities.createElement('td', '', newRow);
+        Utilities.createSpan('', toCell, 'named');
         let newTarget = this.#createCharacterSelect(toCell);
         newRelationship.addEventListener('change', function() {
             editor.#checkNewRow(newRow, newRelationship, newTarget);
@@ -364,8 +364,8 @@ class CharacterEditor extends Editor {
         let relationshipCell = Utilities.createElement('td', '', relationshipRow);
         Utilities.createSpan('', relationshipCell, 'has a');
         let relationshipSelect = this.#createRelationshipSelect(relationshipCell, relationshipType)
-        Utilities.createSpan('', relationshipCell, 'named');
         let toCell = Utilities.createElement('td', '', relationshipRow);
+        Utilities.createSpan('', toCell, 'named');
         let characterSelect = this.#createCharacterSelect(toCell, relatedCharacterId);
         let editor = this;
         relationshipSelect.addEventListener('change', function() {
