@@ -30,7 +30,6 @@ function processFolder($folder, $indent = '') {
     global $scale;
     echo "$indent Processing folder $folder\n";
     $images = array();
-    $bounds = array(100000, 100000, 0, 0);
     $iterator = new DirectoryIterator($folder);
     $outputFolder = $folder . '/resized';
 
@@ -57,6 +56,7 @@ function processFolder($folder, $indent = '') {
 
         // Find bounds
         $found = 0;
+        $bounds = array(100000, 100000, 0, 0);
         for ($y = 0; $y < $height; $y++) {
             for ($x = 0; $x < $width; $x++) {
                 $pixel = imagecolorat($image, $x, $y);
@@ -75,32 +75,21 @@ function processFolder($folder, $indent = '') {
             continue;
         }
 
-        $images[] = array('image' => $image, 'filename' => $filename);
-    }
+        echo "$indent Cropping to: " . json_encode($bounds) . "\n";
 
-    // If this folder was empty, skip
-    if (!$images) {
-        return;
-    }
-
-    // Crop and re-scale
-    echo "$indent Cropping to: " . json_encode($bounds) . "\n";
-    $width = $bounds[2] - $bounds[0];
-    $height = $bounds[3] - $bounds[1];
-    if ($maxSize)  {
-        $maxBounds = $width;
-        $maxBounds = max($maxBounds, $height);
-        if ($maxBounds > $maxSize) {
-            $scale = $maxSize / $maxBounds;
+        $width = $bounds[2] - $bounds[0];
+        $height = $bounds[3] - $bounds[1];
+        if ($maxSize)  {
+            $maxBounds = $width;
+            $maxBounds = max($maxBounds, $height);
+            if ($maxBounds > $maxSize) {
+                $scale = $maxSize / $maxBounds;
+            }
         }
-    }
-    if ($scale) {
-        echo "$indent Scaling to {$scale}x\n";
-    }
-    $crop = array('x' => $bounds[0], 'y' => $bounds[1], 'width' => $width, 'height' => $height);
-    foreach ($images as $imageInfo) {
-        $image = $imageInfo['image'];
-        $filename = $imageInfo['filename'];
+        if ($scale) {
+            echo "$indent Scaling to {$scale}x\n";
+        }
+        $crop = array('x' => $bounds[0], 'y' => $bounds[1], 'width' => $width, 'height' => $height);
         $cropped = imagecrop($image, $crop);
         if (!$cropped) {
             echo "$indent Failed to crop $filename\n";
