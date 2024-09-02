@@ -1,9 +1,18 @@
 class Timeline extends Component {
     #timelineEvents = {};
     #timeline = [];
+    #months = {};
 
     constructor(controller, element) {
         super(controller, element);
+    }
+
+    addMonths(months) {
+        for (let id in months) {
+            if (months.hasOwnProperty(id)) {
+                this.#months[id] = months[id];
+            }
+        }
     }
 
     addTimelineEvents(timelineEvents) {
@@ -22,8 +31,14 @@ class Timeline extends Component {
         return this.#timeline;
     }
 
+    getMonths() {
+        return this.#months;
+    }
+
     show() {
-        // TODO
+        let container = this.getElement();
+        Utilities.empty(container);
+        Utilities.createDiv('', container, 'Coming Soon!');
     }
 
     getTitle() {

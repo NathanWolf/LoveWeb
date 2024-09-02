@@ -262,6 +262,16 @@ class LoveDatabase extends Database {
         return $properties;
     }
 
+    public function getMonths() {
+        $months = $this->getAll('month');
+        $months = $this->index($months);
+        return $months;
+    }
+
+    public function getTimelineEvents() {
+        return $this->getAll('timeline_event', 'year, month, day, priority');
+    }
+
     public function saveUserProperty($userId, $propertyId, $value) {
         $property = $this->queryOne(
             'user_property',

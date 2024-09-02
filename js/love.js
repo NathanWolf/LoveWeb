@@ -54,6 +54,10 @@ class Love {
         return this.#relationships;
     }
 
+    getTimeline() {
+        return this.#timeline;
+    }
+
     getHistory() {
         return this.#history;
     }
@@ -154,7 +158,8 @@ class Love {
 
         this.#characters.addProperties(data.properties);
         this.#characters.addCharacters(data.characters);
-
+        this.#timeline.addTimelineEvents(data.events);
+        this.#timeline.addMonths(data.months);
         this.#relationships.addRelationships(data.relationships);
         this.#quizzes.addQuizzes(data.quizzes);
         this.#tiers.addTiers(data.tiers);

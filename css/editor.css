@@ -4,6 +4,13 @@
     overflow: hidden;
 }
 
+.timelineEditorContainer {
+    display: flex;
+    height: 100%;
+    overflow: auto;
+    align-items: start;
+}
+
 .editor {
     justify-content: start;
     align-content: start;
@@ -103,4 +110,13 @@ table.relationshipTable tbody tr td span {
 
 .modified {
     background-color: lightgreen;
+}
+
+.toggleButton {
+    background-color: #FEE4AF;
+}
+
+.timelineEditorTable tbody tr td {
+    white-space: nowrap;
+    padding: 1em;
 }

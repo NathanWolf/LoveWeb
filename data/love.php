@@ -9,13 +9,17 @@ try {
     $relationships = $db->getRelationships();
     $properties = $db->getProperties();
     $quizzes = $db->getQuizzes();
+    $timelineEvents = $db->getTimelineEvents();
+    $months = $db->getMonths();
     $response = array(
         'success' => true,
         'characters' => $characters,
         'quizzes' => $quizzes,
         'tiers' => $tiers,
         'relationships' => $relationships,
-        'properties' => $properties
+        'properties' => $properties,
+        'events' => $timelineEvents,
+        'months' => $months
     );
 } catch (Exception $ex) {
     $response = array(
