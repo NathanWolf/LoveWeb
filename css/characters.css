@@ -463,3 +463,9 @@ div.characterRotateHint {
     border-top: 1px solid #742A00;
     margin-top: 8px;
 }
+
+span.characterGroupDescription {
+    font-size: 0.75em;
+    font-style: italic;
+    margin-left: 2em;
+}

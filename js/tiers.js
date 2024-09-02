@@ -262,6 +262,7 @@ class Tiers extends Component {
                     name: tier.name,
                     color: tier.color,
                     dark: tier.dark,
+                    description: tier.description,
                     characters: []
                 };
             }

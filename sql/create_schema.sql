@@ -79,6 +79,9 @@ alter table tier
 alter table tier
     add name_singular varchar(255);
 
+alter table tier
+    add description text null;
+
 create table persona
 (
     id VARCHAR(64) NOT NULL,

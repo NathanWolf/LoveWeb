@@ -180,7 +180,10 @@ class Characters extends Component {
         Object.values(characterGroups).forEach(function(group) {
             if (group.characters.length == 0) return;
             let header = Utilities.createDiv('characterGroupHeader', characterList);
-            header.innerText = group.name;
+            Utilities.createSpan('', header, group.name);
+            if (group.description != null) {
+                Utilities.createSpan('characterGroupDescription', header, group.description);
+            }
             header.style.backgroundColor = group.color;
             if (group.dark) {
                 Utilities.addClass(header, 'dark');
@@ -514,9 +517,13 @@ class Characters extends Component {
         let renownDiv = Utilities.createDiv('section reknown', c4r4);
         let renownTier = this.getTier(character.id, 'renown');
         renownTier = renownTier != null ? this.getController().getTiers().getTier('renown', renownTier.tier_id) : null;
-        if (renownTier != null && renownTier.name_singular != null) {
-            renownDiv.innerText = renownTier.name_singular;
-            renownDiv.style.color = renownTier.color;
+        if (renownTier != null) {
+            if (renownTier.name_singular != null) {
+                renownDiv.innerText = renownTier.name_singular;
+            }
+            if (renownTier.color != null) {
+                renownDiv.style.color = renownTier.color;
+            }
         }
     }
 
