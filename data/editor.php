@@ -102,6 +102,7 @@ try {
                             } else if (isset($relationshipTypes[$relationshipType])) {
                                 $debug[] = "Adding new relationship for $characterId: $relationshipType $target";
                                 $db->addCharacterRelationship($characterId, $relationshipType, $target);
+                                $newRelationships[] = array('persona_id' => $characterId, 'relationship_id' => $relationshipType, 'related_persona_id' => $target);
                                 $relationshipTypeRecord = $relationshipTypes[$relationshipType];
                                 if ($relationshipTypeRecord['inverse_relationship_id']) {
                                     $inverseType = $relationshipTypeRecord['inverse_relationship_id'];

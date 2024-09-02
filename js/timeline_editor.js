@@ -25,6 +25,7 @@ class TimelineEditor extends Editor {
             this.#createEventRow(editorBody, event);
         }
     }
+
     #createEventRow(editorBody, data) {
         let isNewRow = data == null;
         if (data == null) {
@@ -81,6 +82,7 @@ class TimelineEditor extends Editor {
         monthInput.addEventListener('change', modifiedFunction);
         nameInput.addEventListener('keyup', modifiedFunction);
         dayInput.addEventListener('change', modifiedFunction);
+        descriptionInput.addEventListener('keyup', modifiedFunction);
         yearCheckbox.addEventListener('click', function() {
             if (yearCheckbox.dataset.yearType == 'at') {
                 yearCheckbox.dataset.yearType = 'bt';
