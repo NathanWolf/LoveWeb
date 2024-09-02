@@ -1,0 +1,37 @@
+div#timeline {
+    flex-direction: column;
+}
+
+div.eventContainer {
+    margin-top: 5em;
+    display: flex;
+    align-items: center;
+    overflow: auto;
+    padding-bottom: 100px;
+}
+
+div.event {
+    border: 2px solid #752C0E;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 24px;
+    align-items: center;
+    background: #F8D8A4;
+    color: #752C0E;
+}
+
+div.eventLine {
+    border-bottom: 5px solid #B1693B;
+}
+
+.eventDate {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    white-space: nowrap;
+}
+
+.eventName {
+    font-style: italic;
+    text-align: center;
+}
