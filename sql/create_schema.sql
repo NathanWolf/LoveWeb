@@ -120,6 +120,9 @@ alter table persona
     add birth_realm varchar(255) null,
     add home_realm varchar(255) null;
 
+alter table persona
+    add column spoiler boolean default false not null;
+
 create table property
 (
     id VARCHAR(64) NOT NULL,
@@ -352,6 +355,9 @@ CREATE TABLE timeline_event
 create index timeline_event_chronological_index
     on timeline_event (year, month, day, priority);
 
+alter table timeline_event
+    add importance varchar(32) default 'major' not null,
+    add spoiler boolean default false not null;
 
 -- Data updates follow
 
