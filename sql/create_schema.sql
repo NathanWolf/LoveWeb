@@ -340,7 +340,7 @@ CREATE TABLE timeline_event
     description text not null default '',
     day int not null,
     month int not null,
-    year int not null,
+    year bigint not null,
     priority int not null default 0,
 
     created timestamp not null default CURRENT_TIMESTAMP,
