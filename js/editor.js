@@ -116,6 +116,10 @@ class Editor extends Component {
         }
     }
 
+    setSaveButton(button) {
+        this.#saveButton = button;
+    }
+
     createSaveButton(parent) {
         let saveButton = document.createElement('button');
         saveButton.className = 'save';
@@ -135,11 +139,14 @@ class Editor extends Component {
 
     processSave(response) {
         if (!response.success) {
-            alert("An error occurred saving, please try again: " + response.message)
-        }
+            this.saveFailed(response.message);
+            return;
 
+        }
         this.#saveButton.disabled = false;
-        this.#confirmedElement.style.display = 'block';
+        if (this.#confirmedElement != null) {
+            this.#confirmedElement.style.display = 'block';
+        }
         this.clearModified();
     }
 
@@ -149,8 +156,12 @@ class Editor extends Component {
         }
     }
 
-    saveFailed() {
-        alert("Failed to save, sorry!");
+    saveFailed(message) {
+        if (message) {
+            alert("An error occurred saving, please try again: " + message)
+        } else {
+            alert("Failed to save, sorry!");
+        }
         if (this.#saveButton != null) {
             this.#saveButton.disabled = false;
         }

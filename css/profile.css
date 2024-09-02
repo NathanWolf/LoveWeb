@@ -3,65 +3,6 @@
     align-self: center;
 }
 
-button {
-    background-color: #F6C181;
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    color: #444;
-    cursor: pointer;
-    font-size: 22px; /* fallback */
-    font-size: var(--mobile-font-size);
-    font-weight: 500;
-    padding: 10px;
-    margin-right: 1em;
-}
-
-button:hover {
-    background-color: #DF9750;
-    color: black;
-}
-
-input {
-    border: 1px solid #D08856;
-    font-size: 22px; /* fallback */
-    font-size: var(--mobile-font-size);
-    padding: 15px;
-    width: 90%; /* fallback */
-    width: calc(100% - 30px); /* full width minus padding */
-    background-color: #FEE4AF;
-}
-
-select {
-    border: 1px solid #D08856;
-    font-size: 22px; /* fallback */
-    font-size: var(--mobile-font-size);
-    padding: 15px;
-    width: 90%; /* fallback */
-    width: calc(100% + 1px);
-    background-color: #FEE4AF;
-}
-
-input[type=email]:not(:focus):invalid,
-input[type=password]:not(:focus):invalid {
-    color: red;
-    outline-color: red;
-}
-
-label {
-    color: #B1693B;
-    display: block;
-    font-size: 20px;
-    font-size: var(--mobile-font-size);
-    font-weight: 500;
-    margin: 0 0 3px 0;
-}
-
-section {
-    margin: 0 0 20px 0;
-    position: relative;
-}
-
-
 .loggedout {
     background-color: #C53737 !important;
 }

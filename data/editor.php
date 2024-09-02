@@ -10,7 +10,19 @@ try {
     $db->authorize($user, $token);
 
     switch ($action) {
-        case 'save_character':
+        case 'save_event':
+            $event = getParameter('event');
+            $event = json_decode($event, true);
+            if (!$event) {
+                throw new Exception("Invalid event parameter");
+            }
+            if ($event['id']) {
+                $db->save('timeline_event', $event);
+            } else {
+                $event['id'] = $db->insert('timeline_event', $event);
+            }
+            die(json_encode(array('success' => true, 'user' => $user, 'event' => $event)));
+            case 'save_character':
             $debug = array();
             $allProperties = $db->getProperties();
             $characterId = getParameter('character');

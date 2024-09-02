@@ -5,7 +5,6 @@ class TimelineEditor extends Editor {
     }
 
     show() {
-        let controller = this;
         let container = this.getElement();
         Utilities.empty(container);
 
@@ -13,67 +12,139 @@ class TimelineEditor extends Editor {
         let editorTable = Utilities.createElement('table', 'timelineEditorTable', tableContainer);
         let editorBody = Utilities.createElement('tbody', '', editorTable);
 
-        this.#createEventRow(editorBody, true);
+        // Create "new" row first
+        this.#createEventRow(editorBody, null);
 
-        /*
+        // Create other rows
+        let timeline = this.getController().getTimeline();
+        let eventIdList = timeline.getTimeline();
+        let events = timeline.getEvents();
 
-        for (let characterIndex = 0; characterIndex < charactersList.length; characterIndex++) {
-            let character = charactersList[characterIndex];
-            let relationships = character.relationships;
-            for (let relationshipType in relationships) {
-                if (!character.relationships.hasOwnProperty(relationshipType)) continue;
-                let related = relationships[relationshipType];
-                for (let relatedIndex = 0; relatedIndex < related.length; relatedIndex++) {
-                    let relatedCharacter = characters.getCharacter(related[relatedIndex]);
-                    if (relatedCharacter == null) continue;
-                    let relationshipRow = Utilities.createElement('tr', '', relationshipBody);
-                    let saveCell = Utilities.createElement('td', '', relationshipRow);
-                    let saveButton = Utilities.createElement('button', 'relationshipSaveButton', saveCell, 'Save');
-                    saveButton.disabled = true;
-                    let fromCell = Utilities.createElement('td', '', relationshipRow);
-                    this.#createCharacterSelect(fromCell, character.id);
-                    let relationshipCell = Utilities.createElement('td', '', relationshipRow);
-                    Utilities.createSpan('', relationshipCell, 'has a');
-                    this.#createRelationshipSelect(relationshipCell, relationshipType)
-                    Utilities.createSpan('', relationshipCell, 'named');
-                    let toCell = Utilities.createElement('td', '', relationshipRow);
-                    this.#createCharacterSelect(toCell, relatedCharacter.id);
-
-
-
-        let newDescriptionRow = Utilities.createElement('tr', '', editorBody);
-        let descriptionInput = this.createLongInput(nameCell, 'description');
-        descriptionInput.placeholder = '(Optional Long Description of Event)';
-                }
-            }
-
+        for (let i = 0; i < eventIdList.length; i++) {
+            let event = events[eventIdList[i]];
+            this.#createEventRow(editorBody, event);
         }
-
-         */
     }
-
-    #createEventRow(editorBody, isNew) {
+    #createEventRow(editorBody, data) {
+        let isNewRow = data == null;
+        if (data == null) {
+            data = {
+                id: null,
+                year: null,
+                month: null,
+                day: null,
+                name: '',
+                description: ''
+            };
+        }
         let newRow = Utilities.createElement('tr', '', editorBody);
         let addCell = Utilities.createElement('td', '', newRow);
-        let buttonText = isNew ? 'Add' : 'Save';
-        let addButton = Utilities.createElement('button', 'timelineSaveButton', addCell, buttonText);
-        if (!isNew) {
-            Utilities.setVisible(addButton, false);
+        let buttonText = isNewRow ? 'Add' : 'Save';
+        let saveButton = Utilities.createElement('button', 'timelineSaveButton', addCell, buttonText);
+        if (!isNewRow) {
+            Utilities.setVisible(saveButton, false);
         } else {
-            addButton.disabled = true;
+            saveButton.disabled = true;
         }
         let yearCell = Utilities.createElement('td', '', newRow);
-        let yearInput = this.#createSimpleInput(yearCell, 8);
+        let yearInput = this.#createSimpleInput(yearCell, 8, data.year);
         yearInput.placeholder = 'Year';
-        let yearCheckbox = Utilities.createElement('button', 'toggleButton', yearCell, 'AT');
+        let yearCheckbox = Utilities.createElement('button', 'yearToggleButton', yearCell, 'AT');
         yearCheckbox.type = 'button';
+        yearCheckbox.dataset.yearType = 'at';
         let monthCell = Utilities.createElement('td', '', newRow);
-        this.#createMonthSelect(monthCell);
+        let monthInput = this.#createMonthSelect(monthCell, data.month);
         let dayCell = Utilities.createElement('td', '', newRow);
-        this.#createDaySelect(dayCell);
+        let dayInput = this.#createDaySelect(dayCell, data.day);
         let nameCell = Utilities.createElement('td', '', newRow);
-        let nameInput = this.#createSimpleInput(nameCell, 20);
+        let nameInput = this.#createSimpleInput(nameCell, 20, data.name);
         nameInput.placeholder = 'Name of Event';
+
+        let descriptionRow = Utilities.createElement('tr', 'rowSeparator', editorBody);
+        Utilities.createElement('td', '', descriptionRow);
+        let descriptionCell = Utilities.createElement('td', '', descriptionRow);
+        descriptionCell.colSpan = 4;
+        let descriptionInput = this.#createSimpleLongInput(descriptionCell, 77, data.description);
+        descriptionInput.placeholder = 'Optional Description';
+
+        // Set up event listeners
+        let modifiedFunction = function() {
+            if (yearInput.value == null) return;
+            if (monthInput.value == null) return;
+            if (dayInput.value == null) return;
+            if (nameInput.value == '') return;
+
+            Utilities.setVisible(saveButton, true);
+            saveButton.disabled = false;
+        };
+        yearInput.addEventListener('keyup', modifiedFunction);
+        monthInput.addEventListener('change', modifiedFunction);
+        nameInput.addEventListener('keyup', modifiedFunction);
+        dayInput.addEventListener('change', modifiedFunction);
+        yearCheckbox.addEventListener('click', function() {
+            if (yearCheckbox.dataset.yearType == 'at') {
+                yearCheckbox.dataset.yearType = 'bt';
+                yearCheckbox.innerText = 'BT';
+            } else {
+                yearCheckbox.dataset.yearType = 'at';
+                yearCheckbox.innerText = 'AT';
+            }
+            modifiedFunction();
+        });
+        let editor = this;
+        let successFunction = function(event) {
+            if (data.id == null) {
+                saveButton.disabled = true;
+                nameInput.value = '';
+                descriptionInput.value = '';
+                editor.#createEventRow(event);
+            } else {
+                Utilities.setVisible(saveButton, false);
+            }
+        }
+        saveButton.addEventListener('click', function() {
+            data.year = Math.abs(parseInt(yearInput.value));
+            if (yearCheckbox.dataset.yearType == 'bt') {
+                data.year = -data.year;
+            }
+            data.month = parseInt(monthInput.value);
+            data.day = parseInt(dayInput.value);
+            data.name = nameInput.value;
+            data.description = descriptionInput.value;
+            editor.#updateEvent(data, saveButton, successFunction);
+        });
+    }
+
+    #updateEvent(data, saveButton, onSuccess) {
+        let profile = this.getController().getProfile();
+        let user = profile.getUser();
+        if (user == null || !user.admin) {
+            alert("Hey, you're not supposed to be doing this!");
+            return;
+        }
+        this.beginSave();
+        let editor = this;
+        const request = new XMLHttpRequest();
+        request.responseType = 'json';
+        request.onload = function() {
+            if (!this.response.success) {
+                editor.saveFailed(this.response.message);
+                saveButton.disabled = false;
+            } else {
+                onSuccess();
+            }
+        };
+        request.onerror = function() {
+            editor.saveFailed();
+            saveButton.disabled = false;
+        };
+
+        request.open("POST", 'data/editor.php?action=save_event' +
+            '&event=' + encodeURIComponent(JSON.stringify(data))
+            + '&user=' + user.id
+            + '&token=' + user.token
+            , true);
+        request.send();
     }
 
     #createSimpleInput(editorForm, size, value) {
@@ -81,6 +152,18 @@ class TimelineEditor extends Editor {
         input.autocomplete = 'off';
         input.size = size;
         input.type = 'text';
+        if (value != null) {
+            input.value = value;
+        }
+        editorForm.appendChild(input);
+        return input;
+    }
+
+    #createSimpleLongInput(editorForm, cols, value) {
+        let input = document.createElement('textarea');
+        input.autocomplete = 'off';
+        input.rows = 2;
+        input.cols = cols;
         if (value != null) {
             input.value = value;
         }
