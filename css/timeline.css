@@ -35,3 +35,18 @@ div.eventLine {
     font-style: italic;
     text-align: center;
 }
+
+.event.minor {
+    background: #FFE8C1;
+    font-size: 0.75em;
+}
+
+.event.death {
+    background: #F0C483;
+    font-size: 0.75em;
+}
+
+.event.birth {
+    background: #F0C483;
+    font-size: 0.75em;
+}

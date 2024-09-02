@@ -45,13 +45,14 @@ class Timeline extends Component {
 
         for (let i = 0; i < eventIdList.length; i++) {
             let event = events[eventIdList[i]];
+            if (event.spoiler) continue;
             let nextEvent = i < eventIdList.length - 1 ? events[eventIdList[i  + 1]] : null;
             this.#createEvent(eventContainer, event, nextEvent);
         }
     }
 
     #createEvent(container, event, nextEvent) {
-        let eventDiv = Utilities.createDiv('event', container);
+        let eventDiv = Utilities.createDiv('event ' + event.importance, container);
         let yearType = event.year < 0 ? 'BT' : 'AT';
         let month = event.month < 10 ? '0' + event.month : event.month;
         let day = event.day < 10 ? '0' + event.day : event.day;
