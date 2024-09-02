@@ -25,6 +25,10 @@ div.eventLine {
     border-bottom: 5px solid #B1693B;
 }
 
+.eventLine.gap {
+    border-bottom: 5px dashed #B1693B;
+}
+
 .eventDate {
     font-size: 1.5em;
     margin-bottom: 0.5em;

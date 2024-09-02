@@ -69,7 +69,10 @@ class Timeline extends Component {
             let eventLine = Utilities.createDiv('eventLine', container);
             let lineWidth = 20;
             let years = nextEvent.year - event.year;
-            years = Math.min(years, 1000);
+            if (years > 1000) {
+                years = 1000;
+                eventLine.className += ' gap';
+            }
             lineWidth += years;
             eventLine.style.width = lineWidth + 'px';
             eventLine.style.minWidth = lineWidth + 'px';
