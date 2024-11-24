@@ -14,19 +14,23 @@ class Chat extends Component {
         this.#listChats();
     }
 
-    async #listChats() {
-        // Get list of chats
-        let container = this.getElement();
-        let controller = this;
+    #createForm(action) {
         let data = new FormData();
-        let characters = this.getController().getCharacters();
         let user = this.getController().getProfile().getUser();
-        data.append('action', 'list');
+        data.append('action', action);
         if (user != null) {
             data.append('user_id', user.id);
             data.append('user_token', user.token);
         }
+        return data;
+    }
 
+    async #listChats() {
+        // Get list of chats
+        let container = this.getElement();
+        let controller = this;
+        let characters = this.getController().getCharacters();
+        let data = this.#createForm('list');
         let listResponse = await fetch( "data/chat.php", {
             method: "POST",
             body: data
@@ -38,6 +42,25 @@ class Chat extends Component {
             alert("Sorry, something went wrong!");
             return;
         }
+
+        // Add "new chat" row
+        let newChatContainer = document.createElement('div');
+
+        newChatContainer.className = 'conversationContainer';
+        newChatContainer.addEventListener('click', function() {
+            controller.#startNewChat();
+        });
+
+        let newChatIcon = document.createElement('div');
+        newChatIcon.className = 'portrait small newChat';
+        newChatContainer.appendChild(newChatIcon);
+
+        let newChatTitle = document.createElement('div');
+        newChatTitle.className = 'chatTitle';
+        newChatTitle.innerText = 'New Chat...';
+        newChatContainer.appendChild(newChatTitle);
+
+        container.appendChild(newChatContainer);
 
         let conversations = listResponse.conversations;
         conversations.forEach(function(conversation){
@@ -71,6 +94,39 @@ class Chat extends Component {
         }
     }
 
+    #startNewChat() {
+        let container = this.getElement();
+        let controller = this;
+        Utilities.empty(container);
+
+        let characters = this.getController().getCharacters();
+        let characterList = characters.getCharacterList();
+        let newChatCharacters = document.createElement('div');
+        newChatCharacters.className = 'chatCharacterList';
+        container.appendChild(newChatCharacters);
+        characterList.forEach(function(character){
+            if (character.chat == null) return;
+            let portraitContainer = document.createElement('div');
+            portraitContainer.className = 'portraitContainer';
+            portraitContainer.addEventListener('click', function() {
+                controller.#newChat(character.id, null);
+            });
+
+            let portraitName = document.createElement('div');
+            portraitName.className = 'portraitName';
+            portraitName.dataset.character = character.id;
+            portraitName.innerText = character.name;
+            portraitContainer.appendChild(portraitName);
+
+            let portrait = document.createElement('div');
+            portrait.className = 'portrait';
+            portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+            portraitContainer.appendChild(portrait);
+
+            newChatCharacters.appendChild(portraitContainer);
+        });
+    }
+
     async #resume(conversationId) {
         this.#conversationId = conversationId;
         if (!this.#conversations.hasOwnProperty(conversationId)) {
@@ -80,15 +136,8 @@ class Chat extends Component {
         let conversation = this.#conversations[conversationId];
         this.getController().getHistory().set('chat', conversationId);
 
-        let data = new FormData();
-        let user = this.getController().getProfile().getUser();
+        let data = this.#createForm('resume');
         data.append('chat_id', conversationId);
-        data.append('action', 'resume');
-        if (user != null) {
-            data.append('user_id', user.id);
-            data.append('user_token', user.token);
-        }
-
         let resumeResponse = await fetch( "data/chat.php", {
             method: "POST",
             body: data
@@ -110,7 +159,7 @@ class Chat extends Component {
         });
     }
 
-    #newChat(targetCharacterId, sourceCharacterId) {
+    async #newChat(targetCharacterId, sourceCharacterId) {
         let characters = this.getController().getCharacters();
         let character = characters.getCharacter(targetCharacterId);
         if (character == null) {
@@ -122,7 +171,29 @@ class Chat extends Component {
         if (sourceCharacter != null) {
             title = 'Chat between ' + sourceCharacter.name + ' and ' + character.name;
         }
-        // TODO
+
+        let data = this.#createForm('start');
+        data.append('title', title);
+        data.append('target_persona_id', targetCharacterId);
+        if (sourceCharacterId != null) {
+            data.append('source_persona_id', sourceCharacterId);
+        }
+        let startResponse = await fetch( "data/chat.php", {
+            method: "POST",
+            body: data
+        } ).then((response) => {
+            return response.json();
+        });
+
+        if (startResponse == null || !startResponse.hasOwnProperty('conversation')) {
+            alert("Sorry, something went wrong!");
+            return;
+        }
+
+        let conversation = startResponse.conversation;
+        this.#conversationId = conversation.id;
+        this.#conversations[conversation.id] = conversation;
+        this.#showChat(targetCharacterId);
     }
 
     #showChat(characterKey) {
@@ -229,18 +300,9 @@ class Chat extends Component {
         this.#messageInput.value = '';
 
         // send message
-        let data = new FormData();
-        let user = this.getController().getProfile().getUser();
+        let data = this.#createForm('message');
         data.append("chat_id", conversation.id);
-        data.append('action', 'message');
         data.append("message", question);
-        data.append('system', character.chat.system);
-        data.append('target_persona_id', character.id);
-        data.append('title', conversation.title);
-        if (user != null) {
-            data.append('user_id', user.id);
-            data.append('user_token', user.token);
-        }
 
         // send message and get chat id
         let messageResponse = await fetch( "data/chat.php", {
@@ -256,6 +318,7 @@ class Chat extends Component {
 
         // listen for response tokens
         let eventUrl = "data/chat.php?action=stream&chat_id=" + conversation.id;
+        let user = this.getController().getProfile().getUser();
         if (user != null) {
             eventUrl += "&user_id=" + user.id + "&user_token=" + user.token;
         }

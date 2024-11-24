@@ -84,10 +84,11 @@ switch ($ACTION) {
         $conversation->setSourcePersonaId($_REQUEST['source_persona_id'] ?? null);
         $conversation->save();
 
-        $system = $targetPersona['chat'];
+        $system = $targetPersona['chat']['system'] ?? null;
         $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
-        if ($sourcePersona && $sourcePersona['chat']) {
-            $system = $system + "\n\nYou are speaking to someone who would describe themselves like this: " . $sourcePersona['chat'];
+        $sourceSystem = $sourcePersona && isset($sourcePersona['chat']['system']) ? $sourcePersona['chat']['system'] : null;
+        if ($sourceSystem) {
+            $system .= "\n\nYou are speaking to someone who would describe themselves like this: $sourceSystem";
         }
         $system_message = [
             "role" => "system",

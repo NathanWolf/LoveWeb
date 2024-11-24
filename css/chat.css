@@ -36,6 +36,16 @@
     background: #FFFCED;
 }
 
+.newChat {
+    background-image: url('../image/ui/blank-profile.png');
+}
+
+.chatCharacterList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 #chat .portraitContainer {
     margin-top: 1em;
 }
