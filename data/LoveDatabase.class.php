@@ -7,26 +7,26 @@ use Exception;
 require_once 'Database.class.php';
 
 class LoveDatabase extends Database {
-    public function createUser($email, $password, $firstName, $lastName) {
+    public function createUser($email, $password, $firstName, $lastName, $address) {
         $existing = $this->lookupUser($email);
         if ($existing) {
             throw new Exception("User $email already exists");
         }
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $token = $this->generateToken();
         $user = array(
             'email' => $email,
             'password_hash' => $hash,
             'first_name' => $firstName,
-            'last_name' => $lastName,
-            'token' => $token
+            'last_name' => $lastName
         );
         $this->insert('user', $user);
         $user = $this->lookupUser($email);
         if (!$user) {
             throw new Exception("Failed to create new user account");
         }
-        $this->sanitize($user);
+        $token = $this->generateToken();
+        $this->insert('user_token', array('user_id' => $user['id'], 'token' => $token, 'remote_address' => $address));
+        $this->sanitize($user, $token);
         $user['properties'] = array();
         return $user;
     }
@@ -35,7 +35,7 @@ class LoveDatabase extends Database {
         return bin2hex(random_bytes(16));;
     }
 
-    public function login($email, $password) {
+    public function login($email, $password, $address) {
         $user = $this->lookupUser($email);
         if (!$user) {
             throw new Exception("Unknown user $email");
@@ -43,16 +43,15 @@ class LoveDatabase extends Database {
         if (!password_verify($password, $user['password_hash'])) {
             throw new Exception("Incorrect password for user $email");
         }
-        if (!$user['token']) {
-            $user['token'] = $this->generateToken();
-            $this->saveUser($user);
-        }
-        $this->sanitize($user);
+        $token = $this->generateToken();
+        $this->insert('user_token', array('user_id' => $user['id'], 'token' => $token, 'remote_address' => $address));
+        $this->sanitize($user, $token);
         return $user;
     }
 
-    public function sanitize(&$user) {
+    public function sanitize(&$user, $token) {
         unset($user['password_hash']);
+        $user['token'] = $token;
     }
 
     public function changePassword($userId, $token, $password) {
@@ -72,16 +71,20 @@ class LoveDatabase extends Database {
 
     public function validateLogin($userId, $token) {
         $user = $this->getUser($userId);
-        if (!$user || $user['token'] !== $token) {
-            throw new Exception("Invalid login for $userId");
+        if (!$user) {
+            throw new Exception("Invalid user: $userId");
         }
-        $this->sanitize($user);
+        $token = $this->queryOne('user_token', 'user_id=:user AND token=:token', array('user' => $userId, 'token' => $token));
+        if (!$token){
+            throw new Exception("Invalid logic for user: $userId");
+        }
+        $this->sanitize($user, $token['token']);
         return $user;
     }
 
     public function logout($userId, $token) {
         $this->validateLogin($userId, $token);
-        $this->execute('UPDATE user SET token=null WHERE id=:id', array('id' => $userId));
+        $this->execute('DELETE FROM user_token WHERE user_id=:user AND token=:token', array('user' => $userId, 'token' => $token));
     }
 
     private function processUser(&$user) {

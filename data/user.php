@@ -10,7 +10,7 @@ try {
         case 'login':
             $email = getParameter('email');
             $password = getParameter('password');
-            $user = $db->login($email, $password);
+            $user = $db->login($email, $password, $_SERVER['REMOTE_ADDR']);
             die(json_encode(array('success' => true, 'user' => $user)));
         case 'logout':
             $userId = getParameter('user');
@@ -22,7 +22,7 @@ try {
             $password = getParameter('password');
             $firstName = getParameter('first', '');
             $lastName = getParameter('last', '');
-            $user = $db->createUser($email, $password, $firstName, $lastName);
+            $user = $db->createUser($email, $password, $firstName, $lastName, $_SERVER['REMOTE_ADDR']);
             die(json_encode(array('success' => true, 'user' => $user)));
         case 'save';
             $userId = getParameter('user');

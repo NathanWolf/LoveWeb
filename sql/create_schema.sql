@@ -5,8 +5,9 @@ create user 'love'@'127.0.0.1' identified by 'super-secure-password';
 grant select ON love.* to 'love'@'127.0.0.1';
 grant update,insert ON love.user to 'love'@'127.0.0.1';
 grant update,insert ON love.user_property to 'love'@'127.0.0.1';
-grant update,insert ON love.conversation to 'love'@'127.0.0.1';
-grant update,insert ON love.conversation_message to 'love'@'127.0.0.1';
+grant update,insert,delete ON love.conversation to 'love'@'127.0.0.1';
+grant update,insert,delete ON love.conversation_message to 'love'@'127.0.0.1';
+grant update,insert,delete ON love.user_token to 'love'@'127.0.0.1';
 
 create user 'love_admin'@'127.0.0.1' identified by 'super-duper-secure-password';
 grant all privileges ON love.* to 'love_admin'@'127.0.0.1';
@@ -29,6 +30,19 @@ create table user
 
 alter table user
     add column middle_name varchar(255) null;
+
+CREATE TABLE user_token
+(
+    user_id VARCHAR(40) NOT NULL,
+    token varchar(255) not null,
+    remote_address varchar(32) not null,
+
+    constraint user_token_pk
+        primary key (user_id, token)
+);
+
+alter table user
+    drop column token;
 
 CREATE TABLE user_property
 (
