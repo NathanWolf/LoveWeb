@@ -71,6 +71,13 @@ class Profile extends Component {
             profile.#showRegister(emailInput.value, passwordInput.value);
         });
         loginDiv.appendChild(registerButton);
+        loginDiv.addEventListener('keydown', (event) => {
+            if (event.keyCode === 13) {
+                loginButton.disabled = true;
+                registerButton.disabled = true;
+                profile.#login(emailInput.value, passwordInput.value);
+            }
+        });
 
         this.#formButtons = [registerButton, loginButton];
     }
@@ -139,6 +146,12 @@ class Profile extends Component {
             profile.#register(emailInput.value, passwordInput.value, firstInput.value, lastInput.value);
         });
         registerDiv.appendChild(registerButton);
+        registerDiv.addEventListener('keydown', (event) => {
+            if (event.keyCode === 13) {
+                registerButton.disabled = true;
+                profile.#register(emailInput.value, passwordInput.value, firstInput.value, lastInput.value);
+            }
+        });
 
         this.#formButtons = [registerButton];
     }
