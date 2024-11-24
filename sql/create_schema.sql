@@ -5,6 +5,8 @@ create user 'love'@'127.0.0.1' identified by 'super-secure-password';
 grant select ON love.* to 'love'@'127.0.0.1';
 grant update,insert ON love.user to 'love'@'127.0.0.1';
 grant update,insert ON love.user_property to 'love'@'127.0.0.1';
+grant update,insert ON love.conversation to 'love'@'127.0.0.1';
+grant update,insert ON love.conversation_message to 'love'@'127.0.0.1';
 
 create user 'love_admin'@'127.0.0.1' identified by 'super-duper-secure-password';
 grant all privileges ON love.* to 'love_admin'@'127.0.0.1';
@@ -382,3 +384,51 @@ UPDATE tier
     ) priorities
     ON priorities.id = tier.id and priorities.tier_list_id = tier.tier_list_id
 SET tier.priority = (priorities.tot - priorities.row) * 100;
+
+CREATE TABLE conversation
+(
+    id                int not null auto_increment,
+    created           timestamp not null default CURRENT_TIMESTAMP,
+    updated           timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    title             text        null,
+    user_id           VARCHAR(40) not null,
+    target_persona_id varchar(64) not null,
+    source_persona_id varchar(64) null,
+
+    constraint conversation_pk
+        primary key (id),
+
+    foreign key (user_id)
+        references user(id)
+        on delete cascade
+        on update cascade,
+
+    foreign key (target_persona_id)
+        references persona(id)
+        on delete cascade
+        on update cascade,
+
+    foreign key (source_persona_id)
+        references persona(id)
+        on delete cascade
+        on update cascade
+);
+
+CREATE TABLE conversation_message
+(
+    id                int not null auto_increment,
+    conversation_id   int not null,
+    created           timestamp not null default CURRENT_TIMESTAMP,
+    updated           timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    content           LONGTEXT not null,
+    original_content  LONGTEXT null,
+    role              varchar(64),
+
+    constraint conversation_message_pk
+        primary key (id),
+
+    foreign key (conversation_id)
+        references conversation(id)
+        on delete cascade
+        on update cascade
+);
