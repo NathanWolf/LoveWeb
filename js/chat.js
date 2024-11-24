@@ -3,6 +3,7 @@ class Chat extends Component {
     #messages = null;
     #characterId = null;
     #chatId = 0;
+    #title = 'Untitled chat';
 
     constructor(controller, element) {
         super(controller, element);
@@ -72,6 +73,7 @@ class Chat extends Component {
         input.onkeydown = function(event) {
             controller.onMessageKeyDown(event);
         };
+        this.#title = 'Chat with ' + character.name;
 
         input.focus();
     }
@@ -136,6 +138,7 @@ class Chat extends Component {
         data.append("message", question);
         data.append('system', character.chat.system);
         data.append('target_persona_id', character.id);
+        data.append('title', this.#title);
         if (user != null) {
             data.append('user_id', user.id);
             data.append('user_token', user.token);
