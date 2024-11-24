@@ -130,9 +130,15 @@ class Chat extends Component {
 
         // send message
         let data = new FormData();
+        let user = this.getController().getProfile().getUser();
         data.append("chat_id", this.#chatId);
         data.append("message", question);
         data.append('system', character.chat.system);
+        data.append('target_persona_id', character.id);
+        if (user != null) {
+            data.append('user_id', user.id);
+            data.append('user_token', user.token);
+        }
 
         // send message and get chat id
         this.#chatId = await fetch( "data/chat.php", {
@@ -143,9 +149,11 @@ class Chat extends Component {
         });
 
         // listen for response tokens
-        const eventSource = new EventSource(
-            "data/chat.php?chat_id=" + this.#chatId
-        );
+        let eventUrl = "data/chat.php?chat_id=" + this.#chatId;
+        if (user != null) {
+            eventUrl += "&user_id=" + user.id + "&user_token=" + user.token;
+        }
+        const eventSource = new EventSource(eventUrl);
 
         // handle errors
         eventSource.addEventListener( "error", function() {

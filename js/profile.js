@@ -338,4 +338,8 @@ class Profile extends Component {
             + '&value=' + encodeURIComponent(value), true);
         request.send();
     }
+
+    getUser() {
+        return this.#user;
+    }
 }

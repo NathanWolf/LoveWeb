@@ -9,7 +9,8 @@ require('config.inc.php');
 $SETTINGS = $_config;
 
 $MODEL = 'gpt-4o';
-$STORAGE_TYPE = isset($_REQUEST['user_id']) ? "sql" : "session";
+$USER_ID = $_REQUEST['user_id'] ?? null;
+$STORAGE_TYPE = $USER_ID ? "sql" : "session";
 $PARAMETERS = array();
 
 require(__DIR__ . "/autoload.php");
