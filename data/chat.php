@@ -22,8 +22,9 @@ function get_db(): PDO|null {
         return null;
     }
 
+    $dsn = "mysql:host={$SETTINGS["database"]["server"]};dbname={$SETTINGS["database"]["database"]}";
     $db = new PDO(
-        $SETTINGS["database"]["server"],
+        $dsn,
         $SETTINGS["database"]["user"] ?? null,
         $SETTINGS["database"]["password"] ?? null
     );
