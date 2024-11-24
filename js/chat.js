@@ -1,8 +1,8 @@
 class Chat extends Component {
     #messageInput = null;
-    #messages = null;
-    #characterId = null;
-    #chatId = 0;
+    #messagesContainer = null;
+    #conversations = {};
+    #conversationId = null;
     #title = 'Untitled chat';
 
     constructor(controller, element) {
@@ -10,35 +10,90 @@ class Chat extends Component {
     }
 
     show() {
-        let controller = this;
-        let container = this.getElement()
+        let container = this.getElement();
         Utilities.empty(container);
-        let characters = this.getController().getCharacters();
-        let characterList = characters.getCharacterList();
-        characterList.forEach(function(character){
-            if (character.chat == null) return;
-            let portraitContainer = document.createElement('div');
-            portraitContainer.className = 'portraitContainer';
-            portraitContainer.addEventListener('click', function() {
-                controller.#selectCharacter(character.id);
-            });
-
-            let portraitName = document.createElement('div');
-            portraitName.className = 'portraitName';
-            portraitName.dataset.character = character.id;
-            portraitName.innerText = character.name;
-            portraitContainer.appendChild(portraitName);
-
-            let portrait = document.createElement('div');
-            portrait.className = 'portrait';
-            portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
-            portraitContainer.appendChild(portrait);
-
-            container.appendChild(portraitContainer);
-        });
+        this.#listChats();
     }
 
-    #selectCharacter(characterKey) {
+    async #listChats() {
+        // Get list of chats
+        let container = this.getElement();
+        let controller = this;
+        let data = new FormData();
+        let characters = this.getController().getCharacters();
+        let user = this.getController().getProfile().getUser();
+        data.append('action', 'list');
+        if (user != null) {
+            data.append('user_id', user.id);
+            data.append('user_token', user.token);
+        }
+
+        let listResponse = await fetch( "data/chat.php", {
+            method: "POST",
+            body: data
+        } ).then((response) => {
+            return response.json();
+        });
+
+        if (listResponse == null || !listResponse.hasOwnProperty('conversations')) {
+            alert("Sorry, something went wrong!");
+            return;
+        }
+
+        let conversations = listResponse.conversations;
+        conversations.forEach(function(conversation){
+            let conversationId = conversation.id;
+            controller.#conversations[conversationId] = conversation;
+            let character = characters.getCharacter(conversation.target_persona_id);
+            let chatContainer = document.createElement('div');
+
+            chatContainer.className = 'conversationContainer';
+            chatContainer.addEventListener('click', function() {
+                controller.#resume(conversationId);
+            });
+
+            let portrait = document.createElement('div');
+            portrait.className = 'portrait small';
+            portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+            chatContainer.appendChild(portrait);
+
+            let chatTitle = document.createElement('div');
+            chatTitle.className = 'chatTitle';
+            chatTitle.innerText = conversation.title;
+            chatContainer.appendChild(chatTitle);
+
+            container.appendChild(chatContainer);
+        });
+
+    }
+
+    #resume(conversationId) {
+        if (!this.#conversations.hasOwnProperty(conversationId)) {
+            alert("Sorry, something went wrong!");
+            return;
+        }
+        let conversation = this.#conversations[conversationId];
+        this.getController().getHistory().set('chat', conversationId);
+        this.#conversationId = conversationId;
+        this.#showChat(conversation.target_persona_id);
+    }
+
+    #newChat(targetCharacterId, sourceCharacterId) {
+        let characters = this.getController().getCharacters();
+        let character = characters.getCharacter(targetCharacterId);
+        if (character == null) {
+            alert("Sorry, something went wrong!");
+            return;
+        }
+        let sourceCharacter = sourceCharacterId == null ? null : characters.getCharacter(sourceCharacterId);
+        let title = 'Chat with ' + character.name;
+        if (sourceCharacter != null) {
+            title = 'Chat between ' + sourceCharacter.name + ' and ' + character.name;
+        }
+        // TODO
+    }
+
+    #showChat(characterKey) {
         let controller = this;
         let characters = this.getController().getCharacters();
         let character = characters.getCharacter(characterKey);
@@ -47,14 +102,11 @@ class Chat extends Component {
             return;
         }
 
-        this.#characterId = characterKey;
-        this.getController().getHistory().set('character', characterKey);
-
         let container = this.getElement();
         Utilities.empty(container);
 
         let chatWindow = Utilities.createDiv('chatContainer', container);
-        this.#messages = Utilities.createDiv('chatMessages', chatWindow);
+        this.#messagesContainer = Utilities.createDiv('chatMessages', chatWindow);
         let chatInputContainer = Utilities.createDiv('chatInputContainer', chatWindow);
         let chatInput = Utilities.createDiv('chatInput', chatInputContainer);
         let input = document.createElement('textarea');
@@ -73,7 +125,6 @@ class Chat extends Component {
         input.onkeydown = function(event) {
             controller.onMessageKeyDown(event);
         };
-        this.#title = 'Chat with ' + character.name;
 
         input.focus();
     }
@@ -87,7 +138,7 @@ class Chat extends Component {
     }
 
     addMessage(role, message, characterId) {
-        let messageDiv = Utilities.createDiv('message ' + role, this.#messages);
+        let messageDiv = Utilities.createDiv('message ' + role, this.#messagesContainer);
         let icon = Utilities.createDiv('identity', messageDiv);
         let userCharacter = this.getController().getProfile().getCharacterId();
         if (userCharacter != null) {
@@ -104,7 +155,7 @@ class Chat extends Component {
             icon.style.backgroundImage = 'url(' + characters.getPortrait(characterId) + ')';
         }
 
-        this.#messages.scrollTop = this.#messages.scrollHeight;
+        this.#messagesContainer.scrollTop = this.#messagesContainer.scrollHeight;
         return messageDiv;
     }
 
@@ -113,11 +164,26 @@ class Chat extends Component {
         content.innerHTML  = Utilities.convertMarkdown(message);
     }
 
+    getConversation() {
+        if (this.#conversationId == null || !this.#conversations.hasOwnProperty(this.#conversationId)) {
+            return null;
+        }
+
+        return this.#conversations[this.#conversationId];
+    }
+
     async sendMessage() {
+        let conversation = this.getConversation();
+        if (conversation == null) {
+            alert("Not in a conversation, can't send message");
+            return;
+        }
+
         let question = Utilities.escapeHtml(this.#messageInput.value);
         let controller = this;
         let characters = this.getController().getCharacters();
-        let character = characters.getCharacter(this.#characterId);
+        let characterId = conversation.target_persona_id;
+        let character = characters.getCharacter(characterId);
 
         // Add user message to chat list
         this.addMessage('user', question);
@@ -125,7 +191,7 @@ class Chat extends Component {
         // Send message and await response
 
         // initialize message with blinking cursor
-        let message = this.addMessage( 'assistant', '<div id="cursor"></div>', this.#characterId);
+        let message = this.addMessage( 'assistant', '<div id="cursor"></div>', characterId);
 
         // empty the message input field
         this.#messageInput.value = '';
@@ -133,12 +199,12 @@ class Chat extends Component {
         // send message
         let data = new FormData();
         let user = this.getController().getProfile().getUser();
-        data.append("chat_id", this.#chatId);
+        data.append("chat_id", conversation.id);
         data.append('action', 'message');
         data.append("message", question);
         data.append('system', character.chat.system);
         data.append('target_persona_id', character.id);
-        data.append('title', this.#title);
+        data.append('title', conversation.title);
         if (user != null) {
             data.append('user_id', user.id);
             data.append('user_token', user.token);
@@ -149,17 +215,15 @@ class Chat extends Component {
             method: "POST",
             body: data
         } ).then((response) => {
-            return response.text();
+            return response.json();
         });
-        messageResponse = JSON.parse(messageResponse);
-        if (!messageResponse.hasOwnProperty('conversation_id')) {
+        if (messageResponse == null || !messageResponse.hasOwnProperty('conversation_id')) {
             alert("Sorry, something went wrong!");
             return;
         }
-        this.#chatId = messageResponse.conversation_id;
 
         // listen for response tokens
-        let eventUrl = "data/chat.php?action=stream&chat_id=" + this.#chatId;
+        let eventUrl = "data/chat.php?action=stream&chat_id=" + conversation.id;
         if (user != null) {
             eventUrl += "&user_id=" + user.id + "&user_token=" + user.token;
         }
@@ -204,11 +268,11 @@ class Chat extends Component {
     }
 
     scrollToBottom() {
-        this.#messages.scrollTop = this.#messages.scrollHeight;
+        this.#messagesContainer.scrollTop = this.#messagesContainer.scrollHeight;
     }
 
     isScrolledToBottom() {
-        return (Math.ceil(this.#messages.scrollTop) + this.#messages.offsetHeight) >= this.#messages.scrollHeight;
+        return (Math.ceil(this.#messagesContainer.scrollTop) + this.#messagesContainer.offsetHeight) >= this.#messagesContainer.scrollHeight;
     }
 
     onMessageKeyUp() {
@@ -226,12 +290,14 @@ class Chat extends Component {
 
     onHistoryChange() {
         let history = this.getController().getHistory();
-        let character = history.get('character');
-        if (this.#characterId != character) {
-            if (character == null) {
+        let conversationHistory = history.get('conversation');
+        let conversation = this.getConversation();
+        let conversationId = conversation == null ? null : conversation.id;
+        if (conversationId != conversationHistory) {
+            if (conversationHistory == null) {
                 this.show();
             } else {
-                this.#selectCharacter(character);
+                this.#resume(conversationHistory);
             }
         }
     }

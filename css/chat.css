@@ -1,7 +1,24 @@
 #chat {
-    flex-wrap: wrap;
-    justify-content: center;
     align-content: start;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 24px;
+    padding-left: 8px;
+    padding-top: 12px;
+}
+
+.conversationContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: #FFBF80;
+    border: 2px solid #B1693B;
+    margin-bottom: 16px;
+    padding: 8px;
+    color: #B1693B;
+    font-size: 2em;
+    cursor: pointer;
 }
 
 .chatContainer {
