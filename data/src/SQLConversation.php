@@ -27,7 +27,10 @@ class SQLConversation implements ConversationInterface
      * @return array<self>
      */
     public function get_chats(): array {
-        $stmt = $this->db->query( "SELECT id, title FROM conversation ORDER BY id DESC" );
+        $stmt = $this->db->prepare( "SELECT * FROM conversation WHERE user_id = :user ORDER BY updated DESC" );
+        $stmt->execute( [
+            ":user" => $this->userId,
+        ] );
         $chats = $stmt->fetchAll( PDO::FETCH_ASSOC );
 
         $list = [];
@@ -36,6 +39,9 @@ class SQLConversation implements ConversationInterface
             $conversation = new self( $this->db );
             $conversation->set_id( $data['id'] );
             $conversation->set_title( $data['title'] );
+            $conversation->setTargetPersonaId( $data['target_persona_id'] );
+            $conversation->setSourcePersonaId( $data['source_persona_id'] );
+            $conversation->setUserId( $data['user_id'] );
 
             $list[] = $conversation;
         }
@@ -160,5 +166,15 @@ class SQLConversation implements ConversationInterface
         $stmt->execute([
             ":chat_id" => $this->chat_id,
         ]);
+    }
+
+    public function getData(): array {
+        return array(
+            "id" => $this->chat_id,
+            "title" => $this->title,
+            'source_persona_id' => $this->sourcePersonaId,
+            'target_persona_id' => $this->targetPersonaId,
+            'user_id' => $this->userId
+        );
     }
 }

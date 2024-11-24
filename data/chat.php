@@ -54,6 +54,20 @@ function get_conversation_class($db): ConversationInterface {
 $db = get_db();
 $conversation_class = get_conversation_class($db);
 
+// Actions that don't require an existing conversation
+if ($ACTION === 'list') {
+    $conversation_class->setUserId($USER_ID);
+    $chats = $conversation_class->get_chats();
+    $conversations = array();
+    foreach ($chats as $chat) {
+        $conversations[] = $chat->getData();
+    }
+    die(json_encode(array('conversations' => $conversations)));
+}
+
+if (!isset($_REQUEST['chat_id'])) {
+    die("Missing chat id");
+}
 // get chat history from session
 $chat_id = intval($_REQUEST['chat_id']);
 

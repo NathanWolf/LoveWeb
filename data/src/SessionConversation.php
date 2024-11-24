@@ -3,6 +3,8 @@ class SessionConversation implements ConversationInterface
 {
     protected int $chat_id;
     protected string $title;
+    protected string $targetPersonaId;
+    protected string|null $sourcePersonaId;
 
     public function __construct() {
         self::init_session();
@@ -10,6 +12,17 @@ class SessionConversation implements ConversationInterface
         if( empty( $_SESSION['chats'] ) ) {
             $_SESSION['chats'] = [];
         }
+    }
+
+    public function setTargetPersonaId(string|null $targetPersonaId): void {
+        $this->targetPersonaId = $targetPersonaId;
+    }
+
+    public function setSourcePersonaId(string|null $sourcePersonaId): void {
+        $this->sourcePersonaId = $sourcePersonaId;
+    }
+
+    public function setUserId(string|null $userId): void {
     }
 
     protected static function init_session() {
@@ -29,9 +42,12 @@ class SessionConversation implements ConversationInterface
         $list = [];
 
         foreach( $chats as $data ) {
+            if (!isset($data['target_persona_id'])) continue;
             $conversation = new self();
             $conversation->set_id( $data['id'] );
             $conversation->set_title( $data['title'] );
+            $conversation->setSourcePersonaId( $data['source_persona_id'] ?? null );
+            $conversation->setTargetPersonaId( $data['target_persona_id'] );
 
             $list[] = $conversation;
         }
@@ -43,13 +59,15 @@ class SessionConversation implements ConversationInterface
         self::init_session();
         $data = $_SESSION['chats'][$chat_id] ?? [];
 
-        if( empty( $data ) ) {
+        if( empty( $data ) || !isset($data['target_persona_id']) ) {
             return false;
         }
 
         $conversation = new self();
         $conversation->set_id( $data['id'] );
         $conversation->set_title( $data['title'] );
+        $conversation->setSourcePersonaId( $data['source_persona_id'] ?? null );
+        $conversation->setTargetPersonaId( $data['target_persona_id'] );
 
         return $conversation;
     }
@@ -89,12 +107,16 @@ class SessionConversation implements ConversationInterface
             $_SESSION['chats'][$this->chat_id] = [
                 "id" => $this->chat_id,
                 "title" => $this->title,
+                'source_persona_id' => $this->sourcePersonaId,
+                'target_persona_id' => $this->targetPersonaId,
                 "messages" => [],
             ];
         } else {
             $_SESSION['chats'][$this->chat_id] = [
                 "id" => $this->chat_id,
                 "title" => $this->title,
+                'source_persona_id' => $this->sourcePersonaId,
+                'target_persona_id' => $this->targetPersonaId,
                 "messages" => $this->get_messages(),
             ];
         }
@@ -106,12 +128,12 @@ class SessionConversation implements ConversationInterface
         unset( $_SESSION['chats'][$this->chat_id] );
     }
 
-    public function setUserId(string|null $userId): void {
-    }
-
-    public function setTargetPersonaId(string|null $targetPersonaId): void {
-    }
-
-    public function setSourcePersonaId(string|null $sourcePersonaId): void {
+    public function getData(): array {
+        return array(
+            "id" => $this->chat_id,
+            "title" => $this->title,
+            'source_persona_id' => $this->sourcePersonaId,
+            'target_persona_id' => $this->targetPersonaId,
+        );
     }
 }
