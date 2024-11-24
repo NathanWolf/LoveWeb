@@ -9,11 +9,10 @@ require('config.inc.php');
 $SETTINGS = $_config;
 
 $MODEL = 'gpt-4o';
-$STORAGE_TYPE = "session";
+$STORAGE_TYPE = isset($_REQUEST['user_id']) ? "sql" : "session";
 $PARAMETERS = array();
 
 require(__DIR__ . "/autoload.php");
-
 
 function get_db(): PDO|null {
     global $STORAGE_TYPE;
