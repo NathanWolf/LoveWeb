@@ -12,7 +12,7 @@ class SQLConversation implements ConversationInterface
      * @return array<self>
      */
     public function get_chats(): array {
-        $stmt = $this->db->query( "SELECT id, title FROM conversations ORDER BY id DESC" );
+        $stmt = $this->db->query( "SELECT id, title FROM conversation ORDER BY id DESC" );
         $chats = $stmt->fetchAll( PDO::FETCH_ASSOC );
 
         $list = [];
@@ -29,7 +29,7 @@ class SQLConversation implements ConversationInterface
     }
 
     public function find( int $chat_id ): self|false {
-        $stmt = $this->db->prepare( "SELECT * FROM conversations WHERE id = :chat_id" );
+        $stmt = $this->db->prepare( "SELECT * FROM conversation WHERE id = :chat_id" );
         $stmt->execute( [
             ":chat_id" => $chat_id,
         ] );
@@ -52,7 +52,7 @@ class SQLConversation implements ConversationInterface
             return [];
         }
 
-        $stmt = $this->db->prepare( "SELECT * FROM messages WHERE `conversation` = :chat_id" );
+        $stmt = $this->db->prepare( "SELECT * FROM conversation_message WHERE `conversation_id` = :chat_id" );
         $stmt->execute( [
             ":chat_id" => $this->chat_id,
         ] );
@@ -62,11 +62,10 @@ class SQLConversation implements ConversationInterface
 
     public function add_message( $message ): bool {
         $stmt = $this->db->prepare( "
-            INSERT INTO messages (
+            INSERT INTO conversation_message (
                 `role`,
                 `content`,
-                `conversation`,
-                `timestamp`
+                `conversation_id`
             ) VALUES (
                 :the_role,
                 :the_content,
@@ -77,8 +76,7 @@ class SQLConversation implements ConversationInterface
         $stmt->execute( [
             ":the_role" => $message['role'],
             ":the_content" => $message['content'],
-            ":the_conversation" => $this->chat_id,
-            ":the_timestamp" => date( "Y-m-d H:i:s" ),
+            ":the_conversation" => $this->chat_id
         ] );
 
         return true;
@@ -103,7 +101,7 @@ class SQLConversation implements ConversationInterface
     public function save(): int {
         if( ! isset( $this->chat_id ) ) {
             $stmt = $this->db->prepare( "
-                INSERT INTO conversations (
+                INSERT INTO conversation (
                     title
                 ) VALUES (
                     :title
@@ -116,7 +114,7 @@ class SQLConversation implements ConversationInterface
 
             $this->chat_id = $this->db->lastInsertId();
         } else {
-            $stmt = $this->db->prepare( "UPDATE conversations SET title = :title WHERE id = :chat_id LIMIT 1" );
+            $stmt = $this->db->prepare( "UPDATE conversation SET title = :title WHERE id = :chat_id LIMIT 1" );
             $stmt->execute( [
                 ":title" => $this->title,
                 ":chat_id" => $this->chat_id,
@@ -127,12 +125,12 @@ class SQLConversation implements ConversationInterface
     }
 
     public function delete(): void {
-        $stmt = $this->db->prepare( "DELETE FROM messages WHERE conversation = :chat_id" );
+        $stmt = $this->db->prepare( "DELETE FROM conversation_message WHERE conversation_id = :chat_id" );
         $stmt->execute([
             ":chat_id" => $this->chat_id,
         ]);
 
-        $stmt = $this->db->prepare( "DELETE FROM conversations WHERE id = :chat_id LIMIT 1" );
+        $stmt = $this->db->prepare( "DELETE FROM conversation WHERE id = :chat_id LIMIT 1" );
         $stmt->execute([
             ":chat_id" => $this->chat_id,
         ]);
