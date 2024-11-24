@@ -132,6 +132,7 @@ class Chat extends Component {
         let data = new FormData();
         let user = this.getController().getProfile().getUser();
         data.append("chat_id", this.#chatId);
+        data.append('action', 'message');
         data.append("message", question);
         data.append('system', character.chat.system);
         data.append('target_persona_id', character.id);
@@ -141,15 +142,21 @@ class Chat extends Component {
         }
 
         // send message and get chat id
-        this.#chatId = await fetch( "data/chat.php", {
+        let messageResponse = await fetch( "data/chat.php", {
             method: "POST",
             body: data
         } ).then((response) => {
             return response.text();
         });
+        messageResponse = JSON.parse(messageResponse);
+        if (!messageResponse.hasOwnProperty('conversation_id')) {
+            alert("Sorry, something went wrong!");
+            return;
+        }
+        this.#chatId = messageResponse.conversation_id;
 
         // listen for response tokens
-        let eventUrl = "data/chat.php?chat_id=" + this.#chatId;
+        let eventUrl = "data/chat.php?action=stream&chat_id=" + this.#chatId;
         if (user != null) {
             eventUrl += "&user_id=" + user.id + "&user_token=" + user.token;
         }

@@ -8,6 +8,11 @@ if (ob_get_level()) ob_end_clean();
 require('config.inc.php');
 $SETTINGS = $_config;
 
+if (!isset($_REQUEST['action'])) {
+    die("Missing action parameter");
+}
+
+$ACTION = $_REQUEST['action'];
 $MODEL = 'gpt-4o';
 $USER_ID = $_REQUEST['user_id'] ?? null;
 $STORAGE_TYPE = $USER_ID ? "sql" : "session";
@@ -76,60 +81,63 @@ if (empty($context) && isset($_REQUEST['system'])) {
     $conversation->add_message($system_message);
 }
 
-if (isset($_POST['message'])) {
-    $message = [
-        "role" => "user",
-        "content" => $_POST['message'],
-    ];
+switch ($ACTION) {
+    case 'message':
+        $message = [
+            "role" => "user",
+            "content" => $_POST['message'],
+        ];
 
-    $conversation->add_message($message);
+        $conversation->add_message($message);
 
-    echo $conversation->get_id();
-    exit;
-}
+        die(json_encode(array('conversation_id' => $conversation->get_id())));
+    case 'stream':
+        header("Content-type: text/event-stream");
 
-header("Content-type: text/event-stream");
+        $error = null;
+        $response_text = '';
 
-$error = null;
-$response_text = '';
+        // create a new completion
+        try {
+            $chatgpt = new ChatGPT($SETTINGS['openapi']['key']);
 
-// create a new completion
-try {
-    $chatgpt = new ChatGPT($SETTINGS['openapi']['key']);
+            $chatgpt->set_model($MODEL);
+            $chatgpt->set_params($PARAMETERS);
 
-    $chatgpt->set_model($MODEL);
-    $chatgpt->set_params($PARAMETERS);
-
-    foreach ($context as $message) {
-        switch ($message['role']) {
-            case "user":
-                $chatgpt->umessage($message['content']);
-                break;
-            case "assistant":
-                $chatgpt->amessage($message['content']);
-                break;
-            case "system":
-                $chatgpt->smessage($message['content']);
-                break;
+            foreach ($context as $message) {
+                switch ($message['role']) {
+                    case "user":
+                        $chatgpt->umessage($message['content']);
+                        break;
+                    case "assistant":
+                        $chatgpt->amessage($message['content']);
+                        break;
+                    case "system":
+                        $chatgpt->smessage($message['content']);
+                        break;
+                }
+            }
+            $response_text = $chatgpt->stream(StreamType::Event)->content;
+        } catch (Exception $e) {
+            $error = "Sorry, there was an unknown error in the OpenAI request";
         }
-    }
-    $response_text = $chatgpt->stream(StreamType::Event)->content;
-} catch (Exception $e) {
-    $error = "Sorry, there was an unknown error in the OpenAI request";
+
+        if ($error !== null) {
+            $response_text = $error;
+            echo "data: " . json_encode(["content" => $error]) . "\n\n";
+            flush();
+        }
+
+        $assistant_message = [
+            "role" => "assistant",
+            "content" => $response_text,
+        ];
+
+        $conversation->add_message($assistant_message);
+
+        echo "event: stop\n";
+        echo "data: stopped\n\n";
+        break;
+    default:
+        die("Unknown action " . $ACTION);
 }
-
-if ($error !== null) {
-    $response_text = $error;
-    echo "data: " . json_encode(["content" => $error]) . "\n\n";
-    flush();
-}
-
-$assistant_message = [
-    "role" => "assistant",
-    "content" => $response_text,
-];
-
-$conversation->add_message($assistant_message);
-
-echo "event: stop\n";
-echo "data: stopped\n\n";
