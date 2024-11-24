@@ -85,6 +85,9 @@ class SQLConversation implements ConversationInterface
     }
 
     public function add_message( $message ): bool {
+        if (!$this->chat_id) {
+            throw new Exception("Can't add a message without an id");
+        }
         $stmt = $this->db->prepare( "
             INSERT INTO conversation_message (
                 `role`,
