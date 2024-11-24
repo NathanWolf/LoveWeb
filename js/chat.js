@@ -3,7 +3,6 @@ class Chat extends Component {
     #messagesContainer = null;
     #conversations = {};
     #conversationId = null;
-    #title = 'Untitled chat';
 
     constructor(controller, element) {
         super(controller, element);
@@ -44,6 +43,8 @@ class Chat extends Component {
         conversations.forEach(function(conversation){
             let conversationId = conversation.id;
             controller.#conversations[conversationId] = conversation;
+            if (controller.#conversationId != null) return;
+
             let character = characters.getCharacter(conversation.target_persona_id);
             let chatContainer = document.createElement('div');
 
@@ -65,17 +66,48 @@ class Chat extends Component {
             container.appendChild(chatContainer);
         });
 
+        if (this.#conversationId != null) {
+            this.#resume(this.#conversationId);
+        }
     }
 
-    #resume(conversationId) {
+    async #resume(conversationId) {
+        this.#conversationId = conversationId;
         if (!this.#conversations.hasOwnProperty(conversationId)) {
-            alert("Sorry, something went wrong!");
+            // We will try to resume it on load?
             return;
         }
         let conversation = this.#conversations[conversationId];
         this.getController().getHistory().set('chat', conversationId);
-        this.#conversationId = conversationId;
-        this.#showChat(conversation.target_persona_id);
+
+        let data = new FormData();
+        let user = this.getController().getProfile().getUser();
+        data.append('chat_id', conversationId);
+        data.append('action', 'resume');
+        if (user != null) {
+            data.append('user_id', user.id);
+            data.append('user_token', user.token);
+        }
+
+        let resumeResponse = await fetch( "data/chat.php", {
+            method: "POST",
+            body: data
+        } ).then((response) => {
+            return response.json();
+        });
+
+        if (resumeResponse == null || !resumeResponse.hasOwnProperty('messages')) {
+            alert("Sorry, something went wrong!");
+            return;
+        }
+
+        let targetCharacterId = conversation.target_persona_id;
+        this.#showChat(targetCharacterId);
+        let controller = this;
+        resumeResponse.messages.forEach(function(message){
+            if (message.role == 'system') return;
+            controller.addMessage(message.role, message.content, targetCharacterId);
+        });
     }
 
     #newChat(targetCharacterId, sourceCharacterId) {
@@ -141,7 +173,7 @@ class Chat extends Component {
         let messageDiv = Utilities.createDiv('message ' + role, this.#messagesContainer);
         let icon = Utilities.createDiv('identity', messageDiv);
         let userCharacter = this.getController().getProfile().getCharacterId();
-        if (userCharacter != null) {
+        if (role == 'user' && userCharacter != null) {
             Utilities.addClass(icon, 'portrait');
             Utilities.addClass(icon, 'small');
             let portrait = this.getController().getCharacters().getPortrait(userCharacter)
@@ -150,7 +182,7 @@ class Chat extends Component {
 
         let content = Utilities.createDiv('content', messageDiv);
         content.innerHTML = message;
-        if (typeof(characterId) !== 'undefined') {
+        if (role == 'assistant' && typeof(characterId) !== 'undefined') {
             let characters = this.getController().getCharacters();
             icon.style.backgroundImage = 'url(' + characters.getPortrait(characterId) + ')';
         }
@@ -290,7 +322,7 @@ class Chat extends Component {
 
     onHistoryChange() {
         let history = this.getController().getHistory();
-        let conversationHistory = history.get('conversation');
+        let conversationHistory = history.get('chat');
         let conversation = this.getConversation();
         let conversationId = conversation == null ? null : conversation.id;
         if (conversationId != conversationHistory) {
@@ -303,6 +335,7 @@ class Chat extends Component {
     }
 
     deactivate() {
-        this.getController().getHistory().unset('character');
+        this.#conversationId = null;
+        this.getController().getHistory().unset('chat');
     }
 }

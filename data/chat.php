@@ -5,6 +5,7 @@ header("Cache-Control: no-cache");
 
 if (ob_get_level()) ob_end_clean();
 
+require_once 'LoveDatabase.class.php';
 require('config.inc.php');
 $SETTINGS = $_config;
 
@@ -55,14 +56,47 @@ $db = get_db();
 $conversation_class = get_conversation_class($db);
 
 // Actions that don't require an existing conversation
-if ($ACTION === 'list') {
-    $conversation_class->setUserId($USER_ID);
-    $chats = $conversation_class->get_chats();
-    $conversations = array();
-    foreach ($chats as $chat) {
-        $conversations[] = $chat->getData();
-    }
-    die(json_encode(array('conversations' => $conversations)));
+switch ($ACTION) {
+    case 'list':
+        $conversation_class->setUserId($USER_ID);
+        $chats = $conversation_class->get_chats();
+        $conversations = array();
+        foreach ($chats as $chat) {
+            $conversations[] = $chat->getData();
+        }
+        die(json_encode(array('conversations' => $conversations)));
+    case 'start':
+        if (!isset($_REQUEST['target_persona_id'])) {
+            die("Missing target_persona_id parameter");
+        }
+        $loveDatabase = new \com\elmakers\love\LoveDatabase();
+        $targetPersonaId = $_REQUEST['target_persona_id'];
+        $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+        if (!$targetPersona || !$targetPersona['chat']) {
+            die("Invalid character: $targetPersonaId");
+        }
+        $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
+        $title = $_REQUEST['title'] ?? "Untitled chat";
+        $conversation = new $conversation_class($db);
+        $conversation->set_title($title);
+        $conversation->setUserId($USER_ID);
+        $conversation->setTargetPersonaId($_REQUEST['target_persona_id'] ?? null);
+        $conversation->setSourcePersonaId($_REQUEST['source_persona_id'] ?? null);
+        $conversation->save();
+
+        $system = $targetPersona['chat'];
+        $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
+        if ($sourcePersona && $sourcePersona['chat']) {
+            $system = $system + "\n\nYou are speaking to someone who would describe themselves like this: " . $sourcePersona['chat'];
+        }
+        $system_message = [
+            "role" => "system",
+            "content" => $system
+        ];
+
+        $context[] = $system_message;
+        $conversation->add_message($system_message);
+        die(json_encode(array('conversation' => $conversation->getData())));
 }
 
 if (!isset($_REQUEST['chat_id'])) {
@@ -74,25 +108,7 @@ $chat_id = intval($_REQUEST['chat_id']);
 $conversation = $conversation_class->find($chat_id);
 
 if (!$conversation) {
-    $conversation = new $conversation_class($db);
-    $title = $_REQUEST['title'] ?? "Untitled chat";
-    $conversation->set_title($title);
-    $conversation->setUserId($USER_ID);
-    $conversation->setTargetPersonaId($_REQUEST['target_persona_id'] ?? null);
-    $conversation->setSourcePersonaId($_REQUEST['source_persona_id'] ?? null);
-    $conversation->save();
-}
-
-$context = $conversation->get_messages();
-
-if (empty($context) && isset($_REQUEST['system'])) {
-    $system_message = [
-        "role" => "system",
-        "content" => $_REQUEST['system']
-    ];
-
-    $context[] = $system_message;
-    $conversation->add_message($system_message);
+    die("Invalid chat id: $chat_id");
 }
 
 switch ($ACTION) {
@@ -103,10 +119,13 @@ switch ($ACTION) {
         ];
 
         $conversation->add_message($message);
-
         die(json_encode(array('conversation_id' => $conversation->get_id())));
+    case 'resume':
+        $context = $conversation->get_messages();
+        die(json_encode(array('messages' => $context)));
     case 'stream':
         header("Content-type: text/event-stream");
+        $context = $conversation->get_messages();
 
         $error = null;
         $response_text = '';
