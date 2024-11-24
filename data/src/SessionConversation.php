@@ -105,4 +105,13 @@ class SessionConversation implements ConversationInterface
     public function delete(): void {
         unset( $_SESSION['chats'][$this->chat_id] );
     }
+
+    public function setUserId(string|null $userId): void {
+    }
+
+    public function setTargetPersonaId(string|null $targetPersonaId): void {
+    }
+
+    public function setSourcePersonaId(string|null $sourcePersonaId): void {
+    }
 }

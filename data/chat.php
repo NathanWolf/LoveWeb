@@ -51,11 +51,15 @@ $conversation_class = get_conversation_class($db);
 // get chat history from session
 $chat_id = intval($_REQUEST['chat_id']);
 
-$conversation = $conversation_class->find($chat_id, $db);
+$conversation = $conversation_class->find($chat_id);
 
 if (!$conversation) {
     $conversation = new $conversation_class($db);
-    $conversation->set_title("Untitled chat");
+    $title = $_REQUEST['title'] ?? "Untitled chat";
+    $conversation->set_title($title);
+    $conversation->setUserId($USER_ID);
+    $conversation->setTargetPersonaId($_REQUEST['target_persona_id'] ?? null);
+    $conversation->setSourcePersonaId($_REQUEST['source_persona_id'] ?? null);
     $conversation->save();
 }
 

@@ -3,9 +3,24 @@ class SQLConversation implements ConversationInterface
 {
     protected int $chat_id;
     protected string $title;
+    protected string $userId;
+    protected string $targetPersonaId;
+    protected string|null $sourcePersonaId;
 
     public function __construct( protected PDO $db ) {
 
+    }
+
+    public function setUserId(string|null $userId): void {
+        $this->userId = $userId;
+    }
+
+    public function setTargetPersonaId(string|null $targetPersonaId): void {
+        $this->targetPersonaId = $targetPersonaId;
+    }
+
+    public function setSourcePersonaId(string|null $sourcePersonaId): void {
+        $this->sourcePersonaId = $sourcePersonaId;
     }
 
     /**
@@ -43,6 +58,9 @@ class SQLConversation implements ConversationInterface
         $conversation = new self( $this->db );
         $conversation->set_id( $data['id'] );
         $conversation->set_title( $data['title'] );
+        $conversation->setUserId( $data['user_id'] );
+        $conversation->setSourcePersonaId( $data['source_persona_id'] );
+        $conversation->setTargetPersonaId( $data['target_persona_id'] );
 
         return $conversation;
     }
@@ -69,8 +87,7 @@ class SQLConversation implements ConversationInterface
             ) VALUES (
                 :the_role,
                 :the_content,
-                :the_conversation,
-                :the_timestamp
+                :the_conversation
             )"
         );
         $stmt->execute( [
@@ -102,14 +119,23 @@ class SQLConversation implements ConversationInterface
         if( ! isset( $this->chat_id ) ) {
             $stmt = $this->db->prepare( "
                 INSERT INTO conversation (
-                    title
+                    title,
+                    user_id,
+                    target_persona_id,
+                    source_persona_id
                 ) VALUES (
-                    :title
+                    :title,
+                    :user,
+                    :target,
+                    :source
                 )"
             );
 
             $stmt->execute( [
                 ":title" => $this->title,
+                ":user" => $this->userId,
+                ":target" => $this->targetPersonaId,
+                ":source" => $this->sourcePersonaId,
             ] );
 
             $this->chat_id = $this->db->lastInsertId();

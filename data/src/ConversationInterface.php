@@ -23,4 +23,10 @@ interface ConversationInterface
     public function save(): int;
 
     public function delete(): void;
+
+    public function setUserId(string|null $userId): void;
+
+    public function setTargetPersonaId(string|null $targetPersonaId): void;
+
+    public function setSourcePersonaId(string|null $sourcePersonaId): void;
 }
