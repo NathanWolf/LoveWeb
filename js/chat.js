@@ -332,7 +332,7 @@ class Chat extends Component {
             let userCharacter = this.getController().getProfile().getCharacterId();
             if (conversation.source_persona_id != null) {
                 let characters = this.getController().getCharacters();
-                icon.style.backgroundImage = 'url(' + characters.getPortrait(conversation.source_persona_ide) + ')';
+                icon.style.backgroundImage = 'url(' + characters.getPortrait(conversation.source_persona_id) + ')';
             } else if (userCharacter != null) {
                 Utilities.addClass(icon, 'portrait');
                 Utilities.addClass(icon, 'small');
