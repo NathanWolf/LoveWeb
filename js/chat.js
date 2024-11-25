@@ -299,7 +299,11 @@ class Chat extends Component {
         chatInput.appendChild(input);
         let button = document.createElement('button');
         button.innerHTML = '&uarr;';
-        button.onclick = function() { controller.sendMessage(); };
+        button.onclick = function(event) {
+            event.preventDefault();
+            input.focus();
+            controller.sendMessage();
+        };
         chatInput.appendChild(button);
 
         input.onkeyup = function() {
@@ -347,7 +351,7 @@ class Chat extends Component {
         let content = Utilities.createDiv('content', messageDiv);
         content.innerHTML = message;
 
-        this.#messagesContainer.scrollTop = this.#messagesContainer.scrollHeight;
+        this.scrollToBottom();
         return messageDiv;
     }
 
