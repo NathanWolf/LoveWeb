@@ -36,8 +36,14 @@
     background: #FFFCED;
 }
 
-.newChat {
+.newChat, .anonymous {
     background-image: url('../image/ui/blank-profile.png');
+}
+
+.newChatHeader {
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
 }
 
 .chatCharacterList {

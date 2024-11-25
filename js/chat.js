@@ -94,10 +94,34 @@ class Chat extends Component {
         }
     }
 
+    #createPortrait(character) {
+        let characters = this.getController().getCharacters();
+        let portraitContainer = document.createElement('div');
+        portraitContainer.className = 'portraitContainer';
+
+        let portraitName = document.createElement('div');
+        portraitName.className = 'portraitName';
+        portraitName.dataset.character = character.id;
+        portraitName.innerText = character.name;
+        portraitContainer.appendChild(portraitName);
+
+        let portrait = document.createElement('div');
+        portrait.className = 'portrait';
+        portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+        portraitContainer.appendChild(portrait);
+
+        return portraitContainer;
+    }
+
     #startNewChat() {
         let container = this.getElement();
         let controller = this;
         Utilities.empty(container);
+
+        let newChatHeader = document.createElement('div');
+        newChatHeader.innerText = 'Who do you want to chat with?';
+        newChatHeader.className = 'newChatHeader';
+        container.appendChild(newChatHeader);
 
         let characters = this.getController().getCharacters();
         let characterList = characters.getCharacterList();
@@ -106,26 +130,82 @@ class Chat extends Component {
         container.appendChild(newChatCharacters);
         characterList.forEach(function(character){
             if (character.chat == null) return;
-            let portraitContainer = document.createElement('div');
-            portraitContainer.className = 'portraitContainer';
+            let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
-                controller.#newChat(character.id, null);
+                controller.#chooseSource(character.id);
             });
-
-            let portraitName = document.createElement('div');
-            portraitName.className = 'portraitName';
-            portraitName.dataset.character = character.id;
-            portraitName.innerText = character.name;
-            portraitContainer.appendChild(portraitName);
-
-            let portrait = document.createElement('div');
-            portrait.className = 'portrait';
-            portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
-            portraitContainer.appendChild(portrait);
-
             newChatCharacters.appendChild(portraitContainer);
         });
     }
+
+    #chooseSource(targetCharacterId) {
+        let container = this.getElement();
+        let controller = this;
+        Utilities.empty(container);
+
+        let newChatHeader = document.createElement('div');
+        newChatHeader.innerText = 'Who do you want to chat as?';
+        newChatHeader.className = 'newChatHeader';
+        container.appendChild(newChatHeader);
+
+        let newChatCharacters = document.createElement('div');
+        newChatCharacters.className = 'chatCharacterList';
+        container.appendChild(newChatCharacters);
+
+        let user = this.getController().getProfile().getUser();
+        if (user != null) {
+            let portraitContainer = document.createElement('div');
+            portraitContainer.className = 'portraitContainer';
+
+            let portraitName = document.createElement('div');
+            portraitName.className = 'portraitName';
+            portraitName.innerText = 'Myself';
+            portraitContainer.appendChild(portraitName);
+
+            let portrait = document.createElement('div');
+            portrait.className = 'portrait ';
+            let userCharacter = this.getController().getProfile().getCharacterId();
+            if (userCharacter != null) {
+                let portraitUrl = this.getController().getCharacters().getPortrait(userCharacter)
+                portrait.style.backgroundImage = 'url(' + portraitUrl + ')';
+            }
+            portraitContainer.appendChild(portrait);
+
+            portraitContainer.addEventListener('click', function() {
+                // TODO: Make this cool
+                controller.#newChat(targetCharacterId, null);
+            });
+            newChatCharacters.appendChild(portraitContainer);
+        }
+
+        let portraitContainer = document.createElement('div');
+        portraitContainer.className = 'portraitContainer';
+
+        let portraitName = document.createElement('div');
+        portraitName.className = 'portraitName';
+        portraitName.innerText = 'Anonymous';
+        portraitContainer.appendChild(portraitName);
+
+        let portrait = document.createElement('div');
+        portrait.className = 'portrait anonymous';
+        portraitContainer.appendChild(portrait);
+
+        portraitContainer.addEventListener('click', function() {
+            controller.#newChat(targetCharacterId, null);
+        });
+        newChatCharacters.appendChild(portraitContainer);
+
+        let characters = this.getController().getCharacters();
+        let characterList = characters.getCharacterList();
+        characterList.forEach(function(character){
+            if (character.chat == null) return;
+            let portraitContainer = controller.#createPortrait(character);
+            portraitContainer.addEventListener('click', function() {
+                controller.#newChat(targetCharacterId, character.id);
+            });
+            newChatCharacters.appendChild(portraitContainer);
+        });
+    };
 
     async #resume(conversationId) {
         this.#conversationId = conversationId;
@@ -241,22 +321,31 @@ class Chat extends Component {
     }
 
     addMessage(role, message, characterId) {
+        let conversation = this.getConversation();
+        if (conversation == null) {
+            alert("Sorry, something went wrong!");
+            return;
+        }
         let messageDiv = Utilities.createDiv('message ' + role, this.#messagesContainer);
         let icon = Utilities.createDiv('identity', messageDiv);
-        let userCharacter = this.getController().getProfile().getCharacterId();
-        if (role == 'user' && userCharacter != null) {
-            Utilities.addClass(icon, 'portrait');
-            Utilities.addClass(icon, 'small');
-            let portrait = this.getController().getCharacters().getPortrait(userCharacter)
-            icon.style.backgroundImage = 'url(' + portrait + ')';
+        if (role == 'user') {
+            let userCharacter = this.getController().getProfile().getCharacterId();
+            if (conversation.source_persona_id != null) {
+                let characters = this.getController().getCharacters();
+                icon.style.backgroundImage = 'url(' + characters.getPortrait(conversation.source_persona_ide) + ')';
+            } else if (userCharacter != null) {
+                Utilities.addClass(icon, 'portrait');
+                Utilities.addClass(icon, 'small');
+                let portrait = this.getController().getCharacters().getPortrait(userCharacter)
+                icon.style.backgroundImage = 'url(' + portrait + ')';
+            }
+        } else if (role == 'assistant' && typeof(characterId) !== 'undefined') {
+            let characters = this.getController().getCharacters();
+            icon.style.backgroundImage = 'url(' + characters.getPortrait(characterId) + ')';
         }
 
         let content = Utilities.createDiv('content', messageDiv);
         content.innerHTML = message;
-        if (role == 'assistant' && typeof(characterId) !== 'undefined') {
-            let characters = this.getController().getCharacters();
-            icon.style.backgroundImage = 'url(' + characters.getPortrait(characterId) + ')';
-        }
 
         this.#messagesContainer.scrollTop = this.#messagesContainer.scrollHeight;
         return messageDiv;
