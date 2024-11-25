@@ -1,0 +1,14 @@
+@media all and (max-width: 1024px)
+{
+    body {
+        font-size: 1.5em;
+    }
+
+    .tabButtons {
+        font-size: 1.5em;
+    }
+
+    .message {
+        font-size: 1.5em;
+    }
+}
