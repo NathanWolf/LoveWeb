@@ -41,4 +41,8 @@ class Component {
 
     onHistoryChange() {
     }
+
+    onResize() {
+
+    }
 }

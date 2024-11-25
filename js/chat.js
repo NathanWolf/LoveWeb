@@ -494,4 +494,8 @@ class Chat extends Component {
         this.#conversationId = null;
         this.getController().getHistory().unset('chat');
     }
+
+    onResize() {
+        this.scrollToBottom();
+    }
 }

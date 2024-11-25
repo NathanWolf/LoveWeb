@@ -87,6 +87,9 @@ class Love {
         container.scrollTop = 0;
         document.body.scrollTop = 0;
         window.scrollTop = 0;
+
+        let tab = this.#tabs[this.#tab];
+        tab.onResize();
     }
 
     selectTab(tabId) {
