@@ -76,17 +76,28 @@ switch ($ACTION) {
             die("Invalid character: $targetPersonaId");
         }
         $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
+        $sourceAlternativeId = $_REQUEST['source_alternative_id'] ?? null;
+        $targetAlternativeId = $_REQUEST['target_alternative_id'] ?? null;
         $title = $_REQUEST['title'] ?? "Untitled chat";
         $conversation = new $conversation_class($db);
         $conversation->set_title($title);
         $conversation->setUserId($USER_ID);
-        $conversation->setTargetPersonaId($_REQUEST['target_persona_id'] ?? null);
-        $conversation->setSourcePersonaId($_REQUEST['source_persona_id'] ?? null);
+        $conversation->setTargetPersonaId($targetPersonaId);
+        $conversation->setSourcePersonaId($sourcePersonaId);
+        $conversation->setSourceAlternativeId($sourceAlternativeId);
+        $conversation->setTargetAlternativeId($targetAlternativeId);
+        $conversation->setAnonymous(isset($_REQUEST['anonymous']));
         $conversation->save();
 
         $system = $targetPersona['chat']['system'] ?? null;
+        if (!is_null($targetAlternativeId) && isset($targetPersona['chat']['alternatives'][$targetAlternativeId]['system'])) {
+            $system = $targetPersona['chat']['alternatives'][$targetAlternativeId]['system'];
+        }
         $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
         $sourceSystem = $sourcePersona && isset($sourcePersona['chat']['system']) ? $sourcePersona['chat']['system'] : null;
+        if (!is_null($sourceAlternativeId) && isset($sourcePersona['chat']['alternatives'][$sourceAlternativeId]['system'])) {
+            $sourceSystem = $sourcePersona['chat']['alternatives'][$sourceAlternativeId]['system'];
+        }
         if ($sourceSystem) {
             $system .= "\n\nYou are speaking to someone who would describe themselves like this: $sourceSystem";
         }

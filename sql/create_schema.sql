@@ -428,6 +428,11 @@ CREATE TABLE conversation
         on update cascade
 );
 
+alter table conversation
+    add target_alternative_id int null
+    add source_alternative_id int null,
+    add anonymous boolean not null default false;
+
 CREATE TABLE conversation_message
 (
     id                int not null auto_increment,

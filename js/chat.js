@@ -95,15 +95,16 @@ class Chat extends Component {
         }
     }
 
-    #createPortrait(character) {
+    #createPortrait(character, name) {
         let characters = this.getController().getCharacters();
+        name = typeof(name) === 'undefined' ? character.name : name;
         let portraitContainer = document.createElement('div');
         portraitContainer.className = 'portraitContainer';
 
         let portraitName = document.createElement('div');
         portraitName.className = 'portraitName';
         portraitName.dataset.character = character.id;
-        portraitName.innerText = character.name;
+        portraitName.innerText = name;
         portraitContainer.appendChild(portraitName);
 
         let portrait = document.createElement('div');
@@ -133,13 +134,47 @@ class Chat extends Component {
             if (character.chat == null) return;
             let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
-                controller.#chooseSource(character.id);
+                if (character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
+                    controller.#chooseAlternative(character.id, function(alternativeIndex) {
+                        controller.#chooseSource(character.id, alternativeIndex);
+                    });
+                } else {
+                    controller.#chooseSource(character.id, null);
+                }
             });
             newChatCharacters.appendChild(portraitContainer);
         });
     }
 
-    #chooseSource(targetCharacterId) {
+    #chooseAlternative(characterId, callback) {
+        let container = this.getElement();
+        let characters = this.getController().getCharacters();
+        let character = characters.getCharacter(characterId);
+
+        Utilities.empty(container);
+
+        let newChatHeader = Utilities.createDiv('newChatHeader', container);
+        newChatHeader.innerText = 'What version of ' + character.name +'?';
+
+        let newChatCharacters = Utilities.createDiv('chatCharacterList', container);
+        let alternativeList = [{index: null, label: 'Present Day'}];
+        for (let i = 0; i < character.chat.alternatives.length; i++) {
+            let alternative = character.chat.alternatives[i];
+            let label = alternative.hasOwnProperty('label') ? alternative.label : 'Alternative#' + index;
+            alternativeList.push({index: i, label: label});
+        }
+
+        for (let i = 0; i < alternativeList.length; i++) {
+            let alternative = alternativeList[i];
+            let portraitContainer = this.#createPortrait(character, alternative.label);
+            portraitContainer.addEventListener('click', function() {
+                callback(alternative.index);
+            });
+            newChatCharacters.appendChild(portraitContainer);
+        }
+    }
+
+    #chooseSource(targetCharacterId, targetAlternativeIndex) {
         let container = this.getElement();
         let controller = this;
         Utilities.empty(container);
@@ -173,8 +208,7 @@ class Chat extends Component {
             portraitContainer.appendChild(portrait);
 
             portraitContainer.addEventListener('click', function() {
-                // TODO: Make this cool
-                controller.#newChat(targetCharacterId, null);
+                controller.#newChat(targetCharacterId, null, targetAlternativeIndex, null, false);
             });
             newChatCharacters.appendChild(portraitContainer);
         }
@@ -192,7 +226,7 @@ class Chat extends Component {
         portraitContainer.appendChild(portrait);
 
         portraitContainer.addEventListener('click', function() {
-            controller.#newChat(targetCharacterId, null);
+            controller.#newChat(targetCharacterId, null, targetAlternativeIndex, null, true);
         });
         newChatCharacters.appendChild(portraitContainer);
 
@@ -202,7 +236,13 @@ class Chat extends Component {
             if (character.chat == null) return;
             let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
-                controller.#newChat(targetCharacterId, character.id);
+                if (character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
+                    controller.#chooseAlternative(character.id, function(alternativeIndex) {
+                        controller.#newChat(targetCharacterId, character.id, targetAlternativeIndex, alternativeIndex, false);
+                    });
+                } else {
+                    controller.#newChat(targetCharacterId, character.id, targetAlternativeIndex, null, false);
+                }
             });
             newChatCharacters.appendChild(portraitContainer);
         });
@@ -240,24 +280,41 @@ class Chat extends Component {
         });
     }
 
-    async #newChat(targetCharacterId, sourceCharacterId) {
+    async #newChat(targetCharacterId, sourceCharacterId, targetAlternative, sourceAlternative, anonymous) {
         let characters = this.getController().getCharacters();
         let character = characters.getCharacter(targetCharacterId);
         if (character == null) {
             alert("Sorry, something went wrong!");
             return;
         }
+        let targetName = character.name;
+        if (targetAlternative != null && character.chat.alternatives[targetAlternative].hasOwnProperty('label')) {
+            targetName += ' (' + character.chat.alternatives[targetAlternative].label + ')';
+        }
+        let title = 'Chat with ' + targetName;
         let sourceCharacter = sourceCharacterId == null ? null : characters.getCharacter(sourceCharacterId);
-        let title = 'Chat with ' + character.name;
         if (sourceCharacter != null) {
-            title = 'Chat between ' + sourceCharacter.name + ' and ' + character.name;
+            let sourceName = sourceCharacter.name;
+            if (sourceAlternative != null && sourceCharacter.chat.alternatives[sourceAlternative].hasOwnProperty('label')) {
+                sourceName += ' (' + sourceCharacter.chat.alternatives[sourceAlternative].label + ')';
+            }
+            title = 'Chat between ' + sourceName + ' and ' + targetName;
         }
 
         let data = this.#createForm('start');
         data.append('title', title);
         data.append('target_persona_id', targetCharacterId);
+        if (targetAlternative != null) {
+            data.append('target_alternative_id', targetAlternative);
+        }
         if (sourceCharacterId != null) {
             data.append('source_persona_id', sourceCharacterId);
+        }
+        if (sourceAlternative != null) {
+            data.append('source_alternative_id', sourceAlternative);
+        }
+        if (anonymous) {
+            data.append('anonymous', true);
         }
         let startResponse = await fetch( "data/chat.php", {
             method: "POST",

@@ -5,7 +5,10 @@ class SQLConversation implements ConversationInterface
     protected string $title;
     protected string $userId;
     protected string $targetPersonaId;
+    protected int|null $targetAlternativeId;
     protected string|null $sourcePersonaId;
+    protected int|null $sourceAlternativeId;
+    protected bool $anonymous;
 
     public function __construct( protected PDO $db ) {
 
@@ -21,6 +24,18 @@ class SQLConversation implements ConversationInterface
 
     public function setSourcePersonaId(string|null $sourcePersonaId): void {
         $this->sourcePersonaId = $sourcePersonaId;
+    }
+
+    public function setSourceAlternativeId(int|null $sourceAlternativeId): void {
+        $this->sourceAlternativeId = $sourceAlternativeId;
+    }
+
+    public function setTargetAlternativeId(int|null $targetAlternativeId): void {
+        $this->targetAlternativeId = $targetAlternativeId;
+    }
+
+    public function setAnonymous(bool $anonymous): void {
+        $this->anonymous = $anonymous;
     }
 
     /**
@@ -41,6 +56,9 @@ class SQLConversation implements ConversationInterface
             $conversation->set_title( $data['title'] );
             $conversation->setTargetPersonaId( $data['target_persona_id'] );
             $conversation->setSourcePersonaId( $data['source_persona_id'] );
+            $conversation->setSourceAlternativeId( $data['source_alternative_id'] );
+            $conversation->setTargetAlternativeId( $data['target_alternative_id'] );
+            $conversation->setAnonymous( $data['anonymous'] );
             $conversation->setUserId( $data['user_id'] );
 
             $list[] = $conversation;
@@ -67,6 +85,9 @@ class SQLConversation implements ConversationInterface
         $conversation->setUserId( $data['user_id'] );
         $conversation->setSourcePersonaId( $data['source_persona_id'] );
         $conversation->setTargetPersonaId( $data['target_persona_id'] );
+        $conversation->setSourceAlternativeId( $data['source_alternative_id'] );
+        $conversation->setTargetAlternativeId( $data['target_alternative_id'] );
+        $conversation->setAnonymous( $data['anonymous'] );
 
         return $conversation;
     }
@@ -139,12 +160,18 @@ class SQLConversation implements ConversationInterface
                     title,
                     user_id,
                     target_persona_id,
-                    source_persona_id
+                    source_persona_id,
+                    target_alternative_id,
+                    source_alternative_id,
+                    anonymous
                 ) VALUES (
                     :title,
                     :user,
                     :target,
-                    :source
+                    :source,
+                    :targetAlt,
+                    :sourceAlt,
+                    :anonymous
                 )"
             );
 
@@ -153,6 +180,9 @@ class SQLConversation implements ConversationInterface
                 ":user" => $this->userId,
                 ":target" => $this->targetPersonaId,
                 ":source" => $this->sourcePersonaId,
+                ":targetAlt" => $this->targetAlternativeId,
+                ":sourceAlt" => $this->sourceAlternativeId,
+                ":anonymous" => $this->anonymous ? 1 : 0
             ] );
 
             $this->chat_id = $this->db->lastInsertId();
@@ -185,7 +215,10 @@ class SQLConversation implements ConversationInterface
             "title" => $this->title,
             'source_persona_id' => $this->sourcePersonaId,
             'target_persona_id' => $this->targetPersonaId,
-            'user_id' => $this->userId
+            'user_id' => $this->userId,
+            'source_alternative_id' => $this->sourceAlternativeId,
+            'target_alternative_id' => $this->targetAlternativeId,
+            'anonymous' => (bool)$this->anonymous
         );
     }
 }
