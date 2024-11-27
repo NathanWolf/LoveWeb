@@ -244,6 +244,9 @@ try {
                 'role' => $role
             );
             die(json_encode(array('message' => $message, 'success' => true)));
+        case 'delete':
+            $conversation->delete();
+            die(json_encode(array('success' => true)));
         case 'edit':
             $content = $_POST['message'];
             $messageId = $_POST['message_id'];

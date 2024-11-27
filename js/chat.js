@@ -95,12 +95,49 @@ class Chat extends Component {
             chatTitle.innerText = conversation.title;
             chatContainer.appendChild(chatTitle);
 
+            Utilities.createDiv('toolbarFiller', chatContainer);
+            let deleteContainer = document.createElement('div');
+            let deleteButton = document.createElement('button');
+            deleteButton.innerHTML = '&#x1f5d1;'
+            deleteContainer.appendChild(deleteButton);
+            chatContainer.appendChild(deleteContainer);
+            deleteButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                controller.#deleteChat(conversation, chatContainer);
+            });
+
             container.appendChild(chatContainer);
         });
 
         if (this.#conversationId != null) {
             this.#resume(this.#conversationId);
         }
+    }
+
+    async #deleteChat(conversation, container) {
+        let confirmMessage = "Are you sure you want to delete this chat?\n\n";
+        confirmMessage += conversation.title + "\n\n";
+        confirmMessage += "This cannot be undone!";
+        if (!confirm(confirmMessage)) {
+            return;
+        }
+
+        let data = this.#createForm('delete');
+        data.append('chat_id', conversation.id);
+        let deleteResponse = await fetch( "data/chat.php", {
+            method: "POST",
+            body: data
+        } ).then((response) => {
+            return response.json();
+        });
+
+        if (!deleteResponse.success) {
+            alert("Something went wrong, sorry!\n\n" + deleteResponse.message);
+            return;
+        }
+
+        delete this.#conversations[conversation.id];
+        container.remove();
     }
 
     #createPortrait(character, name) {
