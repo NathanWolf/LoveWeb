@@ -156,7 +156,6 @@ switch ($ACTION) {
         );
         die(json_encode($message));
     case 'resume':
-        $context = $conversation->get_messages();
         $targetPersonaId = $conversation->getTargetPersonaId();
         $sourcePersonaId = $conversation->getSourcePersonaId();
         $targetAlternativeId = $conversation->getTargetAlternativeId();
@@ -165,7 +164,9 @@ switch ($ACTION) {
         $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
         $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
         $system = getPrompt($targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+        $conversation->resume();
         $conversation->updateSystem($system);
+        $context = $conversation->get_messages();
         die(json_encode(array('messages' => $context)));
     case 'stream':
         header("Content-type: text/event-stream");

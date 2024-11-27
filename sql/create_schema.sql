@@ -433,6 +433,9 @@ alter table conversation
     add source_alternative_id int null,
     add anonymous boolean not null default false;
 
+alter table conversation
+    add access_count int not null default 0;
+
 CREATE TABLE conversation_message
 (
     id                int not null auto_increment,

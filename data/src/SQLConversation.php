@@ -226,6 +226,11 @@ class SQLConversation implements ConversationInterface
         return $this->chat_id;
     }
 
+    public function resume(): void {
+        $stmt = $this->db->prepare( "UPDATE conversation SET access_count = access_count + 1 WHERE id = :chat_id LIMIT 1" );
+        $stmt->execute( [":chat_id" => $this->chat_id] );
+    }
+
     public function delete(): void {
         $stmt = $this->db->prepare( "DELETE FROM conversation_message WHERE conversation_id = :chat_id" );
         $stmt->execute([

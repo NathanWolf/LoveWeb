@@ -58,6 +58,10 @@ class SessionConversation implements ConversationInterface
         return true;
     }
 
+    public function resume(): void {
+
+    }
+
     protected static function init_session() {
         if( session_status() !== PHP_SESSION_ACTIVE ) {
             session_start();

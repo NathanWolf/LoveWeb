@@ -51,4 +51,6 @@ interface ConversationInterface
     public function getData(): array;
 
     public function updateSystem($prompt): bool;
+
+    public function resume(): void;
 }
