@@ -55,8 +55,7 @@ try {
                     $character['middle_name'] = $value;
                 } else if ($propertyId == 'chat') {
                     if ($value) {
-                        $value = array('system' => $value);
-                        $character['chat'] = json_encode($value);
+                        $character['chat'] = $value;
                     } else {
                         $character['chat'] = null;
                     }

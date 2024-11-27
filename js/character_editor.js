@@ -261,6 +261,16 @@ class CharacterEditor extends Editor {
         let backstoryInput = this.createLongInput(editorForm, {id: "backstory", name: "Backstory"}, character.backstory);
         let notesInput = this.createLongInput(editorForm, {id: "notes", name: "Notes"}, character.notes);
         let chatInput = this.createLongInput(editorForm, {id: "chat", name: "Chat Prompt"}, character.chat != null ? character.chat.system : null);
+        let prompt2 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0 ? character.chat.alternatives[0].system : null
+        let promptTitle2 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0 ? character.chat.alternatives[0].label : null
+        let chatTitle2 = this.createInput(editorForm, {id: 'chatTitle2', name: 'Chat Title 2'});
+        chatTitle2.value = promptTitle2;
+        let chatInput2 = this.createLongInput(editorForm, {id: "chat2", name: "Chat Prompt 2"}, prompt2);
+        let prompt3 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 1 ? character.chat.alternatives[1].system : null
+        let promptTitle3 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 1 ? character.chat.alternatives[1].label : null
+        let chatTitle3 = this.createInput(editorForm, {id: 'chatTitle3', name: 'Chat Title 3'});
+        chatTitle3.value = promptTitle3;
+        let chatInput3 = this.createLongInput(editorForm, {id: "chat3", name: "Chat Prompt 3"}, prompt3);
 
         saveButton.addEventListener('click', () => {
             let properties = {};
@@ -282,10 +292,23 @@ class CharacterEditor extends Editor {
             properties['notes'] = notesInput.value;
             if (chatInput.value.length > 0) {
                 character.chat = {system: chatInput.value};
+                if (chatInput2.value.length > 0) {
+                    character.chat.alternatives = [];
+                    character.chat.alternatives.push({
+                        system: chatInput2.value,
+                        label: chatTitle2.value
+                    });
+                    if (chatInput3.value.length > 0) {
+                        character.chat.alternatives.push({
+                            system: chatInput3.value,
+                            label: chatTitle3.value
+                        });
+                    }
+                }
             } else {
                 character.chat = null;
             }
-            properties['chat'] = chatInput.value;
+            properties['chat'] = character.chat == null ? '' : JSON.stringify(character.chat)
             properties['first_name'] = firstNameInput.value;
             properties['last_name'] = lastNameInput.value;
             properties['middle_name'] = middleNameInput.value;
