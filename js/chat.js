@@ -1,6 +1,7 @@
 class Chat extends Component {
     #messageInput = null;
     #messagesContainer = null;
+    #messages = {};
     #conversations = {};
     #conversationId = null;
 
@@ -235,7 +236,7 @@ class Chat extends Component {
         let controller = this;
         resumeResponse.messages.forEach(function(message){
             if (message.role == 'system') return;
-            controller.addMessage(message.role, message.content, targetCharacterId);
+            controller.addMessageObject(message, targetCharacterId);
         });
     }
 
@@ -324,7 +325,12 @@ class Chat extends Component {
         }
     }
 
-    addMessage(role, message, characterId) {
+    addMessageObject(message, characterId) {
+        this.#messages[message.id] = message;
+        this.addMessage(message.role, message.content, characterId, message.id);
+    }
+
+    addMessage(role, message, characterId, messageId) {
         let conversation = this.getConversation();
         if (conversation == null) {
             alert("Sorry, something went wrong!");
@@ -351,8 +357,82 @@ class Chat extends Component {
         let content = Utilities.createDiv('content', messageDiv);
         content.innerHTML = message;
 
+        if (messageId !== 'undefined') {
+            this.makeEditable(messageId, messageDiv);
+        }
+
         this.scrollToBottom();
         return messageDiv;
+    }
+
+    editMessage(messageId, messageDiv, contentDiv) {
+        if (!this.#messages.hasOwnProperty(messageId)) {
+            return;
+        }
+
+        // Check if already editing
+        if (contentDiv.style.display == 'none') return;
+
+        Utilities.setVisible(contentDiv, false);
+
+        let content = this.#messages[messageId].content;
+        let editorDiv = Utilities.createDiv('messageEditorContainer', messageDiv);
+        let textDiv = Utilities.createDiv('messageTextAreaContainer', editorDiv);
+        let editorInput = document.createElement('textarea');
+        editorInput.rows = 8;
+        editorInput.cols = 40;
+        editorInput.value = Utilities.convertFromHTML(content);
+        textDiv.appendChild(editorInput);
+        let editorToolbar = Utilities.createDiv('messageEditorToolbar', editorDiv);
+        let deleteButton = document.createElement('button');
+        deleteButton.innerText = 'Delete';
+        editorToolbar.appendChild(deleteButton);
+        Utilities.createSpan('toolbarFiller', editorToolbar);
+        let cancelButton = document.createElement('button');
+        cancelButton.innerText = 'Cancel';
+        editorToolbar.appendChild(cancelButton);
+        let saveButton = document.createElement('button');
+        saveButton.innerText = 'Save';
+        editorToolbar.appendChild(saveButton);
+
+        let controller = this;
+        cancelButton.addEventListener('click', function() {
+            Utilities.setVisible(contentDiv, true);
+            editorDiv.remove();
+        });
+
+        saveButton.addEventListener('click', function() {
+            let editedContent = editorInput.value;
+            let content = Utilities.convertMarkdown(editedContent);
+            // Looks like the markdown process converts tags anyway
+            // content = Utilities.convertToHTML(content);
+            contentDiv.innerHTML = content;
+            controller.#messages[messageId].content = content;
+            Utilities.setVisible(contentDiv, true);
+            editorDiv.remove();
+
+            // save edited message
+            let conversation = controller.getConversation();
+            let data = controller.#createForm('edit');
+            data.append("chat_id", conversation.id);
+            data.append("message_id", messageId)
+            data.append("message", editedContent);
+
+            // send message and get message id
+            fetch( "data/chat.php", {
+                method: "POST",
+                body: data
+            });
+        });
+
+        deleteButton.addEventListener('click', function() {
+            if (confirm("Are you sure you want to delete this message AND ALL MESSAGES AFTER?\n\nThis cannot be undone!")) {
+                alert("um, well sorry, this isn't implemented yet");
+            } else {
+                Utilities.setVisible(contentDiv, true);
+                editorDiv.remove();
+            }
+        });
     }
 
     updateMessage(container, message) {
@@ -377,37 +457,33 @@ class Chat extends Component {
 
         let question = Utilities.escapeHtml(this.#messageInput.value);
         let controller = this;
-        let characters = this.getController().getCharacters();
         let characterId = conversation.target_persona_id;
-        let character = characters.getCharacter(characterId);
-
-        // Add user message to chat list
-        this.addMessage('user', question);
-
-        // Send message and await response
-
-        // initialize message with blinking cursor
-        let message = this.addMessage( 'assistant', '<div id="cursor"></div>', characterId);
-
-        // empty the message input field
-        this.#messageInput.value = '';
 
         // send message
         let data = this.#createForm('message');
         data.append("chat_id", conversation.id);
         data.append("message", question);
 
-        // send message and get chat id
+        // send message and get message id
         let messageResponse = await fetch( "data/chat.php", {
             method: "POST",
             body: data
         } ).then((response) => {
             return response.json();
         });
-        if (messageResponse == null || !messageResponse.hasOwnProperty('conversation_id')) {
+        if (messageResponse == null || !messageResponse.hasOwnProperty('id')) {
             alert("Sorry, something went wrong!");
             return;
         }
+
+        // Add user message to chat list
+        this.addMessageObject(messageResponse);
+
+        // initialize response message with blinking cursor
+        let message = this.addMessage( 'assistant', '<div id="cursor"></div>', characterId);
+
+        // empty the message input field
+        this.#messageInput.value = '';
 
         // listen for response tokens
         let eventUrl = "data/chat.php?action=stream&chat_id=" + conversation.id;
@@ -448,11 +524,31 @@ class Chat extends Component {
             }
         });
 
-        eventSource.addEventListener( "stop", async function() {
-            eventSource.close();
+        eventSource.addEventListener( "stop", async function(event) {
+            // The ChatGPT API emits a stopped event, but we want to wait for our custom one that contains
+            // the message data
+            if (event.data != 'stopped') {
+                let json = JSON.parse( event.data );
+                if (json.hasOwnProperty('id')) {
+                    controller.#messages[json.id] = json;
+                    controller.makeEditable(json.id, message);
+                }
+                eventSource.close();
+            }
         } );
 
         this.#messageInput.focus();
+    }
+
+    makeEditable(messageId, messageDiv) {
+        let controller = this;
+        // Get inner content div
+        let contentDiv = messageDiv.querySelector('.content');
+        if (contentDiv == null) return;
+
+        contentDiv.addEventListener('click', function() {
+            controller.editMessage(messageId, messageDiv, contentDiv);
+        });
     }
 
     scrollToBottom() {

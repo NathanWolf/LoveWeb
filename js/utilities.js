@@ -241,6 +241,18 @@ class Utilities {
         return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
     }
 
+    static convertFromHTML(text) {
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = text;
+        return tempDiv.innerText;
+    }
+
+    static convertToHTML(text) {
+        let tempDiv = document.createElement('div');
+        tempDiv.innerText = text;
+        return tempDiv.innerHTML;
+    }
+
     static convertMarkdown(text) {
         text = text.trim();
 

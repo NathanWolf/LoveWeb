@@ -84,7 +84,7 @@ class SQLConversation implements ConversationInterface
         return $stmt->fetchAll( PDO::FETCH_ASSOC );
     }
 
-    public function add_message( $message ): bool {
+    public function add_message( $message ): int {
         if (!$this->chat_id) {
             throw new Exception("Can't add a message without an id");
         }
@@ -105,7 +105,15 @@ class SQLConversation implements ConversationInterface
             ":the_conversation" => $this->chat_id
         ] );
 
-        return true;
+        return $this->db->lastInsertId();
+    }
+
+    public function edit_message( $messageId, $message ) {
+        $stmt = $this->db->prepare( "UPDATE conversation_message SET original_content = IFNULL(original_content, content), content = :content WHERE id = :message_id LIMIT 1" );
+        $stmt->execute( [
+            ":content" => $message,
+            ":message_id" => $messageId,
+        ] );
     }
 
     public function set_id( string $id ) {

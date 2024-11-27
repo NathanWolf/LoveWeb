@@ -10,7 +10,9 @@ interface ConversationInterface
 
     public function get_messages();
 
-    public function add_message( $message ): bool;
+    public function add_message( $message ): int;
+
+    public function edit_message( $messageId, $message );
 
     public function set_id( string $id );
 

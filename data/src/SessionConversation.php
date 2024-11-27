@@ -80,9 +80,13 @@ class SessionConversation implements ConversationInterface
         return $_SESSION['chats'][$this->chat_id]["messages"] ?? [];
     }
 
-    public function add_message( $message ): bool {
+    public function add_message( $message ): int {
         $_SESSION['chats'][$this->chat_id]["messages"][] = $message;
-        return true;
+        return count($_SESSION['chats'][$this->chat_id]["messages"]);
+    }
+
+    public function edit_message( $messageId, $message ) {
+        $_SESSION['chats'][$this->chat_id]["messages"][$messageId] = $message;
     }
 
     public function set_id( string $id ) {

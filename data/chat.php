@@ -114,13 +114,31 @@ if (!$conversation) {
 
 switch ($ACTION) {
     case 'message':
+        $role = "user";
+        $content = $_POST['message'];
         $message = [
-            "role" => "user",
-            "content" => $_POST['message'],
+            "role" => $role,
+            "content" => $content,
         ];
 
-        $conversation->add_message($message);
-        die(json_encode(array('conversation_id' => $conversation->get_id())));
+        $messageId = $conversation->add_message($message);
+        $message = array(
+            'conversation_id' => $conversation->get_id(),
+            'id' => $messageId,
+            'content' => $content,
+            'role' => $role
+        );
+        die(json_encode($message));
+    case 'edit':
+        $content = $_POST['message'];
+        $messageId = $_POST['message_id'];
+        $conversation->edit_message($messageId, $content);
+        $message = array(
+            'conversation_id' => $conversation->get_id(),
+            'id' => $messageId,
+            'content' => $content
+        );
+        die(json_encode($message));
     case 'resume':
         $context = $conversation->get_messages();
         die(json_encode(array('messages' => $context)));
@@ -167,10 +185,11 @@ switch ($ACTION) {
             "content" => $response_text,
         ];
 
-        $conversation->add_message($assistant_message);
-
+        $messageId = $conversation->add_message($assistant_message);
+        $assistant_message['id'] = $messageId;
+        $assistant_message['conversation_id'] = $conversation->get_id();
         echo "event: stop\n";
-        echo "data: stopped\n\n";
+        echo "data: " . json_encode($assistant_message) . "\n\n";
         break;
     default:
         die("Unknown action " . $ACTION);
