@@ -14,6 +14,8 @@ interface ConversationInterface
 
     public function edit_message( $messageId, $message );
 
+    public function delete_message( $messageId, bool $following );
+
     public function set_id( string $id );
 
     public function set_title( string $title );

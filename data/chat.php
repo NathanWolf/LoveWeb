@@ -251,6 +251,11 @@ try {
         case 'delete':
             $conversation->delete();
             die(json_encode(array('success' => true)));
+        case 'delete_message':
+            if (!isset($_POST['message_id'])) throw new Exception("Missing message id");
+            $messageId = $_POST['message_id'];
+            $conversation->delete_message($messageId, true);
+            die(json_encode(array('success' => true)));
         case 'edit':
             $content = $_POST['message'];
             $messageId = $_POST['message_id'];

@@ -161,6 +161,19 @@ class SQLConversation implements ConversationInterface
         ] );
     }
 
+    public function delete_message( $messageId, bool $following ) {
+        $stmt = null;
+        if ($following) {
+            $stmt = $this->db->prepare( "DELETE FROM conversation_message WHERE conversation_id = :chat_id AND id >= :message_id" );
+        } else {
+            $stmt = $this->db->prepare( "DELETE FROM conversation_message WHERE conversation_id = :chat_id AND id = :message_id LIMIT 1" );
+        }
+        $stmt->execute( [
+            ":chat_id" => $this->chat_id,
+            ":message_id" => $messageId
+        ] );
+    }
+
     public function updateSystem($prompt): bool {
         $stmt = $this->db->prepare( "UPDATE conversation_message SET original_content = IFNULL(original_content, content), content = :content WHERE conversation_id = :chat_id AND role = 'system' LIMIT 1" );
         $stmt->execute( [

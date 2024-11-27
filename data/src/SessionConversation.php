@@ -140,12 +140,30 @@ class SessionConversation implements ConversationInterface
     }
 
     public function add_message( $message ): int {
+        $id = $_SESSION['chats'][$this->chat_id]["messages"] ? count($_SESSION['chats'][$this->chat_id]["messages"]) : 0;
+        $message['id'] = $id;
         $_SESSION['chats'][$this->chat_id]["messages"][] = $message;
-        return count($_SESSION['chats'][$this->chat_id]["messages"]);
+        return $id;
     }
 
     public function edit_message( $messageId, $message ) {
         $_SESSION['chats'][$this->chat_id]["messages"][$messageId]['content'] = $message;
+    }
+
+    public function delete_message( $messageId, bool $following ) {
+        $messages = array();
+        foreach ($_SESSION['chats'][$this->chat_id]["messages"] as $index => $message) {
+            if ($following) {
+                if ($index < $messageId) {
+                    $messages[] = $message;
+                }
+            } else {
+                if ($index != $messageId) {
+                    $messages[] = $message;
+                }
+            }
+        }
+        $_SESSION['chats'][$this->chat_id]["messages"] = $messages;
     }
 
     public function set_id( string $id ) {

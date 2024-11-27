@@ -487,7 +487,7 @@ class Chat extends Component {
         textDiv.appendChild(editorInput);
         let editorToolbar = Utilities.createDiv('messageEditorToolbar', editorDiv);
         let deleteButton = document.createElement('button');
-        deleteButton.innerText = 'Delete';
+        deleteButton.innerHTML = '&#x1f5d1;'
         editorToolbar.appendChild(deleteButton);
         Utilities.createSpan('toolbarFiller', editorToolbar);
         let cancelButton = document.createElement('button');
@@ -536,13 +536,31 @@ class Chat extends Component {
         });
 
         deleteButton.addEventListener('click', async function() {
-            if (confirm("Are you sure you want to delete this message AND ALL MESSAGES AFTER?\n\nThis cannot be undone!")) {
-                alert("um, well sorry, this isn't implemented yet");
+            if (confirm("Are you sure you want to delete this message\n\nAND ALL MESSAGES AFTER?\n\nThis cannot be undone!")) {
+                controller.#deleteMessage(messageId);
             } else {
                 Utilities.setVisible(contentDiv, true);
                 editorDiv.remove();
             }
         });
+    }
+
+    async #deleteMessage(messageId) {
+        let data = this.#createForm('delete_message');
+        data.append('chat_id', this.#conversationId);
+        data.append('message_id', messageId);
+        let deleteResponse = await fetch( "data/chat.php", {
+            method: "POST",
+            body: data
+        } ).then((response) => {
+            return response.json();
+        });
+
+        if (!deleteResponse.success) {
+            alert("Something went wrong, sorry!\n\n" + deleteResponse.message);
+            return;
+        }
+        this.#resume(this.#conversationId);
     }
 
     updateMessage(container, message) {
