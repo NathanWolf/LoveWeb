@@ -117,7 +117,7 @@ class SQLConversation implements ConversationInterface
             return [];
         }
 
-        $stmt = $this->db->prepare( "SELECT * FROM conversation_message WHERE `conversation_id` = :chat_id" );
+        $stmt = $this->db->prepare( "SELECT * FROM conversation_message WHERE `conversation_id` = :chat_id ORDER BY created asc" );
         $stmt->execute( [
             ":chat_id" => $this->chat_id,
         ] );
