@@ -18,6 +18,10 @@ class SQLConversation implements ConversationInterface
         $this->userId = $userId;
     }
 
+    public function getUserId(): string|null {
+        return $this->userId;
+    }
+
     public function setTargetPersonaId(string|null $targetPersonaId): void {
         $this->targetPersonaId = $targetPersonaId;
     }

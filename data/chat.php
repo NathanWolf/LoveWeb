@@ -220,11 +220,15 @@ try {
     }
     // get chat history from session
     $chat_id = intval($_REQUEST['chat_id']);
-
     $conversation = $conversation_class->find($chat_id);
 
     if (!$conversation) {
         throw new Exception("Invalid chat id: $chat_id");
+    }
+
+    // Check authorization
+    if ($USER_ID && $conversation->getUserId() != $USER_ID) {
+        throw new Exception("That is not your chat!");
     }
 
     switch ($ACTION) {

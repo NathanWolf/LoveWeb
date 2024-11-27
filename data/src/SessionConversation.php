@@ -35,6 +35,10 @@ class SessionConversation implements ConversationInterface
     public function setUserId(string|null $userId): void {
     }
 
+    public function getUserId(): string|null {
+        return null;
+    }
+
     public function setAnonymous(bool $anonymous): void {
     }
 

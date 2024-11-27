@@ -28,6 +28,8 @@ interface ConversationInterface
 
     public function setUserId(string|null $userId): void;
 
+    public function getUserId(): string|null;
+
     public function setTargetPersonaId(string|null $targetPersonaId): void;
 
     public function setSourcePersonaId(string|null $sourcePersonaId): void;
