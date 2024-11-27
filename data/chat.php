@@ -56,19 +56,63 @@ $db = get_db();
 $conversation_class = get_conversation_class($db);
 $loveDatabase = new \com\elmakers\love\LoveDatabase();
 
-function getPrompt($targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous) : string {
-    $system = $targetPersona['chat']['system'] ?? null;
-    if (!is_null($targetAlternativeId) && isset($targetPersona['chat']['alternatives'][$targetAlternativeId]['system'])) {
-        $system = $targetPersona['chat']['alternatives'][$targetAlternativeId]['system'];
+function getCharacterName($persona) {
+    $name = $persona['first_name'];
+    if (isset($persona['nick_name']) && $persona['nick_name']) {
+        $name = $persona['nick_name'];
+    } else if ($persona['last_name']) {
+        $name .= ' ' . $persona['last_name'];
     }
-    $sourceSystem = $sourcePersona && isset($sourcePersona['chat']['system']) ? $sourcePersona['chat']['system'] : null;
-    if (!is_null($sourceAlternativeId) && isset($sourcePersona['chat']['alternatives'][$sourceAlternativeId]['system'])) {
-        $sourceSystem = $sourcePersona['chat']['alternatives'][$sourceAlternativeId]['system'];
+    return $name;
+}
+
+function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
+    if (!$persona) {
+        return null;
     }
-    if ($sourceSystem) {
-        $system .= "\n\nYou are speaking to someone who would describe themselves like this: $sourceSystem";
+    $prompt = 'Your name is ' . getCharacterName($persona) . "\n";
+    if ($persona['birth_name']) {
+        $prompt .= 'Your birth name is ' . $persona['birth_name'] . "\n";
     }
-    return $system;
+    $system = null;
+    if ($persona['chat']['system']) {
+        $system = $persona['chat']['system'];
+    }
+    if (!is_null($alternativeId) && isset($persona['chat']['alternatives'][$alternativeId]['system'])) {
+        $system = $persona['chat']['alternatives'][$alternativeId]['system'];
+    }
+    if ($system) {
+        $prompt .= "\n" . $system;
+    }
+    return $prompt;
+}
+
+function getUserPrompt($loveDatabase, $userId) {
+    $user = $loveDatabase->getUser($userId);
+    $prompt = 'My name is ' . getCharacterName($user) . "\n";
+    $system = null;
+    if ($user['chat']['system']) {
+        $system = $user['chat']['system'];
+    }
+    if ($system) {
+        $prompt .= "\n" . $system;
+    }
+    return $prompt;
+}
+
+function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous) : string {
+    $prompt = getCharacterPrompt($loveDatabase, $targetPersona, $targetAlternativeId);
+    $sourcePrompt = null;
+    if ($sourcePersona) {
+        $sourcePrompt = getCharacterPrompt($loveDatabase, $sourcePersona, $sourceAlternativeId);
+    } else if ($userId && !$anonymous) {
+        $sourcePrompt = getUserPrompt($loveDatabase, $userId);
+    }
+
+    if ($sourcePrompt) {
+        $prompt .= "\n\nYou are speaking to someone who would describe themselves like this:\n$sourcePrompt";
+    }
+    return $prompt;
 }
 
 // Actions that don't require an existing conversation
@@ -105,7 +149,7 @@ switch ($ACTION) {
         $conversation->setAnonymous($anonymous);
         $conversation->save();
         $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
-        $system = getPrompt($targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+        $system = getPrompt($loveDatabase, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
         $system_message = [
             "role" => "system",
             "content" => $system
@@ -163,7 +207,7 @@ switch ($ACTION) {
         $anonymous = $conversation->getAnonymous();
         $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
         $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
-        $system = getPrompt($targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+        $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
         $conversation->resume();
         $conversation->updateSystem($system);
         $context = $conversation->get_messages();
