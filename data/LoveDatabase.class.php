@@ -90,6 +90,9 @@ class LoveDatabase extends Database {
     private function processUser(&$user) {
         if ($user) {
             $user['properties'] = $this->getUserProperties($user['id']);
+            if ($user['chat']) {
+                $user['chat'] = json_decode($user['chat'], true);
+            }
         }
     }
 
