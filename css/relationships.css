@@ -18,9 +18,9 @@ td.relationshipMainCharacter {
     height: 100%;
     background-size: contain;
     background-repeat: no-repeat;
-    border: 2px solid #B34E24;
+    border: 2px solid var(--tile-border-color);
     background-position: center;
-    background-color: #FEE4AF;
+    background-color: var(--tile-background-color);
 }
 
 td.relationshipCharacter {
@@ -28,8 +28,8 @@ td.relationshipCharacter {
     height: 128px;
     background-size: contain;
     background-repeat: no-repeat;
-    border: 2px solid #B34E24;
-    background-color: #FFF2CE;
+    border: 2px solid var(--tile-border-color);
+    background-color: var(--tile-background-color);
     border-radius: 20px;
 }
 
@@ -38,10 +38,10 @@ td.relationshipFiller {
 }
 
 td.relationshipType {
-    border: 2px solid #B34E24;
+    border: 2px solid var(--tile2-border-color);
     padding-left: 1em;
     padding-right: 1em;
     text-align: center;
-    background-color: #FFFCED;
-    color: #BE6E42;
+    background-color: var(--tile2-background-color);
+    color: var(--tile2-color);
 }

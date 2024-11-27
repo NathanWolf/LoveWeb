@@ -1,3 +1,101 @@
+:root {
+    --background-color: #FFFADF;
+    --text-color: black;
+    --input-background-color: #FEE4AF;
+    --input-border-color: #D08856;
+    --input-color: #B1693B;
+    --tile-color: #752C0E;
+    --tile-background-color: #FEE4AF;
+    --tile-hover-background-color: #FEE4AF;
+    --tile-border-color: #752B0D;
+    --tile2-background-color: #FFFCED;
+    --tile2-border-color: #B34E24;
+    --tile2-color: #BE6E42;
+    --name-background-color: #BE6E42;
+    --name-color: #FFFFFF;
+    --name-border: #BE6E42;
+    --name-hover-background-color: #ECA15E;
+    --name-hover-border-color: #ECA15E;
+    --name-hover-color: #742A00;
+    --toolbar-border-color: #752C0E;
+    --toolbar-background-color: #F8D8A4;
+    --button-background-color: #FFBF80;
+    --button-border-color: #752C0E;
+    --button-color: #B1693B;
+    --button-hover-color: #9E542C;
+    --button-hover-background-color: #E8A25E;
+    --button-active-color: #FF7851;
+    --placeholder-color: rgba(177, 105, 59, 0.38);
+    --cursor-color: #000000;
+    --chat-background-color: #FFFADF;
+    --chat-color: #000000;
+    --popup-background-color: #FFE5B0;
+    --popup-border-color: #742A00;
+    --section-border-color: #B44D21;
+    --section-background-color: #F7C280;
+    --rule-color: #B34E24;
+    --separator-color: black;
+    --section2-background-color: #FFFBE0;
+    --section2-border-color: #B44D21;
+    --table-border: grey;
+    --group-header-border-color: #B34E24;
+    --group-header-color: #B34E24;
+    --header-dark-color: #FEE4AF;
+    --event-minor-background-color: #FFE8C1;
+    --event-death-background-color: #F0C483;
+    --event-birth-background-color: #F0C483;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #090c36;
+        --text-color: #FFFADF;
+        --input-background-color: #B1693B;
+        --input-border-color: #D08856;
+        --input-color: #FEE4AF;
+        --tile-color: #FFFADF;
+        --tile-background-color: #752C0E;
+        --tile-hover-background-color: #461c0a;
+        --tile-border-color: #752B0D;
+        --tile2-background-color: #B34E24;
+        --tile2-border-color: #BE6E42;
+        --tile2-color: #FFFCED;
+        --name-background-color: #BE6E42;
+        --name-color: #DDDDDD;
+        --name-border: #BE6E42;
+        --name-hover-background-color: #ECA15E;
+        --name-hover-border-color: #ECA15E;
+        --name-hover-color: #742A00;
+        --toolbar-border-color: #F8D8A4;
+        --toolbar-background-color: #752C0E;
+        --button-background-color: #B1693B;
+        --button-border-color: #752C0E;
+        --button-color: #FFBF80;
+        --button-hover-color: #9E542C;
+        --button-hover-background-color: #E8A25E;
+        --button-active-color: #FF7851;
+        --placeholder-color: rgba(177, 105, 59, 0.38);
+        --cursor-color: #000000;
+        --chat-background-color: #333333;
+        --chat-color: #DDDDDD;
+        --popup-background-color: #742A00;
+        --popup-border-color: #FFE5B0;
+        --section-border-color: #F7C280;
+        --section-background-color: #B44D21;
+        --rule-color: #B34E24;
+        --separator-color: #DDDDDD;
+        --section2-background-color: #B44D21;
+        --section2-border-color: #FFFBE0;
+        --table-border: grey;
+        --group-header-border-color: #B34E24;
+        --group-header-color: #B34E24;
+        --header-dark-background-color: #FEE4AF;
+        --event-minor-background-color: #541d00;
+        --event-death-background-color: #381400;
+        --event-birth-background-color: #1a0a00;
+    }
+}
+
 html,body {
     margin: 0;
     padding: 0;
@@ -5,36 +103,37 @@ html,body {
 }
 
 body {
-    background: #FFFADF;
+    background: var(--background-color);
     overscroll-behavior-y: none;
     overflow: hidden;
     user-select: none;
+    color: var(--text-color);
 }
 
 select {
-    background-color: #FFFAE0;
+    background-color: var(--input-background-color);
 }
 
 textarea {
-    background-color: #FEE4AF;
-    border: 1px solid #D08856;
+    background-color: var(--input-background-color);
+    border: 1px solid var(--input-border-color);
 }
 
 .tile {
-    color: #752C0E;
+    color: var(--tile-color);
     width: 5em;
     min-width: 5em;
     height: 5em;
     min-height: 5em;
     justify-content: center;
     align-items: center;
-    border: 1px solid #752C0E;
+    border: 1px solid var(--tile-color);
     padding: 1em;
     margin: 1em;
     text-decoration: none;
     font-size: 1em;
     display: flex;
-    background-color: white;
+    background-color: var(--tile-background-color);
     cursor: pointer;
 }
 
@@ -45,11 +144,12 @@ textarea {
 
 .tile:hover {
     text-decoration: underline;
-    background-color: #FEE4AF !important;
+    background-color: var(--tile-hover-background-color) !important;
 }
 
 .tile a {
     text-decoration: none;
+    color: var(--tile-color);
 }
 
 .tabContainer {
@@ -60,8 +160,8 @@ textarea {
 
 .toolbar {
     display: flex;
-    border: 1px solid #752C0E;
-    background: #F8D8A4;
+    border: 1px solid var(--toolbar-border-color);
+    background: var(--toolbar-background-color);
 }
 
 .tabButtons {
@@ -71,35 +171,21 @@ textarea {
 }
 
 .toolbarButton {
-    background: #FFBF80;
-    border: 1px solid #752C0E;
+    background: var(--button-background-color);
+    border: 1px solid var(--button-border-color);
     padding: 2px 12px;
     cursor: pointer;
-    color: #B1693B;
+    color: var(--button-color);
     white-space: nowrap;
 }
 
 .toolbarButton:hover {
-    background: #E8A25E;
-    color: #9E542C;
-}
-
-.tabLink a {
-    text-decoration: none;
-    color: black;
-}
-
-.tabLink:hover {
-    background: #228;
-    color: white;
-}
-
-.tabLink:hover a {
-    color: white;
+    background: var(--button-hover-background-color);
+    color: var(--button-hover-color);
 }
 
 .tabButton.active {
-    background: #FF7851;
+    background: var(--button-active-color);
     cursor: default;
     color: black;
 }
@@ -154,7 +240,7 @@ textarea {
 }
 
 .popupInnerContent {
-    background: white;
+    background: var(--background-color);
     padding: 2em;
 }
 
@@ -176,7 +262,7 @@ textarea {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
-    background-color: white;
+    background-color: var(--background-color);
     width: 614px;
     height: 429px;
     min-width: 614px;
@@ -190,5 +276,9 @@ textarea {
     flex-wrap: wrap;
     flex-direction: row;
     flex: auto;
+}
+
+.section.following {
+    overflow: hidden;
 }
 

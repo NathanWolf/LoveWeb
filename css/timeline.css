@@ -11,22 +11,22 @@ div.eventContainer {
 }
 
 div.event {
-    border: 2px solid #752C0E;
+    border: 2px solid var(--tile-border-color);
     padding: 1em;
     display: flex;
     flex-direction: column;
     border-radius: 24px;
     align-items: center;
-    background: #F8D8A4;
-    color: #752C0E;
+    background: var(--tile-background-color);
+    color: var(--tile-color);
 }
 
 div.eventLine {
-    border-bottom: 5px solid #B1693B;
+    border-bottom: 5px solid var(--button-color);
 }
 
 .eventLine.gap {
-    border-bottom: 5px dashed #B1693B;
+    border-bottom: 5px dashed var(--button-color);
 }
 
 .eventDate {
@@ -41,16 +41,16 @@ div.eventLine {
 }
 
 .event.minor {
-    background: #FFE8C1;
+    background: var(--event-minor-background-color);
     font-size: 0.75em;
 }
 
 .event.death {
-    background: #F0C483;
+    background: var(--event-death-background-color);
     font-size: 0.75em;
 }
 
 .event.birth {
-    background: #F0C483;
+    background: var(--event-birth-background-color);
     font-size: 0.75em;
 }

@@ -12,13 +12,18 @@
     display: flex;
     align-items: center;
     width: 100%;
-    background: #FFBF80;
-    border: 2px solid #B1693B;
+    background: var(--button-background-color);
+    border: 2px solid var(--button-color);
     margin-bottom: 16px;
     padding: 8px;
-    color: #B1693B;
+    color: var(--button-color);
     font-size: 2em;
     cursor: pointer;
+}
+
+.conversationContainer:hover {
+    background-color: var(--button-hover-background-color);
+    color: var(--button-hover-color);
 }
 
 .chatContainer {
@@ -30,10 +35,11 @@
 
 .chatMessages {
     flex: 1;
-    border: 1px solid black;
+    border: 1px solid var(--toolbar-border-color);
     overflow-y: auto;
     white-space: normal;
-    background: #FFFCED;
+    background: var(--chat-background-color);
+    color: var(--chat-color);
 }
 
 .newChat, .anonymous {
@@ -66,12 +72,12 @@
     font-family: inherit;
     font-size: 1em;
     outline: none;
-    background: #FFEBC3;
-    color: #B1693B;
+    background: var(--input-background-color);
+    color: var(--input-color);
 }
 
 .chatInput textarea::placeholder {
-    color: rgba(177, 105, 59, 0.38);
+    color: var(--placeholder-color);
 }
 
 .chatInputContainer {
@@ -89,7 +95,7 @@
 
 .chatInput button {
     position: absolute;
-    background: #F6C181;
+    background: var(--input-background-color);
     cursor: pointer;
     right: 15px;
     top: 50%;
@@ -147,7 +153,7 @@
 #cursor {
     width: 16px;
     height: 20px;
-    background-color: black;
+    background-color: var(--cursor-color);
     display: inline-block;
     animation: blink 1s infinite;
 }
