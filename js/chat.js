@@ -39,7 +39,7 @@ class Chat extends Component {
             return response.json();
         });
 
-        if (listResponse == null || !listResponse.hasOwnProperty('conversations')) {
+        if (listResponse == null || !listResponse.success || !listResponse.hasOwnProperty('conversations')) {
             alert("Sorry, something went wrong!");
             return;
         }
@@ -331,7 +331,7 @@ class Chat extends Component {
             return response.json();
         });
 
-        if (startResponse == null || !startResponse.hasOwnProperty('conversation')) {
+        if (startResponse == null || !startResponse.success || !startResponse.hasOwnProperty('conversation')) {
             alert("Sorry, something went wrong!");
             return;
         }
@@ -468,7 +468,7 @@ class Chat extends Component {
             editorDiv.remove();
         });
 
-        saveButton.addEventListener('click', function() {
+        saveButton.addEventListener('click', async function() {
             let editedContent = editorInput.value;
             let content = Utilities.convertMarkdown(editedContent);
             // Looks like the markdown process converts tags anyway
@@ -485,14 +485,20 @@ class Chat extends Component {
             data.append("message_id", messageId)
             data.append("message", editedContent);
 
-            // send message and get message id
-            fetch( "data/chat.php", {
+            // edit message
+            let editResponse = await fetch( "data/chat.php", {
                 method: "POST",
                 body: data
+            } ).then((response) => {
+                return response.json();
             });
+            if (editResponse == null || !editResponse.success) {
+                alert("Sorry, something went wrong!");
+                return;
+            }
         });
 
-        deleteButton.addEventListener('click', function() {
+        deleteButton.addEventListener('click', async function() {
             if (confirm("Are you sure you want to delete this message AND ALL MESSAGES AFTER?\n\nThis cannot be undone!")) {
                 alert("um, well sorry, this isn't implemented yet");
             } else {
@@ -538,13 +544,13 @@ class Chat extends Component {
         } ).then((response) => {
             return response.json();
         });
-        if (messageResponse == null || !messageResponse.hasOwnProperty('id')) {
+        if (messageResponse == null || !messageResponse.hasOwnProperty('message') || !messageResponse.success) {
             alert("Sorry, something went wrong!");
             return;
         }
 
         // Add user message to chat list
-        this.addMessageObject(messageResponse);
+        this.addMessageObject(messageResponse.message);
 
         // initialize response message with blinking cursor
         let message = this.addMessage( 'assistant', '<div id="cursor"></div>', characterId);

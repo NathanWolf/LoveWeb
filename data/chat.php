@@ -52,10 +52,6 @@ function get_conversation_class($db): ConversationInterface {
     return new $conversation_class[$STORAGE_TYPE]($db);
 }
 
-$db = get_db();
-$conversation_class = get_conversation_class($db);
-$loveDatabase = new \com\elmakers\love\LoveDatabase();
-
 function getCharacterName($persona) {
     $name = $persona['first_name'];
     if (isset($persona['nick_name']) && $persona['nick_name']) {
@@ -156,165 +152,175 @@ function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourceP
     return $prompt;
 }
 
-// Actions that don't require an existing conversation
-switch ($ACTION) {
-    case 'list':
-        $conversation_class->setUserId($USER_ID);
-        $chats = $conversation_class->get_chats();
-        $conversations = array();
-        foreach ($chats as $chat) {
-            $conversations[] = $chat->getData();
-        }
-        die(json_encode(array('conversations' => $conversations)));
-    case 'prompt':
-        $targetPersonaId = $_REQUEST['target_persona_id'];
-        $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
-        if (!$targetPersona || !$targetPersona['chat']) {
-            die("Invalid character: $targetPersonaId");
-        }
-        $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
-        $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
-        $sourceAlternativeId = $_REQUEST['source_alternative_id'] ?? null;
-        $targetAlternativeId = $_REQUEST['target_alternative_id'] ?? null;
-        $anonymous = isset($_REQUEST['anonymous']);
-        $prompt = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
-        die(json_encode(array('prompt' => $prompt)));
-    case 'start':
-        if (!isset($_REQUEST['target_persona_id'])) {
-            die("Missing target_persona_id parameter");
-        }
-        $targetPersonaId = $_REQUEST['target_persona_id'];
-        $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
-        if (!$targetPersona || !$targetPersona['chat']) {
-            die("Invalid character: $targetPersonaId");
-        }
-        $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
-        $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
-        $sourceAlternativeId = $_REQUEST['source_alternative_id'] ?? null;
-        $targetAlternativeId = $_REQUEST['target_alternative_id'] ?? null;
-        $anonymous = isset($_REQUEST['anonymous']);
-        $title = $_REQUEST['title'] ?? "Untitled chat";
-        $conversation = new $conversation_class($db);
-        $conversation->set_title($title);
-        $conversation->setUserId($USER_ID);
-        $conversation->setTargetPersonaId($targetPersonaId);
-        $conversation->setSourcePersonaId($sourcePersonaId);
-        $conversation->setSourceAlternativeId($sourceAlternativeId);
-        $conversation->setTargetAlternativeId($targetAlternativeId);
-        $conversation->setAnonymous($anonymous);
-        $conversation->save();
-        $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
-        $system_message = [
-            "role" => "system",
-            "content" => $system
-        ];
+try {
+    $db = get_db();
+    $conversation_class = get_conversation_class($db);
+    $loveDatabase = new \com\elmakers\love\LoveDatabase();
 
-        $context[] = $system_message;
-        $conversation->add_message($system_message);
-        die(json_encode(array('conversation' => $conversation->getData())));
-}
-
-if (!isset($_REQUEST['chat_id'])) {
-    die("Missing chat id");
-}
-// get chat history from session
-$chat_id = intval($_REQUEST['chat_id']);
-
-$conversation = $conversation_class->find($chat_id);
-
-if (!$conversation) {
-    die("Invalid chat id: $chat_id");
-}
-
-switch ($ACTION) {
-    case 'message':
-        $role = "user";
-        $content = $_POST['message'];
-        $message = [
-            "role" => $role,
-            "content" => $content,
-        ];
-
-        $messageId = $conversation->add_message($message);
-        $message = array(
-            'conversation_id' => $conversation->get_id(),
-            'id' => $messageId,
-            'content' => $content,
-            'role' => $role
-        );
-        die(json_encode($message));
-    case 'edit':
-        $content = $_POST['message'];
-        $messageId = $_POST['message_id'];
-        $conversation->edit_message($messageId, $content);
-        $message = array(
-            'conversation_id' => $conversation->get_id(),
-            'id' => $messageId,
-            'content' => $content
-        );
-        die(json_encode($message));
-    case 'resume':
-        $targetPersonaId = $conversation->getTargetPersonaId();
-        $sourcePersonaId = $conversation->getSourcePersonaId();
-        $targetAlternativeId = $conversation->getTargetAlternativeId();
-        $sourceAlternativeId = $conversation->getSourceAlternativeId();
-        $anonymous = $conversation->getAnonymous();
-        $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
-        $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
-        $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
-        $conversation->resume();
-        $conversation->updateSystem($system);
-        $context = $conversation->get_messages();
-        die(json_encode(array('messages' => $context)));
-    case 'stream':
-        header("Content-type: text/event-stream");
-        $context = $conversation->get_messages();
-
-        $error = null;
-        $response_text = '';
-
-        // create a new completion
-        try {
-            $chatgpt = new ChatGPT($SETTINGS['openapi']['key']);
-
-            $chatgpt->set_model($MODEL);
-            $chatgpt->set_params($PARAMETERS);
-
-            foreach ($context as $message) {
-                switch ($message['role']) {
-                    case "user":
-                        $chatgpt->umessage($message['content']);
-                        break;
-                    case "assistant":
-                        $chatgpt->amessage($message['content']);
-                        break;
-                    case "system":
-                        $chatgpt->smessage($message['content']);
-                        break;
-                }
+    // Actions that don't require an existing conversation
+    switch ($ACTION) {
+        case 'list':
+            $conversation_class->setUserId($USER_ID);
+            $chats = $conversation_class->get_chats();
+            $conversations = array();
+            foreach ($chats as $chat) {
+                $conversations[] = $chat->getData();
             }
-            $response_text = $chatgpt->stream(StreamType::Event)->content;
-        } catch (Exception $e) {
-            $error = "Sorry, there was an unknown error in the OpenAI request";
-        }
+            die(json_encode(array('success' => true, 'conversations' => $conversations)));
+        case 'prompt':
+            $targetPersonaId = $_REQUEST['target_persona_id'];
+            $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+            if (!$targetPersona || !$targetPersona['chat']) {
+                die("Invalid character: $targetPersonaId");
+            }
+            $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
+            $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
+            $sourceAlternativeId = $_REQUEST['source_alternative_id'] ?? null;
+            $targetAlternativeId = $_REQUEST['target_alternative_id'] ?? null;
+            $anonymous = isset($_REQUEST['anonymous']);
+            $prompt = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+            die(json_encode(array('success' => true, 'prompt' => $prompt)));
+        case 'start':
+            if (!isset($_REQUEST['target_persona_id'])) {
+                die("Missing target_persona_id parameter");
+            }
+            $targetPersonaId = $_REQUEST['target_persona_id'];
+            $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+            if (!$targetPersona || !$targetPersona['chat']) {
+                die("Invalid character: $targetPersonaId");
+            }
+            $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
+            $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
+            $sourceAlternativeId = $_REQUEST['source_alternative_id'] ?? null;
+            $targetAlternativeId = $_REQUEST['target_alternative_id'] ?? null;
+            $anonymous = isset($_REQUEST['anonymous']);
+            $title = $_REQUEST['title'] ?? "Untitled chat";
+            $conversation = new $conversation_class($db);
+            $conversation->set_title($title);
+            $conversation->setUserId($USER_ID);
+            $conversation->setTargetPersonaId($targetPersonaId);
+            $conversation->setSourcePersonaId($sourcePersonaId);
+            $conversation->setSourceAlternativeId($sourceAlternativeId);
+            $conversation->setTargetAlternativeId($targetAlternativeId);
+            $conversation->setAnonymous($anonymous);
+            $conversation->save();
+            $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+            $system_message = [
+                "role" => "system",
+                "content" => $system
+            ];
 
-        if ($error !== null) {
-            $response_text = $error;
-            echo "data: " . json_encode(["content" => $error]) . "\n\n";
-            flush();
-        }
+            $context[] = $system_message;
+            $conversation->add_message($system_message);
+            die(json_encode(array('success' => true, 'conversation' => $conversation->getData())));
+    }
 
-        $assistant_message = [
-            "role" => "assistant",
-            "content" => $response_text,
-        ];
+    if (!isset($_REQUEST['chat_id'])) {
+        throw new Exception("Missing chat id");
+    }
+    // get chat history from session
+    $chat_id = intval($_REQUEST['chat_id']);
 
-        $messageId = $conversation->add_message($assistant_message);
-        $assistant_message['id'] = $messageId;
-        $assistant_message['conversation_id'] = $conversation->get_id();
-        echo "event: stop\n";
-        echo "data: " . json_encode($assistant_message) . "\n\n";
-        break;
-    default:
-        die("Unknown action " . $ACTION);
+    $conversation = $conversation_class->find($chat_id);
+
+    if (!$conversation) {
+        throw new Exception("Invalid chat id: $chat_id");
+    }
+
+    switch ($ACTION) {
+        case 'message':
+            $role = "user";
+            $content = $_POST['message'];
+            $message = [
+                "role" => $role,
+                "content" => $content,
+            ];
+
+            $messageId = $conversation->add_message($message);
+            $message = array(
+                'conversation_id' => $conversation->get_id(),
+                'id' => $messageId,
+                'content' => $content,
+                'role' => $role
+            );
+            die(json_encode(array('message' => $message, 'success' => true)));
+        case 'edit':
+            $content = $_POST['message'];
+            $messageId = $_POST['message_id'];
+            $conversation->edit_message($messageId, $content);
+            $message = array(
+                'conversation_id' => $conversation->get_id(),
+                'id' => $messageId,
+                'content' => $content
+            );
+            die(json_encode(array('message' => $message, 'success' => true)));
+        case 'resume':
+            $targetPersonaId = $conversation->getTargetPersonaId();
+            $sourcePersonaId = $conversation->getSourcePersonaId();
+            $targetAlternativeId = $conversation->getTargetAlternativeId();
+            $sourceAlternativeId = $conversation->getSourceAlternativeId();
+            $anonymous = $conversation->getAnonymous();
+            $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+            $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
+            $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+            $conversation->resume();
+            $conversation->updateSystem($system);
+            $context = $conversation->get_messages();
+            die(json_encode(array('messages' => $context, 'success' => true)));
+        case 'stream':
+            // This endpoint does not return JSON
+            header("Content-type: text/event-stream");
+            $context = $conversation->get_messages();
+
+            $error = null;
+            $response_text = '';
+
+            // create a new completion
+            try {
+                $chatgpt = new ChatGPT($SETTINGS['openapi']['key']);
+
+                $chatgpt->set_model($MODEL);
+                $chatgpt->set_params($PARAMETERS);
+
+                foreach ($context as $message) {
+                    switch ($message['role']) {
+                        case "user":
+                            $chatgpt->umessage($message['content']);
+                            break;
+                        case "assistant":
+                            $chatgpt->amessage($message['content']);
+                            break;
+                        case "system":
+                            $chatgpt->smessage($message['content']);
+                            break;
+                    }
+                }
+                $response_text = $chatgpt->stream(StreamType::Event)->content;
+            } catch (Exception $e) {
+                $error = "Sorry, there was an unknown error in the OpenAI request";
+            }
+
+            if ($error !== null) {
+                $response_text = $error;
+                echo "data: " . json_encode(["content" => $error]) . "\n\n";
+                flush();
+            }
+
+            $assistant_message = [
+                "role" => "assistant",
+                "content" => $response_text,
+            ];
+
+            $messageId = $conversation->add_message($assistant_message);
+            $assistant_message['id'] = $messageId;
+            $assistant_message['conversation_id'] = $conversation->get_id();
+            echo "event: stop\n";
+            echo "data: " . json_encode($assistant_message) . "\n\n";
+            break;
+        default:
+            throw new Exception("Unknown action " . $ACTION);
+    }
+} catch (Exception $ex) {
+    die(json_encode(array('success' => false, 'message' => $ex->getMessage())));
 }
+
