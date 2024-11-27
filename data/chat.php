@@ -82,8 +82,49 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
         $system = $persona['chat']['alternatives'][$alternativeId]['system'];
     }
     if ($system) {
-        $prompt .= "\n" . $system;
+        $prompt .= $system . "\n\n";
     }
+    if ($persona['backstory']) {
+        $prompt .= 'Your backstory is as follows: ' . $persona['backstory'] . "\n";
+    }
+    if ($persona['home_realm']) {
+        $prompt .= 'You currently live in ' . $persona['home_realm'] . "\n";
+    }
+    if ($persona['birth_realm']) {
+        $prompt .= 'You were born in ' . $persona['birth_realm'] . "\n";
+    }
+    if ($persona['notes']) {
+        $prompt .= 'Some notes about you: ' . $persona['notes'] . "\n";
+    }
+    $characterProperties = $loveDatabase->getCharacterProperties($persona['id']);
+    if ($characterProperties) {
+        $properties = $loveDatabase->getProperties();
+        foreach ($characterProperties as $characterProperty) {
+            if (!isset($properties[$characterProperty['property_id']])) continue;
+            $property = $properties[$characterProperty['property_id']];
+            if ($property['question']) {
+                $prompt .= 'Your answer to "' . $property['question'] . '" is "' . $characterProperty['value'] . "\"\n";
+            } else {
+                $prompt .= 'Your ' . $property['name'] . ' is ' . $characterProperty['value'] . "\n";
+            }
+        }
+    }
+    $characterRelationships = $loveDatabase->getCharacterRelationships($persona['id']);
+    if ($characterRelationships) {
+        $relationships = $loveDatabase->getRelationships();
+        // Too much overhead in getCharacters
+        $characters = $loveDatabase->getAll('persona');
+        $characters = $loveDatabase->index($characters);
+        foreach ($characterRelationships as $characterRelationship) {
+            if (!isset($characters[$characterRelationship['related_persona_id']])) continue;
+            if (!isset($relationships[$characterRelationship['relationship_id']])) continue;
+            $related = $characters[$characterRelationship['related_persona_id']];
+            $relationship = $relationships[$characterRelationship['relationship_id']];
+            $relatedName = getCharacterName($related);
+            $prompt .= 'You have a ' . $relationship['name'] . ' named ' . $relatedName . "\n";
+        }
+    }
+
     return $prompt;
 }
 
@@ -125,6 +166,19 @@ switch ($ACTION) {
             $conversations[] = $chat->getData();
         }
         die(json_encode(array('conversations' => $conversations)));
+    case 'prompt':
+        $targetPersonaId = $_REQUEST['target_persona_id'];
+        $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+        if (!$targetPersona || !$targetPersona['chat']) {
+            die("Invalid character: $targetPersonaId");
+        }
+        $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
+        $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
+        $sourceAlternativeId = $_REQUEST['source_alternative_id'] ?? null;
+        $targetAlternativeId = $_REQUEST['target_alternative_id'] ?? null;
+        $anonymous = isset($_REQUEST['anonymous']);
+        $prompt = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+        die(json_encode(array('prompt' => $prompt)));
     case 'start':
         if (!isset($_REQUEST['target_persona_id'])) {
             die("Missing target_persona_id parameter");
@@ -135,6 +189,7 @@ switch ($ACTION) {
             die("Invalid character: $targetPersonaId");
         }
         $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
+        $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
         $sourceAlternativeId = $_REQUEST['source_alternative_id'] ?? null;
         $targetAlternativeId = $_REQUEST['target_alternative_id'] ?? null;
         $anonymous = isset($_REQUEST['anonymous']);
@@ -148,8 +203,7 @@ switch ($ACTION) {
         $conversation->setTargetAlternativeId($targetAlternativeId);
         $conversation->setAnonymous($anonymous);
         $conversation->save();
-        $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
-        $system = getPrompt($loveDatabase, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+        $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
         $system_message = [
             "role" => "system",
             "content" => $system
