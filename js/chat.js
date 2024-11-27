@@ -77,6 +77,14 @@ class Chat extends Component {
                 controller.#resume(conversationId);
             });
 
+            if (conversation.source_persona_id != null) {
+                let character = characters.getCharacter(conversation.source_persona_id);
+                let portrait = document.createElement('div');
+                portrait.className = 'portrait small';
+                portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+                chatContainer.appendChild(portrait);
+            }
+
             let portrait = document.createElement('div');
             portrait.className = 'portrait small';
             portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
