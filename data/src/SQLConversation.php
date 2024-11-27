@@ -38,6 +38,26 @@ class SQLConversation implements ConversationInterface
         $this->anonymous = $anonymous;
     }
 
+    public function getTargetPersonaId(): string|null {
+        return $this->targetPersonaId;
+    }
+
+    public function getSourcePersonaId(): string|null {
+        return $this->sourcePersonaId;
+    }
+
+    public function getSourceAlternativeId(): int|null {
+        return $this->sourceAlternativeId;
+    }
+
+    public function getTargetAlternativeId(): int|null {
+        return $this->targetAlternativeId;
+    }
+
+    public function getAnonymous(): bool {
+        return $this->anonymous;
+    }
+
     /**
      * @return array<self>
      */
@@ -135,6 +155,15 @@ class SQLConversation implements ConversationInterface
             ":content" => $message,
             ":message_id" => $messageId,
         ] );
+    }
+
+    public function updateSystem($prompt): bool {
+        $stmt = $this->db->prepare( "UPDATE conversation_message SET original_content = IFNULL(original_content, content), content = :content WHERE conversation_id = :chat_id AND role = 'system' LIMIT 1" );
+        $stmt->execute( [
+            ":content" => $prompt,
+            ":chat_id" => $this->chat_id,
+        ] );
+        return $stmt->rowCount() === 1;
     }
 
     public function set_id( string $id ) {

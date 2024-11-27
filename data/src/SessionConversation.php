@@ -38,6 +38,26 @@ class SessionConversation implements ConversationInterface
     public function setAnonymous(bool $anonymous): void {
     }
 
+    public function getTargetPersonaId(): string|null {
+        return $this->targetPersonaId;
+    }
+
+    public function getSourcePersonaId(): string|null {
+        return $this->sourcePersonaId;
+    }
+
+    public function getSourceAlternativeId(): int|null {
+        return $this->sourceAlternativeId;
+    }
+
+    public function getTargetAlternativeId(): int|null {
+        return $this->targetAlternativeId;
+    }
+
+    public function getAnonymous(): bool {
+        return true;
+    }
+
     protected static function init_session() {
         if( session_status() !== PHP_SESSION_ACTIVE ) {
             session_start();
@@ -89,6 +109,20 @@ class SessionConversation implements ConversationInterface
         return $conversation;
     }
 
+    public function updateSystem($prompt): bool {
+        if( ! isset( $this->chat_id ) ) {
+            return false;
+        }
+        $messages = &$_SESSION['chats'][$this->chat_id]["messages"];
+        foreach ($messages as &$message) {
+            if ($message['role'] === 'system') {
+                $message['content'] = $prompt;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function get_messages(): array {
         if( ! isset( $this->chat_id ) ) {
             return [];
@@ -103,7 +137,7 @@ class SessionConversation implements ConversationInterface
     }
 
     public function edit_message( $messageId, $message ) {
-        $_SESSION['chats'][$this->chat_id]["messages"][$messageId] = $message;
+        $_SESSION['chats'][$this->chat_id]["messages"][$messageId]['content'] = $message;
     }
 
     public function set_id( string $id ) {

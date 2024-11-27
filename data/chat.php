@@ -54,6 +54,22 @@ function get_conversation_class($db): ConversationInterface {
 
 $db = get_db();
 $conversation_class = get_conversation_class($db);
+$loveDatabase = new \com\elmakers\love\LoveDatabase();
+
+function getPrompt($targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous) : string {
+    $system = $targetPersona['chat']['system'] ?? null;
+    if (!is_null($targetAlternativeId) && isset($targetPersona['chat']['alternatives'][$targetAlternativeId]['system'])) {
+        $system = $targetPersona['chat']['alternatives'][$targetAlternativeId]['system'];
+    }
+    $sourceSystem = $sourcePersona && isset($sourcePersona['chat']['system']) ? $sourcePersona['chat']['system'] : null;
+    if (!is_null($sourceAlternativeId) && isset($sourcePersona['chat']['alternatives'][$sourceAlternativeId]['system'])) {
+        $sourceSystem = $sourcePersona['chat']['alternatives'][$sourceAlternativeId]['system'];
+    }
+    if ($sourceSystem) {
+        $system .= "\n\nYou are speaking to someone who would describe themselves like this: $sourceSystem";
+    }
+    return $system;
+}
 
 // Actions that don't require an existing conversation
 switch ($ACTION) {
@@ -69,7 +85,6 @@ switch ($ACTION) {
         if (!isset($_REQUEST['target_persona_id'])) {
             die("Missing target_persona_id parameter");
         }
-        $loveDatabase = new \com\elmakers\love\LoveDatabase();
         $targetPersonaId = $_REQUEST['target_persona_id'];
         $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
         if (!$targetPersona || !$targetPersona['chat']) {
@@ -78,6 +93,7 @@ switch ($ACTION) {
         $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
         $sourceAlternativeId = $_REQUEST['source_alternative_id'] ?? null;
         $targetAlternativeId = $_REQUEST['target_alternative_id'] ?? null;
+        $anonymous = isset($_REQUEST['anonymous']);
         $title = $_REQUEST['title'] ?? "Untitled chat";
         $conversation = new $conversation_class($db);
         $conversation->set_title($title);
@@ -86,21 +102,10 @@ switch ($ACTION) {
         $conversation->setSourcePersonaId($sourcePersonaId);
         $conversation->setSourceAlternativeId($sourceAlternativeId);
         $conversation->setTargetAlternativeId($targetAlternativeId);
-        $conversation->setAnonymous(isset($_REQUEST['anonymous']));
+        $conversation->setAnonymous($anonymous);
         $conversation->save();
-
-        $system = $targetPersona['chat']['system'] ?? null;
-        if (!is_null($targetAlternativeId) && isset($targetPersona['chat']['alternatives'][$targetAlternativeId]['system'])) {
-            $system = $targetPersona['chat']['alternatives'][$targetAlternativeId]['system'];
-        }
         $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
-        $sourceSystem = $sourcePersona && isset($sourcePersona['chat']['system']) ? $sourcePersona['chat']['system'] : null;
-        if (!is_null($sourceAlternativeId) && isset($sourcePersona['chat']['alternatives'][$sourceAlternativeId]['system'])) {
-            $sourceSystem = $sourcePersona['chat']['alternatives'][$sourceAlternativeId]['system'];
-        }
-        if ($sourceSystem) {
-            $system .= "\n\nYou are speaking to someone who would describe themselves like this: $sourceSystem";
-        }
+        $system = getPrompt($targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
         $system_message = [
             "role" => "system",
             "content" => $system
@@ -152,6 +157,15 @@ switch ($ACTION) {
         die(json_encode($message));
     case 'resume':
         $context = $conversation->get_messages();
+        $targetPersonaId = $conversation->getTargetPersonaId();
+        $sourcePersonaId = $conversation->getSourcePersonaId();
+        $targetAlternativeId = $conversation->getTargetAlternativeId();
+        $sourceAlternativeId = $conversation->getSourceAlternativeId();
+        $anonymous = $conversation->getAnonymous();
+        $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+        $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
+        $system = getPrompt($targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+        $conversation->updateSystem($system);
         die(json_encode(array('messages' => $context)));
     case 'stream':
         header("Content-type: text/event-stream");

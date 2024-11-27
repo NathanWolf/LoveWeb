@@ -451,3 +451,7 @@ CREATE TABLE conversation_message
         on delete cascade
         on update cascade
 );
+
+create index conversation_message_conversation_id_role_index
+    on conversation_message (conversation_id, role)
+    comment 'For looking up the system message';

@@ -36,7 +36,19 @@ interface ConversationInterface
 
     public function setTargetAlternativeId(int|null $targetAlternativeId): void;
 
+    public function getTargetPersonaId(): string|null;
+
+    public function getSourcePersonaId(): string|null;
+
+    public function getSourceAlternativeId(): int|null;
+
+    public function getTargetAlternativeId(): int|null;
+
+    public function getAnonymous(): bool;
+
     public function setAnonymous(bool $anonymous);
 
     public function getData(): array;
+
+    public function updateSystem($prompt): bool;
 }
