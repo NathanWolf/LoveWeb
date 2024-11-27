@@ -395,6 +395,8 @@ class Chat extends Component {
         saveButton.innerText = 'Save';
         editorToolbar.appendChild(saveButton);
 
+        editorInput.focus();
+
         let controller = this;
         cancelButton.addEventListener('click', function() {
             Utilities.setVisible(contentDiv, true);
