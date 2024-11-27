@@ -380,7 +380,7 @@ class Chat extends Component {
         let textDiv = Utilities.createDiv('messageTextAreaContainer', editorDiv);
         let editorInput = document.createElement('textarea');
         editorInput.rows = 8;
-        editorInput.cols = 40;
+        editorInput.cols = 24;
         editorInput.value = Utilities.convertFromHTML(content);
         textDiv.appendChild(editorInput);
         let editorToolbar = Utilities.createDiv('messageEditorToolbar', editorDiv);
