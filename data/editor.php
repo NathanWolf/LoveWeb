@@ -22,7 +22,7 @@ try {
                 $event['id'] = $db->insert('timeline_event', $event);
             }
             die(json_encode(array('success' => true, 'user' => $user, 'event' => $event)));
-            case 'save_character':
+        case 'save_character':
             $debug = array();
             $allProperties = $db->getProperties();
             $characterId = getParameter('character');
@@ -146,6 +146,9 @@ try {
                 throw new Exception("No data to save");
             }
             $db->save('persona', $character);
+            if ($character['chat']) {
+                $character['chat'] = json_decode($character['chat'], true);
+            }
             if ($images) {
                 $character['images'] = $images;
             }
