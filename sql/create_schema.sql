@@ -32,7 +32,10 @@ alter table user
     add column middle_name varchar(255) null;
 
 alter table user
-    add column chat JSON null;
+    add column chat JSON null
+
+alter table user
+    add column preferences JSON null;
 
 CREATE TABLE user_token
 (
