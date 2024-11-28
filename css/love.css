@@ -1,4 +1,6 @@
 :root {
+    color-scheme: light dark;
+
     --background-color: #FFFADF;
     --text-color: black;
     --input-background-color: #FEE4AF;
@@ -56,64 +58,62 @@
     --scrollbar-outer-color: #FAFAFA;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background-color: #32305A;
-        --text-color: #8981BB;
-        --input-background-color: #232144;
-        --input-border-color: #716A9C;
-        --input-color: #716A9C;
-        --input-hover-color: #A284EF;
-        --input-hover-background-color: #8364D4;
-        --input-placeholder-color: #4E4985;
-        --tile-color: #716A9C;
-        --tile-background-color: #232144;
-        --tile-hover-background-color: #3D3A68;
-        --tile-hover-color: #716A9C;
-        --tile-border-color: #716A9C;
-        --tile2-background-color: #423F75;
-        --tile2-border-color: #232141;
-        --tile2-color: #7974BD;
-        --name-background-color: #514C8E;
-        --name-color: #8E88D7;
-        --name-border: #716A9C;
-        --name-hover-background-color: #5E59A0;
-        --name-hover-border-color: #716A9C;
-        --name-hover-color: #9E98E7;
-        --toolbar-border-color: #28193C;
-        --toolbar-background-color: #4E4A68;
-        --button-background-color: #362B52;
-        --button-border-color: #28193C;
-        --button-color: #716A9C;
-        --button-hover-color: #A284EF;
-        --button-hover-background-color: #8364D4;
-        --button-active-color: #6046A0;
-        --placeholder-color: rgba(177, 127, 250, 0.38);
-        --cursor-color: #000000;
-        --chat-background-color: #423F75;
-        --chat-color: #A29DE6;
-        --popup-background-color: #32305A;
-        --popup-border-color: #28193C;
-        --popup-color: #9D97E6;
-        --popup-inner-background-color: #28193C;
-        --popup-inner-color: #A29DE6;
-        --section-border-color: #22203E;
-        --section-background-color: #4E4985;
-        --rule-color: #605CA4;
-        --separator-color: #DDDDDD;
-        --section2-background-color: #423E74;
-        --section2-border-color: #232041;
-        --table-border: #9D97E6;
-        --group-header-border-color: #28193C;
-        --group-header-color: #9D97E6;
-        --header-dark-background-color: #9D97E6;
-        --event-minor-background-color: #33305A;
-        --event-death-background-color: #4E4A86;
-        --event-birth-background-color: #615CA4;
-        --event-color: #9F9AE1;
-        --scrollbar-inner-color: #6B66AC;
-        --scrollbar-outer-color: #514D90;
-    }
+[data-theme="dark"] {
+    --background-color: #32305A;
+    --text-color: #8981BB;
+    --input-background-color: #232144;
+    --input-border-color: #716A9C;
+    --input-color: #716A9C;
+    --input-hover-color: #A284EF;
+    --input-hover-background-color: #8364D4;
+    --input-placeholder-color: #4E4985;
+    --tile-color: #716A9C;
+    --tile-background-color: #232144;
+    --tile-hover-background-color: #3D3A68;
+    --tile-hover-color: #716A9C;
+    --tile-border-color: #716A9C;
+    --tile2-background-color: #423F75;
+    --tile2-border-color: #232141;
+    --tile2-color: #7974BD;
+    --name-background-color: #514C8E;
+    --name-color: #8E88D7;
+    --name-border: #716A9C;
+    --name-hover-background-color: #5E59A0;
+    --name-hover-border-color: #716A9C;
+    --name-hover-color: #9E98E7;
+    --toolbar-border-color: #28193C;
+    --toolbar-background-color: #4E4A68;
+    --button-background-color: #362B52;
+    --button-border-color: #28193C;
+    --button-color: #716A9C;
+    --button-hover-color: #A284EF;
+    --button-hover-background-color: #8364D4;
+    --button-active-color: #6046A0;
+    --placeholder-color: rgba(177, 127, 250, 0.38);
+    --cursor-color: #000000;
+    --chat-background-color: #423F75;
+    --chat-color: #A29DE6;
+    --popup-background-color: #32305A;
+    --popup-border-color: #28193C;
+    --popup-color: #9D97E6;
+    --popup-inner-background-color: #28193C;
+    --popup-inner-color: #A29DE6;
+    --section-border-color: #22203E;
+    --section-background-color: #4E4985;
+    --rule-color: #605CA4;
+    --separator-color: #DDDDDD;
+    --section2-background-color: #423E74;
+    --section2-border-color: #232041;
+    --table-border: #9D97E6;
+    --group-header-border-color: #28193C;
+    --group-header-color: #9D97E6;
+    --header-dark-background-color: #9D97E6;
+    --event-minor-background-color: #33305A;
+    --event-death-background-color: #4E4A86;
+    --event-birth-background-color: #615CA4;
+    --event-color: #9F9AE1;
+    --scrollbar-inner-color: #6B66AC;
+    --scrollbar-outer-color: #514D90;
 }
 
 html,body {

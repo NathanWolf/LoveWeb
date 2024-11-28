@@ -45,6 +45,7 @@
             let love = new Love();
             love.register();
             love.load();
+            love.getProfile().checkDisplayMode();
             _love = love;
         };
     </script>

@@ -262,6 +262,7 @@ class Profile extends Component {
             this.#user = null;
             this.#updateButton();
             this.#showLogin();
+            this.checkDisplayMode();
         } else {
             alert("Failed to logout, please try again!");
             this.#enableFormButtons();
@@ -293,7 +294,20 @@ class Profile extends Component {
             Utilities.removeClass(this.#button, 'loggedout');
             Utilities.addClass(this.#button, 'loggedin');
             this.#showProfile();
+            this.checkDisplayMode();
         }
+    }
+
+    checkDisplayMode() {
+        let theme = this.#user != null && this.#user.preferences.hasOwnProperty('theme') ? this.#user.preferences.theme : null;
+        if (theme == null) {
+            if (window.matchMedia) {
+                theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light';
+            } else {
+                theme = 'light';
+            }
+        }
+        document.documentElement.setAttribute('data-theme', theme);
     }
 
     getUser() {
