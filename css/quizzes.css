@@ -9,8 +9,8 @@
     padding: 16px;
     margin: 32px;
     cursor: pointer;
-    background: #FEE4AF;
-    color: #B1693B;
+    background: var(--tile-background-color);
+    color: var(--tile-color);
     border-radius: 20px;
 }
 
@@ -19,8 +19,8 @@
 }
 
 .quizOption:hover {
-    background: #F6C181;
-    color: black;
+    background: var(--tile-hover-background-color);
+    color: var(--tile-hover-color);
 }
 
 .quizQuestionQuestion {
@@ -30,7 +30,7 @@
 }
 
 .quizQuestionAnswers ul li {
-    color: #B1693B;
+    color: var(--button-color);
     font-size: 1.5em;
     cursor: pointer;
     padding-top: 0.5em;
@@ -40,8 +40,8 @@
 }
 
 .quizQuestionAnswers ul li:hover {
-    background: #F6C181;
-    color: black;
+    background: var(--button-hover-background-color);
+    color: var(--button-hover-color);
     border-radius: 20px;
 }
 
@@ -57,7 +57,8 @@
 }
 
 .quizFinishedTitle {
-    background-color: #FFF2CE;
+    background-color: var(--popup-inner-background-color);
+    color: var(--popup-inner-color);
     padding: 0.5em;
     font-size: 1.5em;
     margin-bottom: 1em;
@@ -78,8 +79,8 @@
 }
 
 .chosenContainer {
-    color: #B34E24;
-    background-color: #FFF2CE;
+    color: var(--popup-inner-color);
+    background-color: var(--popup-inner-background-color);
     padding: 1em;
     border-radius: 25px;
 }
@@ -100,12 +101,12 @@
 
 .detailsButton {
     cursor: pointer;
-    color: #E2A36A;
+    color: var(--button-color);
 }
 
 .detailsButton:hover {
     text-decoration: underline;
-    color: black;
+    color: var(--button-hover-color);
 }
 
 .details {
@@ -118,13 +119,13 @@
 .primaryMatch {
     font-weight: bold;
     font-size: 1.5em;
-    color: #D08856;
+    color: var(--input-border-color);
     text-align: center;
     margin-bottom: 1em;
 }
 
 .secondaryMatch {
-    color: #E2A36A;
+    color: var(--popup-inner-color);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -133,13 +134,13 @@
 .secondaryMatches {
     overflow: auto;
     flex: 1;
-    background-color: #FFF2CE;
+    background-color: var(--popup-inner-background-color);
     border-radius: 24px;
     padding: 1em;
 }
 
 .matchLabel {
-    color: #E2A36A;
+    color: var(--name-color);
 }
 
 .noMatch {

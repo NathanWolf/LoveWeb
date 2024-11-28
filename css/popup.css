@@ -25,8 +25,8 @@
 }
 
 .popupInnerContent {
-    background: #FFF8E0;
-    color: #BE6E42;
+    background: var(--popup-inner-background-color);
+    color: var(--popup-inner-color);
     padding: 2em;
     border-radius: 25px;
 }

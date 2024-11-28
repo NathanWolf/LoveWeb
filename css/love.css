@@ -10,6 +10,7 @@
     --tile-color: #752C0E;
     --tile-background-color: #FEE4AF;
     --tile-hover-background-color: #FEE4AF;
+    --tile-hover-color: black;
     --tile-border-color: #752B0D;
     --tile2-background-color: #FFFCED;
     --tile2-border-color: #B34E24;
@@ -35,6 +36,8 @@
     --popup-background-color: #FFE5B0;
     --popup-border-color: #742A00;
     --popup-color: black;
+    --popup-inner-background-color: #FFF8E0;
+    --popup-inner-color: #BE6E42;
     --section-border-color: #B44D21;
     --section-background-color: #F7C280;
     --rule-color: #B34E24;
@@ -66,6 +69,7 @@
         --tile-color: #716A9C;
         --tile-background-color: #232144;
         --tile-hover-background-color: #3D3A68;
+        --tile-hover-color: #716A9C;
         --tile-border-color: #716A9C;
         --tile2-background-color: #423F75;
         --tile2-border-color: #232141;
@@ -91,6 +95,8 @@
         --popup-background-color: #32305A;
         --popup-border-color: #28193C;
         --popup-color: #9D97E6;
+        --popup-inner-background-color: #28193C;
+        --popup-inner-color: #A29DE6;
         --section-border-color: #22203E;
         --section-background-color: #4E4985;
         --rule-color: #605CA4;
