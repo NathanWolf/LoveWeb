@@ -12,21 +12,21 @@
     padding: 16px;
     margin: 32px;
     cursor: pointer;
-    background: #FEE4AF;
-    color: #B1693B;
+    background: var(--tile-background-color);
+    color: var(--tile-color);
     border-radius: 25px;
 }
 
 #tierLists .option:hover {
-    background: #F6C181;
-    color: black;
+    background: var(--tile-hover-background-color);
+    color: var(--tile-hover-color);
 }
 
 #tierLists .title {
     font-size: 3em;
     font-weight: bold;
     padding: 0.2em;
-    color: #B34E24;
+    color: var(--group-header-color);
 }
 
 #tierLists .tier {
@@ -37,12 +37,12 @@
 #tierLists .tier .label {
     padding: 4px;
     height: 128px;
-    color: #B34E24;
+    color: var(--group-header-color);
     max-width: 64px;
 }
 
 #tierLists .tier .label.dark {
-    color: #FEE4AF;
+    color: var(--header-dark-color);
 }
 
 .tierPortrait {
