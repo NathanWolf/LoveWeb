@@ -109,8 +109,21 @@ class CharacterQuiz extends Component {
             matchLabel.innerText = "Matched with " + extraCharacter.full_name + ": " + extraPercentage.toFixed(0) + "%";
         }
 
-        // TODO: Make this optional when replacing?
-        this.getController().getProfile().saveProperty('persona_id', chosenCharacter.id);
+        let profile = this.getController().getProfile();
+        let user = profile.getUser();
+        if (user != null && chosenCharacter != null) {
+            let currentId = user.properties.hasOwnProperty('persona_id') ? user.properties['persona_id'].value : null;
+            if (currentId != chosenCharacter.id) {
+                if (currentId == null) {
+                    profile.saveProperty('persona_id', chosenCharacter.id);
+                } else {
+                    let currentCharacter = characters.getCharacter(currentId);
+                    if (confirm("Do you want to change your character from " + currentCharacter.name + " to " + chosenCharacter.name + "?")) {
+                        profile.saveProperty('persona_id', chosenCharacter.id);
+                    }
+                }
+            }
+        }
     }
 
     #showTiebreaker(scores) {
