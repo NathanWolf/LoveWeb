@@ -110,7 +110,7 @@ class CharacterQuiz extends Component {
         }
 
         // TODO: Make this optional when replacing?
-        this.getController().getProfile().save('persona_id', chosenCharacter.id);
+        this.getController().getProfile().saveProperty('persona_id', chosenCharacter.id);
     }
 
     #showTiebreaker(scores) {

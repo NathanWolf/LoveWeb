@@ -332,7 +332,7 @@ class Profile extends Component {
         this.#updateButton();
     }
 
-    save(property, value) {
+    saveProperty(property, value) {
         if (this.#user == null) return;
         let user = this.#user;
         this.#user['properties'][property] = {property_id: property, value: value};
@@ -345,7 +345,7 @@ class Profile extends Component {
             console.log("Error saving profile");
         };
 
-        request.open("POST", "data/user.php?action=save&property=" + property
+        request.open("POST", "data/user.php?action=save_property&property=" + property
             + '&user=' + user.id
             + '&token=' + user.token
             + '&value=' + encodeURIComponent(value), true);

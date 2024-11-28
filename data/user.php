@@ -24,7 +24,7 @@ try {
             $lastName = getParameter('last', '');
             $user = $db->createUser($email, $password, $firstName, $lastName, $_SERVER['REMOTE_ADDR']);
             die(json_encode(array('success' => true, 'user' => $user)));
-        case 'save';
+        case 'save_property';
             $userId = getParameter('user');
             $token = getParameter('token');
             $user = $db->validateLogin($userId, $token);
