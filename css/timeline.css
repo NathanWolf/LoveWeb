@@ -18,7 +18,7 @@ div.event {
     border-radius: 24px;
     align-items: center;
     background: var(--tile-background-color);
-    color: var(--tile-color);
+    color: var(--event-color);
 }
 
 div.eventLine {

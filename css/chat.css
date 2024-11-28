@@ -158,6 +158,10 @@
     animation: blink 1s infinite;
 }
 
+.messageTextAreaContainer textarea {
+    color: var(--input-color);
+}
+
 @keyframes blink {
     0% {
         opacity: 0;

@@ -4,11 +4,11 @@
 }
 
 .loggedout {
-    background-color: #C53737 !important;
+    background-color: var(--tile-background-color) !important;
 }
 
 .loggedin {
-    background-color: #FFA64A !important;
+    background-color: var(--button-background-color) !important;
 }
 
 .profile {

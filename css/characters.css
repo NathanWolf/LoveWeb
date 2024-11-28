@@ -116,6 +116,7 @@ th {
     display: flex;
     background: var(--popup-background-color);
     border: 8px solid var(--popup-border-color);
+    color: var(--popup-color);
     overflow: auto;
 }
 

@@ -149,8 +149,8 @@
             </div>
             <div class="horizontal large">
                 <div>
-                    <a href="https://docs.google.com/presentation/d/1jsL8S7O4h97xAPOIn6EuA04muXjWPZw66I7bLUQlNTc" target="_blank" class="contact slideshow">
-                        <span class="icon large" style="background-image: url('image/logos/slideshow.png')"></span>
+                    <a href="https://docs.google.com/presentation/d/1jsL8S7O4h97xAPOIn6EuA04muXjWPZw66I7bLUQlNTc" target="_blank" class="slideshow">
+                        <span class="icon large slideshow">The Lore From My Book<br/><br/>From Diviinity</span>
                     </a>
                 </div>
                 <div>
