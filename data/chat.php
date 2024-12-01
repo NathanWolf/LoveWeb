@@ -19,6 +19,10 @@ $USER_ID = $_REQUEST['user_id'] ?? null;
 $STORAGE_TYPE = $USER_ID ? "sql" : "session";
 $PARAMETERS = array();
 
+$CHARACTER_CACHE = array();
+$RELATIONSHIP_CACHE = array();
+$PROPERTY_CACHE = array();
+
 require(__DIR__ . "/autoload.php");
 
 function get_db(): PDO|null {
@@ -70,6 +74,31 @@ function changeCharacterPromptPerson($prompt) {
     return $prompt;
 }
 
+function getAllCharacters($loveDatabase) {
+    global $CHARACTER_CACHE;
+    if (!$CHARACTER_CACHE) {
+        $CHARACTER_CACHE = $loveDatabase->getAll('persona');
+        $CHARACTER_CACHE = $loveDatabase->index($CHARACTER_CACHE);
+    }
+    return $CHARACTER_CACHE;
+}
+
+function getAllProperties($loveDatabase) {
+    global $PROPERTY_CACHE;
+    if (!$PROPERTY_CACHE) {
+        $PROPERTY_CACHE = $loveDatabase->getProperties();
+    }
+    return $PROPERTY_CACHE;
+}
+
+function getAllRelationships($loveDatabase) {
+    global $RELATIONSHIP_CACHE;
+    if (!$RELATIONSHIP_CACHE) {
+        $RELATIONSHIP_CACHE = $loveDatabase->getRelationships();
+    }
+    return $RELATIONSHIP_CACHE;
+}
+
 function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     if (!$persona) {
         return null;
@@ -102,7 +131,7 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     }
     $characterProperties = $loveDatabase->getCharacterProperties($persona['id']);
     if ($characterProperties) {
-        $properties = $loveDatabase->getProperties();
+        $properties = getAllProperties($loveDatabase);
         foreach ($characterProperties as $characterProperty) {
             if (!isset($properties[$characterProperty['property_id']])) continue;
             $property = $properties[$characterProperty['property_id']];
@@ -115,10 +144,8 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     }
     $characterRelationships = $loveDatabase->getCharacterRelationships($persona['id']);
     if ($characterRelationships) {
-        $relationships = $loveDatabase->getRelationships();
-        // Too much overhead in getCharacters
-        $characters = $loveDatabase->getAll('persona');
-        $characters = $loveDatabase->index($characters);
+        $relationships = getAllRelationships($loveDatabase);
+        $characters = getAllCharacters($loveDatabase);
         foreach ($characterRelationships as $characterRelationship) {
             if (!isset($characters[$characterRelationship['related_persona_id']])) continue;
             if (!isset($relationships[$characterRelationship['relationship_id']])) continue;
