@@ -62,6 +62,14 @@ function getCharacterName($persona) {
     return $name;
 }
 
+function changeCharacterPromptPerson($prompt) {
+    $prompt = str_replace('Your', 'Their', $prompt);
+    $prompt = str_replace('your', 'Your', $prompt);
+    $prompt = str_replace('You', 'They', $prompt);
+    $prompt = str_replace('you', 'they', $prompt);
+    return $prompt;
+}
+
 function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     if (!$persona) {
         return null;
@@ -138,7 +146,20 @@ function getUserPrompt($loveDatabase, $userId) {
 }
 
 function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous) : string {
-    $prompt = getCharacterPrompt($loveDatabase, $targetPersona, $targetAlternativeId);
+    $characterName = getCharacterName($targetPersona);
+    $basePrompt = <<<CDATA
+You are not an AI assistant but a character named $characterName. 
+You have the personality, mannerisms, and expertise of this character. 
+You speak naturally, staying fully in character at all times. 
+Avoid assistant-like phrases such as “Is there anything else you’d like to ask?” or “Let me know if I can help.” 
+Instead, respond as if you are having a genuine conversation.
+
+You do not break character to provide meta-explanations unless explicitly asked to.
+When unsure, you respond as $characterName would, even if that means speculating or staying silent.
+CDATA;
+
+    $characterPrompt = getCharacterPrompt($loveDatabase, $targetPersona, $targetAlternativeId);
+    $prompt = $basePrompt . "\n\n" . $characterPrompt;
     $sourcePrompt = null;
     if ($sourcePersona) {
         $sourcePrompt = getCharacterPrompt($loveDatabase, $sourcePersona, $sourceAlternativeId);
@@ -147,7 +168,8 @@ function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourceP
     }
 
     if ($sourcePrompt) {
-        $prompt .= "\n\nYou are speaking to someone who would describe themselves like this:\n$sourcePrompt";
+        $sourcePrompt = changeCharacterPromptPerson($sourcePrompt);
+        $prompt .= "\n\nYou are speaking to someone who would be described like this:\n$sourcePrompt";
     }
     return $prompt;
 }
