@@ -316,18 +316,31 @@ try {
             );
             die(json_encode(array('message' => $message, 'success' => true)));
         case 'resume':
+            $start = microtime(true);
             $targetPersonaId = $conversation->getTargetPersonaId();
             $sourcePersonaId = $conversation->getSourcePersonaId();
             $targetAlternativeId = $conversation->getTargetAlternativeId();
             $sourceAlternativeId = $conversation->getSourceAlternativeId();
             $anonymous = $conversation->getAnonymous();
             $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+            $dbLookups = microtime(true);
             $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
             $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+            $promptTime = microtime(true);
             $conversation->resume();
+            $resumeTime = microtime(true);
             $conversation->updateSystem($system);
+            $updateTime = microtime(true);
             $context = $conversation->get_messages();
-            die(json_encode(array('messages' => $context, 'success' => true)));
+            $getMessages = microtime(true);
+            $timing = array(
+                'lookups' => ($dbLookups - $start),
+                'prompt' => ($promptTime - $dbLookups),
+                'resume' => ($resumeTime - $promptTime),
+                'update' => ($updateTime - $resumeTime),
+                'messages' => ($getMessages - $updateTime)
+            );
+            die(json_encode(array('messages' => $context, 'timing' => $timing, 'success' => true)));
         case 'stream':
             // This endpoint does not return JSON
             header("Content-type: text/event-stream");
