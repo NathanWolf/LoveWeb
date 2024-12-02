@@ -96,7 +96,7 @@ class LoveDatabase extends Database {
             if ($user['preferences']) {
                 $user['preferences'] = json_decode($user['preferences'], true);
             } else {
-                $user['preferences'] = array('theme');
+                $user['preferences'] = array();
             }
         }
     }
