@@ -17,7 +17,10 @@ $ACTION = $_REQUEST['action'];
 $MODEL = 'gpt-4o';
 $USER_ID = $_REQUEST['user_id'] ?? null;
 $STORAGE_TYPE = $USER_ID ? "sql" : "session";
-$PARAMETERS = array();
+$PARAMETERS = array(
+    'temperature' => 0.7,
+    'top_p' => 1.0
+);
 
 $CHARACTER_CACHE = array();
 $RELATIONSHIP_CACHE = array();
