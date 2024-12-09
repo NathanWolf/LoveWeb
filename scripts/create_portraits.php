@@ -5,14 +5,14 @@ if (PHP_SAPI !== 'cli') {
 }
 
 if (count($argv) < 3) {
-    die("Usage: create_portraits <character folder> <output folder> [width] [height]\n");
+    die("Usage: create_portraits <character folder> <output folder> [width] [height] [number]\n");
 }
 
 require_once '../data/LoveDatabase.class.php';
 
 $db = new \com\elmakers\love\LoveDatabase();
-$characters = $db->getCharacters();
-
+$limit = count($argv) > 5 ? $argv[5] : 0;
+$characters = $db->getCharacters($limit);
 $characterFolder = $argv[1];
 $outputFolder = $argv[2];
 if (!file_exists($outputFolder)) {
