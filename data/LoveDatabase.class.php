@@ -208,9 +208,19 @@ class LoveDatabase extends Database {
         return $character;
     }
 
-    public function getCharacters() {
+    public function getNewCharacters($amount) {
+        $characters = $this->index($characters);
+        return $characters;
+    }
+
+    public function getCharacters($amount = 0) {
         // Note that the db name is "persona" to avoid issues with "character" being a reserved word.
-        $characters = $this->getAll('persona');
+        if ($amount) {
+            $characters = $this->getAll('persona', 'created desc');
+            $characters = array_splice($characters, 0, $amount);
+        } else {
+            $characters = $this->getAll('persona');
+        }
         $relationships = $this->getAll('persona_relationship');
         $tiers = $this->getAll('persona_tier');
         $properties = $this->getAll('persona_property');
@@ -221,6 +231,7 @@ class LoveDatabase extends Database {
             $results[$character['id']] = $this->fixupCharacter($character);
         }
         foreach ($relationships as $relationship) {
+            if (!isset($results[$relationship['persona_id']])) continue;
             if (isset($results[$relationship['persona_id']]['relationships'][$relationship['relationship_id']])) {
                 $results[$relationship['persona_id']]['relationships'][$relationship['relationship_id']][] = $relationship['related_persona_id'];
             } else {
@@ -228,12 +239,15 @@ class LoveDatabase extends Database {
             }
         }
         foreach ($tiers as $tier) {
+            if (!isset($results[$tier['persona_id']])) continue;
             $results[$tier['persona_id']]['tiers'][$tier['tier_list_id']] = $tier;
         }
         foreach ($properties as $property) {
+            if (!isset($results[$property['persona_id']])) continue;
             $results[$property['persona_id']]['properties'][$property['property_id']] = $property['value'];
         }
         foreach ($images as $image) {
+            if (!isset($results[$image['persona_id']])) continue;
             $results[$image['persona_id']]['images'][$image['image_id']] = $image;
         }
 
