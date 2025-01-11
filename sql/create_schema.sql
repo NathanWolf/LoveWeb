@@ -556,3 +556,19 @@ CREATE TABLE realm_image
     width int null,
     height int null
 );
+
+
+INSERT INTO realm_image (realm_id, image_id, title, description, width, height)
+VALUES ('overrealms', 'overview', 'Overview', 'An overview of this realm',2388, 1668);
+
+INSERT INTO realm_image (realm_id, image_id, title, description, width, height)
+VALUES ('underrealms', 'overview', 'Overview', 'An overview of this realm',2388, 1668);
+
+INSERT INTO realm_image (realm_id, image_id, title, description, width, height)
+VALUES ('shadowrealms', 'overview', 'Overview', 'An overview of this realm',2388, 1668);
+
+INSERT INTO realm_image (realm_id, image_id, title, description, width, height)
+VALUES ('midlands', 'overview', 'Overview', 'An overview of this realm',2388, 1668);
+
+INSERT INTO realm_image (realm_id, image_id, title, description, width, height)
+VALUES ('afterrealms', 'overview', 'Overview', 'An overview of this realm',2388, 1668);
