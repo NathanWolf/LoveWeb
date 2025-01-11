@@ -9,6 +9,7 @@ class Love {
     #tiers = new Tiers(this, document.getElementById('tierLists'));
     #relationships = new Relationships(this, document.getElementById('relationships'));
     #timeline = new Timeline(this, document.getElementById('timeline'));
+    #realms = new Realms(this, document.getElementById('realms'));
     #profile = new Profile(this, document.getElementById('profile'), document.getElementById('profileButton'));
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
     #timelineEditor = new TimelineEditor(this, document.getElementById('timelineEditor'));
@@ -22,6 +23,7 @@ class Love {
         tierLists: this.#tiers,
         relationships: this.#relationships,
         timeline: this.#timeline,
+        realms: this.#realms,
         characterEditor: this.#characterEditor,
         timelineEditor: this.#timelineEditor,
         profile: this.#profile,
@@ -166,6 +168,8 @@ class Love {
         this.#relationships.addRelationships(data.relationships);
         this.#quizzes.addQuizzes(data.quizzes);
         this.#tiers.addTiers(data.tiers);
+        this.#realms.addRealms(data.realms);
+        this.#realms.addProperties(data.realm_properties);
 
         this.#loaded = true;
         document.getElementById('loading').style.display = 'none';

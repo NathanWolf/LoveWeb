@@ -8,6 +8,8 @@ try {
     $tiers = $db->getTierLists();
     $relationships = $db->getRelationships();
     $properties = $db->getProperties();
+    $realmPropertyTypes = $db->getRealmPropertyTypes();
+    $realms = $db->getRealms();
     $quizzes = $db->getQuizzes();
     $timelineEvents = $db->getTimelineEvents();
     $months = $db->getMonths();
@@ -19,7 +21,9 @@ try {
         'relationships' => $relationships,
         'properties' => $properties,
         'events' => $timelineEvents,
-        'months' => $months
+        'months' => $months,
+        'realms' => $realms,
+        'realm_properties' => $realmPropertyTypes
     );
 } catch (Exception $ex) {
     $response = array(

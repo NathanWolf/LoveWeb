@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/love.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/popup.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/characters.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/realms.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/chat.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/quizzes.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/flashcards.css?v=<?=VERSION?>">
@@ -32,6 +33,7 @@
     <script type="text/javascript" src="js/relationships.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/timeline.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/profile.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/realms.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/love.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/editor.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/character_editor.js?v=<?=VERSION?>"></script>
@@ -69,6 +71,7 @@
             <div class="tabButtons">
                 <div class="tabButton toolbarButton" data-tab="info">Info</div>
                 <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
+                <div class="tabButton toolbarButton" data-tab="realms">Realms</div>
                 <div class="tabButton toolbarButton" data-tab="chat">Chat</div>
                 <div class="tabButton toolbarButton" data-tab="quizzes">Quizzes</div>
                 <div class="tabButton toolbarButton" data-tab="flashCards">Flash Cards</div>
@@ -87,6 +90,7 @@
             </div>
             <div class="buttonContainer">
                 <div class="tile navigation" data-tab="characters"><div>Characters</div></div>
+                <div class="tile navigation" data-tab="realms"><div>Realms</div></div>
                 <div class="tile navigation" data-tab="chat"><div>Chat</div></div>
                 <div class="tile navigation" data-tab="quizzes"><div>Quizzes</div></div>
                 <div class="tile navigation" data-tab="flashCards"><div>Flash Cards</div></div>
@@ -164,6 +168,9 @@
         </div>
 
         <div class="tab" id="characters" style="display: none">
+        </div>
+
+        <div class="tab" id="realms" style="display: none">
         </div>
 
         <div class="tab" id="chat" style="display: none">

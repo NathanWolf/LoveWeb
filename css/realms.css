@@ -1,0 +1,152 @@
+#realms {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.realmList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: start;
+    overflow: auto;
+    padding-bottom: 128px;
+    margin-top: 1em;
+}
+
+.thumbnail {
+    min-width: 256px;
+    min-height: 256px;
+    max-height: 256px;
+    overflow: hidden;
+    cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 4px solid var(--tile-border-color);
+    margin: 0px 20px 20px 0px;
+    background-color: var(--tile-background-color);
+}
+
+.thumbnail.small {
+    border: 1px solid var(--tile-border-color);
+    min-width: 64px;
+    min-height: 64px;
+    max-height: 64px;
+    border-radius: 16px;
+}
+
+.thumbnail.tiny {
+    border: none;
+    min-width: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.thumbnailName {
+    padding-bottom: 10px;
+    min-height: 246px;
+    max-height: 246px;
+    text-align: right;
+    vertical-align: middle;
+    font-size: 2em;
+    background: var(--name-background-color);
+    color: var(--name-color);
+    cursor: pointer;
+    border: 4px solid var(--name-border);
+    transform: rotate(180deg);
+    writing-mode: vertical-lr;
+}
+
+.thumbnailContainer {
+    display: flex;
+}
+
+.thumbnailContainer:hover .thumbnailName {
+    background-color: var(--name-hover-background-color);
+    border-color: var(--name-hover-border-color);
+    color: var(--name-hover-color);
+}
+
+.thumbnailContainer:hover .thumbnail {
+    background-color: var(--tile-hover-background-color);
+}
+
+.realmSheet {
+    width: 90%;
+    height: 90vh;
+    display: flex;
+    background: var(--popup-background-color);
+    border: 8px solid var(--popup-border-color);
+    color: var(--popup-color);
+    overflow: auto;
+}
+
+.realmSheet .label {
+    font-weight: bold;
+}
+
+.realmSheet input {
+    padding: 0;
+    width: auto;
+}
+
+.realmSheet .value {
+    border-bottom: 1px solid var(--popup-border-color);
+    min-height: 1em;
+}
+
+.realmSheet .section {
+    margin: 0.5em;
+    padding: 0.5em;
+    overflow-y: auto;
+}
+
+.realmSheet .section.label {
+    text-align: center;
+    border: 0px;
+    padding: 0;
+}
+
+.realmSheet .section.label.below {
+    margin-top: -0.6em;
+}
+
+.realmSheet .section.label.above {
+    margin-bottom: -0.6em;
+}
+
+.realmSheet .column {
+    display: flex;
+    flex-direction: column;
+}
+
+.realmSheet .column_1 {
+    flex-basis: 20%;
+}
+
+.realmSheet .column_2 {
+    flex-basis: 20%;
+}
+
+.realmSheet .column_3 {
+    flex-basis: 20%;
+}
+
+.realmSheet .column_4 {
+    flex-basis: 40%;
+}
+
+.realmSheet .flagImage {
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 50px;
+    max-height: 50px;
+    margin-right: 4px;
+    margin-left: 4px;
+
+    background-repeat: no-repeat;
+    background-size: contain;
+}

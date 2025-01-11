@@ -30,10 +30,6 @@
     margin-top: -1em;
 }
 
-th {
-    text-align: left;
-}
-
 .portrait {
     min-width: 256px;
     min-height: 256px;
@@ -101,13 +97,13 @@ th {
 }
 
 .portraitContainer:hover .portraitName {
-    background: var(--name-hover-background-color);
+    background-color: var(--name-hover-background-color);
     border-color: var(--name-hover-border-color);
     color: var(--name-hover-color);
 }
 
 .portraitContainer:hover .portrait {
-    background: var(--tile-hover-background-color);
+    background-color: var(--tile-hover-background-color);
 }
 
 .characterSheet {

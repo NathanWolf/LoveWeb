@@ -133,6 +133,10 @@ body {
     color: var(--text-color);
 }
 
+th {
+    text-align: left;
+}
+
 ::placeholder {
     color: var(--input-placeholder-color);
     opacity: 1; /* Firefox */

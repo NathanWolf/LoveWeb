@@ -208,6 +208,12 @@ class LoveDatabase extends Database {
         return $character;
     }
 
+    private function fixupRealm($realm) {
+        $realm['properties'] = array();
+        $realm['images'] = array();
+        return $realm;
+    }
+
     public function getNewCharacters($amount) {
         $characters = $this->index($characters);
         return $characters;
@@ -254,6 +260,27 @@ class LoveDatabase extends Database {
         return $results;
     }
 
+    public function getRealms() {
+        $realms = $this->getAll('realm');
+        $properties = $this->getAll('realm_property');
+        $images = $this->getAll('realm_image');
+
+        $results = array();
+        foreach ($realms as $realm) {
+            $results[$realm['id']] = $this->fixupRealm($realm);
+        }
+        foreach ($properties as $property) {
+            if (!isset($results[$property['realm_id']])) continue;
+            $results[$property['realm_id']]['properties'][$property['realm_property_type_id']] = $property['value'];
+        }
+        foreach ($images as $image) {
+            if (!isset($results[$image['realm_id']])) continue;
+            $results[$image['realm_id']]['images'][$image['image_id']] = $image;
+        }
+
+        return $results;
+    }
+
     public function getQuizzes() {
         $quizzes = $this->getAll('quiz');
         $quizzes = $this->index($quizzes);
@@ -287,6 +314,12 @@ class LoveDatabase extends Database {
 
     public function getProperties() {
         $properties = $this->getAll('property', 'question, priority desc');
+        $properties = $this->index($properties);
+        return $properties;
+    }
+
+    public function getRealmPropertyTypes() {
+        $properties = $this->getAll('realm_property_type', 'id, priority desc');
         $properties = $this->index($properties);
         return $properties;
     }
