@@ -467,7 +467,7 @@ create index conversation_message_conversation_id_role_index
 
 create table realm
 (
-    id VARCHAR(40) DEFAULT (uuid()),
+    id VARCHAR(40) not null,
     created timestamp not null default CURRENT_TIMESTAMP,
     updated timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     name varchar(255) null,
@@ -479,17 +479,17 @@ create table realm
 
 create table realm_property_type
 (
-    id VARCHAR(40) DEFAULT (uuid()),
+    id VARCHAR(40) not null,
     name varchar(255) NOT NULL,
 
     constraint realm_property_type_pk
         primary key (id)
 );
 
-insert into realm_property_type (name) values ('Inhabitants');
-insert into realm_property_type (name) values ('Magic Policy');
-insert into realm_property_type (name) values ('Politics');
-insert into realm_property_type (name) values ('Color Theme');
+insert into realm_property_type (id, name) values ('inhabitants', 'Inhabitants');
+insert into realm_property_type (id, name) values ('magic', 'Magic Policy');
+insert into realm_property_type (id, name) values ('politics', 'Politics');
+insert into realm_property_type (id, name) values ('color', 'Color Theme');
 
 CREATE TABLE realm_property
 (
