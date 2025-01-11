@@ -464,3 +464,96 @@ CREATE TABLE conversation_message
 create index conversation_message_conversation_id_role_index
     on conversation_message (conversation_id, role)
     comment 'For looking up the system message';
+
+create table realm
+(
+    id VARCHAR(40) DEFAULT (uuid()),
+    created timestamp not null default CURRENT_TIMESTAMP,
+    updated timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    name varchar(255) null,
+    description varchar(255) null,
+
+    constraint realm_pk
+        primary key (id)
+);
+
+create table realm_property_type
+(
+    id VARCHAR(40) DEFAULT (uuid()),
+    name varchar(255) NOT NULL,
+
+    constraint realm_property_type_pk
+        primary key (id)
+);
+
+insert into realm_property_type (name) values ('Inhabitants');
+insert into realm_property_type (name) values ('Magic Policy');
+insert into realm_property_type (name) values ('Politics');
+insert into realm_property_type (name) values ('Color Theme');
+
+CREATE TABLE realm_property
+(
+    realm_id VARCHAR(64) NOT NULL,
+    realm_property_type_id VARCHAR(64) NOT NULL,
+    value varchar(255) NOT NULL,
+
+    constraint realm_property_pk
+        primary key (realm_id, realm_property_type_id),
+
+    foreign key (realm_id)
+        references realm(id)
+        on delete cascade
+        on update cascade,
+
+    foreign key (realm_property_type_id)
+        references realm_property_type(id)
+        on delete cascade
+        on update cascade
+);
+
+CREATE TABLE realm_persona
+(
+    realm_id VARCHAR(64) NOT NULL,
+    persona_id VARCHAR(64) NOT NULL,
+    title varchar(255) NOT NULL,
+
+    constraint realm_persona_pk
+        primary key (realm_id, persona_id),
+
+    foreign key (realm_id)
+        references realm(id)
+        on delete cascade
+        on update cascade,
+
+    foreign key (persona_id)
+        references persona(id)
+        on delete cascade
+        on update cascade
+);
+
+CREATE TABLE realm_image
+(
+    realm_id VARCHAR(64) NOT NULL,
+    image_id VARCHAR(64) NOT NULL,
+
+    constraint realm_image_pk
+        primary key (realm_id, image_id),
+
+    foreign key (realm_id)
+        references realm(id)
+        on delete cascade
+        on update cascade,
+
+    created timestamp not null default CURRENT_TIMESTAMP,
+    updated timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+
+    priority int not null default 0,
+    tags varchar(255) NOT NULL DEFAULT '',
+    title varchar(255) NULL,
+    description TEXT NOT NULL,
+    drawn date NULL,
+    version int default 1 not null,
+    metadata JSON NULL,
+    width int null,
+    height int null
+);
