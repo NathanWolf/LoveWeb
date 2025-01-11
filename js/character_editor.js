@@ -593,10 +593,12 @@ class CharacterEditor extends Editor {
             editor.saveFailed();
         };
 
-        request.open("POST", "data/editor.php?action=save_character&character=" + this.#characterId
+        request.open("POST", "data/editor.php", true);
+        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        let parameters = "action=save_character&character=" + this.#characterId
             + '&user=' + user.id
             + '&token=' + user.token
-            + '&properties=' + encodeURIComponent(JSON.stringify(properties)), true);
-        request.send();
+            + '&properties=' + encodeURIComponent(JSON.stringify(properties));
+        request.send(parameters);
     }
 }
