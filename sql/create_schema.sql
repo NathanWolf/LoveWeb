@@ -486,6 +486,10 @@ create table realm_property_type
         primary key (id)
 );
 
+alter table realm_property_type
+    add column priority int default 0,
+    add column plural boolean default false;
+
 insert into realm_property_type (id, name) values ('magic', 'Magic Policy');
 insert into realm_property_type (id, name) values ('politics', 'Politics');
 insert into realm_property_type (id, name) values ('color', 'Color Theme');
