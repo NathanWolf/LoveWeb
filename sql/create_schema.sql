@@ -486,7 +486,6 @@ create table realm_property_type
         primary key (id)
 );
 
-insert into realm_property_type (id, name) values ('inhabitants', 'Inhabitants');
 insert into realm_property_type (id, name) values ('magic', 'Magic Policy');
 insert into realm_property_type (id, name) values ('politics', 'Politics');
 insert into realm_property_type (id, name) values ('color', 'Color Theme');
