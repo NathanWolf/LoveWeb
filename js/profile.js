@@ -194,6 +194,7 @@ class Profile extends Component {
             Utilities.removeClass(this.#button, 'loggedout');
             Utilities.addClass(this.#button, 'loggedin');
             this.#showProfile();
+            this.checkDisplayMode();
         } else {
             alert("An error occurred logging you in, please try again: " + response.message);
             this.#enableFormButtons();
