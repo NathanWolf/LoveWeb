@@ -349,4 +349,13 @@ class Utilities {
 
         return false;
     }
+    static translateToFlag(value) {
+        value = value.toLowerCase();
+        value = value.replaceAll(" ", "_");
+        value = value.replaceAll("/", "_");
+        value = value.replaceAll(")", "");
+        value = value.replaceAll("(", "");
+        value = value.replaceAll("the_", "");
+        return value;
+    }
 }

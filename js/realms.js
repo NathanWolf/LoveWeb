@@ -2,6 +2,9 @@ class Realms extends Component {
     #realms = {};
     #properties = {};
     #popupRealmId = null;
+    #popupImageId = null;
+    #popupImageElement = null;
+    #realmImageElement = null;
 
     constructor(controller, element) {
         super(controller, element);
@@ -93,49 +96,60 @@ class Realms extends Component {
             alert("Sorry, something went wrong!");
             return;
         }
-        alert("And here I would show you the " + realm.name);
         this.#popupRealmId = realmId;
         this.getController().getHistory().set('realm', realmId);
-        /*
+
         let element = this.getElement();
-        let characterController = this;
+        let realmController = this;
         let buttons = {
             close: function() {
-                characterController.#popupCharacterId = null;
-                characterController.getController().getHistory().unset('character');
+                realmController.#popupRealmId = null;
+                realmController.getController().getHistory().unset('realm');
             },
             next: function() {
-                characterController.onNextCharacter();
+                realmController.onNextRealm();
                 // Close the popup and make a new one
                 return true;
             },
             previous: function() {
-                characterController.onPreviousCharacter();
+                realmController.onPreviousRealm();
                 // Close the popup and make a new one
                 return true;
             }
         };
         let popup = Utilities.showPopup(element.parentNode, 'characterSheet', buttons);
-        if (character.properties.hasOwnProperty('color')) {
-            popup.style.borderColor = character.properties.color.toLowerCase().replace(' ', '');
+        if (realm.properties.hasOwnProperty('color')) {
+            popup.style.borderColor = realm.properties.color.toLowerCase().replace(' ', '');
         }
 
         // Column 1:
-        // Images, Backstory
+        // Images, Title, Subtitle
         let column1 = Utilities.createDiv('column column_1', popup);
 
         let imageLabel = Utilities.createDiv('label section above clickable', column1, 'Click to View Images');
         imageLabel.addEventListener('click', function() {
-            characterController.onShowImages();
+            realmController.onShowImages();
         });
         let image = Utilities.createDiv('sheetImage section', column1);
-        image.style.backgroundImage = 'url(' + this.getImage(characterKey) + ')';
+        image.style.backgroundImage = 'url(' + this.getOverviewImage(realmId) + ')';
         image.addEventListener('click', function() {
-            characterController.onShowImages();
+            realmController.onShowImages();
         });
 
-        Utilities.createDiv('backstory section', column1, character.backstory);
-        Utilities.createDiv('label section below', column1, 'Backstory');
+        // Titles
+        Utilities.createDiv('backstory section', column1, realm.name);
+        Utilities.createDiv('label section below', column1, 'Title');
+        Utilities.createDiv('backstory section', column1, realm.description);
+        Utilities.createDiv('label section below', column1, 'Subtitle');
+
+        // Flag
+        let flagsDiv = Utilities.createDiv('flags', column1);
+        let flagDiv = Utilities.createDiv('section flag', flagsDiv);
+        Utilities.createDiv('label flag', flagDiv, 'Flag');
+        let imageDiv = Utilities.createDiv('flagImage', flagDiv);
+        imageDiv.style.backgroundImage = 'url(image/flags/' + Utilities.translateToFlag(realm.id) + '.jpg)';
+
+        /*
 
         // Column 2
         // Info
@@ -172,14 +186,10 @@ class Realms extends Component {
         let flags = ['birth_realm', 'sexuality', 'home_realm', 'pronouns'];
 
         for (let i = 0; i < flags.length; i++) {
-            let flagId = flags[i];
             let flagDiv = Utilities.createDiv('section flag', flagsDiv);
-            let propertyLabel = properties.hasOwnProperty(flagId) ? properties[flagId].name : '?';
-            Utilities.createDiv('label flag', flagDiv, propertyLabel);
-            let value = character.properties.hasOwnProperty(flagId) ? character.properties[flagId] : 'none';
+            Utilities.createDiv('label flag', flagDiv, 'Flag');
             let imageDiv = Utilities.createDiv('flagImage', flagDiv);
-            imageDiv.title = value;
-            imageDiv.style.backgroundImage = 'url(image/flags/' + this.#translateToFlag(value) + '.jpg)';
+            imageDiv.style.backgroundImage = 'url(image/flags/' + translateToFlag.translateToFlag(realmId) + '.jpg)';
         }
 
         let preferencesDiv = Utilities.createDiv('preferences', column3);
@@ -336,5 +346,87 @@ class Realms extends Component {
 
     deactivate() {
         this.getController().getHistory().unset('realm');
+    }
+
+    onShowImages() {
+        let element = this.getElement();
+        let realmController = this;
+        let buttons = {
+            close: true,
+            next: function() {
+                realmController.onNextImage();
+            },
+            previous: function() {
+                realmController.onPreviousImage();
+            }
+        };
+        this.#popupImageId = 'overview';
+        this.#popupImageElement = Utilities.showPopup(element.parentNode, 'characterImageContainer', buttons);
+        this.#updatePopupImage();
+    }
+
+    #updatePopupImage() {
+        if (this.#popupImageElement == null) return;
+        Utilities.empty(this.#popupImageElement);
+        let imageId = this.#popupImageId;
+        let realm = this.getRealm(this.#popupRealmId);
+        if (realm == null || !realm.images.hasOwnProperty(imageId)) return;
+        let image = realm.images[imageId];
+        let title = realm.name + ' ' + image.title;
+        Utilities.createDiv('characterImageTitle', this.#popupImageElement, title);
+        this.#realmImageElement = Utilities.createDiv('characterImage', this.#popupImageElement);
+        Utilities.createDiv('characterImageDescription', this.#popupImageElement, image.description);
+        this.#updatePopupFrame();
+    }
+
+    #updatePopupFrame() {
+        if (this.#realmImageElement == null) return;
+        let imageContainer = this.#realmImageElement;
+        let imageId = this.#popupImageId;
+        let realm = this.getRealm(this.#popupRealmId);
+        if (realm == null || !realm.images.hasOwnProperty(imageId)) return;
+        let image = realm.images[imageId];
+        imageContainer.style.backgroundImage = 'url(' + this.#getImage(this.#popupRealmId, imageId) + ')';
+        if (image.offset_x != 0) {
+            imageContainer.style.marginLeft = image.offset_x;
+        }
+        if (image.offset_y != 0) {
+            imageContainer.style.marginTop = image.offset_y;
+        }
+    }
+
+    onNextImage() {
+        this.#goImage(1);
+    }
+
+    onPreviousImage() {
+        this.#goImage(-1);
+    }
+
+    #goImage(direction) {
+        let realm = this.getRealm(this.#popupRealmId);
+        let imageList = [];
+        for (let imageKey in realm.images) {
+            if (realm.images.hasOwnProperty(imageKey) && !realm.images[imageKey].hidden) {
+                imageList.push(realm.images[imageKey]);
+            }
+        }
+        if (imageList.length == 0) return;
+        // Sort the list, but keep the first image as first
+        let firstImage = imageList.shift();
+        imageList = imageList.sort(function(a, b) {
+            return a.priority - b.priority;
+        });
+        imageList.unshift(firstImage);
+        let index = 0;
+        for (let i = 0; i < imageList.length; i++) {
+            if (imageList[i].image_id == this.#popupImageId) {
+                index = i;
+                break;
+            }
+        }
+        index = (index + direction + imageList.length) % imageList.length;
+        this.#popupImageId = imageList[index].image_id;
+        this.#updatePopupImage();
     }
 }

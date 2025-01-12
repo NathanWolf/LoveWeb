@@ -680,10 +680,12 @@ class Chat extends Component {
     }
 
     scrollToBottom() {
+        if (this.#messagesContainer == null) return;
         this.#messagesContainer.scrollTop = this.#messagesContainer.scrollHeight;
     }
 
     isScrolledToBottom() {
+        if (this.#messagesContainer == null) return false;
         return (Math.ceil(this.#messagesContainer.scrollTop) + this.#messagesContainer.offsetHeight) >= this.#messagesContainer.scrollHeight;
     }
 
