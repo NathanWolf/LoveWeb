@@ -53,7 +53,7 @@ class Realms extends Component {
 
             let thumbnail = document.createElement('div');
             thumbnail.className = 'thumbnail';
-            thumbnail.style.backgroundImage = 'url(' + this.getOverviewImage(realm.id) + ')';
+            thumbnail.style.backgroundImage = 'url(' + this.getThumbnailImage(realm.id) + ')';
             thumbnailContainer.appendChild(thumbnail);
 
             realmList.appendChild(thumbnailContainer);
@@ -73,6 +73,10 @@ class Realms extends Component {
             image = 'image/dynamic/realms/' + realmId + '/' + dataKey + '.png?v=' + version;
         }
         return image;
+    }
+
+    getThumbnailImage(realmId) {
+        return this.#getImage(realmId, 'thumbnail');
     }
 
     getOverviewImage(realmId) {
