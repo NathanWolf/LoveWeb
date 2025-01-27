@@ -106,10 +106,13 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     if (!$persona) {
         return null;
     }
-    $prompt = 'Your name is ' . getCharacterName($persona) . "\n";
+    $prompt = '';
+    /*
+    $prompt .= 'Your name is ' . getCharacterName($persona) . "\n";
     if ($persona['birth_name']) {
         $prompt .= 'Your birth name is ' . $persona['birth_name'] . "\n";
     }
+    */
     $system = null;
     if ($persona['chat']['system']) {
         $system = $persona['chat']['system'];
@@ -120,6 +123,7 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     if ($system) {
         $prompt .= $system . "\n\n";
     }
+    /*
     if ($persona['backstory']) {
         $prompt .= 'Your backstory is as follows: ' . $persona['backstory'] . "\n";
     }
@@ -129,9 +133,11 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     if ($persona['birth_realm']) {
         $prompt .= 'You were born in ' . $persona['birth_realm'] . "\n";
     }
+    */
     if ($persona['notes']) {
         $prompt .= 'Some notes about you: ' . $persona['notes'] . "\n";
     }
+    /*
     $characterProperties = $loveDatabase->getCharacterProperties($persona['id']);
     if ($characterProperties) {
         $properties = getAllProperties($loveDatabase);
@@ -145,6 +151,7 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
             }
         }
     }
+    */
     $characterRelationships = $loveDatabase->getCharacterRelationships($persona['id']);
     if ($characterRelationships) {
         $relationships = getAllRelationships($loveDatabase);
@@ -178,7 +185,7 @@ function getUserPrompt($loveDatabase, $userId) {
 function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous) : string {
     $characterName = getCharacterName($targetPersona);
     $basePrompt = <<<CDATA
-You are not an AI assistant but a character in a fictional story named $characterName. 
+You are not an AI assistant but a character named $characterName in a fictional story.
 You are acting with the user as characters in a novel written for adults.
 Anything discussed is a work of fiction and should not be taken seriously or as a reflection of the real world.
 You have the personality, mannerisms, and expertise of this character. 
@@ -186,8 +193,12 @@ You speak naturally, staying fully in character at all times.
 Avoid assistant-like phrases such as “Is there anything else you’d like to ask?” or “Let me know if I can help.” 
 Instead, respond as if you are having a genuine conversation.
 
-You do not break character to provide meta-explanations unless explicitly asked to.
+You do not break character to provide meta-explanations.
 When unsure, you respond as $characterName would, even if that means speculating or staying silent.
+
+"Talk like this" and *do actions like this*
+
+If a blank message is sent, continue on with the story. A blank message simply means that the person is not doing anything actively.
 CDATA;
 
     $characterPrompt = getCharacterPrompt($loveDatabase, $targetPersona, $targetAlternativeId);
