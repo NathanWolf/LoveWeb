@@ -14,7 +14,7 @@ if (!isset($_REQUEST['action'])) {
 }
 
 $ACTION = $_REQUEST['action'];
-$MODEL = 'gpt-4o';
+$MODEL = 'gpt-4o-mini';
 $USER_ID = $_REQUEST['user_id'] ?? null;
 $STORAGE_TYPE = $USER_ID ? "sql" : "session";
 $PARAMETERS = array(
