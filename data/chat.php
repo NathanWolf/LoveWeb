@@ -107,12 +107,10 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
         return null;
     }
     $prompt = '';
-    /*
     $prompt .= 'Your name is ' . getCharacterName($persona) . "\n";
     if ($persona['birth_name']) {
         $prompt .= 'Your birth name is ' . $persona['birth_name'] . "\n";
     }
-    */
     $system = null;
     if ($persona['chat']['system']) {
         $system = $persona['chat']['system'];
@@ -123,7 +121,6 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     if ($system) {
         $prompt .= $system . "\n\n";
     }
-    /*
     if ($persona['backstory']) {
         $prompt .= 'Your backstory is as follows: ' . $persona['backstory'] . "\n";
     }
@@ -133,11 +130,9 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     if ($persona['birth_realm']) {
         $prompt .= 'You were born in ' . $persona['birth_realm'] . "\n";
     }
-    */
     if ($persona['notes']) {
         $prompt .= 'Some notes about you: ' . $persona['notes'] . "\n";
     }
-    /*
     $characterProperties = $loveDatabase->getCharacterProperties($persona['id']);
     if ($characterProperties) {
         $properties = getAllProperties($loveDatabase);
@@ -151,7 +146,6 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
             }
         }
     }
-    */
     $characterRelationships = $loveDatabase->getCharacterRelationships($persona['id']);
     if ($characterRelationships) {
         $relationships = getAllRelationships($loveDatabase);
