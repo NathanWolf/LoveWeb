@@ -152,6 +152,8 @@ class Database {
     function save($table, $row, $id = 'id', $id2 = null) {
         $update = array();
         $parameters = array();
+        // This should be set automatically
+        unset($row['updated']);
         foreach ($row as $key => $value) {
             if ($key != $id && $key != $id2) {
                 $update[] = "$key = :$key";
