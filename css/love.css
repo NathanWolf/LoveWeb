@@ -313,8 +313,3 @@ textarea {
     flex-direction: row;
     flex: auto;
 }
-
-.section.following {
-    overflow: hidden !important;
-}
-

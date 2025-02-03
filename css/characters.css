@@ -450,6 +450,7 @@ div.characterFullName {
 
 div.following {
     white-space: nowrap;
+    padding-right: 32px !important;
 }
 
 div.characterRotateHint {
