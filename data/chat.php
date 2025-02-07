@@ -8,14 +8,19 @@ if (ob_get_level()) ob_end_clean();
 require_once 'LoveDatabase.class.php';
 require('config.inc.php');
 $SETTINGS = $_config;
+$USER_ID = $_REQUEST['user_id'] ?? null;
 
 if (!isset($_REQUEST['action'])) {
-    die("Missing action parameter");
+    die(json_encode(array('success' => false, 'message' => 'Missing action parameter')));
+}
+
+// This is maybe getting us into some trouble?
+if (!$USER_ID) {
+    die(json_encode(array('success' => false, 'message' => 'Log in to chat')));
 }
 
 $ACTION = $_REQUEST['action'];
 $MODEL = 'gpt-4o-mini';
-$USER_ID = $_REQUEST['user_id'] ?? null;
 $STORAGE_TYPE = $USER_ID ? "sql" : "session";
 $PARAMETERS = array(
     'temperature' => 0.7,
