@@ -72,7 +72,7 @@
                 <div class="tabButton toolbarButton" data-tab="info">Info</div>
                 <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
                 <div class="tabButton toolbarButton" data-tab="realms">Realms</div>
-                <div class="tabButton toolbarButton" data-tab="chat">Chat</div>
+                <div class="tabButton toolbarButton user" data-tab="chat"  style="display: none">Chat</div>
                 <div class="tabButton toolbarButton" data-tab="quizzes">Quizzes</div>
                 <div class="tabButton toolbarButton" data-tab="flashCards">Flash Cards</div>
                 <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>

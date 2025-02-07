@@ -220,9 +220,15 @@ class Profile extends Component {
         });
         logoutDiv.appendChild(logoutButton);
 
-        if (this.#user != null && this.#user.admin) {
-            this.#showAdmin();
+        if (this.#user != null) {
+            this.#showUser();
+            if (this.#user.admin) {
+                this.#showAdmin();
+            } else {
+                this.#hideAdmin();
+            }
         } else {
+            this.#hideUser();
             this.#hideAdmin();
         }
         this.#updateButton();
@@ -255,11 +261,26 @@ class Profile extends Component {
         }
     }
 
+    #hideUser() {
+        let elements = document.getElementsByClassName('user');
+        for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
+            elements[elementIndex].style.display = 'none';
+        }
+    }
+
+    #showUser() {
+        let elements = document.getElementsByClassName('user');
+        for (let elementIndex = 0; elementIndex < elements.length; elementIndex++) {
+            elements[elementIndex].style.display = 'flex';
+        }
+    }
+
     #processLogout(response) {
         if (response.success) {
             Utilities.removeClass(this.#button, 'loggedin');
             Utilities.addClass(this.#button, 'loggedout');
             this.#hideAdmin();
+            this.#hideUser();
             this.#user = null;
             this.#updateButton();
             this.#showLogin();
@@ -272,6 +293,7 @@ class Profile extends Component {
 
     check() {
         this.#hideAdmin();
+        this.#hideUser();
         let userId = Utilities.getCookie('user');
         let token = Utilities.getCookie('token');
         if (userId != null && token != null) {
