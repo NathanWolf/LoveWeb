@@ -4,6 +4,12 @@ class Chat extends Component {
     #messages = {};
     #conversations = {};
     #conversationId = null;
+    #tiers = [
+        {'name': 'Breaking the Fourth Wall', 'color': 'rgb(124, 124, 124)'},
+        {'name': 'Characters That Have Variants', 'color': 'rgb(124, 10, 2)'},
+        {'name': 'Characters That Have Detailed Prompts', 'color': 'rgb(230, 118, 66)'},
+        {'name': 'Other Characters (chat may not be as detailed)', 'color': 'rgb(255, 166, 74)'}
+    ];
 
     constructor(controller, element) {
         super(controller, element);
@@ -160,6 +166,22 @@ class Chat extends Component {
         return portraitContainer;
     }
 
+    #sortCharacters(characterList) {
+        characterList.forEach(function(character) {
+            if (character.chat == null) character.chat_tier = 3;
+            else if (character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) character.chat_tier = 1;
+            else character.chat_tier = 2;
+        });
+
+        characterList.sort(function(a, b) {
+            if (a.chat_tier != b.chat_tier) {
+                return a.chat_tier < b.chat_tier ? -1 : 1;
+            }
+            return a.name.localeCompare(b.name);
+        });
+        return characterList;
+    }
+
     #startNewChat() {
         let container = this.getElement();
         let controller = this;
@@ -175,11 +197,20 @@ class Chat extends Component {
         let newChatCharacters = document.createElement('div');
         newChatCharacters.className = 'chatCharacterList';
         container.appendChild(newChatCharacters);
+        characterList = this.#sortCharacters(characterList);
+        let currentTier = -1;
         characterList.forEach(function(character){
-            if (character.chat == null) return;
+            if (currentTier != character.chat_tier) {
+                currentTier = character.chat_tier;
+                let tier = controller.#tiers[currentTier];
+                let header = Utilities.createDiv('characterGroupHeader', newChatCharacters);
+                Utilities.createSpan('', header, tier.name);
+                header.style.backgroundColor = tier.color;
+            }
+
             let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
-                if (character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
+                if (character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
                     controller.#chooseAlternative(character.id, function(alternativeIndex) {
                         controller.#chooseSource(character.id, alternativeIndex);
                     });
@@ -277,11 +308,19 @@ class Chat extends Component {
 
         let characters = this.getController().getCharacters();
         let characterList = characters.getCharacterList();
+        characterList = this.#sortCharacters(characterList);
+        let currentTier = -1;
         characterList.forEach(function(character){
-            if (character.chat == null) return;
+            if (currentTier != character.chat_tier) {
+                currentTier = character.chat_tier;
+                let tier = controller.#tiers[currentTier];
+                let header = Utilities.createDiv('characterGroupHeader', newChatCharacters);
+                Utilities.createSpan('', header, tier.name);
+                header.style.backgroundColor = tier.color;
+            }
             let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
-                if (character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
+                if (character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
                     controller.#chooseAlternative(character.id, function(alternativeIndex) {
                         controller.#newChat(targetCharacterId, character.id, targetAlternativeIndex, alternativeIndex, false);
                     });

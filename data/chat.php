@@ -117,7 +117,7 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
         $prompt .= 'Your birth name is ' . $persona['birth_name'] . "\n";
     }
     $system = null;
-    if ($persona['chat']['system']) {
+    if ($persona['chat'] && $persona['chat']['system']) {
         $system = $persona['chat']['system'];
     }
     if (!is_null($alternativeId) && isset($persona['chat']['alternatives'][$alternativeId]['system'])) {
@@ -234,7 +234,7 @@ try {
         case 'prompt':
             $targetPersonaId = $_REQUEST['target_persona_id'];
             $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
-            if (!$targetPersona || !$targetPersona['chat']) {
+            if (!$targetPersona) {
                 die("Invalid character: $targetPersonaId");
             }
             $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
@@ -250,7 +250,7 @@ try {
             }
             $targetPersonaId = $_REQUEST['target_persona_id'];
             $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
-            if (!$targetPersona || !$targetPersona['chat']) {
+            if (!$targetPersona) {
                 die("Invalid character: $targetPersonaId");
             }
             $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
