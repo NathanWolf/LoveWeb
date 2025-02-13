@@ -14,12 +14,13 @@ if (!isset($_REQUEST['action'])) {
     die(json_encode(array('success' => false, 'message' => 'Missing action parameter')));
 }
 
-// This is maybe getting us into some trouble?
-if (!$USER_ID) {
+$ACTION = $_REQUEST['action'];
+
+// Anonymous chat is maybe getting us into some trouble?
+if (!$USER_ID && $ACTION !== 'prompt') {
     die(json_encode(array('success' => false, 'message' => 'Log in to chat')));
 }
 
-$ACTION = $_REQUEST['action'];
 $MODEL = 'gpt-4o-mini';
 $STORAGE_TYPE = $USER_ID ? "sql" : "session";
 $PARAMETERS = array(
