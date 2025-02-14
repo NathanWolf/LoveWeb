@@ -505,7 +505,7 @@ class Chat extends Component {
         this.addMessage(message.role, message.content, characterId, message.id, realmId);
     }
 
-    addMessage(role, message, characterId, messageId, realmId) {
+    addMessage(role, message, characterId, messageId, realmId, rawMessage) {
         let conversation = this.getConversation();
         if (conversation == null) {
             alert("Sorry, something went wrong!");
@@ -533,7 +533,7 @@ class Chat extends Component {
         }
 
         let content = Utilities.createDiv('content', messageDiv);
-        content.innerHTML = Utilities.convertMarkdown(message);
+        content.innerHTML = rawMessage ? message : Utilities.convertMarkdown(message);
 
         if (messageId !== 'undefined') {
             this.makeEditable(messageId, messageDiv);
@@ -685,7 +685,7 @@ class Chat extends Component {
         this.addMessageObject(messageResponse.message);
 
         // initialize response message with blinking cursor
-        let message = this.addMessage( 'assistant', '<div id="cursor"></div>', characterId, null, realmId);
+        let message = this.addMessage( 'assistant', '<div id="cursor"></div>', characterId, null, realmId, true);
 
         // empty the message input field
         this.#messageInput.value = '';
