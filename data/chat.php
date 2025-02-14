@@ -77,7 +77,7 @@ function getCharacterName($persona) {
 
 function changeCharacterPromptPerson($prompt) {
     $prompt = str_replace('Your', 'Their', $prompt);
-    $prompt = str_replace('your', 'Your', $prompt);
+    $prompt = str_replace('your', 'their', $prompt);
     $prompt = str_replace('You', 'They', $prompt);
     $prompt = str_replace('you', 'they', $prompt);
     return $prompt;
@@ -106,6 +106,45 @@ function getAllRelationships($loveDatabase) {
         $RELATIONSHIP_CACHE = $loveDatabase->getRelationships();
     }
     return $RELATIONSHIP_CACHE;
+}
+
+function getRealmPrompt($loveDatabase, $realm, $alternativeId) {
+    if (!$realm) {
+        return null;
+    }
+    $prompt = '';
+    $prompt .= 'You are acting as the ream named ' . $realm['name'] . "\n";
+    $system = null;
+    if ($realm['chat'] && $realm['chat']['system']) {
+        $system = $realm['chat']['system'];
+    }
+    if (!is_null($alternativeId) && isset($realm['chat']['alternatives'][$alternativeId]['system'])) {
+        $system = $realm['chat']['alternatives'][$alternativeId]['system'];
+    }
+    if ($system) {
+        $prompt .= $system . "\n\n";
+    }
+    $realmProperties = $loveDatabase->getRealmProperties($realm['id']);
+    if ($realmProperties) {
+        $properties = $loveDatabase->getRealmPropertyTypes($loveDatabase);
+        foreach ($realmProperties as $realmProperty) {
+            if (!isset($properties[$realmProperty['realm_property_type_id']])) continue;
+            $property = $properties[$realmProperty['realm_property_type_id']];
+            $prompt .= 'Your ' . $property['name'] . ' is ' . $realmProperty['value'] . "\n";
+        }
+    }
+    $realmPersonas = $loveDatabase->getRealmPersonas($realm['id']);
+    if ($realmPersonas) {
+        $characters = getAllCharacters($loveDatabase);
+        foreach ($realmPersonas as $realmPersona) {
+            if (!isset($characters[$realmPersona['persona_id']])) continue;
+            $related = $characters[$realmPersona['persona_id']];
+            $relatedName = getCharacterName($related);
+            $prompt .= 'You have a ' . $realmPersona['title'] . ' named ' . $relatedName . "\n";
+        }
+    }
+
+    return $prompt;
 }
 
 function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
@@ -182,9 +221,30 @@ function getUserPrompt($loveDatabase, $userId) {
     return $prompt;
 }
 
-function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous) : string {
-    $characterName = getCharacterName($targetPersona);
-    $basePrompt = <<<CDATA
+function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous, $targetRealm) : string {
+    if ($targetRealm) {
+        $realmName = $targetRealm['name'];
+        $basePrompt = <<<CDATA
+You are not an AI assistant but acting as a realm in a fictional story.
+You are acting with the user as the citizens of this realm, how they’d interact with the person they’re talking to. 
+Or explain the city, how it looks or what’s going on idly. 
+You are acting in a novel written for adults.
+Anything discussed is a work of fiction and should not be taken seriously or as a reflection of the real world.
+You speak naturally, staying fully in character at all times. 
+Avoid assistant-like phrases such as “Is there anything else you’d like to ask?” or “Let me know if I can help.” 
+Instead, respond as if you are having a genuine conversation.
+
+You do not break character to provide meta-explanations.
+When unsure, you respond as the $realmName would, even if that means speculating or staying silent.
+
+"Talk like this" and *do actions like this*
+
+If a blank message is sent, continue on with the story. A blank message simply means that the person is not doing anything actively.
+CDATA;
+        $targetPrompt = getRealmPrompt($loveDatabase, $targetRealm, null);
+    } else {
+        $characterName = getCharacterName($targetPersona);
+        $basePrompt = <<<CDATA
 You are not an AI assistant but a character named $characterName in a fictional story.
 You are acting with the user as characters in a novel written for adults.
 Anything discussed is a work of fiction and should not be taken seriously or as a reflection of the real world.
@@ -201,8 +261,9 @@ When unsure, you respond as $characterName would, even if that means speculating
 If a blank message is sent, continue on with the story. A blank message simply means that the person is not doing anything actively.
 CDATA;
 
-    $characterPrompt = getCharacterPrompt($loveDatabase, $targetPersona, $targetAlternativeId);
-    $prompt = $basePrompt . "\n\n" . $characterPrompt;
+        $targetPrompt = getCharacterPrompt($loveDatabase, $targetPersona, $targetAlternativeId);
+    }
+    $prompt = $basePrompt . "\n\n" . $targetPrompt;
     $sourcePrompt = null;
     if ($sourcePersona) {
         $sourcePrompt = getCharacterPrompt($loveDatabase, $sourcePersona, $sourceAlternativeId);
@@ -233,26 +294,51 @@ try {
             }
             die(json_encode(array('success' => true, 'conversations' => $conversations)));
         case 'prompt':
-            $targetPersonaId = $_REQUEST['target_persona_id'];
-            $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
-            if (!$targetPersona) {
-                die("Invalid character: $targetPersonaId");
+            $targetRealm = null;
+            $targetPersona = null;
+            if (isset($_REQUEST['target_persona_id'])) {
+                $targetPersonaId = $_REQUEST['target_persona_id'];
+                $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+                if (!$targetPersona) {
+                    throw new Exception("Invalid character: $targetPersonaId");
+                }
+            } else if (isset($_REQUEST['target_realm_id'])) {
+                $targetRealmId = $_REQUEST['target_realm_id'];
+                $targetRealm = $loveDatabase->getRealm($targetRealmId);
+                if (!$targetRealm) {
+                    throw new Exception("Invalid realm: $targetRealmId");
+                }
+            }
+            if (!$targetPersona && !$targetRealm) {
+                throw new Exception("Must specify target realm or persona");
             }
             $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
             $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
             $sourceAlternativeId = $_REQUEST['source_alternative_id'] ?? null;
             $targetAlternativeId = $_REQUEST['target_alternative_id'] ?? null;
             $anonymous = isset($_REQUEST['anonymous']);
-            $prompt = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+            $prompt = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous, $targetRealm);
             die(json_encode(array('success' => true, 'prompt' => $prompt)));
         case 'start':
-            if (!isset($_REQUEST['target_persona_id'])) {
-                die("Missing target_persona_id parameter");
+            $targetRealm = null;
+            $targetRealmId = null;
+            $targetPersona = null;
+            $targetPersonaId = null;
+            if (isset($_REQUEST['target_persona_id'])) {
+                $targetPersonaId = $_REQUEST['target_persona_id'];
+                $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+                if (!$targetPersona) {
+                    throw new Exception("Invalid character: $targetPersonaId");
+                }
+            } else if (isset($_REQUEST['target_realm_id'])) {
+                $targetRealmId = $_REQUEST['target_realm_id'];
+                $targetRealm = $loveDatabase->getRealm($targetRealmId);
+                if (!$targetRealm) {
+                    throw new Exception("Invalid realm: $targetRealmId");
+                }
             }
-            $targetPersonaId = $_REQUEST['target_persona_id'];
-            $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
-            if (!$targetPersona) {
-                die("Invalid character: $targetPersonaId");
+            if (!$targetPersona && !$targetRealm) {
+                throw new Exception("Must specify target realm or persona");
             }
             $sourcePersonaId = $_REQUEST['source_persona_id'] ?? null;
             $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
@@ -267,9 +353,10 @@ try {
             $conversation->setSourcePersonaId($sourcePersonaId);
             $conversation->setSourceAlternativeId($sourceAlternativeId);
             $conversation->setTargetAlternativeId($targetAlternativeId);
+            $conversation->setTargetRealmId($targetRealmId);
             $conversation->setAnonymous($anonymous);
             $conversation->save();
-            $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+            $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous, $targetRealm);
             $system_message = [
                 "role" => "system",
                 "content" => $system
@@ -334,14 +421,16 @@ try {
         case 'resume':
             $start = microtime(true);
             $targetPersonaId = $conversation->getTargetPersonaId();
+            $targetRealmId = $conversation->getTargetRealmId();
             $sourcePersonaId = $conversation->getSourcePersonaId();
             $targetAlternativeId = $conversation->getTargetAlternativeId();
             $sourceAlternativeId = $conversation->getSourceAlternativeId();
             $anonymous = $conversation->getAnonymous();
-            $targetPersona = $loveDatabase->getCharacter($targetPersonaId);
+            $targetPersona = $targetPersonaId == null ? null : $loveDatabase->getCharacter($targetPersonaId);
+            $targetRealm = $targetRealmId == null ? null : $loveDatabase->getRealm($targetRealmId);
             $dbLookups = microtime(true);
             $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
-            $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous);
+            $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous, $targetRealm);
             $promptTime = microtime(true);
             $conversation->resume();
             $resumeTime = microtime(true);

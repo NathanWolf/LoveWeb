@@ -3,10 +3,11 @@ class SessionConversation implements ConversationInterface
 {
     protected int $chat_id;
     protected string $title;
-    protected string $targetPersonaId;
+    protected string|null $targetPersonaId;
     protected int|null $targetAlternativeId;
     protected string|null $sourcePersonaId;
     protected int|null $sourceAlternativeId;
+    protected string|null $targetRealmId;
 
     public function __construct() {
         self::init_session();
@@ -18,6 +19,10 @@ class SessionConversation implements ConversationInterface
 
     public function setTargetPersonaId(string|null $targetPersonaId): void {
         $this->targetPersonaId = $targetPersonaId;
+    }
+
+    public function setTargetRealmId(string|null $targetRealmId): void {
+        $this->targetRealmId = $targetRealmId;
     }
 
     public function setSourcePersonaId(string|null $sourcePersonaId): void {
@@ -44,6 +49,10 @@ class SessionConversation implements ConversationInterface
 
     public function getTargetPersonaId(): string|null {
         return $this->targetPersonaId;
+    }
+
+    public function getTargetRealmId(): string|null {
+        return $this->targetRealmId;
     }
 
     public function getSourcePersonaId(): string|null {
@@ -88,7 +97,8 @@ class SessionConversation implements ConversationInterface
             $conversation->set_id( $data['id'] );
             $conversation->set_title( $data['title'] );
             $conversation->setSourcePersonaId( $data['source_persona_id'] ?? null );
-            $conversation->setTargetPersonaId( $data['target_persona_id'] );
+            $conversation->setTargetPersonaId( $data['target_persona_id'] ?? null );
+            $conversation->setTargetRealmId( $data['target_realm_id'] ?? null );
             $conversation->setSourceAlternativeId( $data['source_alternative_id'] ?? null );
             $conversation->setTargetAlternativeId( $data['target_alternative_id'] ?? null );
 
@@ -110,7 +120,8 @@ class SessionConversation implements ConversationInterface
         $conversation->set_id( $data['id'] );
         $conversation->set_title( $data['title'] );
         $conversation->setSourcePersonaId( $data['source_persona_id'] ?? null );
-        $conversation->setTargetPersonaId( $data['target_persona_id'] );
+        $conversation->setTargetPersonaId( $data['target_persona_id'] ?? null );
+        $conversation->setTargetRealmId( $data['target_realm_id'] ?? null );
         $conversation->setSourceAlternativeId( $data['source_alternative_id'] ?? null );
         $conversation->setTargetAlternativeId( $data['target_alternative_id'] ?? null );
 
@@ -191,6 +202,7 @@ class SessionConversation implements ConversationInterface
                 "title" => $this->title,
                 'source_persona_id' => $this->sourcePersonaId,
                 'target_persona_id' => $this->targetPersonaId,
+                'target_realm_id' => $this->targetRealmId,
                 'source_alternative_id' => $this->sourceAlternativeId,
                 'target_alternative_id' => $this->targetAlternativeId,
                 "messages" => [],
@@ -201,6 +213,7 @@ class SessionConversation implements ConversationInterface
                 "title" => $this->title,
                 'source_persona_id' => $this->sourcePersonaId,
                 'target_persona_id' => $this->targetPersonaId,
+                'target_realm_id' => $this->targetRealmId,
                 'source_alternative_id' => $this->sourceAlternativeId,
                 'target_alternative_id' => $this->targetAlternativeId,
                 "messages" => $this->get_messages(),
@@ -220,6 +233,7 @@ class SessionConversation implements ConversationInterface
             "title" => $this->title,
             'source_persona_id' => $this->sourcePersonaId,
             'target_persona_id' => $this->targetPersonaId,
+            'target_realm_id' => $this->targetRealmId,
             'source_alternative_id' => $this->sourceAlternativeId,
             'target_alternative_id' => $this->targetAlternativeId,
             'anonymous' => true

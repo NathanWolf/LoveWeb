@@ -44,6 +44,14 @@ class Love {
         return this.#characters;
     }
 
+    getRealms() {
+        return this.#realms;
+    }
+
+    getChat() {
+        return this.#chat;
+    }
+
     getProfile() {
         return this.#profile;
     }

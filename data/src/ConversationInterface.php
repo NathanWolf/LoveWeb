@@ -34,6 +34,8 @@ interface ConversationInterface
 
     public function setTargetPersonaId(string|null $targetPersonaId): void;
 
+    public function setTargetRealmId(string|null $targetRealmId): void;
+
     public function setSourcePersonaId(string|null $sourcePersonaId): void;
 
     public function setSourceAlternativeId(int|null $sourceAlternativeId): void;
@@ -41,6 +43,8 @@ interface ConversationInterface
     public function setTargetAlternativeId(int|null $targetAlternativeId): void;
 
     public function getTargetPersonaId(): string|null;
+
+    public function getTargetRealmId(): string|null;
 
     public function getSourcePersonaId(): string|null;
 

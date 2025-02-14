@@ -37,6 +37,7 @@ class Chat extends Component {
         let container = this.getElement();
         let controller = this;
         let characters = this.getController().getCharacters();
+        let realms = this.getController().getRealms();
         let data = this.#createForm('list');
         let listResponse = await fetch( "data/chat.php", {
             method: "POST",
@@ -76,6 +77,7 @@ class Chat extends Component {
             if (controller.#conversationId != null) return;
 
             let character = characters.getCharacter(conversation.target_persona_id);
+            let realm = realms.getRealm(conversation.target_realm_id);
             let chatContainer = document.createElement('div');
 
             chatContainer.className = 'conversationContainer';
@@ -93,7 +95,11 @@ class Chat extends Component {
 
             let portrait = document.createElement('div');
             portrait.className = 'portrait small';
-            portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+            if (realm != null) {
+                portrait.style.backgroundImage = 'url(' + realms.getPortrait(realm.id) + ')';
+            } else {
+                portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+            }
             chatContainer.appendChild(portrait);
 
             let chatTitle = document.createElement('div');
@@ -250,7 +256,7 @@ class Chat extends Component {
         }
     }
 
-    #chooseSource(targetCharacterId, targetAlternativeIndex) {
+    #chooseSource(targetCharacterId, targetAlternativeIndex, realmId) {
         let container = this.getElement();
         let controller = this;
         Utilities.empty(container);
@@ -284,7 +290,7 @@ class Chat extends Component {
             portraitContainer.appendChild(portrait);
 
             portraitContainer.addEventListener('click', function() {
-                controller.#newChat(targetCharacterId, null, targetAlternativeIndex, null, false);
+                controller.#newChat(targetCharacterId, null, targetAlternativeIndex, null, false, realmId);
             });
             newChatCharacters.appendChild(portraitContainer);
         }
@@ -302,7 +308,7 @@ class Chat extends Component {
         portraitContainer.appendChild(portrait);
 
         portraitContainer.addEventListener('click', function() {
-            controller.#newChat(targetCharacterId, null, targetAlternativeIndex, null, true);
+            controller.#newChat(targetCharacterId, null, targetAlternativeIndex, null, true, realmId);
         });
         newChatCharacters.appendChild(portraitContainer);
 
@@ -322,14 +328,18 @@ class Chat extends Component {
             portraitContainer.addEventListener('click', function() {
                 if (character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
                     controller.#chooseAlternative(character.id, function(alternativeIndex) {
-                        controller.#newChat(targetCharacterId, character.id, targetAlternativeIndex, alternativeIndex, false);
+                        controller.#newChat(targetCharacterId, character.id, targetAlternativeIndex, alternativeIndex, false, realmId);
                     });
                 } else {
-                    controller.#newChat(targetCharacterId, character.id, targetAlternativeIndex, null, false);
+                    controller.#newChat(targetCharacterId, character.id, targetAlternativeIndex, null, false, realmId);
                 }
             });
             newChatCharacters.appendChild(portraitContainer);
         });
+    };
+
+    startRealmChat(realmId) {
+        this.#chooseSource(null, null, realmId);
     };
 
     async #resume(conversationId) {
@@ -356,24 +366,39 @@ class Chat extends Component {
         }
 
         let targetCharacterId = conversation.target_persona_id;
-        this.#showChat(targetCharacterId);
+        let targetRealmId = conversation.target_realm_id;
+        this.#showChat(targetCharacterId, targetRealmId);
         let controller = this;
         resumeResponse.messages.forEach(function(message){
             if (message.role == 'system') return;
-            controller.addMessageObject(message, targetCharacterId);
+            controller.addMessageObject(message, targetCharacterId, targetRealmId);
         });
     }
 
-    async #newChat(targetCharacterId, sourceCharacterId, targetAlternative, sourceAlternative, anonymous) {
+    async #newChat(targetCharacterId, sourceCharacterId, targetAlternative, sourceAlternative, anonymous, targetRealmId) {
         let characters = this.getController().getCharacters();
-        let character = characters.getCharacter(targetCharacterId);
-        if (character == null) {
-            alert("Sorry, something went wrong!");
-            return;
-        }
-        let targetName = character.name;
-        if (targetAlternative != null && character.chat.alternatives[targetAlternative].hasOwnProperty('label')) {
-            targetName += ' (' + character.chat.alternatives[targetAlternative].label + ')';
+        let realms = this.getController().getRealms();
+        let character = null;
+        let realm = null;
+        let targetName = null;
+        if (targetRealmId != null) {
+            realm = realms.getRealm(targetRealmId);
+            if (realm == null) {
+                alert("Sorry, something went wrong!");
+                return;
+            }
+            targetName = realm.name;
+        } else {
+            character = characters.getCharacter(targetCharacterId);
+            if (character == null) {
+                alert("Sorry, something went wrong!");
+                return;
+            }
+            targetName = character.name;
+
+            if (targetAlternative != null && character.chat.alternatives[targetAlternative].hasOwnProperty('label')) {
+                targetName += ' (' + character.chat.alternatives[targetAlternative].label + ')';
+            }
         }
         let title = 'Chat with ' + targetName;
         let sourceCharacter = sourceCharacterId == null ? null : characters.getCharacter(sourceCharacterId);
@@ -387,7 +412,6 @@ class Chat extends Component {
 
         let data = this.#createForm('start');
         data.append('title', title);
-        data.append('target_persona_id', targetCharacterId);
         if (targetAlternative != null) {
             data.append('target_alternative_id', targetAlternative);
         }
@@ -399,6 +423,11 @@ class Chat extends Component {
         }
         if (anonymous) {
             data.append('anonymous', true);
+        }
+        if (targetRealmId != null) {
+            data.append('target_realm_id', targetRealmId);
+        } else {
+            data.append('target_persona_id', targetCharacterId);
         }
         let startResponse = await fetch( "data/chat.php", {
             method: "POST",
@@ -415,14 +444,19 @@ class Chat extends Component {
         let conversation = startResponse.conversation;
         this.#conversationId = conversation.id;
         this.#conversations[conversation.id] = conversation;
-        this.#showChat(targetCharacterId);
+        this.#showChat(targetCharacterId, targetRealmId);
     }
 
-    #showChat(characterKey) {
+    #showChat(characterKey, realmId) {
         let controller = this;
-        let characters = this.getController().getCharacters();
-        let character = characters.getCharacter(characterKey);
-        if (character == null) {
+        let target = null;
+        if (realmId != null) {
+            target = this.getController().getRealms().getRealm(realmId);
+        } else {
+            let characters = this.getController().getCharacters();
+            target = characters.getCharacter(characterKey);
+        }
+        if (target == null) {
             alert("Sorry, something went wrong!");
             return;
         }
@@ -436,7 +470,7 @@ class Chat extends Component {
         let chatInput = Utilities.createDiv('chatInput', chatInputContainer);
         let input = document.createElement('textarea');
         input.rows = 1;
-        input.placeholder = 'Send a message to ' + character.name;
+        input.placeholder = 'Send a message to ' + target.name;
         this.#messageInput = input;
         chatInput.appendChild(input);
         let button = document.createElement('button');
@@ -466,12 +500,12 @@ class Chat extends Component {
         }
     }
 
-    addMessageObject(message, characterId) {
+    addMessageObject(message, characterId, realmId) {
         this.#messages[message.id] = message;
-        this.addMessage(message.role, message.content, characterId, message.id);
+        this.addMessage(message.role, message.content, characterId, message.id, realmId);
     }
 
-    addMessage(role, message, characterId, messageId) {
+    addMessage(role, message, characterId, messageId, realmId) {
         let conversation = this.getConversation();
         if (conversation == null) {
             alert("Sorry, something went wrong!");
@@ -490,9 +524,12 @@ class Chat extends Component {
                 let portrait = this.getController().getCharacters().getPortrait(userCharacter)
                 icon.style.backgroundImage = 'url(' + portrait + ')';
             }
-        } else if (role == 'assistant' && typeof(characterId) !== 'undefined') {
+        } else if (role == 'assistant' && typeof(characterId) !== 'undefined' && characterId != null) {
             let characters = this.getController().getCharacters();
             icon.style.backgroundImage = 'url(' + characters.getPortrait(characterId) + ')';
+        } else if (role == 'assistant' && typeof(realmId) !== 'undefined' && realmId != null) {
+            let realms = this.getController().getRealms();
+            icon.style.backgroundImage = 'url(' + realms.getPortrait(realmId) + ')';
         }
 
         let content = Utilities.createDiv('content', messageDiv);
@@ -625,6 +662,7 @@ class Chat extends Component {
         let question = Utilities.escapeHtml(this.#messageInput.value);
         let controller = this;
         let characterId = conversation.target_persona_id;
+        let realmId = conversation.target_realm_id;
 
         // send message
         let data = this.#createForm('message');
@@ -647,7 +685,7 @@ class Chat extends Component {
         this.addMessageObject(messageResponse.message);
 
         // initialize response message with blinking cursor
-        let message = this.addMessage( 'assistant', '<div id="cursor"></div>', characterId);
+        let message = this.addMessage( 'assistant', '<div id="cursor"></div>', characterId, null, realmId);
 
         // empty the message input field
         this.#messageInput.value = '';

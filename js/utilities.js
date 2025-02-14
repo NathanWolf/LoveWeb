@@ -178,7 +178,7 @@ class Utilities {
     }
 
     static closePopups() {
-        let elements = document.getElementsByClassName('popup');
+        let elements = document.getElementsByClassName('closeButton');
         for (let i = 0; i < elements.length; i++) {
             elements[i].dispatchEvent(new Event("click"));
         }

@@ -78,6 +78,11 @@ class Realms extends Component {
         return image;
     }
 
+    getPortrait(realmId) {
+        // Do we need separate thumbnails vs portraits?
+        return this.#getImage(realmId, 'thumbnail');
+    }
+
     getThumbnailImage(realmId) {
         return this.#getImage(realmId, 'thumbnail');
     }
@@ -176,6 +181,18 @@ class Realms extends Component {
 
         let residentsDiv = Utilities.createDiv('info section', column2);
         Utilities.createDiv('label', residentsDiv, 'Residents');
+
+        if (realmController.getController().getProfile().getUser() != null) {
+            let chatDiv = Utilities.createDiv('info section', column2);
+            let chatButton = Utilities.createElement('button', 'realmChatButton', chatDiv, 'Chat');
+            chatButton.addEventListener('click', function() {
+                Utilities.closePopups();
+                let controller = realmController.getController();
+                let chat = controller.getChat();
+                controller.selectTab('chat');
+                chat.startRealmChat(realmId);
+            });
+        }
     }
 
     #addRealmPropertyInfo(realm, container, property, label) {

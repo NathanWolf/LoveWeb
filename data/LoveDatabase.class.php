@@ -211,6 +211,9 @@ class LoveDatabase extends Database {
     private function fixupRealm($realm) {
         $realm['properties'] = array();
         $realm['images'] = array();
+        if ($realm['chat']) {
+            $realm['chat'] = json_decode($realm['chat'], true);
+        }
         return $realm;
     }
 
@@ -279,6 +282,18 @@ class LoveDatabase extends Database {
         }
 
         return $results;
+    }
+
+    public function getRealm($id) {
+        return $this->fixupRealm($this->get('realm', $id));
+    }
+
+    public function getRealmProperties($realmId) {
+        return $this->query('SELECT * FROM realm_property WHERE realm_id = :id', array('id' => $realmId));
+    }
+
+    public function getRealmPersonas($realmId) {
+        return $this->query('SELECT * FROM realm_persona WHERE realm_id = :id', array('id' => $realmId));
     }
 
     public function getQuizzes() {

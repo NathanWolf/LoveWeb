@@ -150,3 +150,7 @@
     background-repeat: no-repeat;
     background-size: contain;
 }
+
+button.realmChatButton {
+    width: 14em;
+}

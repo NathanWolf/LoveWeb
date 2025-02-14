@@ -442,6 +442,18 @@ alter table conversation
 alter table conversation
     add access_count int not null default 0;
 
+alter table conversation
+    add target_realm_id VARCHAR(40) null,
+    add target_realm_alternative_id int null;
+
+alter table conversation
+    add constraint conversation_realm_id_fk
+        foreign key (target_realm_id) references realm (id)
+            on update cascade on delete cascade;
+
+alter table conversation
+    modify target_persona_id varchar(64) null;
+
 CREATE TABLE conversation_message
 (
     id                int not null auto_increment,
@@ -476,6 +488,9 @@ create table realm
     constraint realm_pk
         primary key (id)
 );
+
+alter table realm
+    add column chat JSON null;
 
 create table realm_property_type
 (
