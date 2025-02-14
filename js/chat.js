@@ -533,7 +533,7 @@ class Chat extends Component {
         }
 
         let content = Utilities.createDiv('content', messageDiv);
-        content.innerHTML = message;
+        content.innerHTML = Utilities.convertMarkdown(message);
 
         if (messageId !== 'undefined') {
             this.makeEditable(messageId, messageDiv);
@@ -641,7 +641,7 @@ class Chat extends Component {
 
     updateMessage(container, message) {
         const content = container.querySelector(".content");
-        content.innerHTML  = Utilities.convertMarkdown(message);
+        content.innerHTML = Utilities.convertMarkdown(message);
     }
 
     getConversation() {
