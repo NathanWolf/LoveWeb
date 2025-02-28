@@ -533,7 +533,10 @@ class Chat extends Component {
         }
 
         let content = Utilities.createDiv('content', messageDiv);
-        content.innerHTML = rawMessage ? message : Utilities.convertMarkdown(message);
+        if (!rawMessage) {
+            message = Utilities.convertMarkdown(Utilities.convertFromHTML(message));
+        }
+        content.innerHTML = message;
 
         if (messageId !== 'undefined') {
             this.makeEditable(messageId, messageDiv);
