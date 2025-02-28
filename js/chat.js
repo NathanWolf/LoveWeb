@@ -734,6 +734,27 @@ class Chat extends Component {
             // the message data
             if (event.data != 'stopped') {
                 let json = JSON.parse( event.data );
+                if (json.hasOwnProperty('content')) {
+                    // TODO: De-duplicate this code
+
+                    // append token to response
+                    response += json.content;
+                    paragraph += json.content;
+
+                    if(paragraph.indexOf( "\n\n" ) !== -1) {
+                        paragraph = "";
+                    }
+
+                    let scrolled = controller.isScrolledToBottom();
+
+                    // update message in UI
+                    controller.updateMessage(message, response);
+
+                    if (scrolled) {
+                        controller.scrollToBottom();
+                    }
+                }
+
                 if (json.hasOwnProperty('id')) {
                     controller.#messages[json.id] = json;
                     controller.makeEditable(json.id, message);

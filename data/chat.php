@@ -7,6 +7,13 @@ if (ob_get_level()) ob_end_clean();
 
 require_once 'LoveDatabase.class.php';
 require('config.inc.php');
+require(__DIR__ . "/src/vendor/autoload.php");
+require(__DIR__ . "/src/ConversationInterface.php");
+require(__DIR__ . "/src/SQLConversation.php");
+
+use Claude\Claude3Api\Client;
+use Claude\Claude3Api\Config;
+
 $SETTINGS = $_config;
 $USER_ID = $_REQUEST['user_id'] ?? null;
 
@@ -21,18 +28,12 @@ if (!$USER_ID && $ACTION !== 'prompt') {
     die(json_encode(array('success' => false, 'message' => 'Log in to chat')));
 }
 
-$MODEL = 'gpt-4o-mini';
+$MODEL = 'claude-3-5-haiku-20241022';
 $STORAGE_TYPE = $USER_ID ? "sql" : "session";
-$PARAMETERS = array(
-    'temperature' => 0.7,
-    'top_p' => 1.0
-);
 
 $CHARACTER_CACHE = array();
 $RELATIONSHIP_CACHE = array();
 $PROPERTY_CACHE = array();
-
-require(__DIR__ . "/autoload.php");
 
 function get_db(): PDO|null {
     global $STORAGE_TYPE;
@@ -456,27 +457,30 @@ try {
 
             // create a new completion
             try {
-                $chatgpt = new ChatGPT($SETTINGS['openapi']['key']);
-
-                $chatgpt->set_model($MODEL);
-                $chatgpt->set_params($PARAMETERS);
+                $config = new Config($SETTINGS['anthropic']['key']);
+                $client = new Client($config);
+                $system = "";
+                $messages = array();
 
                 foreach ($context as $message) {
-                    switch ($message['role']) {
-                        case "user":
-                            $chatgpt->umessage($message['content']);
-                            break;
-                        case "assistant":
-                            $chatgpt->amessage($message['content']);
-                            break;
-                        case "system":
-                            $chatgpt->smessage($message['content']);
-                            break;
+                    $role = $message['role'];
+                    if ($role === 'system') {
+                        $system = $message['content'];
+                        continue;
                     }
+                    $content = trim($message['content']);
+                    if (!$content) continue;
+
+                    $messages[] = array('role' => $role, 'content' => $content);
                 }
-                $response_text = $chatgpt->stream(StreamType::Event)->content;
-            } catch (Exception $e) {
-                $error = "Sorry, there was an unknown error in the OpenAI request";
+                $response = $client->chat(array(
+                    'system' => $system,
+                    'model' => $MODEL,
+                    'messages' => $messages
+                ));
+                $response_text = $response->getContent()[0]['text'];
+            } catch (Exception $ex) {
+                $error = "Sorry, there was an unexpected error in the API request: " . $ex->getMessage();
             }
 
             if ($error !== null) {
