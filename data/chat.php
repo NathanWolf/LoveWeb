@@ -8,8 +8,9 @@ if (ob_get_level()) ob_end_clean();
 require_once 'LoveDatabase.class.php';
 require('config.inc.php');
 require(__DIR__ . "/src/vendor/autoload.php");
-require(__DIR__ . "/src/ConversationInterface.php");
-require(__DIR__ . "/src/SQLConversation.php");
+require(__DIR__ . "/chat/ConversationInterface.php");
+require(__DIR__ . "/chat/SQLConversation.php");
+require(__DIR__ . "/chat/SessionConversation.php");
 
 use Claude\Claude3Api\Client;
 use Claude\Claude3Api\Config;

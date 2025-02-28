@@ -3,10 +3,16 @@ header("Cache-Control: no-cache");
 
 // With love to https://github.com/unconv/chat-wtf !
 
+
 if (ob_get_level()) ob_end_clean();
 
 require_once 'LoveDatabase.class.php';
 require('config.inc.php');
+require(__DIR__ . "/chat/chatgpt/autoload.php");
+require(__DIR__ . "/chat/ConversationInterface.php");
+require(__DIR__ . "/chat/SQLConversation.php");
+require(__DIR__ . "/chat/SessionConversation.php");
+
 $SETTINGS = $_config;
 $USER_ID = $_REQUEST['user_id'] ?? null;
 
@@ -31,8 +37,6 @@ $PARAMETERS = array(
 $CHARACTER_CACHE = array();
 $RELATIONSHIP_CACHE = array();
 $PROPERTY_CACHE = array();
-
-require(__DIR__ . "/autoload.php");
 
 function get_db(): PDO|null {
     global $STORAGE_TYPE;
