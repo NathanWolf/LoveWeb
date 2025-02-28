@@ -204,6 +204,7 @@ textarea {
     display: flex;
     flex: auto;
     overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .toolbarButton {
