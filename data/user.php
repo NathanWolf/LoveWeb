@@ -41,6 +41,15 @@ try {
             $token = getParameter('token');
             $user = $db->validateLogin($userId, $token);
             die(json_encode(array('success' => true, 'user' => $user)));
+        case 'users':
+            $userId = getParameter('user');
+            $token = getParameter('token');
+            $user = $db->validateLogin($userId, $token);
+            if (!$user['admin']) {
+                die(json_encode(array('success' => false, 'message' => 'Unauthorized')));
+            }
+            $users = $db->getConversationUsers();
+            die(json_encode(array('success' => true, 'users' => $users)));
         default:
             throw new Exception("Invalid action: $action");
     }

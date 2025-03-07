@@ -50,6 +50,11 @@ CREATE TABLE user_token
 alter table user
     drop column token;
 
+ALTER table user_token
+    add created           timestamp not null default CURRENT_TIMESTAMP,
+    add updated           timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+;
+
 CREATE TABLE user_property
 (
     user_id VARCHAR(64) NOT NULL,

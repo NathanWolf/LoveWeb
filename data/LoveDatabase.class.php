@@ -31,6 +31,35 @@ class LoveDatabase extends Database {
         return $user;
     }
 
+    public function getUsers() {
+        return $this->getAll('user');
+    }
+
+    public function getConversationUsers() {
+        $sql = <<<CDATA
+with latest_conversation as (
+    select user_id, max(conversation.updated) as latest_updated
+    from conversation
+    group by user_id
+),
+latest_token as (
+    select user_id, max(user_token.token) as latest_token
+    from user_token
+    group by user_id
+)
+select user.id, user.first_name, user.last_name, user.email, 
+       latest_conversation.latest_updated as latest_chat,
+       latest_token.latest_token as token
+from user
+left join latest_conversation
+    on user.id = latest_conversation.user_id
+left join latest_token
+    on user.id = latest_token.user_id
+order by latest_conversation.latest_updated desc;
+CDATA;
+        return $this->query($sql);
+    }
+
     private function generateToken() {
         return bin2hex(random_bytes(16));;
     }

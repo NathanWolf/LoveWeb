@@ -1,6 +1,7 @@
 class Profile extends Component {
     #button;
     #user;
+    #reviewUser = null;
     #formButtons = [];
 
     constructor(controller, element, button) {
@@ -208,6 +209,44 @@ class Profile extends Component {
         let welcomeDiv = Utilities.createDiv('welcome', profileDiv);
         welcomeDiv.innerText = 'Welcome back, ' + this.#user.first_name + '!';
 
+        if (this.#user != null && this.#user.admin) {
+            let controller = this;
+            const userRequeset = new XMLHttpRequest();
+            userRequeset.responseType = 'json';
+            userRequeset.onload = function() {
+                let response = this.response;
+                if (response.success) {
+                    let reviewDiv = Utilities.createDiv('review', profileDiv);
+                    Utilities.createSpan('reviewLabel', reviewDiv, 'Review: ');
+                    let reviewSelect = document.createElement('select');
+                    reviewDiv.appendChild(reviewSelect);
+                    let adminOption = document.createElement('option');
+                    adminOption.value = 'self';
+                    adminOption.innerText = 'Self (No Review)';
+                    reviewSelect.appendChild(adminOption);
+                    let users = {};
+                    for (let i = 0; i < response.users.length; i++) {
+                        let user = response.users[i];
+                        users[user.id] = user;
+                        if (user.id == controller.#user.id) continue;
+                        let userOption = document.createElement('option');
+                        userOption.value = user.id;
+                        userOption.innerText = user.first_name + ' ' + user.last_name;
+                        reviewSelect.appendChild(userOption);
+                        reviewSelect.addEventListener('change', function() {
+                            if (this.value == 'self') {
+                                 controller.clearReview();
+                            } else {
+                                controller.review(users[this.value]);
+                            }
+                        });
+                    }
+                }
+            };
+            userRequeset.open("POST", "data/user.php?action=users&user=" + this.#user.id + "&token=" + this.#user.token, true);
+            userRequeset.send();
+        }
+
         let logoutDiv = Utilities.createDiv('logout', profileDiv);
         let logoutButton = document.createElement('button');
         logoutButton.type = 'button';
@@ -224,6 +263,7 @@ class Profile extends Component {
             this.#showUser();
             if (this.#user.admin) {
                 this.#showAdmin();
+
             } else {
                 this.#hideAdmin();
             }
@@ -233,6 +273,14 @@ class Profile extends Component {
         }
         this.#updateButton();
         this.#formButtons = [logoutButton];
+    }
+
+    clearReview() {
+        this.#reviewUser = null;
+    }
+
+    review(user) {
+        this.#reviewUser = user;
     }
 
     #logout() {
@@ -334,6 +382,9 @@ class Profile extends Component {
     }
 
     getUser() {
+        if (this.#reviewUser != null) {
+            return this.#reviewUser;
+        }
         return this.#user;
     }
 
@@ -387,9 +438,5 @@ class Profile extends Component {
             + '&token=' + user.token
             + '&value=' + encodeURIComponent(value), true);
         request.send();
-    }
-
-    getUser() {
-        return this.#user;
     }
 }
