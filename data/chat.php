@@ -434,10 +434,14 @@ try {
             $sourcePersona = $sourcePersonaId == null ? null : $loveDatabase->getCharacter($sourcePersonaId);
             $system = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, $anonymous, $targetRealm);
             $promptTime = microtime(true);
-            $conversation->resume();
-            $resumeTime = microtime(true);
-            $conversation->updateSystem($system);
-            $updateTime = microtime(true);
+            $resumeTime = 0;
+            $updateTime = 0;
+            if (!isset($_REQUEST['read_only'])) {
+                $conversation->resume();
+                $resumeTime = microtime(true);
+                $conversation->updateSystem($system);
+                $updateTime = microtime(true);
+            }
             $context = $conversation->get_messages();
             $getMessages = microtime(true);
             $timing = array(

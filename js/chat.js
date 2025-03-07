@@ -23,11 +23,15 @@ class Chat extends Component {
 
     #createForm(action) {
         let data = new FormData();
-        let user = this.getController().getProfile().getUser();
+        let profile = this.getController().getProfile();
+        let user = profile.getUser();
         data.append('action', action);
         if (user != null) {
             data.append('user_id', user.id);
             data.append('user_token', user.token);
+        }
+        if (profile.isReview()) {
+            data.append('read_only', true);
         }
         return data;
     }

@@ -283,6 +283,10 @@ class Profile extends Component {
         this.#reviewUser = user;
     }
 
+    isReview() {
+        return this.#reviewUser != null;
+    }
+
     #logout() {
         const request = new XMLHttpRequest();
         let profile = this;
