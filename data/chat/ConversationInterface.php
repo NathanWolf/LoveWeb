@@ -28,6 +28,8 @@ interface ConversationInterface
 
     public function delete(): void;
 
+    public function setUpdated(string $updated);
+
     public function setUserId(string|null $userId): void;
 
     public function getUserId(): string|null;

@@ -9,6 +9,7 @@ class SQLConversation implements ConversationInterface
     protected int|null $targetAlternativeId;
     protected string|null $sourcePersonaId;
     protected int|null $sourceAlternativeId;
+    protected string $updated;
     protected bool $anonymous;
 
     public function __construct( protected PDO $db ) {
@@ -21,6 +22,10 @@ class SQLConversation implements ConversationInterface
 
     public function getUserId(): string|null {
         return $this->userId;
+    }
+
+    public function setUpdated(string $updated): void {
+        $this->updated = $updated;
     }
 
     public function setTargetPersonaId(string|null $targetPersonaId): void {
@@ -94,6 +99,7 @@ class SQLConversation implements ConversationInterface
             $conversation->setTargetAlternativeId( $data['target_alternative_id'] );
             $conversation->setAnonymous( $data['anonymous'] );
             $conversation->setUserId( $data['user_id'] );
+            $conversation->setUpdated( $data['updated'] );
 
             $list[] = $conversation;
         }
@@ -123,6 +129,7 @@ class SQLConversation implements ConversationInterface
         $conversation->setSourceAlternativeId( $data['source_alternative_id'] );
         $conversation->setTargetAlternativeId( $data['target_alternative_id'] );
         $conversation->setAnonymous( $data['anonymous'] );
+        $conversation->setUpdated( $data['updated'] );
 
         return $conversation;
     }
@@ -284,7 +291,8 @@ class SQLConversation implements ConversationInterface
             'user_id' => $this->userId,
             'source_alternative_id' => $this->sourceAlternativeId,
             'target_alternative_id' => $this->targetAlternativeId,
-            'anonymous' => (bool)$this->anonymous
+            'anonymous' => (bool)$this->anonymous,
+            'updated' => $this->updated
         );
     }
 }

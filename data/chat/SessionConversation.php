@@ -37,6 +37,10 @@ class SessionConversation implements ConversationInterface
         $this->targetAlternativeId = $targetAlternativeId;
     }
 
+    public function setUpdated(string $updated) {
+
+    }
+
     public function setUserId(string|null $userId): void {
     }
 
@@ -236,7 +240,8 @@ class SessionConversation implements ConversationInterface
             'target_realm_id' => $this->targetRealmId,
             'source_alternative_id' => $this->sourceAlternativeId,
             'target_alternative_id' => $this->targetAlternativeId,
-            'anonymous' => true
+            'anonymous' => true,
+            'updated' => null
         );
     }
 }

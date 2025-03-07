@@ -158,6 +158,10 @@
     animation: blink 1s infinite;
 }
 
+.chatTimeContainer {
+    margin-right: 1em;
+}
+
 .messageTextAreaContainer textarea {
     color: var(--input-color);
 }

@@ -70,6 +70,7 @@ class Chat extends Component {
 
         container.appendChild(newChatContainer);
 
+        let now = new Date();
         let conversations = listResponse.conversations;
         conversations.forEach(function(conversation){
             let conversationId = conversation.id;
@@ -106,8 +107,15 @@ class Chat extends Component {
             chatTitle.className = 'chatTitle';
             chatTitle.innerText = conversation.title;
             chatContainer.appendChild(chatTitle);
-
             Utilities.createDiv('toolbarFiller', chatContainer);
+
+            let timeDiv = Utilities.createDiv('chatTimeContainer', chatContainer);
+            let updatedTime = new Date(conversation.updated);
+            let updatedDays = Math.floor((now.getTime() - updatedTime.getTime()) / 1000 / 3600 / 24);
+            if (updatedDays > 0) {
+                timeDiv.innerText = updatedDays + 'd';
+            }
+
             let deleteContainer = document.createElement('div');
             let deleteButton = document.createElement('button');
             deleteButton.innerHTML = '&#x1f5d1;'
