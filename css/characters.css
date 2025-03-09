@@ -74,6 +74,7 @@
     border: 4px solid var(--name-border);
     transform: rotate(180deg);
     writing-mode: vertical-lr;
+    line-height: 1.1;
 }
 
 .portraitNameVisible {

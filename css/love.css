@@ -131,7 +131,6 @@ body {
     overflow: hidden;
     user-select: none;
     color: var(--text-color);
-    line-height: 1.1;
 }
 
 th {
