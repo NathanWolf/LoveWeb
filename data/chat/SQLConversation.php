@@ -13,7 +13,7 @@ class SQLConversation implements ConversationInterface
     protected bool $anonymous;
 
     public function __construct( protected PDO $db ) {
-
+        $this->updated = date("Y-m-d H:i:s");
     }
 
     public function setUserId(string|null $userId): void {

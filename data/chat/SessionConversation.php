@@ -8,9 +8,11 @@ class SessionConversation implements ConversationInterface
     protected string|null $sourcePersonaId;
     protected int|null $sourceAlternativeId;
     protected string|null $targetRealmId;
+    protected string $updated;
 
     public function __construct() {
         self::init_session();
+        $this->updated = date("Y-m-d H:i:s");
 
         if( empty( $_SESSION['chats'] ) ) {
             $_SESSION['chats'] = [];
@@ -38,7 +40,7 @@ class SessionConversation implements ConversationInterface
     }
 
     public function setUpdated(string $updated) {
-
+        $this->updated = $updated;
     }
 
     public function setUserId(string|null $userId): void {
@@ -241,7 +243,7 @@ class SessionConversation implements ConversationInterface
             'source_alternative_id' => $this->sourceAlternativeId,
             'target_alternative_id' => $this->targetAlternativeId,
             'anonymous' => true,
-            'updated' => null
+            'updated' => $this->updated
         );
     }
 }
