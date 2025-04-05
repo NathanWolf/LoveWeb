@@ -162,20 +162,26 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     if ($persona['chat'] && $persona['chat']['system']) {
         $system = $persona['chat']['system'];
     }
+    $isAlternate = false;
     if (!is_null($alternativeId) && isset($persona['chat']['alternatives'][$alternativeId]['system'])) {
         $system = $persona['chat']['alternatives'][$alternativeId]['system'];
+        $isAlternate = true;
     }
     if ($system) {
         $prompt .= $system . "\n\n";
+    }
+    if ($persona['birth_realm']) {
+        $prompt .= 'You were born in ' . $persona['birth_realm'] . "\n";
+    }
+    // Most of the rest may not apply when using an alternate id
+    if ($isAlternate) {
+        return $prompt;
     }
     if ($persona['backstory']) {
         $prompt .= 'Your backstory is as follows: ' . $persona['backstory'] . "\n";
     }
     if ($persona['home_realm']) {
         $prompt .= 'You currently live in ' . $persona['home_realm'] . "\n";
-    }
-    if ($persona['birth_realm']) {
-        $prompt .= 'You were born in ' . $persona['birth_realm'] . "\n";
     }
     if ($persona['notes']) {
         $prompt .= 'Some notes about you: ' . $persona['notes'] . "\n";
