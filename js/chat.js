@@ -204,6 +204,7 @@ class Chat extends Component {
         let container = this.getElement();
         let controller = this;
         Utilities.empty(container);
+        container.scrollTop = 0;
 
         let newChatHeader = document.createElement('div');
         newChatHeader.innerText = 'Who do you want to chat with?';
@@ -246,6 +247,7 @@ class Chat extends Component {
         let character = characters.getCharacter(characterId);
 
         Utilities.empty(container);
+        container.scrollTop = 0;
 
         let newChatHeader = Utilities.createDiv('newChatHeader', container);
         newChatHeader.innerText = 'What version of ' + character.name +'?';
@@ -272,6 +274,7 @@ class Chat extends Component {
         let container = this.getElement();
         let controller = this;
         Utilities.empty(container);
+        container.scrollTop = 0;
 
         let newChatHeader = document.createElement('div');
         newChatHeader.innerText = 'Who do you want to chat as?';
