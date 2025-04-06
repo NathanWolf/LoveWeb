@@ -523,6 +523,10 @@ class Chat extends Component {
             alert("Sorry, something went wrong!");
             return;
         }
+        if (role == 'user' && message.length == 0) {
+            this.scrollToBottom();
+            return;
+        }
         let messageDiv = Utilities.createDiv('message ' + role, this.#messagesContainer);
         let icon = Utilities.createDiv('identity', messageDiv);
         if (role == 'user') {

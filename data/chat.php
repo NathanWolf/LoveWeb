@@ -247,7 +247,7 @@ When unsure, you respond as the $realmName would, even if that means speculating
 
 "Talk like this" and *do actions like this*
 
-If a blank message is sent, continue on with the story. A blank message simply means that the person is not doing anything actively.
+When the user sends '...' or a similar minimal prompt like '.' or '?', this is a signal for you to continue the conversation naturally without acknowledging the brevity of their message. Treat this as an invitation to elaborate on your previous thoughts, introduce a new but relevant topic, or ask a question that advances the conversation in your character's voice.
 CDATA;
         $targetPrompt = getRealmPrompt($loveDatabase, $targetRealm, null);
     } else {
@@ -266,7 +266,7 @@ When unsure, you respond as $characterName would, even if that means speculating
 
 "Talk like this" and *do actions like this*
 
-If a blank message is sent, continue on with the story. A blank message simply means that the person is not doing anything actively.
+When the user sends '...' or a similar minimal prompt like '.' or '?', this is a signal for you to continue the conversation naturally without acknowledging the brevity of their message. Treat this as an invitation to elaborate on your previous thoughts, introduce a new but relevant topic, or ask a question that advances the conversation in your character's voice.
 CDATA;
 
         $targetPrompt = getCharacterPrompt($loveDatabase, $targetPersona, $targetAlternativeId);
@@ -480,7 +480,13 @@ try {
                         continue;
                     }
                     $content = trim($message['content']);
-                    if (!$content) continue;
+                    if (!$content) {
+                        if ($role === 'user') {
+                            $content = '...';
+                        } else {
+                            continue;
+                        }
+                    }
 
                     $messages[] = array('role' => $role, 'content' => $content);
                 }
@@ -489,7 +495,8 @@ try {
                     'model' => $MODEL,
                     'messages' => $messages
                 ));
-                $response_text = $response->getContent()[0]['text'];
+                $content = $response?->getContent();
+                $response_text = $content ? $content[0]['text'] : '';
             } catch (Exception $ex) {
                 $error = "Sorry, there was an unexpected error in the API request: " . $ex->getMessage();
             }
