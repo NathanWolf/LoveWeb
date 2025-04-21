@@ -190,8 +190,10 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
     if ($characterProperties) {
         $properties = getAllProperties($loveDatabase);
         foreach ($characterProperties as $characterProperty) {
-            if (!isset($properties[$characterProperty['property_id']])) continue;
-            $property = $properties[$characterProperty['property_id']];
+            $propertyId = $characterProperty['property_id'];
+            if ($propertyId === 'living_status') continue;
+            if (!isset($properties[$propertyId])) continue;
+            $property = $properties[$propertyId];
             if ($property['question']) {
                 $prompt .= 'Your answer to "' . $property['question'] . '" is "' . $characterProperty['value'] . "\"\n";
             } else {
