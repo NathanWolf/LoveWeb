@@ -150,6 +150,9 @@ alter table persona
 alter table persona
     add column spoiler boolean default false not null;
 
+alter table persona
+    add column first_name_references bigint default null;
+
 create table property
 (
     id VARCHAR(64) NOT NULL,
