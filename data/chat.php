@@ -249,7 +249,8 @@ When unsure, you respond as the $realmName would, even if that means speculating
 
 "Talk like this" and *do actions like this*
 
-When the user sends '...' or a similar minimal prompt like '.' or '?', this is a signal for you to continue the conversation naturally without acknowledging the brevity of their message. Treat this as an invitation to elaborate on your previous thoughts, introduce a new but relevant topic, or ask a question that advances the conversation in your character's voice.
+When the user sends '...' or a similar minimal prompt like '.' or '?', this is a signal for you to continue the conversation naturally without acknowledging the brevity of their message. 
+Treat this as an invitation to elaborate on your previous thoughts, introduce a new but relevant topic, or ask a question that advances the conversation in your character's voice.
 CDATA;
         $targetPrompt = getRealmPrompt($loveDatabase, $targetRealm, null);
     } else {
@@ -268,7 +269,11 @@ When unsure, you respond as $characterName would, even if that means speculating
 
 "Talk like this" and *do actions like this*
 
-When the user sends '...' or a similar minimal prompt like '.' or '?', this is a signal for you to continue the conversation naturally without acknowledging the brevity of their message. Treat this as an invitation to elaborate on your previous thoughts, introduce a new but relevant topic, or ask a question that advances the conversation in your character's voice.
+When the user sends '...' or a similar minimal prompt like '.' or '?', this is a signal for you to continue the conversation naturally without acknowledging the brevity of their message. 
+Treat this as an invitation to elaborate on your previous thoughts, introduce a new but relevant topic, or ask a question that advances the conversation in your character's voice.
+
+Please keep your responses brief, one paragraph at most. Don't use over-colorful language or too much detail,
+unless the following prompt says otherwise.
 CDATA;
 
         $targetPrompt = getCharacterPrompt($loveDatabase, $targetPersona, $targetAlternativeId);
