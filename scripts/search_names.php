@@ -1,5 +1,9 @@
 <?php
 
+if (PHP_SAPI !== 'cli') {
+    die('What are you doing?');
+}
+
 use com\elmakers\love\LoveDatabase;
 
 require_once '../data/config.inc.php';
