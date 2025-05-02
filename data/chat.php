@@ -571,6 +571,12 @@ try {
             $messages[0]['content'] = $reverseSystem;
 
             reverseMessages($messages);
+            if (count($messages) == 1) {
+                $messages[] = array(
+                    'role' => 'user',
+                    'content' => 'Please start a conversation as if I just walked into the room'
+                );
+            }
             streamCompletion($conversation, $messages);
             break;
         default:
