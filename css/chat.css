@@ -64,7 +64,6 @@
 }
 
 .chatInput textarea {
-    height: 55px;
     border-radius: 13px;
     width: 100%;
     box-sizing: border-box;
@@ -96,9 +95,8 @@
 
 .chatInput button {
     position: absolute;
-    background: var(--input-background-color);
+    background: var(--button-background-color);
     cursor: pointer;
-    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     border-radius: 5px;
@@ -107,6 +105,15 @@
     padding: 7px 9px 7px 7px;
     border: none;
     margin-top: -2px;
+}
+
+.sendAgentButton {
+    right: 0px;
+}
+
+.sendMessageButton {
+    right: 40px;
+    width: 32px;
 }
 
 .message {

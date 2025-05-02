@@ -488,14 +488,22 @@ class Chat extends Component {
         input.placeholder = 'Send a message to ' + target.name;
         this.#messageInput = input;
         chatInput.appendChild(input);
-        let button = document.createElement('button');
+        let button = Utilities.createElement('button', 'sendMessageButton');
         button.innerHTML = '&uarr;';
         button.onclick = function(event) {
             event.preventDefault();
             input.focus();
-            controller.sendMessage();
+            controller.sendUserMessage();
         };
         chatInput.appendChild(button);
+
+        let botButton = Utilities.createElement('button', 'sendAgentButton');
+        botButton.innerHTML = '&#129302';
+        botButton.onclick = function(event) {
+            event.preventDefault();
+            controller.sendBotMessage();
+        };
+        chatInput.appendChild(botButton);
 
         input.onkeyup = function() {
             controller.onMessageKeyUp();
@@ -510,7 +518,7 @@ class Chat extends Component {
     onMessageKeyDown(event) {
         if (event.keyCode === 13 && !event.shiftKey) {
             event.preventDefault();
-            this.sendMessage();
+            this.sendUserMessage();
             return false;
         }
     }
@@ -674,14 +682,65 @@ class Chat extends Component {
         return this.#conversations[this.#conversationId];
     }
 
-    async sendMessage() {
+    async sendBotMessage() {
         let conversation = this.getConversation();
         if (conversation == null) {
             alert("Not in a conversation, can't send message");
             return;
         }
 
-        let question = Utilities.escapeHtml(this.#messageInput.value);
+        let controller = this;
+
+        // listen for response tokens from agent response
+        let eventUrl = "data/chat.php?action=stream_agent&chat_id=" + conversation.id;
+        let user = this.getController().getProfile().getUser();
+        if (user != null) {
+            eventUrl += "&user_id=" + user.id + "&user_token=" + user.token;
+        }
+        const eventSource = new EventSource(eventUrl);
+
+        // handle errors
+        eventSource.addEventListener( "error", function() {
+            alert("Sorry, something went wrong!");
+        } );
+
+        // Initialize ChatGPT response
+        let response = "";
+
+        // when a new token arrives
+        eventSource.addEventListener( "message", function( event ) {
+            let json = JSON.parse( event.data );
+            response += json.content;
+        });
+
+        eventSource.addEventListener( "stop", async function(event) {
+            // The ChatGPT API emits a stopped event, but we want to wait for our custom one that contains
+            // the message data
+            if (event.data != 'stopped') {
+                let json = JSON.parse( event.data );
+                if (json.hasOwnProperty('content')) {
+                    response += json.content;
+                }
+                eventSource.close();
+                controller.sendMessage(response);
+            }
+        } );
+
+        this.#messageInput.focus();
+    }
+
+    async sendUserMessage() {
+        this.sendMessage(this.#messageInput.value);
+    }
+
+    async sendMessage(messageText) {
+        let conversation = this.getConversation();
+        if (conversation == null) {
+            alert("Not in a conversation, can't send message");
+            return;
+        }
+
+        let question = Utilities.escapeHtml(messageText);
         let controller = this;
         let characterId = conversation.target_persona_id;
         let realmId = conversation.target_realm_id;
@@ -725,7 +784,7 @@ class Chat extends Component {
             controller.updateMessage(message, "Sorry, there was an error in the request. Check your error logs." );
         } );
 
-        // Initialize ChatGPT response
+        // Initialize response
         let response = "";
         let paragraph = "";
 

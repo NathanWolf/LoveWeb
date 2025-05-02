@@ -293,6 +293,85 @@ CDATA;
     return $prompt;
 }
 
+function streamCompletion($conversation, $context = null) {
+    global $SETTINGS;
+    global $MODEL;
+
+    // This endpoint does not return JSON
+    header("Content-type: text/event-stream");
+
+    $error = null;
+    $response_text = '';
+
+    $readOnly = $context != null;
+    $context = $context ?: $conversation->get_messages();
+
+    // create a new completion
+    try {
+        $config = new Config($SETTINGS['anthropic']['key']);
+        $client = new Client($config);
+        $system = "";
+        $messages = array();
+
+        foreach ($context as $message) {
+            $role = $message['role'];
+            if ($role === 'system') {
+                $system = $message['content'];
+                continue;
+            }
+            $content = trim($message['content']);
+            if (!$content) {
+                if ($role === 'user') {
+                    $content = '...';
+                } else {
+                    continue;
+                }
+            }
+
+            $messages[] = array('role' => $role, 'content' => $content);
+        }
+        $response = $client->chat(array(
+            'system' => $system,
+            'model' => $MODEL,
+            'messages' => $messages
+        ));
+        $content = $response?->getContent();
+        $response_text = $content ? $content[0]['text'] : '';
+    } catch (Exception $ex) {
+        $error = "Sorry, there was an unexpected error in the API request: " . $ex->getMessage();
+    }
+
+    if ($error !== null) {
+        $response_text = $error;
+        echo "data: " . json_encode(["content" => $error]) . "\n\n";
+        flush();
+    }
+
+    $assistant_message = [
+        "role" => "assistant",
+        "content" => $response_text,
+    ];
+
+    $messageId = 0;
+    if (!$readOnly) {
+        $messageId = $conversation->add_message($assistant_message);
+    }
+    $assistant_message['id'] = $messageId;
+    $assistant_message['conversation_id'] = $conversation->get_id();
+    echo "event: stop\n";
+    echo "data: " . json_encode($assistant_message) . "\n\n";
+}
+
+function reverseMessages(&$messages) {
+    foreach ($messages as &$message) {
+        if ($message['role'] === 'assistant') {
+            $message['role'] = 'user';
+        } else if ($message['role'] === 'user') {
+            $message['role'] = 'assistant';
+        }
+    }
+}
+
 try {
     $db = get_db();
     $conversation_class = get_conversation_class($db);
@@ -466,64 +545,33 @@ try {
             );
             die(json_encode(array('messages' => $context, 'timing' => $timing, 'success' => true)));
         case 'stream':
-            // This endpoint does not return JSON
-            header("Content-type: text/event-stream");
-            $context = $conversation->get_messages();
-
-            $error = null;
-            $response_text = '';
-
-            // create a new completion
-            try {
-                $config = new Config($SETTINGS['anthropic']['key']);
-                $client = new Client($config);
-                $system = "";
-                $messages = array();
-
-                foreach ($context as $message) {
-                    $role = $message['role'];
-                    if ($role === 'system') {
-                        $system = $message['content'];
-                        continue;
-                    }
-                    $content = trim($message['content']);
-                    if (!$content) {
-                        if ($role === 'user') {
-                            $content = '...';
-                        } else {
-                            continue;
-                        }
-                    }
-
-                    $messages[] = array('role' => $role, 'content' => $content);
-                }
-                $response = $client->chat(array(
-                    'system' => $system,
-                    'model' => $MODEL,
-                    'messages' => $messages
-                ));
-                $content = $response?->getContent();
-                $response_text = $content ? $content[0]['text'] : '';
-            } catch (Exception $ex) {
-                $error = "Sorry, there was an unexpected error in the API request: " . $ex->getMessage();
+            streamCompletion($conversation);
+            break;
+        case 'stream_agent':
+            // This doesn't work with realms or users
+            $targetPersonaId = $conversation->getTargetPersonaId();
+            $sourcePersonaId = $conversation->getSourcePersonaId();
+            if (!$sourcePersonaId || !$targetPersonaId) {
+                die(json_encode(array('success' => false, 'message' => "This only works with two characters")));
             }
 
-            if ($error !== null) {
-                $response_text = $error;
-                echo "data: " . json_encode(["content" => $error]) . "\n\n";
-                flush();
+            // First message must be system prompt
+            $messages = $conversation->get_messages();
+            if (count($messages) == 0 || $messages[0]['role'] !== 'system') {
+                die(json_encode(array('success' => false, 'message' => "This conversation is missing a system prompt")));
             }
 
-            $assistant_message = [
-                "role" => "assistant",
-                "content" => $response_text,
-            ];
+            // Generate a reverse system prompt
+            $targetPersona = $loveDatabase->getCharacter($sourcePersonaId);
+            $sourcePersona = $loveDatabase->getCharacter($targetPersonaId);
+            $targetAlternativeId = $conversation->getSourceAlternativeId();
+            $sourceAlternativeId = $conversation->getTargetAlternativeId();
 
-            $messageId = $conversation->add_message($assistant_message);
-            $assistant_message['id'] = $messageId;
-            $assistant_message['conversation_id'] = $conversation->get_id();
-            echo "event: stop\n";
-            echo "data: " . json_encode($assistant_message) . "\n\n";
+            $reverseSystem = getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $USER_ID, false, null);
+            $messages[0]['content'] = $reverseSystem;
+
+            reverseMessages($messages);
+            streamCompletion($conversation, $messages);
             break;
         default:
             throw new Exception("Unknown action " . $ACTION);
