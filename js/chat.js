@@ -1,6 +1,9 @@
 class Chat extends Component {
     #messageInput = null;
     #messagesContainer = null;
+    #sendMessageButton = null;
+    #sendAgentButton = null;
+    #waiting = false;
     #messages = {};
     #conversations = {};
     #conversationId = null;
@@ -496,6 +499,7 @@ class Chat extends Component {
             controller.sendUserMessage();
         };
         chatInput.appendChild(button);
+        this.#sendMessageButton = button;
 
         let botButton = Utilities.createElement('button', 'sendAgentButton');
         botButton.innerHTML = '&#129302';
@@ -504,6 +508,7 @@ class Chat extends Component {
             controller.sendBotMessage();
         };
         chatInput.appendChild(botButton);
+        this.#sendAgentButton = botButton;
 
         input.onkeyup = function() {
             controller.onMessageKeyUp();
@@ -692,6 +697,7 @@ class Chat extends Component {
         let controller = this;
 
         // listen for response tokens from agent response
+        this.startWaiting();
         let eventUrl = "data/chat.php?action=stream_agent&chat_id=" + conversation.id;
         let user = this.getController().getProfile().getUser();
         if (user != null) {
@@ -730,6 +736,7 @@ class Chat extends Component {
     }
 
     async sendUserMessage() {
+        if (this.#waiting) return;
         this.sendMessage(this.#messageInput.value);
     }
 
@@ -746,6 +753,7 @@ class Chat extends Component {
         let realmId = conversation.target_realm_id;
 
         // send message
+        this.startWaiting();
         let data = this.#createForm('message');
         data.append("chat_id", conversation.id);
         data.append("message", question);
@@ -841,6 +849,7 @@ class Chat extends Component {
                     controller.makeEditable(json.id, message);
                 }
                 eventSource.close();
+                controller.stopWaiting();
             }
         } );
 
@@ -902,5 +911,17 @@ class Chat extends Component {
 
     onResize() {
         this.scrollToBottom();
+    }
+
+    startWaiting() {
+        this.#waiting = true;
+        this.#sendMessageButton.disabled = true;
+        this.#sendAgentButton.disabled = true;
+    }
+
+    stopWaiting() {
+        this.#waiting = false;
+        this.#sendMessageButton.disabled = false;
+        this.#sendAgentButton.disabled = false;
     }
 }
