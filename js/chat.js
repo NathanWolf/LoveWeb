@@ -728,6 +728,7 @@ class Chat extends Component {
                     response += json.content;
                 }
                 eventSource.close();
+                response = Utilities.convertFromHTML(response);
                 controller.sendMessage(response);
             }
         } );
