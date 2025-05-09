@@ -30,6 +30,7 @@ if (!$USER_ID && $ACTION !== 'prompt') {
 }
 
 $MODEL = 'claude-3-5-haiku-20241022';
+// $MODEL = 'claude-3-haiku-20240307';
 $STORAGE_TYPE = $USER_ID ? "sql" : "session";
 
 $CHARACTER_CACHE = array();
@@ -309,6 +310,7 @@ function streamCompletion($conversation, $context = null) {
     // create a new completion
     try {
         $config = new Config($SETTINGS['anthropic']['key']);
+        // $config->setMaxTokens(4096);
         $client = new Client($config);
         $system = "";
         $messages = array();
