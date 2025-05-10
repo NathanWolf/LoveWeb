@@ -9,6 +9,7 @@ class Characters extends Component {
     #characters = {};
     #properties = {};
     #filters = {};
+    #search = '';
     #mouseStart = {x: 0, y: 0};
     #rotating = false;
     #moveMinDistance = 20;
@@ -102,6 +103,24 @@ class Characters extends Component {
                 }
             }
         }
+        if (shouldShow && this.#search != '') {
+            shouldShow = false;
+            let search = this.#search.toLowerCase();
+            if (!shouldShow && character.name != null && character.name.toLowerCase().indexOf(search) != -1) shouldShow = true;
+            if (!shouldShow && character.description != null && character.description.toLowerCase().indexOf(search) != -1) shouldShow = true;
+            if (!shouldShow && character.backstory != null && character.backstory.toLowerCase().indexOf(search) != -1) shouldShow = true;
+            if (!shouldShow && character.notes != null && character.notes.toLowerCase().indexOf(search) != -1) shouldShow = true;
+            if (!shouldShow) {
+                for (let propertyKey in properties) {
+                    if (properties.hasOwnProperty(propertyKey)) {
+                        if (properties[propertyKey].toLowerCase().indexOf(search) != -1) {
+                            shouldShow = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         return shouldShow;
     }
 
@@ -110,7 +129,7 @@ class Characters extends Component {
             if (this.#characters.hasOwnProperty(id)) {
                 let character = this.#characters[id];
                 for (let containerId in character.containers) {
-                    if (!character.hasOwnProperty('containers')) continuel
+                    if (!character.hasOwnProperty('containers')) continue;
                     let shouldShow = this.#shouldShow(character);
                     if (character.containers.hasOwnProperty(containerId)) {
                         Utilities.setVisible(character.containers[containerId], shouldShow);
@@ -169,6 +188,11 @@ class Characters extends Component {
         });
         let filters = Utilities.createDiv('characterFilters', characterToolbar);
         filters.style.display = 'none';
+        let searchInput = Utilities.createElement('input', '', filters);
+        searchInput.addEventListener('keyup', function() {
+            characterController.#search = this.value;
+            characterController.#updateFilters();
+        });
         filters.appendChild(this.#createFilterBox('species'));
         filters.appendChild(this.#createFilterBox('pronouns'));
         filters.appendChild(this.#createFilterBox('sexuality'));
