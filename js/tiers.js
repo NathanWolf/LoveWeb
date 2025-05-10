@@ -313,4 +313,8 @@ class Tiers extends Component {
     deactivate() {
         this.getController().getHistory().unset('list');
     }
+
+    getParent() {
+        return 'games';
+    }
 }

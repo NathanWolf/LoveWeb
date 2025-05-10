@@ -163,4 +163,8 @@ class Quizzes extends Component {
     deactivate() {
         this.getController().getHistory().unset('quiz');
     }
+
+    getParent() {
+        return 'games';
+    }
 }

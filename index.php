@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="css/info.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/mobile.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/font.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/games.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/history.js?v=<?=VERSION?>"></script>
@@ -41,6 +42,7 @@
     <script type="text/javascript" src="js/relationship_editor.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/home.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/info.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/games.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
         var _love;
@@ -73,11 +75,9 @@
                 <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
                 <div class="tabButton toolbarButton" data-tab="realms">Realms</div>
                 <div class="tabButton toolbarButton user" data-tab="chat"  style="display: none">Chat</div>
-                <div class="tabButton toolbarButton" data-tab="quizzes">Quizzes</div>
-                <div class="tabButton toolbarButton" data-tab="flashCards">Flash Cards</div>
+                <div class="tabButton toolbarButton" data-tab="games">Games</div>
                 <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
                 <div class="tabButton toolbarButton" data-tab="timeline">Timeline</div>
-                <div class="tabButton toolbarButton" data-tab="tierLists">Tier Lists</div>
                 <div class="tabButton toolbarButton admin" data-tab="characterEditor" style="display: none">Character Editor</div>
                 <div class="tabButton toolbarButton admin" data-tab="timelineEditor" style="display: none">Timeline Editor</div>
             </div>
@@ -92,11 +92,9 @@
                 <div class="tile navigation" data-tab="characters"><div>Characters</div></div>
                 <div class="tile navigation" data-tab="realms"><div>Realms</div></div>
                 <div class="tile navigation" data-tab="chat"><div>Chat</div></div>
-                <div class="tile navigation" data-tab="quizzes"><div>Quizzes</div></div>
-                <div class="tile navigation" data-tab="flashCards"><div>Flash Cards</div></div>
+                <div class="tile navigation" data-tab="games"><div>Games</div></div>
                 <div class="tile navigation" data-tab="relationships"><div>Relationships</div></div>
                 <div class="tile navigation" data-tab="timeline"><div>Timeline</div></div>
-                <div class="tile navigation" data-tab="tierLists"><div>Tier Lists</div></div>
                 <div class="tile navigation admin" data-tab="characterEditor" style="display: none"><div>Character Editor</div></div>
                 <div class="tile navigation admin" data-tab="timelineEditor" style="display: none"><div>Timeline Editor</div></div>
                 <div class="tile"><a href="https://games.elmakers.com/love" target="_blank"><div>Play Game &#128279;</a></div></div>
@@ -186,6 +184,15 @@
         </div>
 
         <div class="tab" id="quizzes" style="display: none">
+        </div>
+
+        <div class="tab" id="games" style="display: none">
+            <div class="buttonContainer">
+                <div class="tile navigation" data-tab="quizzes"><div>Quizzes</div></div>
+                <div class="tile navigation" data-tab="flashCards"><div>Flash Cards</div></div>
+                <div class="tile navigation" data-tab="tierLists"><div>Tier Lists</div></div>
+                <div class="tile"><a href="https://games.elmakers.com/love" target="_blank"><div>Play Love and Ciel Game<br/><br/>&#128279;</a></div></div>
+            </div>
         </div>
 
         <div class="tab" id="timeline" style="display: none">

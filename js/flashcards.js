@@ -79,4 +79,8 @@ class Flashcards extends Component {
     getTitle() {
         return 'Flash Cards';
     }
+
+    getParent() {
+        return 'games';
+    }
 }

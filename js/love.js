@@ -5,6 +5,7 @@ class Love {
     #characters = new Characters(this, document.getElementById('characters'));
     #chat = new Chat(this, document.getElementById('chat'));
     #quizzes = new Quizzes(this, document.getElementById('quizzes'));
+    #games = new Games(this, document.getElementById('games'));
     #flashcards = new Flashcards(this, document.getElementById('flashCards'));
     #tiers = new Tiers(this, document.getElementById('tierLists'));
     #relationships = new Relationships(this, document.getElementById('relationships'));
@@ -18,6 +19,7 @@ class Love {
     #tabs = {
         characters: this.#characters,
         chat: this.#chat,
+        games: this.#games,
         quizzes: this.#quizzes,
         flashCards: this.#flashcards,
         tierLists: this.#tiers,
@@ -107,9 +109,16 @@ class Love {
             throw new Error("Selecting unknown tab: " + tabId);
         }
         let tabButtons = document.getElementsByClassName('tabButton');
+        let tabButtonId = tabId;
+        let tab = this.#tabs[tabId];
+        let parentTab = tab.getParent();
+        if (parentTab != null) {
+            tabButtonId = parentTab;
+        }
+
         for (let i = 0; i < tabButtons.length; i++) {
             let tabButton = tabButtons[i];
-            if (tabButton.dataset.tab === tabId) {
+            if (tabButton.dataset.tab === tabButtonId) {
                 Utilities.addClass(tabButton, 'active');
             } else {
                 Utilities.removeClass(tabButton, 'active');
@@ -125,7 +134,6 @@ class Love {
             }
         }
 
-        let tab = this.#tabs[tabId];
         let title = 'Diviinity';
         let tabTitle = tab.getTitle();
         if (tabTitle != null) {

@@ -45,4 +45,8 @@ class Component {
     onResize() {
 
     }
+
+    getParent() {
+
+    }
 }
