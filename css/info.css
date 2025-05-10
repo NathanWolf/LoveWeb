@@ -50,6 +50,10 @@
     font-size: 1.1em;
 }
 
+.contact span.icon {
+    margin-right: 1em;
+}
+
 .game, .slideshow {
     border: 1px solid var(--tile-border-color);
     display: flex;

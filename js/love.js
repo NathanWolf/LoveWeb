@@ -1,6 +1,6 @@
 class Love {
     #loaded = false;
-    #tab = 'home';
+    #tab = 'info';
     #history = new History();
     #characters = new Characters(this, document.getElementById('characters'));
     #chat = new Chat(this, document.getElementById('chat'));
@@ -14,7 +14,6 @@ class Love {
     #profile = new Profile(this, document.getElementById('profile'), document.getElementById('profileButton'));
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
     #timelineEditor = new TimelineEditor(this, document.getElementById('timelineEditor'));
-    #home = new Home(this, document.getElementById('home'));
     #info = new Info(this, document.getElementById('info'));
     #tabs = {
         characters: this.#characters,
@@ -29,13 +28,12 @@ class Love {
         characterEditor: this.#characterEditor,
         timelineEditor: this.#timelineEditor,
         profile: this.#profile,
-        home: this.#home,
         info: this.#info
     };
 
     constructor() {
         let controller = this;
-        this.#history.setDefault('tab', 'home');
+        this.#history.setDefault('tab', 'info');
         this.#history.onChange(function() {
             controller.onHistoryChange();
         });
