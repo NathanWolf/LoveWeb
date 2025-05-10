@@ -259,6 +259,7 @@ class Tiers extends Component {
             if (tierList.tiers.hasOwnProperty(tierId)) {
                 let tier = tierList.tiers[tierId];
                 characterGroups[tier.id] = {
+                    id: tier.id,
                     name: tier.name,
                     color: tier.color,
                     dark: tier.dark,

@@ -1,6 +1,7 @@
 class Characters extends Component {
     #groupTierList = 'renown';
     #characterIdList = [];
+    #groupContainers = {};
     #popupCharacterId = null;
     #popupImageId = null;
     #popupSecondaryImageId = null;
@@ -125,6 +126,7 @@ class Characters extends Component {
     }
 
     #updateFilters() {
+        let visibleGroups = {};
         for (let id in this.#characters) {
             if (this.#characters.hasOwnProperty(id)) {
                 let character = this.#characters[id];
@@ -133,8 +135,20 @@ class Characters extends Component {
                     let shouldShow = this.#shouldShow(character);
                     if (character.containers.hasOwnProperty(containerId)) {
                         Utilities.setVisible(character.containers[containerId], shouldShow);
+                        if (shouldShow) {
+                            visibleGroups[character.groupId] = true;
+                        }
                     }
                 }
+            }
+        }
+
+        for (let groupId in this.#groupContainers) {
+            if (!this.#groupContainers.hasOwnProperty(groupId)) continue;
+            if (visibleGroups.hasOwnProperty(groupId)) {
+                Utilities.setVisible(this.#groupContainers[groupId], true);
+            } else {
+                Utilities.setVisible(this.#groupContainers[groupId], false);
             }
         }
     }
@@ -215,6 +229,7 @@ class Characters extends Component {
             if (group.dark) {
                 Utilities.addClass(header, 'dark');
             }
+            characterController.#groupContainers[group.id] = header;
             group.characters.forEach(function(characterTier) {
                 let character = characterController.getCharacter(characterTier.persona_id);
                 let portraitContainer = document.createElement('div');
@@ -239,6 +254,7 @@ class Characters extends Component {
                     portrait: portrait,
                     name: portraitName
                 };
+                character.groupId = group.id;
                 characterController.#characterIdList.push(character.id);
             });
         });
