@@ -119,11 +119,6 @@
                     </a>
                 </div>
                 <div>
-                    <a href="https://cara.app/cupcakeebug" target="_blank" class="contact">
-                        <span class="icon" style="background-image: url('image/logos/cara.png')"></span>@cupcakeebug
-                    </a>
-                </div>
-                <div>
                     <a href="https://discordapp.com/users/691020896588136529" target="_blank" class="contact">
                         <span class="icon" style="background-image: url('image/logos/discord.png')"></span>@cupcakeebug
                     </a>
