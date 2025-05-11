@@ -42,6 +42,7 @@
     <script type="text/javascript" src="js/relationship_editor.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/info.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/games.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/slideshow.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
         var _love;
@@ -70,6 +71,7 @@
         <div class="toolbar">
             <div class="tabButtons">
                 <div class="tabButton active toolbarButton" data-tab="info">Info</div>
+                <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
                 <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
                 <div class="tabButton toolbarButton" data-tab="realms">Realms</div>
                 <div class="tabButton toolbarButton user" data-tab="chat"  style="display: none">Chat</div>
@@ -129,13 +131,10 @@
                     </a>
                 </div>
             </div>
-            <div class="horizontal large">
-                <div>
-                    <a href="https://docs.google.com/presentation/d/1jsL8S7O4h97xAPOIn6EuA04muXjWPZw66I7bLUQlNTc" target="_blank" class="slideshow">
-                        <span class="icon large slideshow">The Lore From My Book<br/><br/>From Diviinity</span>
-                    </a>
-                </div>
-            </div>
+        </div>
+
+        <div class="tab" id="slideshow" style="display: none">
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRD5y05HHTih4jtnBj1cZgZcD5dt9avkwJmSeqQSnVyIYUzbDvL48sYhSo9jVr5V1DJeFIjWc6fT23u/pubembed?start=true&loop=false&delayms=10000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
         </div>
 
         <div class="tab" id="characters" style="display: none">

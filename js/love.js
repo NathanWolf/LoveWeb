@@ -15,6 +15,7 @@ class Love {
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
     #timelineEditor = new TimelineEditor(this, document.getElementById('timelineEditor'));
     #info = new Info(this, document.getElementById('info'));
+    #slideshow = new Slideshow(this, document.getElementById('slideshow'));
     #tabs = {
         characters: this.#characters,
         chat: this.#chat,
@@ -28,7 +29,8 @@ class Love {
         characterEditor: this.#characterEditor,
         timelineEditor: this.#timelineEditor,
         profile: this.#profile,
-        info: this.#info
+        info: this.#info,
+        slideshow: this.#slideshow
     };
 
     constructor() {
