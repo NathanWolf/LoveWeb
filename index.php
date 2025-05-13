@@ -134,7 +134,7 @@
         </div>
 
         <div class="tab" id="slideshow" style="display: none">
-            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRD5y05HHTih4jtnBj1cZgZcD5dt9avkwJmSeqQSnVyIYUzbDvL48sYhSo9jVr5V1DJeFIjWc6fT23u/pubembed?start=true&loop=false&delayms=10000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+            <?php include('tabs/slideshow.inc.php'); ?>
         </div>
 
         <div class="tab" id="characters" style="display: none">
