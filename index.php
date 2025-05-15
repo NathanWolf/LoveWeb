@@ -87,7 +87,7 @@
             <div class="tabButton toolbarButton" data-tab="timeline">Timeline</div>
             <div class="tabButton toolbarButton admin" data-tab="characterEditor" style="display: none">Character Editor</div>
             <div class="tabButton toolbarButton admin" data-tab="timelineEditor" style="display: none">Timeline Editor</div>
-            <div class="tabButton toolbarButton loggedout" data-tab="profile" id="profileTabButton"><div id="profileIcon"></div><div>Profile</div></div>
+            <div class="tabButton toolbarButton" data-tab="profile" id="profileTabButton"><div>Profile</div><div class="loggedout" id="profileIcon"></div></div>
         </div>
 
         <div class="tabContainer" id="mainTabContainer">
