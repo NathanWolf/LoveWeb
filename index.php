@@ -134,7 +134,6 @@
         </div>
 
         <div class="tab" id="slideshow" style="display: none">
-            <?php include('tabs/slideshow.inc.php'); ?>
         </div>
 
         <div class="tab" id="characters" style="display: none">
