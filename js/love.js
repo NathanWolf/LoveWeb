@@ -11,11 +11,13 @@ class Love {
     #relationships = new Relationships(this, document.getElementById('relationships'));
     #timeline = new Timeline(this, document.getElementById('timeline'));
     #realms = new Realms(this, document.getElementById('realms'));
-    #profile = new Profile(this, document.getElementById('profile'), document.getElementById('profileButton'));
+    #profile = new Profile(this, document.getElementById('profile'), document.getElementById('profileIcon'));
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
     #timelineEditor = new TimelineEditor(this, document.getElementById('timelineEditor'));
     #info = new Info(this, document.getElementById('info'));
     #slideshow = new Slideshow(this, document.getElementById('slideshow'));
+    #mainMenu = document.getElementById('mainMenu');
+    #mainTabContainer = document.getElementById('mainTabContainer');
     #tabs = {
         characters: this.#characters,
         chat: this.#chat,
@@ -82,6 +84,8 @@ class Love {
         Utilities.addHandlerToClass('navigation', function() {
             love.selectTab(this.dataset.tab);
         });
+        let mainMenuButton = document.getElementById('mainMenuButton');
+        mainMenuButton.addEventListener('click', function() { love.toggleMainMenu(); });
 
         // Try to make the virtual keyboard on iOS not break the entire layout
         if (window.visualViewport) {
@@ -91,6 +95,14 @@ class Love {
         }
 
         this.#profile.check();
+    }
+
+    toggleMainMenu() {
+        if (this.#mainMenu.style.display == 'none') {
+            this.#mainMenu.style.display = 'flex';
+        } else {
+            this.#mainMenu.style.display = 'none';
+        }
     }
 
     forceViewport() {
@@ -108,6 +120,8 @@ class Love {
         if (!this.#tabs.hasOwnProperty(tabId)) {
             throw new Error("Selecting unknown tab: " + tabId);
         }
+        this.#mainMenu.style.display = 'none';
+        this.#mainTabContainer.scrollTop = 0;
         let tabButtons = document.getElementsByClassName('tabButton');
         let tabButtonId = tabId;
         let tab = this.#tabs[tabId];

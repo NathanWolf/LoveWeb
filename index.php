@@ -67,22 +67,30 @@
 </head>
 <body>
 
-    <div class="tabContainer" id="mainContainer">
+    <div id="mainContainer">
+
         <div class="toolbar">
-            <div class="tabButtons">
-                <div class="tabButton active toolbarButton" data-tab="info">Info</div>
-                <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
-                <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
-                <div class="tabButton toolbarButton" data-tab="realms">Realms</div>
-                <div class="tabButton toolbarButton user" data-tab="chat"  style="display: none">Chat</div>
-                <div class="tabButton toolbarButton" data-tab="games">Games</div>
-                <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
-                <div class="tabButton toolbarButton" data-tab="timeline">Timeline</div>
-                <div class="tabButton toolbarButton admin" data-tab="characterEditor" style="display: none">Character Editor</div>
-                <div class="tabButton toolbarButton admin" data-tab="timelineEditor" style="display: none">Timeline Editor</div>
-            </div>
-            <div id="profileButton" class="tabButton toolbarButton loggedout" data-tab="profile"></div>
+            <div class="toolbarButton" id="mainMenuButton">&equiv;</div>
+            <div class="toolbarLogo">Divi!nity</div>
         </div>
+
+        <div class="tabAndButtonContainer">
+
+        <div class="tabButtons" style="display: none" id="mainMenu">
+            <div class="tabButton active toolbarButton" data-tab="info">Info</div>
+            <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
+            <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
+            <div class="tabButton toolbarButton" data-tab="realms">Realms</div>
+            <div class="tabButton toolbarButton user" data-tab="chat"  style="display: none">Chat</div>
+            <div class="tabButton toolbarButton" data-tab="games">Games</div>
+            <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
+            <div class="tabButton toolbarButton" data-tab="timeline">Timeline</div>
+            <div class="tabButton toolbarButton admin" data-tab="characterEditor" style="display: none">Character Editor</div>
+            <div class="tabButton toolbarButton admin" data-tab="timelineEditor" style="display: none">Timeline Editor</div>
+            <div class="tabButton toolbarButton loggedout" data-tab="profile" id="profileTabButton"><div id="profileIcon"></div><div>Profile</div></div>
+        </div>
+
+        <div class="tabContainer" id="mainTabContainer">
 
         <div class="tab" id="info">
             <div class="diviinityLogo">
@@ -162,7 +170,7 @@
                 <div class="tile navigation" data-tab="quizzes"><div>Quizzes</div></div>
                 <div class="tile navigation" data-tab="flashCards"><div>Flash Cards</div></div>
                 <div class="tile navigation" data-tab="tierLists"><div>Tier Lists</div></div>
-                <div class="tile"><a href="https://games.elmakers.com/love" target="_blank"><div>Play Love and Ciel Game<br/><br/>&#128279;</a></div></div>
+                <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Love and Ciel Game</a></div>
             </div>
         </div>
 
@@ -180,6 +188,9 @@
         <div class="tab editor" id="timelineEditor" style="display: none">
 
         </div>
+
+    </div>
+    </div>
     </div>
 
     <div id="loading">

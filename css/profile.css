@@ -27,6 +27,11 @@
     margin-top: 2em;
 }
 
+#profileTabButton {
+    display: flex;
+    flex-direction: row;
+}
+
 @media (min-width: 450px) {
     button {
         font-size: 14px; /* fallback */

@@ -123,12 +123,12 @@ html,body {
     height: 100svh;
     scrollbar-color: var(--scrollbar-inner-color) var(--scrollbar-outer-color);
     scrollbar-width: thin;
+    overflow: hidden;
 }
 
 body {
     background: var(--background-color);
     overscroll-behavior-y: none;
-    overflow: hidden;
     user-select: none;
     color: var(--text-color);
 }
@@ -188,23 +188,49 @@ textarea {
     color: var(--tile-color);
 }
 
-.tabContainer {
+#mainContainer {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 100vh;
 }
 
 .toolbar {
     display: flex;
     border: 1px solid var(--toolbar-border-color);
     background: var(--toolbar-background-color);
+    flex-shrink: 0;
+}
+
+.toolbarLogo {
+    margin-left: 1em;
+}
+
+#mainMenuButton {
+    font-size: 2em;
+}
+
+.tabAndButtonContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
 }
 
 .tabButtons {
     display: flex;
-    flex: auto;
-    overflow-x: auto;
-    overflow-y: hidden;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.tabContainer {
+    overflow: auto;
+    flex: 1;
+}
+
+.tab {
+    flex: 1;
+    display: flex;
 }
 
 .toolbarButton {
@@ -225,12 +251,6 @@ textarea {
     background: var(--button-active-color);
     cursor: default;
     color: black;
-}
-
-.tab {
-    display: flex;
-    overflow: auto;
-    flex: 1;
 }
 
 @keyframes gradient {
