@@ -106,17 +106,14 @@ class Love {
     }
 
     forceViewport() {
-        let container = document.getElementById('mainTabContainer');
-        /*
+        let container = document.getElementById('mainContainer');
         container.style.height = window.visualViewport.height + 'px';
-        container.scrollTop = 0;
+        window.scrollTo(0, 0);
         document.body.scrollTop = 0;
-        window.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
 
         let tab = this.#tabs[this.#tab];
         tab.onResize();
-        *.
-         */
     }
 
     selectTab(tabId) {

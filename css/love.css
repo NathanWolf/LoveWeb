@@ -120,7 +120,7 @@
 html,body {
     margin: 0;
     padding: 0;
-    height: 100svh;
+    height: 100dvh;
     scrollbar-color: var(--scrollbar-inner-color) var(--scrollbar-outer-color);
     scrollbar-width: thin;
     overflow: hidden;

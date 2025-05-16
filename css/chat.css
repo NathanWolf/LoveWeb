@@ -90,6 +90,7 @@
     max-width: 850px;
     text-align: center;
     padding: 0px 45px 0 45px;
+    flex-shrink: 0;
 }
 
 .chatInput {
