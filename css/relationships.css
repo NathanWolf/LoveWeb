@@ -1,6 +1,7 @@
 #relationships {
     flex-direction: row;
     flex-wrap: wrap;
+    overflow: auto;
 }
 
 .relationship {

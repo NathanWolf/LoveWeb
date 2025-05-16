@@ -1,5 +1,7 @@
 div#timeline {
+    display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 div.eventContainer {

@@ -79,6 +79,7 @@ class Chat extends Component {
 
         let now = new Date();
         let conversations = listResponse.conversations;
+        let conversationOuter = Utilities.createDiv('conversationList', container);
         conversations.forEach(function(conversation){
             let conversationId = conversation.id;
             controller.#conversations[conversationId] = conversation;
@@ -133,7 +134,7 @@ class Chat extends Component {
                 controller.#deleteChat(conversation, chatContainer);
             });
 
-            container.appendChild(chatContainer);
+            conversationOuter.appendChild(chatContainer);
         });
 
         if (this.#conversationId != null) {
