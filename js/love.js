@@ -86,6 +86,14 @@ class Love {
         });
         let mainMenuButton = document.getElementById('mainMenuButton');
         mainMenuButton.addEventListener('click', function() { love.toggleMainMenu(); });
+
+        // Try to make the virtual keyboard on iOS not break the entire layout
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                love.forceViewport();
+            });
+        }
+
         this.#profile.check();
     }
 
@@ -95,6 +103,20 @@ class Love {
         } else {
             this.#mainMenu.style.display = 'none';
         }
+    }
+
+    forceViewport() {
+        let container = document.getElementById('mainTabContainer');
+        /*
+        container.style.height = window.visualViewport.height + 'px';
+        container.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTop = 0;
+
+        let tab = this.#tabs[this.#tab];
+        tab.onResize();
+        *.
+         */
     }
 
     selectTab(tabId) {
