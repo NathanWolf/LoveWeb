@@ -204,10 +204,16 @@ textarea {
 
 .toolbarLogo {
     margin-left: 1em;
+    background: url('../image/logos/diviinity_toolbar.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 681px;
+    height: 64px;
 }
 
 #mainMenuButton {
-    font-size: 1em;
+    font-size: 1.5em;
 }
 
 .tabAndButtonContainer {

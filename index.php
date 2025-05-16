@@ -3,7 +3,7 @@
 ?>
 <html lang="en-us">
 <head>
-    <title>Diviinity</title>
+    <title>Divi!nity</title>
     <meta name="viewport" content="width=device-width,initial-scale=0.5,maximum-scale=0.5,user-scalable=no"/>
     <link rel="stylesheet" href="css/love.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/popup.css?v=<?=VERSION?>">
@@ -71,7 +71,7 @@
 
         <div class="toolbar">
             <div class="toolbarButton" id="mainMenuButton">&equiv;</div>
-            <div class="toolbarLogo">Divi!nity</div>
+            <div class="toolbarLogo" title="Divi!nity"></div>
         </div>
 
         <div class="tabAndButtonContainer">
