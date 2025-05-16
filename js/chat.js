@@ -709,7 +709,8 @@ class Chat extends Component {
         // handle errors
         eventSource.addEventListener( "error", function() {
             alert("Sorry, something went wrong!");
-        } );
+            controller.stopWaiting();
+        });
 
         // Initialize ChatGPT response
         let response = "";
