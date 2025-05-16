@@ -16,6 +16,9 @@
 
 .quizQuestion {
     flex-direction: column;
+    overflow: hidden;
+    display: flex;
+    flex: 1;
 }
 
 .quizOption:hover {
@@ -26,7 +29,11 @@
 .quizQuestionQuestion {
     font-size: 2em;
     font-weight: bold;
-    margin-top: 1em;
+}
+
+.quizQuestionAnswers {
+    overflow: auto;
+    flex: 1;
 }
 
 .quizQuestionAnswers ul li {
