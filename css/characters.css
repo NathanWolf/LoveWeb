@@ -115,6 +115,7 @@
     border: 8px solid var(--popup-border-color);
     color: var(--popup-color);
     overflow: auto;
+    z-index: 10000;
 }
 
 .characterSheet .label {
