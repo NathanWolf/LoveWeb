@@ -21,7 +21,6 @@ class Love {
     #mainTabContainer = document.getElementById('mainTabContainer');
     #mainMenuButton = document.getElementById('mainMenuButton');
     #mainMenuMask = document.getElementById('mainMenuMask');
-    #mainMenuBackground = document.getElementById('mainMenuBackground');
 
     #tabs = {
         characters: this.#characters,
@@ -108,7 +107,6 @@ class Love {
         } else {
             this.#mainMenuOpen = true;
             Utilities.addClass(this.#mainMenuMask, 'menuExpanded');
-            Utilities.addClass(this.#mainMenuBackground, 'menuExpanded');
             Utilities.addClass(this.#mainMenuButton, 'menuExpanded');
             Utilities.addClass(this.#mainMenu, 'menuExpanded');
         }
@@ -119,7 +117,6 @@ class Love {
         Utilities.removeClass(this.#mainMenuMask, 'menuExpanded');
         Utilities.removeClass(this.#mainMenuButton, 'menuExpanded');
         Utilities.removeClass(this.#mainMenu, 'menuExpanded');
-        Utilities.removeClass(this.#mainMenuBackground, 'menuExpanded');
     }
 
     forceViewport() {

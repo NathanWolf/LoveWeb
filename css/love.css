@@ -232,10 +232,22 @@ textarea {
 }
 
 #mainMenu {
-    transform: scale(100%, 0%);
+    position: absolute;
+    left: 0;
+    top: 70px;
+    transform: scale(0%, 100%);
     transition: transform 500ms ease-in-out;
     transform-origin: top left;
-    width: 200px;
+    background-color: var(--background-color);
+    height: 100%;
+    z-index: var(--menu-layer);
+}
+
+.tabButtons {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
 }
 
 #mainMenu.menuExpanded {
@@ -336,17 +348,6 @@ textarea {
 
 .menuExpanded #mainMenuButton_bottom_bun {
     transform: translate(0px, 17px);
-}
-
-.tabButtons {
-    position: absolute;
-    left: 0;
-    top: 70px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    flex-shrink: 0;
-    z-index: var(--menu-layer);
 }
 
 .tabContainer {
