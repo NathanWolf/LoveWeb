@@ -7,21 +7,39 @@
     overflow-x: hidden;
 }
 
-.horizontal {
+.infoContainer {
     display: flex;
-    color: var(--tile-color);
-}
-
-.horizontal.contact {
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-.horizontal div {
+.infoBlock {
     margin: 1em;
     background-color: var(--tile-background-color);
     border-radius: 20px;
     padding: 1em;
+    color: var(--tile-color);
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    max-width: 50%;
+}
+
+.infoBlock.contact {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.fullRule {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid #FFFFFF;
+    opacity: 0.2;
 }
 
 .icon {
