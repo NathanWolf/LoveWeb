@@ -80,8 +80,6 @@
             <div class="toolbarLogo" title="Divi!nity"></div>
         </div>
 
-        <div class="tabAndButtonContainer">
-
         <div class="tabButtons" style="display: none" id="mainMenu">
             <div class="tabButton active toolbarButton" data-tab="info">Info</div>
             <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
@@ -95,6 +93,8 @@
             <div class="tabButton toolbarButton admin" data-tab="timelineEditor" style="display: none">Timeline Editor</div>
             <div class="tabButton toolbarButton" data-tab="profile" id="profileTabButton"><div>Profile</div><div class="loggedout" id="profileIcon"></div></div>
         </div>
+
+        <div class="tabAndButtonContainer">
 
         <div class="tabContainer" id="mainTabContainer">
 

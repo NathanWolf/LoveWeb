@@ -348,10 +348,14 @@ textarea {
 }
 
 .tabButtons {
+    position: absolute;
+    left: 0;
+    top: 70px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     flex-shrink: 0;
+    z-index: 50;
 }
 
 .tabContainer {
