@@ -1,7 +1,6 @@
 <?php
 ?>
 
-
 <div class="infoContainer">
 
 <div class="column">
@@ -100,8 +99,6 @@
             <span class="icon" style="background-image: url('image/logos/email.png')"></span>cupcakeebug@gmail.com
         </a>
     </div>
-</div>
-
 </div>
 
 </div>
