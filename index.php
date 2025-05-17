@@ -80,7 +80,7 @@
             <div class="toolbarLogo" title="Divi!nity"></div>
         </div>
 
-        <div class="tabButtons" style="display: none" id="mainMenu">
+        <div class="tabButtons" id="mainMenu">
             <div class="tabButton active toolbarButton" data-tab="info">Info</div>
             <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
             <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
@@ -94,7 +94,7 @@
             <div class="tabButton toolbarButton" data-tab="profile" id="profileTabButton"><div>Profile</div><div class="loggedout" id="profileIcon"></div></div>
         </div>
 
-        <div class="popup" style="display:none" id="mainMenuMask">
+        <div class="popup" id="mainMenuMask">
 
         </div>
 

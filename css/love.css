@@ -230,8 +230,23 @@ textarea {
     margin-top: 3px;
 }
 
+#mainMenu {
+    transform: scale(100%, 0%);
+    transition: transform 500ms ease-in-out;
+    transform-origin: top left;
+}
+
+#mainMenu.menuExpanded {
+    transform: scale(100%, 100%);
+}
+
 #mainMenuMask {
     z-index: var(--mask-layer);
+    display: none;
+}
+
+#mainMenuMask.menuExpanded {
+    display: flex;
 }
 
 #mainMenuButton div {

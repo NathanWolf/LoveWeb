@@ -1,5 +1,6 @@
 class Love {
     #loaded = false;
+    #mainMenuOpen = false;
     #tab = 'info';
     #history = new History();
     #characters = new Characters(this, document.getElementById('characters'));
@@ -101,21 +102,21 @@ class Love {
     }
 
     toggleMainMenu() {
-        if (this.#mainMenu.style.display == 'none') {
-            this.#mainMenu.style.display = 'flex';
-            this.#mainMenuMask.style.display = 'flex';
-            let mainMenuButton = this.#mainMenuButton;
-            Utilities.addClass(mainMenuButton, 'menuExpanded');
-        } else {
+        if (this.#mainMenuOpen) {
             this.closeMainMenu();
+        } else {
+            this.#mainMenuOpen = true;
+            Utilities.addClass(this.#mainMenuMask, 'menuExpanded');
+            Utilities.addClass(this.#mainMenuButton, 'menuExpanded');
+            Utilities.addClass(this.#mainMenu, 'menuExpanded');
         }
     }
 
     closeMainMenu() {
-        this.#mainMenu.style.display = 'none';
-        this.#mainMenuMask.style.display = 'none';
-        let mainMenuButton = this.#mainMenuButton;
-        Utilities.removeClass(mainMenuButton, 'menuExpanded');
+        this.#mainMenuOpen = false;
+        Utilities.removeClass(this.#mainMenuMask, 'menuExpanded');
+        Utilities.removeClass(this.#mainMenuButton, 'menuExpanded');
+        Utilities.removeClass(this.#mainMenu, 'menuExpanded');
     }
 
     forceViewport() {
