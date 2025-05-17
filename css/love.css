@@ -203,6 +203,7 @@ textarea {
 }
 
 .toolbarLogo {
+    flex: 1;
     margin-left: 1em;
     background: url('../image/logos/diviinity_toolbar.png');
     background-repeat: no-repeat;
