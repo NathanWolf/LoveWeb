@@ -98,6 +98,10 @@
 
         </div>
 
+        <div id="mainMenuBackground">
+
+        </div>
+
         <div class="tabContainer" id="mainTabContainer">
 
         <div class="tab" id="info">

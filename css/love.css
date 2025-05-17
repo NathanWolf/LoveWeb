@@ -3,6 +3,7 @@
 
     --menu-tooltip-layer: -10;
     --menu-layer: 100;
+    --menu-background-layer: 90;
     --burger-layer-1: 110;
     --burger-layer-2: 120;
     --burger-layer-3: 130;
@@ -234,9 +235,28 @@ textarea {
     transform: scale(100%, 0%);
     transition: transform 500ms ease-in-out;
     transform-origin: top left;
+    width: 200px;
 }
 
 #mainMenu.menuExpanded {
+    transform: scale(100%, 100%);
+}
+
+#mainMenuBackground {
+    position: absolute;
+    left: 0;
+    top: 70px;
+    flex-shrink: 0;
+    transform: scale(0%, 100%);
+    transition: transform 500ms ease-in-out;
+    transform-origin: top left;
+    width: 200px;
+    height: 100%;
+    background-color: var(--background-color);
+    z-index: var(--menu-background-layer);
+}
+
+#mainMenuBackground.menuExpanded {
     transform: scale(100%, 100%);
 }
 
