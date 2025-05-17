@@ -239,6 +239,7 @@ textarea {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    transition: transform 500ms ease-in-out;
 }
 
 #mainMenuButton_top_bun {
@@ -283,82 +284,23 @@ textarea {
     z-index: var(--burger-layer-2);
 }
 
-.menuCollapsing div {
-    animation-duration: 500ms;
-    animation-fill-mode: forwards;
-    animation-direction: reverse;
-    animation-timing-function: ease-in-out;
+.menuExpanded #mainMenuButton_top_bun {
+    transform: translate(0px, -20px);
 }
 
-.menuExpanding div {
-    animation-duration: 500ms;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
+.menuExpanded #mainMenuButton_lettuce {
+    transform: translate(0px, -15px);
 }
 
-.menuCollapsed #mainMenuButton_top_bun {
-    margin-top: -12px;
+.menuExpanded #mainMenuButton_sun {
 }
 
-.menuCollapsed #mainMenuButton_lettuce {
-    margin-top: -10px;
+.menuExpanded #mainMenuButton_tomato {
+    transform: translate(0px, 10px);
 }
 
-.menuCollapsed #mainMenuButton_sun {
-    margin-top: -6px;
-}
-
-.menuCollapsed #mainMenuButton_tomato {
-    margin-top: -5px;
-}
-
-.menuCollapsed #mainMenuButton_bottom_bun {
-    margin-top: -2px;
-}
-
-.menuExpanding #mainMenuButton_top_bun, .menuCollapsing #mainMenuButton_top_bun {
-    animation-name: open_top_bun;
-}
-
-.menuExpanding #mainMenuButton_lettuce, .menuCollapsing #mainMenuButton_lettuce {
-    animation-name: open_lettuce;
-}
-
-.menuExpanding #mainMenuButton_sun, .menuCollapsing #mainMenuButton_sun {
-    animation-name: open_sun;
-}
-
-.menuExpanding #mainMenuButton_tomato, .menuCollapsing #mainMenuButton_tomato {
-    animation-name: open_tomato;
-}
-
-.menuExpanding #mainMenuButton_bottom_bun, .menuCollapsing #mainMenuButton_bottom_bun {
-    animation-name: open_bottom_bun;
-}
-
-@keyframes open_top_bun {
-    from { margin-top: 0px; }
-    to { margin-top: -12px; }
-}
-
-@keyframes open_lettuce {
-    from { margin-top: -12px; }
-    to { margin-top: -10px; }
-}
-
-@keyframes open_sun {
-    from { margin-top: -20px; }
-    to { margin-top: -6px; }
-}
-
-@keyframes open_tomato {
-    from { margin-top: -12px; }
-    to { margin-top: -5px; }
-}
-
-@keyframes open_bottom_bun {
-    from { margin-top: -10px; }
-    to { margin-top: -2px; }
+.menuExpanded #mainMenuButton_bottom_bun {
+    transform: translate(0px, 17px);
 }
 
 .tabButtons {

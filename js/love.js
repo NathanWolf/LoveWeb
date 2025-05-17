@@ -105,11 +105,7 @@ class Love {
             this.#mainMenu.style.display = 'flex';
             this.#mainMenuMask.style.display = 'flex';
             let mainMenuButton = this.#mainMenuButton;
-            Utilities.removeClass(mainMenuButton, 'menuCollapsed');
-            Utilities.removeClass(mainMenuButton, 'menuCollapsing');
-            setTimeout(function() {
-                Utilities.addClass(mainMenuButton, 'menuExpanding');
-            }, 10);
+            Utilities.addClass(mainMenuButton, 'menuExpanded');
         } else {
             this.closeMainMenu();
         }
@@ -120,11 +116,6 @@ class Love {
         this.#mainMenuMask.style.display = 'none';
         let mainMenuButton = this.#mainMenuButton;
         Utilities.removeClass(mainMenuButton, 'menuExpanded');
-        Utilities.removeClass(mainMenuButton, 'menuExpanding');
-        Utilities.addClass(mainMenuButton, 'menuCollapsed');
-        setTimeout(function() {
-            Utilities.addClass(mainMenuButton, 'menuCollapsing');
-        }, 10);
     }
 
     forceViewport() {
