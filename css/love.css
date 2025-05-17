@@ -284,14 +284,16 @@ textarea {
 }
 
 .menuCollapsing div {
-    animation-duration: 1s;
+    animation-duration: 500ms;
     animation-fill-mode: forwards;
     animation-direction: reverse;
+    animation-timing-function: ease-in-out;
 }
 
 .menuExpanding div {
-    animation-duration: 1s;
+    animation-duration: 500ms;
     animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
 }
 
 .menuCollapsed #mainMenuButton_top_bun {
