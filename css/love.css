@@ -264,24 +264,80 @@ textarea {
     z-index: 70;
 }
 
-.menuExpanded #mainMenuButton_top_bun {
-    margin-top: -20px;
+.menuCollapsing div {
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-direction: reverse;
 }
 
-.menuExpanded #mainMenuButton_lettuce {
+.menuExpanding div {
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+.menuCollapsed #mainMenuButton_top_bun {
+    margin-top: -12px;
+}
+
+.menuCollapsed #mainMenuButton_lettuce {
     margin-top: -10px;
 }
 
-.menuExpanded #mainMenuButton_sun {
+.menuCollapsed #mainMenuButton_sun {
     margin-top: -6px;
 }
 
-.menuExpanded #mainMenuButton_tomato {
+.menuCollapsed #mainMenuButton_tomato {
     margin-top: -5px;
 }
 
-.menuExpanded #mainMenuButton_bottom_bun {
-    margin-top: -5px;
+.menuCollapsed #mainMenuButton_bottom_bun {
+    margin-top: -2px;
+}
+
+.menuExpanding #mainMenuButton_top_bun, .menuCollapsing #mainMenuButton_top_bun {
+    animation-name: open_top_bun;
+}
+
+.menuExpanding #mainMenuButton_lettuce, .menuCollapsing #mainMenuButton_lettuce {
+    animation-name: open_lettuce;
+}
+
+.menuExpanding #mainMenuButton_sun, .menuCollapsing #mainMenuButton_sun {
+    animation-name: open_sun;
+}
+
+.menuExpanding #mainMenuButton_tomato, .menuCollapsing #mainMenuButton_tomato {
+    animation-name: open_tomato;
+}
+
+.menuExpanding #mainMenuButton_bottom_bun, .menuCollapsing #mainMenuButton_bottom_bun {
+    animation-name: open_bottom_bun;
+}
+
+@keyframes open_top_bun {
+    from { margin-top: 0px; }
+    to { margin-top: -12px; }
+}
+
+@keyframes open_lettuce {
+    from { margin-top: -12px; }
+    to { margin-top: -10px; }
+}
+
+@keyframes open_sun {
+    from { margin-top: -20px; }
+    to { margin-top: -6px; }
+}
+
+@keyframes open_tomato {
+    from { margin-top: -12px; }
+    to { margin-top: -5px; }
+}
+
+@keyframes open_bottom_bun {
+    from { margin-top: -10px; }
+    to { margin-top: -2px; }
 }
 
 .tabAndButtonContainer {

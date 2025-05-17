@@ -100,7 +100,12 @@ class Love {
     toggleMainMenu() {
         if (this.#mainMenu.style.display == 'none') {
             this.#mainMenu.style.display = 'flex';
-            Utilities.addClass(this.#mainMenuButton, 'menuExpanded');
+            let mainMenuButton = this.#mainMenuButton;
+            Utilities.removeClass(mainMenuButton, 'menuCollapsed');
+            Utilities.removeClass(mainMenuButton, 'menuCollapsing');
+            setTimeout(function() {
+                Utilities.addClass(mainMenuButton, 'menuExpanding');
+            }, 10);
         } else {
             this.closeMainMenu();
         }
@@ -108,7 +113,13 @@ class Love {
 
     closeMainMenu() {
         this.#mainMenu.style.display = 'none';
-        Utilities.removeClass(this.#mainMenuButton, 'menuExpanded');
+        let mainMenuButton = this.#mainMenuButton;
+        Utilities.removeClass(mainMenuButton, 'menuExpanded');
+        Utilities.removeClass(mainMenuButton, 'menuExpanding');
+        Utilities.addClass(mainMenuButton, 'menuCollapsed');
+        setTimeout(function() {
+            Utilities.addClass(mainMenuButton, 'menuCollapsing');
+        }, 10);
     }
 
     forceViewport() {
