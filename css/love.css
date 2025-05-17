@@ -230,6 +230,10 @@ textarea {
     margin-top: 3px;
 }
 
+#mainMenuMask {
+    z-index: var(--mask-layer);
+}
+
 #mainMenuButton div {
     position: relative;
     background-repeat: no-repeat;

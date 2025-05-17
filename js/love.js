@@ -19,6 +19,8 @@ class Love {
     #mainMenu = document.getElementById('mainMenu');
     #mainTabContainer = document.getElementById('mainTabContainer');
     #mainMenuButton = document.getElementById('mainMenuButton');
+    #mainMenuMask = document.getElementById('mainMenuMask');
+
     #tabs = {
         characters: this.#characters,
         chat: this.#chat,
@@ -86,6 +88,7 @@ class Love {
             love.selectTab(this.dataset.tab);
         });
         this.#mainMenuButton.addEventListener('click', function() { love.toggleMainMenu(); });
+        this.#mainMenuMask.addEventListener('click', function() { love.closeMainMenu(); });
 
         // Try to make the virtual keyboard on iOS not break the entire layout
         if (window.visualViewport) {
@@ -100,6 +103,7 @@ class Love {
     toggleMainMenu() {
         if (this.#mainMenu.style.display == 'none') {
             this.#mainMenu.style.display = 'flex';
+            this.#mainMenuMask.style.display = 'flex';
             let mainMenuButton = this.#mainMenuButton;
             Utilities.removeClass(mainMenuButton, 'menuCollapsed');
             Utilities.removeClass(mainMenuButton, 'menuCollapsing');
@@ -113,6 +117,7 @@ class Love {
 
     closeMainMenu() {
         this.#mainMenu.style.display = 'none';
+        this.#mainMenuMask.style.display = 'none';
         let mainMenuButton = this.#mainMenuButton;
         Utilities.removeClass(mainMenuButton, 'menuExpanded');
         Utilities.removeClass(mainMenuButton, 'menuExpanding');
