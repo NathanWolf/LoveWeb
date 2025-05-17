@@ -102,9 +102,13 @@ class Love {
             this.#mainMenu.style.display = 'flex';
             Utilities.addClass(this.#mainMenuButton, 'menuExpanded');
         } else {
-            this.#mainMenu.style.display = 'none';
-            Utilities.removeClass(this.#mainMenuButton, 'menuExpanded');
+            this.closeMainMenu();
         }
+    }
+
+    closeMainMenu() {
+        this.#mainMenu.style.display = 'none';
+        Utilities.removeClass(this.#mainMenuButton, 'menuExpanded');
     }
 
     forceViewport() {
@@ -122,7 +126,7 @@ class Love {
         if (!this.#tabs.hasOwnProperty(tabId)) {
             throw new Error("Selecting unknown tab: " + tabId);
         }
-        this.#mainMenu.style.display = 'none';
+        this.closeMainMenu();
         this.#mainTabContainer.scrollTop = 0;
         let tabButtons = document.getElementsByClassName('tabButton');
         let tabButtonId = tabId;
