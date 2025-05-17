@@ -70,7 +70,13 @@
     <div id="mainContainer">
 
         <div class="toolbar">
-            <div class="toolbarButton" id="mainMenuButton">&equiv;</div>
+            <div class="toolbarButton" id="mainMenuButton">
+                <div id="mainMenuButton_top_bun"></div>
+                <div id="mainMenuButton_lettuce"></div>
+                <div id="mainMenuButton_sun"></div>
+                <div id="mainMenuButton_tomato"></div>
+                <div id="mainMenuButton_bottom_bun"></div>
+            </div>
             <div class="toolbarLogo" title="Divi!nity"></div>
         </div>
 

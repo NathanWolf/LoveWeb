@@ -18,6 +18,7 @@ class Love {
     #slideshow = new Slideshow(this, document.getElementById('slideshow'));
     #mainMenu = document.getElementById('mainMenu');
     #mainTabContainer = document.getElementById('mainTabContainer');
+    #mainMenuButton = document.getElementById('mainMenuButton');
     #tabs = {
         characters: this.#characters,
         chat: this.#chat,
@@ -84,8 +85,7 @@ class Love {
         Utilities.addHandlerToClass('navigation', function() {
             love.selectTab(this.dataset.tab);
         });
-        let mainMenuButton = document.getElementById('mainMenuButton');
-        mainMenuButton.addEventListener('click', function() { love.toggleMainMenu(); });
+        this.#mainMenuButton.addEventListener('click', function() { love.toggleMainMenu(); });
 
         // Try to make the virtual keyboard on iOS not break the entire layout
         if (window.visualViewport) {
@@ -100,8 +100,10 @@ class Love {
     toggleMainMenu() {
         if (this.#mainMenu.style.display == 'none') {
             this.#mainMenu.style.display = 'flex';
+            Utilities.addClass(this.#mainMenuButton, 'menuExpanded');
         } else {
             this.#mainMenu.style.display = 'none';
+            Utilities.removeClass(this.#mainMenuButton, 'menuExpanded');
         }
     }
 
