@@ -125,7 +125,8 @@
                 <div class="tile navigation" data-tab="quizzes"><div>Quizzes</div></div>
                 <div class="tile navigation" data-tab="flashCards"><div>Flash Cards</div></div>
                 <div class="tile navigation" data-tab="tierLists"><div>Tier Lists</div></div>
-                <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Love and Ciel Game</a></div>
+                <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Love and Ciel Game (W.I.P.)</a></div>
+                <div class="tile"><a href="https://games.elmakers.com/corzaelia" target="_blank">Corzaelia Game (W.I.P.)</a></div>
             </div>
         </div>
 
