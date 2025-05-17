@@ -340,13 +340,6 @@ textarea {
     to { margin-top: -2px; }
 }
 
-.tabAndButtonContainer {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-}
-
 .tabButtons {
     position: absolute;
     left: 0;

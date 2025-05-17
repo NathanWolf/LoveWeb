@@ -94,8 +94,6 @@
             <div class="tabButton toolbarButton" data-tab="profile" id="profileTabButton"><div>Profile</div><div class="loggedout" id="profileIcon"></div></div>
         </div>
 
-        <div class="tabAndButtonContainer">
-
         <div class="tabContainer" id="mainTabContainer">
 
         <div class="tab" id="info">
@@ -180,7 +178,6 @@
 
         </div>
 
-    </div>
     </div>
     </div>
 
