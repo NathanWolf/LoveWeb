@@ -1,3 +1,7 @@
+#games {
+    overflow-y: auto;
+}
+
 #gameSelect {
     justify-content: center;
     align-items: center;
@@ -5,4 +9,47 @@
     flex-wrap: wrap;
     flex-direction: row;
     flex: auto;
+}
+
+.buttonQuizzes {
+    background-image: url('../image/buttons/quizzes.png');
+}
+
+.buttonCards {
+    background-image: url('../image/buttons/cards.png');
+}
+
+.buttonTiers {
+    background-image: url('../image/buttons/tiers.png');
+}
+
+.buttonLove {
+    background-image: url('../image/buttons/love.png');
+}
+
+.buttonCorzaelia {
+    background-image: url('../image/buttons/corzaelia.png');
+}
+
+.gamesButtonAndLabel {
+    cursor: pointer;
+    max-width: 320px;
+}
+
+.gamesButton {
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 320px;
+    height: 320px;
+}
+
+.gamesButtonLabel {
+    text-align: center;
+    margin-top: -20px;
+    font-size: 2em;
+    font-style: italic;
+}
+
+.gamesButtonAndLabel a {
+    text-decoration: none;
 }

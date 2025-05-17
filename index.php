@@ -122,11 +122,36 @@
 
         <div class="tab" id="games" style="display: none">
             <div class="buttonContainer">
-                <div class="tile navigation" data-tab="quizzes"><div>Quizzes</div></div>
-                <div class="tile navigation" data-tab="flashCards"><div>Flash Cards</div></div>
-                <div class="tile navigation" data-tab="tierLists"><div>Tier Lists</div></div>
-                <div class="tile"><a href="https://games.elmakers.com/love" target="_blank">Love and Ciel Game (W.I.P.)</a></div>
-                <div class="tile"><a href="https://games.elmakers.com/corzaelia" target="_blank">Corzaelia Game (W.I.P.)</a></div>
+
+                <div class="navigation gamesButtonAndLabel" data-tab="quizzes">
+                    <div class="buttonQuizzes gamesButton"></div>
+                    <div class="gamesButtonLabel">Quizzes</div>
+                </div>
+
+
+                <div class="navigation gamesButtonAndLabel" data-tab="flashCards">
+                    <div class="buttonCards gamesButton"></div>
+                    <div class="gamesButtonLabel">Flash Cards</div>
+                </div>
+
+                <div class="navigation gamesButtonAndLabel" data-tab="tierLists">
+                    <div class="buttonTiers gamesButton"></div>
+                    <div class="gamesButtonLabel">Tier Lists</div>
+                </div>
+
+                <div class="gamesButtonAndLabel">
+                    <a href="https://games.elmakers.com/love" target="_blank">
+                        <div class="buttonLove gamesButton"></div>
+                        <div class="gamesButtonLabel">Love and Ciel Game (W.I.P.)</div>
+                    </a>
+                </div>
+
+                <div class="gamesButtonAndLabel">
+                    <a href="https://games.elmakers.com/corzaelia" target="_blank">
+                        <div class="buttonCorzaelia gamesButton"></div>
+                        <div class="gamesButtonLabel">Corzaelia Game (W.I.P.)</div>
+                    </a>
+                </div>
             </div>
         </div>
 
