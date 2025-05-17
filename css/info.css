@@ -20,12 +20,25 @@
     border-radius: 20px;
     padding: 1em;
     color: var(--tile-color);
+    text-align: center;
 }
 
 .column {
     display: flex;
     flex-direction: column;
-    max-width: 50%;
+    max-width: 512px;
+}
+
+.samplePage {
+    width: 512px;
+    height: 683px;
+}
+
+.samplePageColumn {
+    display: flex;
+    flex-direction: row;
+    width: 512px;
+    align-items: center;
 }
 
 .infoBlock.contact {

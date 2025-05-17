@@ -1,8 +1,6 @@
 <?php
 ?>
 
-<div class="diviinityLogo">
-</div>
 
 <div class="infoContainer">
 
@@ -34,9 +32,14 @@
 
 </div>
 
-<div class="column">
-    <img src="image/sample_page.png" alt="Sample Book Page" style="width: 512px; height:683px;">
+<div class="samplePageColumn">
+    <div>
+        <img src="image/sample_page.png" alt="Sample Book Page" class="samplePage">
+    </div>
 </div>
+
+
+<div class="column">
 
 <div class="infoBlock">
     Diviinity is the story I’ve been writing since 2023. It started off with my OC, Love. The storyline was COMPLETELY different, and revolved around them entirely.
@@ -47,6 +50,10 @@
     <br/><br/>
     Especially in the beginning, it could be a bit confusing on how this all lines up and connects together to the overall story. But it does, I promise!
 </div>
+
+</div>
+
+<div class="column">
 
 <div class="infoBlock">
     “When is Diviinity coming out?”
@@ -60,6 +67,8 @@
     “Why’d you choose to illustrate it?”
     <br/>
     I wanted to combine my favorite things to do, writing and drawing! Not in a comic way, as it lacks the joy I find in writing. (I am making a comic nonetheless, about other characters from the same universe called Ruiin!)
+</div>
+
 </div>
 
 <hr class="fullRule"/>
