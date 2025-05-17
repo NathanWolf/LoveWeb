@@ -99,6 +99,10 @@
         <div class="tabContainer" id="mainTabContainer">
 
         <div class="tab" id="info">
+            <div class="infoTooltip">
+                <div>&larr;</div>
+                <div>Click the Burger for More!</div>
+            </div>
             <?php require('tabs/intro.inc.php'); ?>
         </div>
 
