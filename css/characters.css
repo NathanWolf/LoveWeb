@@ -115,7 +115,7 @@
     border: 8px solid var(--popup-border-color);
     color: var(--popup-color);
     overflow: auto;
-    z-index: 10000;
+    z-index: var(--popup-layer);
 }
 
 .characterSheet .label {
@@ -396,6 +396,7 @@ tr.headerRow th {
     background: var(--popup-background-color);
     border: 8px solid var(--popup-border-color);
     flex-direction: column;
+    z-index: var(--gallery-layer);
 }
 
 .characterImage {

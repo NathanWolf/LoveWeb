@@ -8,6 +8,7 @@
     height: 100%;
     width: 100%;
     background: rgba(0,0,0,0.5);
+    z-index: var(--popup-layer);
 }
 
 .popupContent {
