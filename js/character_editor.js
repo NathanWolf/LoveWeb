@@ -133,8 +133,10 @@ class CharacterEditor extends Editor {
         this.clearModified();
 
         let container = this.getElement();
-        let characterListContainer = container.children[1];
-        this.#scrollPosition = characterListContainer.scrollTop;
+        if (container != null && container.children.length > 0) {
+            let characterListContainer = container.children[0];
+            this.#scrollPosition = characterListContainer.scrollTop;
+        }
         Utilities.empty(container);
 
         let outerContainer = Utilities.createDiv('editorContainer', container);
