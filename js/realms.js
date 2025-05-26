@@ -189,8 +189,8 @@ class Realms extends Component {
                 Utilities.closePopups();
                 let controller = realmController.getController();
                 let chat = controller.getChat();
-                controller.selectTab('chat');
                 chat.startRealmChat(realmId);
+                controller.selectTab('chat');
             });
         }
     }

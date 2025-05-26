@@ -7,6 +7,7 @@ class Chat extends Component {
     #messages = {};
     #conversations = {};
     #conversationId = null;
+    #targetRealmId = null
     #tiers = [
         {'name': 'Breaking the Fourth Wall', 'color': 'rgb(124, 124, 124)'},
         {'name': 'Characters That Have Variants', 'color': 'rgb(124, 10, 2)'},
@@ -21,7 +22,12 @@ class Chat extends Component {
     show() {
         let container = this.getElement();
         Utilities.empty(container);
-        this.#listChats();
+        if (this.#targetRealmId != null) {
+            this.#chooseSource(null, null, this.#targetRealmId);
+            this.#targetRealmId = null;
+        } else {
+            this.#listChats();
+        }
     }
 
     #createForm(action) {
@@ -358,7 +364,7 @@ class Chat extends Component {
     };
 
     startRealmChat(realmId) {
-        this.#chooseSource(null, null, realmId);
+        this.#targetRealmId = realmId;
     };
 
     async #resume(conversationId) {
