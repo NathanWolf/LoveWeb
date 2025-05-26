@@ -48,6 +48,11 @@ class Love {
         this.#history.autoUpdate();
     }
 
+    onInternalError(msg, url, line, col, error) {
+        alert("An internal error occurred. Press OK to reload.\n\nDetails: " + msg + "\n\n" + url + ":" + line + ":" + col);
+        location.reload();
+    }
+
     getCharacters() {
         return this.#characters;
     }

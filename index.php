@@ -53,6 +53,7 @@
             love.getProfile().checkDisplayMode();
             _love = love;
         };
+        window.onerror = function(msg, url, line, col, error) { _love.onInternalError(msg, url, line, col, error); };
     </script>
 
     <!-- Google tag (gtag.js) -->
