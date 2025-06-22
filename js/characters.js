@@ -15,6 +15,7 @@ class Characters extends Component {
     #rotating = false;
     #moveMinDistance = 20;
     #moveMinPercent = 5;
+    #showAllButton = null;
 
     constructor(controller, element) {
         super(controller, element);
@@ -91,6 +92,7 @@ class Characters extends Component {
 
     #shouldShow(character) {
         let properties = character.hasOwnProperty('properties') && character.properties != null ? character.properties : {};
+        if (character.hidden) return false;
         let shouldShow = true;
         for (let filterKey in this.#filters) {
             if (this.#filters.hasOwnProperty(filterKey)) {
@@ -127,12 +129,17 @@ class Characters extends Component {
 
     #updateFilters() {
         let visibleGroups = {};
+        let characterCount = 0;
         for (let id in this.#characters) {
             if (this.#characters.hasOwnProperty(id)) {
                 let character = this.#characters[id];
+                let shouldShow = this.#shouldShow(character);
+                if (shouldShow) {
+                    console.log(character.name);
+                    characterCount++;
+                }
                 for (let containerId in character.containers) {
                     if (!character.hasOwnProperty('containers')) continue;
-                    let shouldShow = this.#shouldShow(character);
                     if (character.containers.hasOwnProperty(containerId)) {
                         Utilities.setVisible(character.containers[containerId], shouldShow);
                         if (shouldShow) {
@@ -141,6 +148,10 @@ class Characters extends Component {
                     }
                 }
             }
+        }
+
+        if (this.#showAllButton) {
+            this.#showAllButton.innerHTML = 'Show ' + characterCount +' character' + (characterCount != 1 ? 's' : '') ;
         }
 
         for (let groupId in this.#groupContainers) {
@@ -192,6 +203,7 @@ class Characters extends Component {
         showAllButton.addEventListener('click', function() {
             characterController.#showAllCharacters();
         });
+        this.#showAllButton = showAllButton;
         let filterButton = Utilities.createElement('button', 'filter', characterToolbar, 'Search...')
         filterButton.addEventListener('click', function() {
             if (filters.style.display == 'flex') {
@@ -203,6 +215,7 @@ class Characters extends Component {
         let filters = Utilities.createDiv('characterFilters', characterToolbar);
         filters.style.display = 'none';
         let searchInput = Utilities.createElement('input', '', filters);
+        searchInput.placeholder = 'Search...';
         searchInput.addEventListener('keyup', function() {
             characterController.#search = this.value;
             characterController.#updateFilters();
@@ -258,6 +271,8 @@ class Characters extends Component {
                 characterController.#characterIdList.push(character.id);
             });
         });
+
+        this.#updateFilters();
     }
 
     #addCharacterPropertyInfo(character, container, property, label) {
