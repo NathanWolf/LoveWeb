@@ -34,6 +34,9 @@ class TimelineEditor extends Editor {
                 year: null,
                 month: null,
                 day: null,
+                end_year: null,
+                end_month: null,
+                end_day: null,
                 name: '',
                 description: ''
             };
@@ -47,19 +50,33 @@ class TimelineEditor extends Editor {
         } else {
             saveButton.disabled = true;
         }
+
         let yearCell = Utilities.createElement('td', '', newRow);
-        let yearInput = this.#createSimpleInput(yearCell, 8, data.year);
+        let yearInput = this.#createSimpleInput(yearCell, 8, Math.abs(data.year));
         yearInput.placeholder = 'Year';
-        let yearCheckbox = Utilities.createElement('button', 'yearToggleButton', yearCell, 'AT');
-        yearCheckbox.type = 'button';
-        yearCheckbox.dataset.yearType = 'at';
+        let yearCheckbox = this.#createEraSelect(yearCell, data.year);
         let monthCell = Utilities.createElement('td', '', newRow);
         let monthInput = this.#createMonthSelect(monthCell, data.month);
         let dayCell = Utilities.createElement('td', '', newRow);
         let dayInput = this.#createDaySelect(dayCell, data.day);
+
         let nameCell = Utilities.createElement('td', '', newRow);
-        let nameInput = this.#createSimpleInput(nameCell, 20, data.name);
+        let nameInput = this.#createSimpleInput(nameCell, 30, data.name);
         nameInput.placeholder = 'Name of Event';
+
+        let endTimeRow = Utilities.createElement('tr', '', editorBody);
+        Utilities.createElement('td', '', endTimeRow);
+        let endYearCell = Utilities.createElement('td', '', endTimeRow);
+        let endYearInput = this.#createSimpleInput(endYearCell, 8, Math.abs(data.end_year));
+        endYearInput.placeholder = 'Year';
+        let endYearCheckbox = this.#createEraSelect(endYearCell, data.end_year);
+        let endMonthCell = Utilities.createElement('td', '', endTimeRow);
+        let endMonthInput = this.#createMonthSelect(endMonthCell, data.end_month);
+        let endDayCell = Utilities.createElement('td', '', endTimeRow);
+        let endDayInput = this.#createDaySelect(endDayCell, data.end_day);
+
+        let endDayLabel = Utilities.createElement('td', '', endTimeRow);
+        endDayLabel.innerText = '<- End Time';
 
         let descriptionRow = Utilities.createElement('tr', 'rowSeparator', editorBody);
         Utilities.createElement('td', '', descriptionRow);
@@ -80,8 +97,13 @@ class TimelineEditor extends Editor {
         };
         yearInput.addEventListener('keyup', modifiedFunction);
         monthInput.addEventListener('change', modifiedFunction);
-        nameInput.addEventListener('keyup', modifiedFunction);
         dayInput.addEventListener('change', modifiedFunction);
+
+        endYearInput.addEventListener('keyup', modifiedFunction);
+        endMonthInput.addEventListener('change', modifiedFunction);
+        endDayInput.addEventListener('change', modifiedFunction);
+
+        nameInput.addEventListener('keyup', modifiedFunction);
         descriptionInput.addEventListener('keyup', modifiedFunction);
         yearCheckbox.addEventListener('click', function() {
             if (yearCheckbox.dataset.yearType == 'at') {
@@ -90,6 +112,16 @@ class TimelineEditor extends Editor {
             } else {
                 yearCheckbox.dataset.yearType = 'at';
                 yearCheckbox.innerText = 'AT';
+            }
+            modifiedFunction();
+        });
+        endYearCheckbox.addEventListener('click', function() {
+            if (endYearCheckbox.dataset.yearType == 'at') {
+                endYearCheckbox.dataset.yearType = 'bt';
+                endYearCheckbox.innerText = 'BT';
+            } else {
+                endYearCheckbox.dataset.yearType = 'at';
+                endYearCheckbox.innerText = 'AT';
             }
             modifiedFunction();
         });
@@ -111,6 +143,12 @@ class TimelineEditor extends Editor {
             }
             data.month = parseInt(monthInput.value);
             data.day = parseInt(dayInput.value);
+            data.end_year = Math.abs(parseInt(endYearInput.value));
+            if (endYearCheckbox.dataset.yearType == 'bt') {
+                data.end_year = -data.end_year;
+            }
+            data.end_month = parseInt(endMonthInput.value);
+            data.end_day = parseInt(endDayInput.value);
             data.name = nameInput.value;
             data.description = descriptionInput.value;
             editor.#updateEvent(data, saveButton, successFunction);
@@ -171,6 +209,13 @@ class TimelineEditor extends Editor {
         }
         editorForm.appendChild(input);
         return input;
+    }
+
+    #createEraSelect(container, year) {
+        let yearCheckbox = Utilities.createElement('button', 'yearToggleButton', container, year >= 0 ? 'AT' : 'BT');
+        yearCheckbox.type = 'button';
+        yearCheckbox.dataset.yearType = year >= 0 ? 'at' : 'bt';
+        return yearCheckbox;
     }
 
     #createMonthSelect(container, selectedId) {

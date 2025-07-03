@@ -389,6 +389,11 @@ alter table timeline_event
     add importance varchar(32) default 'major' not null,
     add spoiler boolean default false not null;
 
+alter table timeline_event
+    add end_day int not null,
+    add end_month int not null,
+    add end_year bigint not null;
+
 -- Data updates follow
 
 UPDATE persona_tier
