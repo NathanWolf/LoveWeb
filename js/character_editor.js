@@ -262,16 +262,25 @@ class CharacterEditor extends Editor {
         let descriptionInput = this.createLongInput(editorForm, {id: "description", name: "Description"}, character.description);
         let backstoryInput = this.createLongInput(editorForm, {id: "backstory", name: "Backstory"}, character.backstory);
         let notesInput = this.createLongInput(editorForm, {id: "notes", name: "Notes"}, character.notes);
+
         let chatInput = this.createLongInput(editorForm, {id: "chat", name: "Chat Prompt"}, character.chat != null ? character.chat.system : null);
+
         let prompt2 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0 ? character.chat.alternatives[0].system : null
         let promptTitle2 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0 ? character.chat.alternatives[0].label : null
+        let promptImage2 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0 && character.chat.alternatives[0].hasOwnProperty('portrait_id') ? character.chat.alternatives[0].portrait_id : null
         let chatTitle2 = this.createInput(editorForm, {id: 'chatTitle2', name: 'Chat Title 2'});
         chatTitle2.value = promptTitle2;
+        let chatImage2 = this.createInput(editorForm, {id: 'chatImage2', name: 'Chat Profile Image 2'});
+        chatImage2.value = promptImage2;
         let chatInput2 = this.createLongInput(editorForm, {id: "chat2", name: "Chat Prompt 2"}, prompt2);
+
         let prompt3 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 1 ? character.chat.alternatives[1].system : null
         let promptTitle3 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 1 ? character.chat.alternatives[1].label : null
+        let promptImage3 = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 1 && character.chat.alternatives[1].hasOwnProperty('portrait_id')  ? character.chat.alternatives[1].portrait_id : null
         let chatTitle3 = this.createInput(editorForm, {id: 'chatTitle3', name: 'Chat Title 3'});
         chatTitle3.value = promptTitle3;
+        let chatImage3 = this.createInput(editorForm, {id: 'chatImage3', name: 'Chat Profile Image 3'});
+        chatImage3.value = promptImage3;
         let chatInput3 = this.createLongInput(editorForm, {id: "chat3", name: "Chat Prompt 3"}, prompt3);
 
         saveButton.addEventListener('click', () => {
@@ -298,12 +307,14 @@ class CharacterEditor extends Editor {
                     character.chat.alternatives = [];
                     character.chat.alternatives.push({
                         system: chatInput2.value,
-                        label: chatTitle2.value
+                        label: chatTitle2.value,
+                        portrait_id: chatImage2.value
                     });
                     if (chatInput3.value.length > 0) {
                         character.chat.alternatives.push({
                             system: chatInput3.value,
-                            label: chatTitle3.value
+                            label: chatTitle3.value,
+                            portrait_id: chatImage3.value
                         });
                     }
                 }

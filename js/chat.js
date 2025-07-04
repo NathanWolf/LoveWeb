@@ -104,7 +104,7 @@ class Chat extends Component {
                 let character = characters.getCharacter(conversation.source_persona_id);
                 let portrait = document.createElement('div');
                 portrait.className = 'portrait small';
-                portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+                portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id, conversation.source_alternative_id) + ')';
                 chatContainer.appendChild(portrait);
             }
 
@@ -113,7 +113,7 @@ class Chat extends Component {
             if (realm != null) {
                 portrait.style.backgroundImage = 'url(' + realms.getPortrait(realm.id) + ')';
             } else {
-                portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+                portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id, conversation.target_alternative_id) + ')';
             }
             chatContainer.appendChild(portrait);
 
@@ -174,7 +174,7 @@ class Chat extends Component {
         container.remove();
     }
 
-    #createPortrait(character, name) {
+    #createPortrait(character, name, alternativeId) {
         let characters = this.getController().getCharacters();
         name = typeof(name) === 'undefined' ? character.name : name;
         let portraitContainer = document.createElement('div');
@@ -188,7 +188,7 @@ class Chat extends Component {
 
         let portrait = document.createElement('div');
         portrait.className = 'portrait';
-        portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id) + ')';
+        portrait.style.backgroundImage = 'url(' + characters.getPortrait(character.id, alternativeId) + ')';
         portraitContainer.appendChild(portrait);
 
         return portraitContainer;
@@ -263,16 +263,16 @@ class Chat extends Component {
         newChatHeader.innerText = 'What version of ' + character.name +'?';
 
         let newChatCharacters = Utilities.createDiv('chatCharacterList', container);
-        let alternativeList = [{index: null, label: 'Present Day'}];
+        let alternativeList = [{index: null, label: 'Present Day', alternate_id: null}];
         for (let i = 0; i < character.chat.alternatives.length; i++) {
             let alternative = character.chat.alternatives[i];
             let label = alternative.hasOwnProperty('label') ? alternative.label : 'Alternative#' + index;
-            alternativeList.push({index: i, label: label});
+            alternativeList.push({index: i, label: label, alternate_id: i});
         }
 
         for (let i = 0; i < alternativeList.length; i++) {
             let alternative = alternativeList[i];
-            let portraitContainer = this.#createPortrait(character, alternative.label);
+            let portraitContainer = this.#createPortrait(character, alternative.label, alternative.alternate_id);
             portraitContainer.addEventListener('click', function() {
                 callback(alternative.index);
             });
@@ -556,7 +556,7 @@ class Chat extends Component {
             let userCharacter = this.getController().getProfile().getCharacterId();
             if (conversation.source_persona_id != null) {
                 let characters = this.getController().getCharacters();
-                icon.style.backgroundImage = 'url(' + characters.getPortrait(conversation.source_persona_id) + ')';
+                icon.style.backgroundImage = 'url(' + characters.getPortrait(conversation.source_persona_id, conversation.source_alternative_id) + ')';
             } else if (userCharacter != null) {
                 Utilities.addClass(icon, 'portrait');
                 Utilities.addClass(icon, 'small');
@@ -565,7 +565,7 @@ class Chat extends Component {
             }
         } else if (role == 'assistant' && typeof(characterId) !== 'undefined' && characterId != null) {
             let characters = this.getController().getCharacters();
-            icon.style.backgroundImage = 'url(' + characters.getPortrait(characterId) + ')';
+            icon.style.backgroundImage = 'url(' + characters.getPortrait(characterId, conversation.target_alternative_id) + ')';
         } else if (role == 'assistant' && typeof(realmId) !== 'undefined' && realmId != null) {
             let realms = this.getController().getRealms();
             icon.style.backgroundImage = 'url(' + realms.getPortrait(realmId) + ')';

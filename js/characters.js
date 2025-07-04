@@ -749,7 +749,18 @@ class Characters extends Component {
         return image;
     }
 
-    getPortrait(characterId) {
+    getPortrait(characterId, alternative_id) {
+        if (typeof(alternative_id) !== 'undefined' && alternative_id != null) {
+            let character = this.getCharacter(characterId);
+            if (character.chat.hasOwnProperty('alternatives') &&
+                character.chat.alternatives.length > alternative_id &&
+                character.chat.alternatives[alternative_id].hasOwnProperty('portrait_id')) {
+                let alternativePortrait = character.chat.alternatives[alternative_id].portrait_id;
+                if (alternativePortrait != null && alternativePortrait != '') {
+                    return this.#getImage(characterId, alternativePortrait);
+                }
+            }
+        }
         return this.#getImage(characterId, 'portrait');
     }
 
