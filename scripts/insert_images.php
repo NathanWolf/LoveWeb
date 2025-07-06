@@ -57,17 +57,26 @@ foreach ($iterator as $fileInfo) {
             } else {
                 $tags = 'old';
             }
-        } else {
-            if (strpos($imageId, 'full') !== FALSE) {
-                $description = "This character's full body image";
-                $title = 'Full Body';
-                $tags = 'full,current';
-            } else if (strpos($imageId, 'portrait') !== FALSE) {
-                $description = "This character's headshot";
-                $title = 'Portrait';
-                $tags = 'portrait,current';
-            }
+        } if (strpos($imageId, 'full') !== FALSE) {
+            $description = "This character's full body image";
+            $title = 'Full Body';
+            $tags = 'full,current';
+        } else if (strpos($imageId, 'portrait_past') !== FALSE) {
+            $description = "This character's headshot in their past";
+            $title = 'Portrait (Past)';
+            $tags = 'portrait,past';
+        } else if (strpos($imageId, 'past') !== FALSE) {
+            $description = "This character in their past";
+            $title = 'Full Body (Past)';
+            $tags = 'full,past';
+        } else if (strpos($imageId, 'portrait') !== FALSE) {
+            $description = "This character's headshot";
+            $title = 'Portrait';
+            $tags = 'portrait,current';
         }
+
+        // Todo: special case for "past" and "portrait_past" images!
+
         $newRecord = array(
             'image_id' => $imageId,
             'persona_id' => $characterId,
