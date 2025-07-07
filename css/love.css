@@ -2,19 +2,19 @@
     color-scheme: light dark;
 
     --menu-tooltip-layer: -10;
-    --menu-layer: 100;
-    --menu-background-layer: 90;
-    --burger-layer-1: 110;
-    --burger-layer-2: 120;
-    --burger-layer-3: 130;
-    --burger-layer-4: 140;
-    --burger-layer-5: 150;
+    --menu-layer: 100000;
+    --menu-background-layer: 90000;
+    --burger-layer-1: 110000;
+    --burger-layer-2: 120000;
+    --burger-layer-3: 130000;
+    --burger-layer-4: 140000;
+    --burger-layer-5: 150000;
     --mask-layer: 50;
     --target-layer: 30;
     --handle-layer: 25;
     --popup-layer: 200;
     --gallery-layer: 300;
-    --loading-layer: 1000;
+    --loading-layer: 1000000;
 
     --background-color: #FFFADF;
     --text-color: black;
