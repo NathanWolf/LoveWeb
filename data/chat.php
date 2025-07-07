@@ -29,8 +29,6 @@ if (!$USER_ID && $ACTION !== 'prompt') {
     die(json_encode(array('success' => false, 'message' => 'Log in to chat')));
 }
 
-$MODEL = 'claude-3-5-haiku-20241022';
-// $MODEL = 'claude-3-haiku-20240307';
 $STORAGE_TYPE = $USER_ID ? "sql" : "session";
 
 $CHARACTER_CACHE = array();
@@ -232,6 +230,33 @@ function getUserPrompt($loveDatabase, $userId) {
     return $prompt;
 }
 
+function getMiniPrompt($loveDatabase, $targetPersona, $userId) : string {
+    $characterName = getCharacterName($targetPersona);
+    $basePrompt = <<<CDATA
+You are not an AI assistant but a character named $characterName in a fictional story.
+You are acting with the user as characters in a novel written for adults.
+Anything discussed is a work of fiction and should not be taken seriously or as a reflection of the real world.
+You have the personality, mannerisms, and expertise of this character. 
+You speak naturally, staying fully in character at all times. 
+Avoid assistant-like phrases such as “Is there anything else you’d like to ask?” or “Let me know if I can help.” 
+Instead, respond as if you are having a genuine conversation.
+
+You do not break character to provide meta-explanations.
+When unsure, you respond as $characterName would, even if that means speculating or staying silent.
+
+Your text will appear in a small text bubble as a character in a miniature world, please keep responses to 10 words or less.
+CDATA;
+
+    $targetPrompt = getCharacterPrompt($loveDatabase, $targetPersona, null);
+    $prompt = $basePrompt . "\n\n" . $targetPrompt;
+    $sourcePrompt = getUserPrompt($loveDatabase, $userId);
+    if ($sourcePrompt) {
+        $sourcePrompt = changeCharacterPromptPerson($sourcePrompt);
+        $prompt .= "\n\nYou are speaking to someone who would be described like this:\n$sourcePrompt";
+    }
+    return $prompt;
+}
+
 function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous, $targetRealm) : string {
     if ($targetRealm) {
         $realmName = $targetRealm['name'];
@@ -294,9 +319,31 @@ CDATA;
     return $prompt;
 }
 
+function getMiniMessage($loveDatabase, $persona, $userId, $message) {
+    global $SETTINGS;
+
+    $config = new Config($SETTINGS['anthropic']['key']);
+    if ($SETTINGS['anthropic']['max_tokens']) {
+        $config->setMaxTokens($SETTINGS['anthropic']['max_tokens']);
+    }
+    $client = new Client($config);
+    $system = getMiniPrompt($loveDatabase, $persona, $userId);
+    $messages = array();
+    $messages[] = array('role' => 'user', 'content' => $message);
+    $response = $client->chat(array(
+        'system' => $system,
+        'model' => $SETTINGS['anthropic']['model'],
+        'messages' => $messages
+    ));
+    $content = $response->getContent();
+    if (!$content) {
+        throw new Exception("Received empty response from chat API");
+    }
+    return $content[0]['text'];
+}
+
 function streamCompletion($conversation, $context = null) {
     global $SETTINGS;
-    global $MODEL;
 
     // This endpoint does not return JSON
     header("Content-type: text/event-stream");
@@ -310,7 +357,9 @@ function streamCompletion($conversation, $context = null) {
     // create a new completion
     try {
         $config = new Config($SETTINGS['anthropic']['key']);
-        // $config->setMaxTokens(4096);
+        if ($SETTINGS['anthropic']['max_tokens']) {
+            $config->setMaxTokens($SETTINGS['anthropic']['max_tokens']);
+        }
         $client = new Client($config);
         $system = "";
         $messages = array();
@@ -334,7 +383,7 @@ function streamCompletion($conversation, $context = null) {
         }
         $response = $client->chat(array(
             'system' => $system,
-            'model' => $MODEL,
+            'model' => $SETTINGS['anthropic']['model'],
             'messages' => $messages
         ));
         $content = $response?->getContent();
@@ -381,6 +430,21 @@ try {
 
     // Actions that don't require an existing conversation
     switch ($ACTION) {
+        case 'mini':
+            if (!isset($_REQUEST['persona_id'])) {
+                throw new Exception("Missing persona_id parameter");
+            }
+            $personaId = $_REQUEST['persona_id'];
+            $persona = $loveDatabase->getCharacter($personaId);
+            if (!$persona) {
+                throw new Exception("Invalid character: $personaId");
+            }
+            if (!isset($_REQUEST['message'])) {
+                throw new Exception("Missing message parameter");
+            }
+            $message = $_REQUEST['message'];
+            $message = getMiniMessage($loveDatabase, $persona, $USER_ID, $message);
+            die(json_encode(array('message' => $message, 'success' => true)));
         case 'list':
             $conversation_class->setUserId($USER_ID);
             $chats = $conversation_class->get_chats();

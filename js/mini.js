@@ -19,6 +19,7 @@ class Mini extends Component {
     #tickTimer = null;
     #popupTimer = null;
     #popupDiv = null;
+    #loadingMessage = false;
 
     constructor(controller, element) {
         super(controller, element)
@@ -164,12 +165,48 @@ class Mini extends Component {
         miniCharacter.container = Utilities.createDiv('miniCharacter', container);
         miniCharacter.x = location.x;
         miniCharacter.y = location.y;
-        let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
         miniCharacter.container.addEventListener('click', e => {
-            this.showPopup(miniCharacter.x + 20, miniCharacter.y, "Hi, I'm " + character.name + "!");
+            this.#characterChat(miniCharacter);
             e.stopPropagation();
         });
         this.#updateCharacterImage(miniCharacter);
+    }
+
+    async #characterChat(miniCharacter) {
+        let profile = this.getController().getProfile();
+        let user = profile.getUser();
+        if (user == null || this.#loadingMessage) {
+            let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
+            this.showPopup(miniCharacter.x + 20, miniCharacter.y, "Hi, I'm " + character.name + "!");
+        } else {
+            this.#loadingMessage = true;
+            this.showPopup(miniCharacter.x + 20, miniCharacter.y, "...");
+            Utilities.addClass(this.#scene, 'miniLoading');
+            let data = new FormData();
+            data.append('action', 'mini');
+            data.append('message', 'Hello!');
+            if (user != null) {
+                data.append('user_id', user.id);
+                data.append('user_token', user.token);
+            }
+            data.append("persona_id", miniCharacter.id);
+            let messageResponse = await fetch( "data/chat.php", {
+                method: "POST",
+                body: data
+            } ).then((response) => {
+                return response.json();
+            });
+            this.#loadingMessage = false;
+            Utilities.removeClass(this.#scene, 'miniLoading');
+            if (messageResponse == null || !messageResponse.hasOwnProperty('message') || !messageResponse.success) {
+                console.log("Error from chat API: " + messageResponse.message);
+                let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
+                this.showPopup(miniCharacter.x + 20, miniCharacter.y, "Hi, I'm " + character.name + "!");
+                return;
+            }
+
+            this.showPopup(miniCharacter.x + 20, miniCharacter.y, Utilities.convertMarkdown(messageResponse.message));
+        }
     }
 
     showPopup(x, y, message) {
@@ -186,7 +223,7 @@ class Mini extends Component {
         this.#popupTimer = setTimeout(()=>{
             this.#popupTimer = null;
             this.#popupDiv.remove();
-        }, 5000);
+        }, 10000);
     }
 
     #updateCharacterImage(character) {
