@@ -85,6 +85,7 @@
 
         <div class="tabButtons" id="mainMenu">
             <div class="tabButton active toolbarButton" data-tab="info">Info</div>
+            <div class="tabButton toolbarButton" data-tab="minii">NEW! Minii Lands</div>
             <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
             <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
             <div class="tabButton toolbarButton" data-tab="realms">Realms</div>
