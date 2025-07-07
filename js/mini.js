@@ -50,9 +50,12 @@ class Mini extends Component {
         let element = this.getElement();
         Utilities.empty(element);
         this.#container = Utilities.createDiv('miniContainer', element);
-        this.#scene = Utilities.createDiv('miniBackground midlands', this.#container);
+        this.#scene = Utilities.createDiv('miniBackground miniLayer midlands', this.#container);
+        // Utilities.createDiv('miniForeground midlands', element);
 
-        Utilities.createDiv('midlandsTree', this.#scene);
+        Utilities.createDiv('midlandsTree miniLayer ', this.#scene);
+        Utilities.createDiv('midlandsRocks miniLayer ', this.#scene);
+        Utilities.createDiv('midlandsBushes miniLayer ', this.#scene);
 
         for (let characterId in this.#characters) {
             if (this.#characters.hasOwnProperty(characterId)) {

@@ -4,31 +4,54 @@
     touch-action: none;
 }
 
-.miniBackground {
-    z-index: 0;
+.miniLayer {
     position: absolute;
     top: 0px;
     left: 0px;
     background-repeat: no-repeat;
     transform-origin: center center;
-    width: 345px;
-    height: 243px;
+    width: 604px;
+    height: 463px;
     image-rendering: pixelated;
+}
+
+.miniBackground {
+    z-index: 0;
 }
 
 .miniBackground.midlands {
     background-image: url('../image/mini/scenes/midlands/background.png');
 }
 
+.miniForeground {
+    z-index: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    image-rendering: pixelated;
+}
+
+.miniForeground.midlands {
+    background-image: url('../image/mini/scenes/midlands/foreground.png');
+}
+
 .midlandsTree {
     z-index: 2;
     background-image: url('../image/mini/scenes/midlands/tree.png');
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 345px;
-    height: 263px;
-    image-rendering: pixelated;
+}
+
+.midlandsBushes {
+    z-index: 2;
+    background-image: url('../image/mini/scenes/midlands/bushes.png');
+}
+
+.midlandsRocks {
+    z-index: 2;
+    background-image: url('../image/mini/scenes/midlands/rocks.png');
 }
 
 .miniZoomOutButton {
