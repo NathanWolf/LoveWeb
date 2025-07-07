@@ -168,6 +168,9 @@ class Mini extends Component {
             this.#characterChat(miniCharacter);
             e.stopPropagation();
         });
+        miniCharacter.container.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+        });
         this.#updateCharacterImage(miniCharacter);
     }
 
