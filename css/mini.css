@@ -11,6 +11,7 @@
     transform-origin: top left;
     width: 345px;
     height: 243px;
+    image-rendering: pixelated;
 }
 
 .miniBackground.midlands {
@@ -24,6 +25,7 @@
     top: 40px;
     width: 345px;
     height: 263px;
+    image-rendering: pixelated;
 }
 
 .miniZoomOutButton {
@@ -50,4 +52,11 @@
     cursor: not-allowed;
     background-color: rgba(0, 0, 0, 0.5);
     background-blend-mode: multiply;
+}
+
+.miniCharacter {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    image-rendering: pixelated;
 }

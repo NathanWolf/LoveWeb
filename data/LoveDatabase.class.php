@@ -374,6 +374,12 @@ CDATA;
         return $months;
     }
 
+    public function getMiniPersona() {
+        $mini = $this->getAll('persona_mini');
+        $mini = $this->index($mini, 'persona_id');
+        return $mini;
+    }
+
     public function getTimelineEvents() {
         return $this->getAll('timeline_event', 'year, month, day, priority');
     }

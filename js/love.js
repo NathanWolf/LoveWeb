@@ -214,6 +214,7 @@ class Love {
 
         this.#characters.addProperties(data.properties);
         this.#characters.addCharacters(data.characters);
+        this.#mini.addCharacters(data.mini);
         this.#timeline.addTimelineEvents(data.events);
         this.#timeline.addMonths(data.months);
         this.#relationships.addRelationships(data.relationships);

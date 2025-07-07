@@ -13,6 +13,7 @@ try {
     $quizzes = $db->getQuizzes();
     $timelineEvents = $db->getTimelineEvents();
     $months = $db->getMonths();
+    $mini = $db->getMiniPersona();
     $response = array(
         'success' => true,
         'characters' => $characters,
@@ -23,7 +24,8 @@ try {
         'events' => $timelineEvents,
         'months' => $months,
         'realms' => $realms,
-        'realm_properties' => $realmPropertyTypes
+        'realm_properties' => $realmPropertyTypes,
+        'mini' => $mini
     );
 } catch (Exception $ex) {
     $response = array(

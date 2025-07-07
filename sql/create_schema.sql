@@ -589,7 +589,6 @@ CREATE TABLE realm_image
     height int null
 );
 
-
 INSERT INTO realm_image (realm_id, image_id, title, description, width, height)
 VALUES ('overrealms', 'overview', 'Overview', 'An overview of this realm',2388, 1668);
 
@@ -604,3 +603,15 @@ VALUES ('midlands', 'overview', 'Overview', 'An overview of this realm',2388, 16
 
 INSERT INTO realm_image (realm_id, image_id, title, description, width, height)
 VALUES ('afterrealms', 'overview', 'Overview', 'An overview of this realm',2388, 1668);
+
+CREATE TABLE persona_mini (
+      persona_id VARCHAR(64) NOT NULL,
+
+      constraint persona_mini_pk
+          primary key (persona_id),
+
+      foreign key (persona_id)
+          references persona(id)
+          on delete cascade
+          on update cascade
+);
