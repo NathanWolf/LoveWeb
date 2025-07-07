@@ -1,10 +1,11 @@
 class Mini extends Component {
     #container;
     #characters = {};
-    #scene;
+    #faces = ['front', 'left', 'right', 'back'];
     #maxZoom = 5;
     #minZoom = 0.5;
-    #zoom = 1;
+    #scene;
+    #zoom = 0;
     #panX = 0;
     #panY = 0;
     #dragStartX = 0;
@@ -13,6 +14,7 @@ class Mini extends Component {
     #dragStartPanY = 0;
     #zoomOutButton = null;
     #zoomInButton = null;
+    #tickTimer = null;
 
     constructor(controller, element) {
         super(controller, element)
@@ -21,16 +23,28 @@ class Mini extends Component {
     addCharacters(characters) {
         for (let id in characters) {
             if (characters.hasOwnProperty(id)) {
-                this.#characters[id] = characters[id];
+                this.#characters[id] = {
+                    id: id,
+                    facing: this.#getRandomFacing(),
+                    x: 0,
+                    y: 0,
+                    container: null,
+                    moving: false
+                };
             }
         }
+    }
+
+    #getRandomFacing() {
+        let facing = Math.floor(Math.random() * 4);
+        return this.#faces[facing];
     }
 
     show() {
         // Reset zoom + scale
         this.#panX = 0;
         this.#panY = 0;
-        this.#zoom = 1;
+        this.#zoom = 4;
 
         let element = this.getElement();
         Utilities.empty(element);
@@ -42,7 +56,7 @@ class Mini extends Component {
 
         for (let characterId in this.#characters) {
             if (this.#characters.hasOwnProperty(characterId)) {
-                this.#createCharacter(characterId, this.#scene);
+                this.#createCharacter(this.#characters[characterId], this.#scene);
             }
         }
 
@@ -76,17 +90,84 @@ class Mini extends Component {
         this.#zoomInButton.addEventListener('click', e => {
             this.zoomIn();
         });
+        this.#updateSceneTransform();
+        this.#scheduleTick();
     }
 
-    #createCharacter(characterId, container) {
-        let character = Utilities.createDiv('miniCharacter', container);
-        character.style.backgroundImage = 'url(image/mini/characters/' + characterId + '/front.png)';
-        let x = Math.random() * container.offsetWidth * 0.8;
-        let y = Math.random() * container.offsetHeight * 0.8;
+    hide() {
+        if (this.#tickTimer != null) {
+            clearTimeout(this.#tickTimer);
+            this.#tickTimer = null;
+        }
+    }
 
-        character.style.left = x + 'px';
-        character.style.top = y + 'px';
-        return character;
+    #scheduleTick() {
+        this.#tickTimer = setTimeout(()=>{
+            this.#tick();
+            this.#scheduleTick();
+        }, 100);
+    }
+
+    #createCharacter(character, container) {
+        character.container = Utilities.createDiv('miniCharacter', container);
+        let border = container.offsetWidth * 0.1;
+        character.x = Math.random() * (container.offsetWidth - border * 2) + border;
+        character.y = Math.random() * (container.offsetHeight - border * 2) + border;
+        this.#updateCharacterImage(character);
+    }
+
+    #updateCharacterImage(character) {
+        character.container.style.backgroundImage = 'url(image/mini/characters/' + character.id + '/' + character.facing + '.png)';
+        character.container.style.left = character.x + 'px';
+        character.container.style.top = character.y + 'px';
+    }
+
+    #tick() {
+        for (let characterId in this.#characters) {
+            if (this.#characters.hasOwnProperty(characterId)) {
+                this.#tickCharacter(this.#characters[characterId]);
+            }
+        }
+    }
+
+    #tickCharacter(character) {
+        // Start moving
+        if (!character.moving) {
+            if (Math.random() > 0.99) {
+                character.facing = this.#getRandomFacing();
+                character.moving = true;
+            }
+            return;
+        }
+
+        // Stop moving
+        if (Math.random() > 0.9) {
+            character.moving = false;
+            return;
+        }
+
+        // Hit edge
+        if (character.x < 5) {
+            character.facing = 'right';
+        } else if (character.x > this.#scene.offsetWidth - 5) {
+            character.facing = 'left';
+        } else if (character.y > this.#scene.offsetHeight - 5) {
+            character.facing = 'back';
+        } else if (character.y < 5) {
+            character.facing = 'front';
+        }
+
+        // Move
+        if (character.facing == 'front') {
+            character.y += 1;
+        } else if (character.facing == 'back') {
+            character.y -= 1;
+        } else if (character.facing == 'left') {
+            character.x -= 1;
+        } else if (character.facing == 'right') {
+            character.x += 1;
+        }
+        this.#updateCharacterImage(character);
     }
 
     zoomOut() {
