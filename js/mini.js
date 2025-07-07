@@ -71,7 +71,7 @@ class Mini extends Component {
         let location = this.#getRandomLocation(this.#scene);
         bug.style.left = location.x + 'px';
         bug.style.top = location.y + 'px';
-        bug.style.zIndex = location.y;
+        bug.style.zIndex = location.y.toString();
         bug.addEventListener('click', () => { alert("You found Bug!"); });
 
         for (let characterId in this.miniCharacters) {
@@ -146,8 +146,8 @@ class Mini extends Component {
     #getRandomLocation(container) {
         let border = container.offsetWidth * 0.1;
         let location = {};
-        location.x = Math.random() * (container.offsetWidth - border * 2) + border;
-        location.y = Math.random() * (container.offsetHeight / 3) + border;
+        location.x = Math.floor(Math.random() * (container.offsetWidth - border * 2) + border);
+        location.y = Math.floor(Math.random() * (container.offsetHeight / 3) + border);
         return location;
     }
 
@@ -167,7 +167,8 @@ class Mini extends Component {
         character.container.style.backgroundImage = 'url(image/mini/characters/' + character.id + '/' + character.facing + '.png)';
         character.container.style.left = character.x + 'px';
         character.container.style.top = character.y + 'px';
-        character.container.style.zIndex = character.y;
+        character.container.style.position = 'absolute';
+        character.container.style.zIndex = Math.floor(character.y).toString();
     }
 
     #tick() {
