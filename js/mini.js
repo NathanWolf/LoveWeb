@@ -17,6 +17,7 @@ class Mini extends Component {
     #zoomOutButton = null;
     #zoomInButton = null;
     #tickTimer = null;
+    #popupTimer = null;
 
     constructor(controller, element) {
         super(controller, element)
@@ -73,7 +74,7 @@ class Mini extends Component {
         bug.style.top = location.y + 'px';
         bug.style.zIndex = location.y.toString();
         bug.addEventListener('click', e => {
-            alert("You found Bug!");
+            this.showPopup(location.x, location.y, "You found Bug!");
             e.stopPropagation();
         });
 
@@ -164,10 +165,22 @@ class Mini extends Component {
         miniCharacter.y = location.y;
         let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
         miniCharacter.container.addEventListener('click', e => {
-            alert("Hi, I'm " + character.name + "!");
+            this.showPopup(miniCharacter.x + 20, miniCharacter.y, "Hi, I'm " + character.name + "!");
             e.stopPropagation();
         });
         this.#updateCharacterImage(miniCharacter);
+    }
+
+    showPopup(x, y, message) {
+        if (this.#popupTimer != null) return;
+        let popupDiv = Utilities.createDiv('miniPopup', this.#scene);
+        popupDiv.innerHTML = message;
+        popupDiv.style.left = x + 'px';
+        popupDiv.style.top = y + 'px';
+        this.#popupTimer = setTimeout(()=>{
+            this.#popupTimer = null;
+            popupDiv.remove();
+        }, 5000);
     }
 
     #updateCharacterImage(character) {

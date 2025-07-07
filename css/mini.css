@@ -179,3 +179,15 @@ div#minii {
     image-rendering: pixelated;
     cursor: pointer;
 }
+
+.miniPopup {
+    position: absolute;
+    z-index: 1000;
+    border: 2px solid var(--tile-border-color);
+    background: var(--tile-background-color);
+    color: var(--tile-color);
+    border-radius: 8px;
+    max-width: 200px;
+    font-size: 0.5em;
+    padding: 8px;
+}
