@@ -92,13 +92,12 @@ class Mini extends Component {
         this.#scene.addEventListener('mousedown', e => { this.#startDrag(e); });
         this.#scene.addEventListener('mousemove', e => { this.#handleDrag(e); });
         this.#scene.addEventListener('mouseup', e => { this.#endDrag(); });
-        /*
+
         this.#scene.addEventListener('touchstart', e => { this.#startDrag(e); });
         this.#scene.addEventListener('touchmove', e => { this.#handleDrag(e); });
         this.#scene.addEventListener('touchend', e => { this.#endDrag(); });
         this.#scene.addEventListener('touchcancel', e => { this.#endDrag(); });
 
-         */
         this.#zoomOutButton.addEventListener('click', e => { this.zoomOut(); });
         this.#zoomInButton.addEventListener('click', e => { this.zoomIn(); });
         this.#updateSceneTransform();
