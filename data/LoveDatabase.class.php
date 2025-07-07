@@ -144,6 +144,9 @@ CDATA;
 
     public function saveUser($user) {
         unset($user['properties']);
+        if (isset($user['preferences'])) {
+            $user['preferences'] = json_encode($user['preferences']);
+        }
         $this->save('user', $user);
     }
 
