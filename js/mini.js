@@ -79,6 +79,9 @@ class Mini extends Component {
             this.showPopup(location.x, location.y, "You found Bug!");
             e.stopPropagation();
         });
+        bug.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+        });
 
         for (let characterId in this.miniCharacters) {
             if (this.miniCharacters.hasOwnProperty(characterId)) {
