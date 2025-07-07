@@ -1,6 +1,6 @@
 class Mini extends Component {
     #container;
-    #characters = {};
+    miniCharacters = {};
     #faces = ['front', 'left', 'right', 'back'];
     #maxZoom = 4;
     #minZoom = 0;
@@ -25,7 +25,7 @@ class Mini extends Component {
     addCharacters(characters) {
         for (let id in characters) {
             if (characters.hasOwnProperty(id)) {
-                this.#characters[id] = {
+                this.miniCharacters[id] = {
                     id: id,
                     facing: this.#getRandomFacing(),
                     x: 0,
@@ -127,12 +127,16 @@ class Mini extends Component {
         }, 100);
     }
 
-    #createCharacter(character, container) {
-        character.container = Utilities.createDiv('miniCharacter', container);
+    #createCharacter(miniCharacter, container) {
+        miniCharacter.container = Utilities.createDiv('miniCharacter', container);
         let border = container.offsetWidth * 0.1;
-        character.x = Math.random() * (container.offsetWidth - border * 2) + border;
-        character.y = Math.random() * (container.offsetHeight / 3) + border;
-        this.#updateCharacterImage(character);
+        miniCharacter.x = Math.random() * (container.offsetWidth - border * 2) + border;
+        miniCharacter.y = Math.random() * (container.offsetHeight / 3) + border;
+        let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
+        miniCharacter.container.addEventListener('click', e => {
+            alert("Hi, I'm " + character.name + "!");
+        });
+        this.#updateCharacterImage(miniCharacter);
     }
 
     #updateCharacterImage(character) {
@@ -142,9 +146,9 @@ class Mini extends Component {
     }
 
     #tick() {
-        for (let characterId in this.#characters) {
-            if (this.#characters.hasOwnProperty(characterId)) {
-                this.#tickCharacter(this.#characters[characterId]);
+        for (let characterId in this.miniCharacters) {
+            if (this.miniCharacters.hasOwnProperty(characterId)) {
+                this.#tickCharacter(this.miniCharacters[characterId]);
             }
         }
     }
