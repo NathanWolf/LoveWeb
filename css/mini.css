@@ -1,8 +1,16 @@
-.miniBackground {
+.miniContainer {
     flex: 1;
+    position: relative;
+}
+
+.miniBackground {
+    position: absolute;
+    top: 0px;
+    left: 0px;
     background-repeat: no-repeat;
     transform-origin: top left;
-    z-index: -1000;
+    width: 345px;
+    height: 243px;
 }
 
 .miniBackground.midlands {
@@ -11,10 +19,35 @@
 
 .midlandsTree {
     background-image: url('../image/mini/scenes/midlands/tree.png');
-    z-index: -200;
     position: absolute;
     left: 0px;
-    top: 60px;
+    top: 40px;
     width: 345px;
     height: 263px;
+}
+
+.miniZoomOutButton {
+    background-image: url('../image/buttons/zoom_out.png');
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: 4px;
+    top: 48px;
+    cursor: pointer;
+}
+
+.miniZoomInButton {
+    background-image: url('../image/buttons/zoom_in.png');
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    cursor: pointer;
+}
+
+.miniZoomOutButton.disabled, .miniZoomInButton.disabled {
+    cursor: not-allowed;
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: multiply;
 }
