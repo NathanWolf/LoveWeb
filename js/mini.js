@@ -149,9 +149,9 @@ class Mini extends Component {
         // Hit edge
         if (character.x < 5) {
             character.facing = 'right';
-        } else if (character.x > this.#scene.offsetWidth - 5) {
+        } else if (character.x > this.#scene.offsetWidth - 5 - 24) {
             character.facing = 'left';
-        } else if (character.y > this.#scene.offsetHeight - 5) {
+        } else if (character.y > this.#scene.offsetHeight - 5 - 24) {
             character.facing = 'back';
         } else if (character.y < 5) {
             character.facing = 'front';
