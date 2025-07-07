@@ -1,6 +1,7 @@
 .miniContainer {
     flex: 1;
     position: relative;
+    touch-action: none;
 }
 
 .miniBackground {

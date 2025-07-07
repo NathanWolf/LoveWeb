@@ -8,6 +8,7 @@ class Mini extends Component {
     #zoom = 0;
     #panX = 0;
     #panY = 0;
+    #dragging = false;
     #dragStartX = 0;
     #dragStartY = 0;
     #dragStartPanX = 0;
@@ -50,7 +51,6 @@ class Mini extends Component {
         Utilities.empty(element);
         this.#container = Utilities.createDiv('miniContainer', element);
         this.#scene = Utilities.createDiv('miniBackground midlands', this.#container);
-        this.#scene.draggable = true;
 
         Utilities.createDiv('midlandsTree', this.#scene);
 
@@ -63,35 +63,50 @@ class Mini extends Component {
         this.#zoomOutButton = Utilities.createDiv('miniZoomOutButton', this.#container);
         this.#zoomInButton = Utilities.createDiv('miniZoomInButton', this.#container);
 
-        this.#scene.addEventListener('dragstart', e => {
-            this.#dragStartX = e.clientX;
-            this.#dragStartY = e.clientY;
-            this.#dragStartPanX = this.#panX;
-            this.#dragStartPanY = this.#panY;
-
-            const emptyImg = new Image();
-            emptyImg.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
-            e.dataTransfer.setDragImage(emptyImg, 0, 0);
-        });
-        this.#scene.addEventListener('drag', e => {
-            if (e.clientX === 0 && e.clientY === 0) return; // Ignore ghost drag events
-
-            const deltaX = e.clientX - this.#dragStartX;
-            const deltaY = e.clientY - this.#dragStartY;
-            this.#panX = this.#dragStartPanX + (deltaX / this.#zoom);
-            this.#panY = this.#dragStartPanY + (deltaY / this.#zoom);
-
-            this.#updateSceneTransform();
-
-        });
-        this.#zoomOutButton.addEventListener('click', e => {
-            this.zoomOut();
-        });
-        this.#zoomInButton.addEventListener('click', e => {
-            this.zoomIn();
-        });
+        this.#scene.addEventListener('mousedown', e => { this.#startDrag(e); });
+        this.#scene.addEventListener('mousemove', e => { this.#handleDrag(e); });
+        this.#scene.addEventListener('mouseup', e => { this.#endDrag(); });
+        this.#scene.addEventListener('touchstart', e => { this.#startDrag(e); });
+        this.#scene.addEventListener('touchmove', e => { this.#handleDrag(e); });
+        this.#scene.addEventListener('touchend', e => { this.#endDrag(); });
+        this.#scene.addEventListener('touchcancel', e => { this.#endDrag(); });
+        this.#zoomOutButton.addEventListener('click', e => { this.zoomOut(); });
+        this.#zoomInButton.addEventListener('click', e => { this.zoomIn(); });
         this.#updateSceneTransform();
         this.#scheduleTick();
+    }
+
+    #startDrag(e) {
+        let location = this.#getEventLocation(e);
+        this.#dragStartX = location.clientX;
+        this.#dragStartY = location.clientY;
+        this.#dragStartPanX = this.#panX;
+        this.#dragStartPanY = this.#panY;
+        this.#dragging = true;
+        e.preventDefault();
+    }
+
+    #endDrag() {
+        this.#dragging = false;
+    }
+
+    #handleDrag(e) {
+        if (!this.#dragging) return; // Ignore ghost drag events
+
+        let location = this.#getEventLocation(e);
+        const deltaX = location.clientX - this.#dragStartX;
+        const deltaY = location.clientY - this.#dragStartY;
+        this.#panX = this.#dragStartPanX + (deltaX / this.#zoom);
+        this.#panY = this.#dragStartPanY + (deltaY / this.#zoom);
+
+        this.#updateSceneTransform();
+    }
+
+    #getEventLocation(e) {
+        if (e.touches && e.touches.length > 0) {
+            return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
+        }
+        return { clientX: e.clientX, clientY: e.clientY };
     }
 
     hide() {
