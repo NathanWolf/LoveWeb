@@ -175,8 +175,8 @@ class Mini extends Component {
     async #characterChat(miniCharacter) {
         let profile = this.getController().getProfile();
         let user = profile.getUser();
+        let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
         if (user == null || this.#loadingMessage) {
-            let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
             this.showPopup(miniCharacter.x + 20, miniCharacter.y, "Hi, I'm " + character.name + "!");
         } else {
             this.#loadingMessage = true;
@@ -200,12 +200,13 @@ class Mini extends Component {
             Utilities.removeClass(this.#scene, 'miniLoading');
             if (messageResponse == null || !messageResponse.hasOwnProperty('message') || !messageResponse.success) {
                 console.log("Error from chat API: " + messageResponse.message);
-                let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
                 this.showPopup(miniCharacter.x + 20, miniCharacter.y, "Hi, I'm " + character.name + "!");
                 return;
             }
 
-            this.showPopup(miniCharacter.x + 20, miniCharacter.y, Utilities.convertMarkdown(messageResponse.message));
+            let message = Utilities.convertMarkdown(messageResponse.message);
+            let popupMessage = '<div class="miniCharacterName">' + character.name + '</div><div class="miniCharacterMessage">' + message + '</div>';
+            this.showPopup(miniCharacter.x + 20, miniCharacter.y, popupMessage);
         }
     }
 

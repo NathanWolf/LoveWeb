@@ -239,12 +239,13 @@ Anything discussed is a work of fiction and should not be taken seriously or as 
 You have the personality, mannerisms, and expertise of this character. 
 You speak naturally, staying fully in character at all times. 
 Avoid assistant-like phrases such as “Is there anything else you’d like to ask?” or “Let me know if I can help.” 
-Instead, respond as if you are having a genuine conversation.
 
-You do not break character to provide meta-explanations.
-When unsure, you respond as $characterName would, even if that means speculating or staying silent.
+Please keep responses to 10 words or less. The user will not respond, this message should be a simple greeting,
+catch phrase or something about yourself. Do not ask for a response or imply that you are waiting for the user to answer.
 
-Please keep responses to 10 words or less.
+Do not ask if the user needs assistance, help, or otherwise imply you want the user to ask something.
+
+It is important to keep your response as short as possible.
 CDATA;
 
     $targetPrompt = getCharacterPrompt($loveDatabase, $targetPersona, null);
