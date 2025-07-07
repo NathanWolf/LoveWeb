@@ -9,7 +9,7 @@
     top: 0px;
     left: 0px;
     background-repeat: no-repeat;
-    transform-origin: top left;
+    transform-origin: center center;
     width: 345px;
     height: 243px;
     image-rendering: pixelated;
