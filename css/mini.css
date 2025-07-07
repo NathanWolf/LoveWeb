@@ -4,6 +4,7 @@
 }
 
 .miniBackground {
+    z-index: 0;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -19,10 +20,11 @@
 }
 
 .midlandsTree {
+    z-index: 2;
     background-image: url('../image/mini/scenes/midlands/tree.png');
     position: absolute;
     left: 0px;
-    top: 40px;
+    top: 0px;
     width: 345px;
     height: 263px;
     image-rendering: pixelated;
@@ -55,6 +57,7 @@
 }
 
 .miniCharacter {
+    z-index: 1;
     position: absolute;
     width: 24px;
     height: 24px;
