@@ -2,8 +2,8 @@ class Mini extends Component {
     #container;
     #characters = {};
     #faces = ['front', 'left', 'right', 'back'];
-    #maxZoom = 5;
-    #minZoom = 0.5;
+    #maxZoom = 8;
+    #minZoom = 2;
     #scene;
     #zoom = 0;
     #panX = 0;
@@ -205,7 +205,7 @@ class Mini extends Component {
         this.#zoom /= 2;
         this.#updateSceneTransform();
         if (this.#zoom <= this.#minZoom) {
-            Utilities.addClass(this.#zoomInButton, 'disabled');
+            Utilities.addClass(this.#zoomOutButton, 'disabled');
         }
     }
 
