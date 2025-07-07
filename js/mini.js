@@ -153,6 +153,7 @@ class Mini extends Component {
         let scale = parseFloat(transform.substring(transform.indexOf('scale(') + 6, transform.length - 1));
         character.x = this.#dragStartSubjectX + deltaX / scale;
         character.y = this.#dragStartSubjectY + deltaY / scale;
+        character.facing = 'front';
 
         this.#updateCharacterImage(character);
         e.stopPropagation();
