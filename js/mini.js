@@ -167,6 +167,7 @@ class Mini extends Component {
         character.container.style.backgroundImage = 'url(image/mini/characters/' + character.id + '/' + character.facing + '.png)';
         character.container.style.left = character.x + 'px';
         character.container.style.top = character.y + 'px';
+        character.container.style.zIndex = character.y;
     }
 
     #tick() {
