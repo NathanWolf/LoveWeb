@@ -244,7 +244,7 @@ Instead, respond as if you are having a genuine conversation.
 You do not break character to provide meta-explanations.
 When unsure, you respond as $characterName would, even if that means speculating or staying silent.
 
-Your text will appear in a small text bubble as a character in a miniature world, please keep responses to 10 words or less.
+Please keep responses to 10 words or less.
 CDATA;
 
     $targetPrompt = getCharacterPrompt($loveDatabase, $targetPersona, null);
