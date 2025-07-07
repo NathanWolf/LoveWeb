@@ -11,6 +11,10 @@
     flex: auto;
 }
 
+.buttonMini {
+    background-image: url('../image/buttons/mini.png');
+}
+
 .buttonQuizzes {
     background-image: url('../image/buttons/quizzes.png');
 }

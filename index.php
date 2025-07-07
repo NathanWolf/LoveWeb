@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="css/mobile.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/font.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/games.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/mini.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/history.js?v=<?=VERSION?>"></script>
@@ -43,6 +44,7 @@
     <script type="text/javascript" src="js/info.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/games.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/slideshow.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/mini.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
         var _love;
@@ -133,8 +135,16 @@
         <div class="tab" id="quizzes" style="display: none">
         </div>
 
+        <div class="tab" id="minii" style="display: none">
+        </div>
+
         <div class="tab" id="games" style="display: none">
             <div class="buttonContainer">
+
+                <div class="navigation gamesButtonAndLabel" data-tab="minii">
+                    <div class="buttonMini gamesButton"></div>
+                    <div class="gamesButtonLabel">Minii Lands</div>
+                </div>
 
                 <div class="navigation gamesButtonAndLabel" data-tab="quizzes">
                     <div class="buttonQuizzes gamesButton"></div>

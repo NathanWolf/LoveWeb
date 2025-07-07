@@ -1,0 +1,20 @@
+.miniBackground {
+    flex: 1;
+    background-repeat: no-repeat;
+    transform-origin: top left;
+    z-index: -1000;
+}
+
+.miniBackground.midlands {
+    background-image: url('../image/mini/scenes/midlands/background.png');
+}
+
+.midlandsTree {
+    background-image: url('../image/mini/scenes/midlands/tree.png');
+    z-index: -200;
+    position: absolute;
+    left: 0px;
+    top: 60px;
+    width: 345px;
+    height: 263px;
+}
