@@ -132,6 +132,18 @@ div#minii {
     background-image: url('../image/mini/scenes/midlands/rock3.png');
 }
 
+.midlandsBug {
+    image-rendering: pixelated;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 7px;
+    height: 7px;
+    background-image: url('../image/mini/scenes/midlands/bug.png');
+    cursor: pointer;
+}
+
 .miniZoomOutButton {
     background-image: url('../image/buttons/zoom_out.png');
     width: 32px;

@@ -65,6 +65,14 @@ class Mini extends Component {
         Utilities.createDiv('midlandsBush3 miniObject', this.#scene);
         Utilities.createDiv('midlandsBush4 miniObject', this.#scene);
         Utilities.createDiv('midlandsBush5 miniObject', this.#scene);
+        Utilities.createDiv('midlandsBush5 miniObject', this.#scene);
+
+        let bug = Utilities.createDiv('midlandsBug', this.#scene);
+        let location = this.#getRandomLocation(this.#scene);
+        bug.style.left = location.x + 'px';
+        bug.style.top = location.y + 'px';
+        bug.style.zIndex = location.y;
+        bug.addEventListener('click', () => { alert("You found Bug!"); });
 
         for (let characterId in this.miniCharacters) {
             if (this.miniCharacters.hasOwnProperty(characterId)) {
@@ -135,11 +143,19 @@ class Mini extends Component {
         }, 100);
     }
 
-    #createCharacter(miniCharacter, container) {
-        miniCharacter.container = Utilities.createDiv('miniCharacter', container);
+    #getRandomLocation(container) {
         let border = container.offsetWidth * 0.1;
-        miniCharacter.x = Math.random() * (container.offsetWidth - border * 2) + border;
-        miniCharacter.y = Math.random() * (container.offsetHeight / 3) + border;
+        let location = {};
+        location.x = Math.random() * (container.offsetWidth - border * 2) + border;
+        location.y = Math.random() * (container.offsetHeight / 3) + border;
+        return location;
+    }
+
+    #createCharacter(miniCharacter, container) {
+        let location = this.#getRandomLocation(container);
+        miniCharacter.container = Utilities.createDiv('miniCharacter', container);
+        miniCharacter.x = location.x;
+        miniCharacter.y = location.y;
         let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
         miniCharacter.container.addEventListener('click', e => {
             alert("Hi, I'm " + character.name + "!");
