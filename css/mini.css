@@ -187,7 +187,9 @@ div#minii {
     background: var(--tile-background-color);
     color: var(--tile-color);
     border-radius: 8px;
-    max-width: 200px;
+    max-width: 100px;
+    max-height: 100px;
+    overflow-y: auto;
     font-size: 4pt;
     padding: 8px;
 }
