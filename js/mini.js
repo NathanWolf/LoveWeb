@@ -18,6 +18,7 @@ class Mini extends Component {
     #zoomInButton = null;
     #tickTimer = null;
     #popupTimer = null;
+    #popupDiv = null;
 
     constructor(controller, element) {
         super(controller, element)
@@ -172,14 +173,19 @@ class Mini extends Component {
     }
 
     showPopup(x, y, message) {
-        if (this.#popupTimer != null) return;
-        let popupDiv = Utilities.createDiv('miniPopup', this.#scene);
-        popupDiv.innerHTML = message;
-        popupDiv.style.left = x + 'px';
-        popupDiv.style.top = y + 'px';
+        if (this.#popupTimer != null) {
+            clearTimeout(this.#popupTimer);
+        }
+        if (this.#popupDiv != null) {
+            this.#popupDiv.remove();
+        }
+        this.#popupDiv = Utilities.createDiv('miniPopup', this.#scene);
+        this.#popupDiv.innerHTML = message;
+        this.#popupDiv.style.left = x + 'px';
+        this.#popupDiv.style.top = y + 'px';
         this.#popupTimer = setTimeout(()=>{
             this.#popupTimer = null;
-            popupDiv.remove();
+            this.#popupDiv.remove();
         }, 5000);
     }
 
