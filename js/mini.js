@@ -43,8 +43,8 @@ class Mini extends Component {
 
     show() {
         // Reset zoom + scale
-        this.#panX = 0;
-        this.#panY = 0;
+        this.#panX = 200;
+        this.#panY = 100;
         this.#zoom = 4;
 
         let element = this.getElement();
@@ -130,7 +130,7 @@ class Mini extends Component {
         character.container = Utilities.createDiv('miniCharacter', container);
         let border = container.offsetWidth * 0.1;
         character.x = Math.random() * (container.offsetWidth - border * 2) + border;
-        character.y = Math.random() * (container.offsetHeight - border * 2) + border;
+        character.y = Math.random() * (container.offsetHeight / 3) + border;
         this.#updateCharacterImage(character);
     }
 
@@ -173,6 +173,14 @@ class Mini extends Component {
             character.facing = 'back';
         } else if (character.y < 5) {
             character.facing = 'front';
+        }
+
+        // Stay out of the water!
+        let distanceX = (this.#scene.offsetWidth - character.x);
+        let distanceY = (this.#scene.offsetHeight - character.y);
+        let distanceToBottomRight = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+        if (distanceToBottomRight < 430) {
+            character.facing = 'left';
         }
 
         // Move
