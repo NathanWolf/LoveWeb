@@ -25,14 +25,15 @@
 
 .miniForeground {
     z-index: 0;
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 0px;
     background-repeat: no-repeat;
     width: 100%;
     height: 100%;
-    background-size: contain;
+    background-size: cover;
     image-rendering: pixelated;
+    z-index: 1500;
 }
 
 .miniForeground.midlands {
@@ -62,6 +63,7 @@
     left: 4px;
     top: 48px;
     cursor: pointer;
+    z-index: 2000;
 }
 
 .miniZoomInButton {
@@ -72,6 +74,7 @@
     left: 4px;
     top: 8px;
     cursor: pointer;
+    z-index: 2000;
 }
 
 .miniZoomOutButton.disabled, .miniZoomInButton.disabled {

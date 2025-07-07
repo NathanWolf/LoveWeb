@@ -51,7 +51,7 @@ class Mini extends Component {
         Utilities.empty(element);
         this.#container = Utilities.createDiv('miniContainer', element);
         this.#scene = Utilities.createDiv('miniBackground miniLayer midlands', this.#container);
-        // Utilities.createDiv('miniForeground midlands', element);
+        Utilities.createDiv('miniForeground midlands', element);
 
         Utilities.createDiv('midlandsTree miniLayer ', this.#scene);
         Utilities.createDiv('midlandsRocks miniLayer ', this.#scene);
