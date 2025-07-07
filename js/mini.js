@@ -52,7 +52,7 @@ class Mini extends Component {
         Utilities.empty(element);
         this.#container = Utilities.createDiv('miniContainer', element);
         this.#scene = Utilities.createDiv('miniBackground miniLayer midlands', this.#container);
-        Utilities.createDiv('miniForeground midlands', element);
+        // Utilities.createDiv('miniForeground midlands', element);
 
         Utilities.createDiv('midlandsTree miniObject', this.#scene);
 
@@ -72,7 +72,10 @@ class Mini extends Component {
         bug.style.left = location.x + 'px';
         bug.style.top = location.y + 'px';
         bug.style.zIndex = location.y.toString();
-        bug.addEventListener('click', () => { alert("You found Bug!"); });
+        bug.addEventListener('click', e => {
+            alert("You found Bug!");
+            e.stopPropagation();
+        });
 
         for (let characterId in this.miniCharacters) {
             if (this.miniCharacters.hasOwnProperty(characterId)) {
@@ -86,10 +89,13 @@ class Mini extends Component {
         this.#scene.addEventListener('mousedown', e => { this.#startDrag(e); });
         this.#scene.addEventListener('mousemove', e => { this.#handleDrag(e); });
         this.#scene.addEventListener('mouseup', e => { this.#endDrag(); });
+        /*
         this.#scene.addEventListener('touchstart', e => { this.#startDrag(e); });
         this.#scene.addEventListener('touchmove', e => { this.#handleDrag(e); });
         this.#scene.addEventListener('touchend', e => { this.#endDrag(); });
         this.#scene.addEventListener('touchcancel', e => { this.#endDrag(); });
+
+         */
         this.#zoomOutButton.addEventListener('click', e => { this.zoomOut(); });
         this.#zoomInButton.addEventListener('click', e => { this.zoomIn(); });
         this.#updateSceneTransform();
@@ -159,6 +165,7 @@ class Mini extends Component {
         let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
         miniCharacter.container.addEventListener('click', e => {
             alert("Hi, I'm " + character.name + "!");
+            e.stopPropagation();
         });
         this.#updateCharacterImage(miniCharacter);
     }
