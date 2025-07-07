@@ -77,8 +77,8 @@ function processFolder($folder, $indent = '') {
 
         echo "$indent Cropping to: " . json_encode($bounds) . "\n";
 
-        $width = $bounds[2] - $bounds[0];
-        $height = $bounds[3] - $bounds[1];
+        $width = $bounds[2] - $bounds[0] + 1;
+        $height = $bounds[3] - $bounds[1] + 1;
         if ($maxSize)  {
             $maxBounds = $width;
             $maxBounds = max($maxBounds, $height);
