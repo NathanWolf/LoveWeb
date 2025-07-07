@@ -135,8 +135,7 @@
         <div class="tab" id="quizzes" style="display: none">
         </div>
 
-        <div class="tab" id="minii" style="display: none">
-        </div>
+        <div class="tab" id="minii" style="display: none"></div>
 
         <div class="tab" id="games" style="display: none">
             <div class="buttonContainer">

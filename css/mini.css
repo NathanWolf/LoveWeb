@@ -1,3 +1,7 @@
+div#minii {
+    background-color: #9ABa46;
+}
+
 .miniContainer {
     flex: 1;
     position: relative;
@@ -9,7 +13,7 @@
     top: 0px;
     left: 0px;
     background-repeat: no-repeat;
-    transform-origin: center center;
+    transform-origin: top left;
     width: 604px;
     height: 463px;
     image-rendering: pixelated;
@@ -24,7 +28,6 @@
 }
 
 .miniForeground {
-    z-index: 0;
     position: relative;
     top: 0px;
     left: 0px;
@@ -34,6 +37,7 @@
     background-size: cover;
     image-rendering: pixelated;
     z-index: 1500;
+    pointer-events: none;
 }
 
 .miniForeground.midlands {

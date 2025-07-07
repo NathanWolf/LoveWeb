@@ -2,8 +2,9 @@ class Mini extends Component {
     #container;
     #characters = {};
     #faces = ['front', 'left', 'right', 'back'];
-    #maxZoom = 8;
-    #minZoom = 2;
+    #maxZoom = 4;
+    #minZoom = 0;
+    #maxScale = 8;
     #scene;
     #zoom = 0;
     #panX = 0;
@@ -43,9 +44,9 @@ class Mini extends Component {
 
     show() {
         // Reset zoom + scale
-        this.#panX = 200;
-        this.#panY = 100;
-        this.#zoom = 4;
+        this.#panX = 0;
+        this.#panY = 0;
+        this.#zoom = 1;
 
         let element = this.getElement();
         Utilities.empty(element);
@@ -99,8 +100,8 @@ class Mini extends Component {
         let location = this.#getEventLocation(e);
         const deltaX = location.clientX - this.#dragStartX;
         const deltaY = location.clientY - this.#dragStartY;
-        this.#panX = this.#dragStartPanX + (deltaX / this.#zoom);
-        this.#panY = this.#dragStartPanY + (deltaY / this.#zoom);
+        this.#panX = this.#dragStartPanX + deltaX;
+        this.#panY = this.#dragStartPanY + deltaY;
 
         this.#updateSceneTransform();
     }
@@ -202,7 +203,7 @@ class Mini extends Component {
             Utilities.addClass(this.#zoomOutButton, 'disabled');
             return;
         }
-        this.#zoom /= 2;
+        this.#zoom--;
         this.#updateSceneTransform();
         if (this.#zoom <= this.#minZoom) {
             Utilities.addClass(this.#zoomOutButton, 'disabled');
@@ -215,7 +216,7 @@ class Mini extends Component {
             Utilities.addClass(this.#zoomInButton, 'disabled');
             return;
         }
-        this.#zoom *= 2;
+        this.#zoom++;
         this.#updateSceneTransform();
         if (this.#zoom >= this.#maxZoom) {
             Utilities.addClass(this.#zoomInButton, 'disabled');
@@ -224,6 +225,39 @@ class Mini extends Component {
     }
 
     #updateSceneTransform() {
-        this.#scene.style.transform = 'scale(' + this.#zoom + ') translate(' + this.#panX + 'px,' + this.#panY + 'px)';
+        let containerWidth = this.getElement().offsetWidth;
+        let containerHeight = this.getElement().offsetHeight;
+        let width = this.#scene.offsetWidth;
+        let height = this.#scene.offsetHeight;
+        let centerX = width / 2;
+        let centerY = height / 2;
+        let containerCenterX = containerWidth / 2;
+        let containerCenterY = containerHeight / 2;
+
+        let minScaleX = containerWidth / width;
+        let minScaleY = containerHeight / height;
+
+        let minScale = Math.max(minScaleX, minScaleY);
+        let scale = minScale + this.#maxScale * (this.#zoom / this.#maxZoom);
+
+        let maxPanX = centerX * (scale - minScale);
+        let maxPanY = centerY * (scale - minScale);
+
+        if (this.#panX < -maxPanX) this.#panX = -maxPanX;
+        if (this.#panX > maxPanX) this.#panX = maxPanX;
+        if (this.#panY < -maxPanY) this.#panY = -maxPanY;
+        if (this.#panY > maxPanY) this.#panY = maxPanY;
+
+        centerX -= this.#panX / scale;
+        centerY -= this.#panY / scale;
+
+        let translateX = containerCenterX - centerX;
+        let translateY = containerCenterY - centerY;
+
+        translateX = Math.floor(translateX);
+        translateY = Math.floor(translateY);
+
+        this.#scene.style.transformOrigin = centerX + 'px ' + centerY + 'px';
+        this.#scene.style.transform = 'translate(' + translateX + 'px,' + translateY + 'px) scale(' + scale + ')';
     }
 }
