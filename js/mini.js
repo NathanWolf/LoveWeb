@@ -12,8 +12,8 @@ class Mini extends Component {
     #dragging = false;
     #dragStartX = 0;
     #dragStartY = 0;
-    #dragStartPanX = 0;
-    #dragStartPanY = 0;
+    #dragStartSubjectX = 0;
+    #dragStartSubjectY = 0;
     #zoomOutButton = null;
     #zoomInButton = null;
     #tickTimer = null;
@@ -94,12 +94,12 @@ class Mini extends Component {
 
         this.#scene.addEventListener('mousedown', e => { this.#startDrag(e); });
         this.#scene.addEventListener('mousemove', e => { this.#handleDrag(e); });
-        this.#scene.addEventListener('mouseup', e => { this.#endDrag(); });
+        this.#scene.addEventListener('mouseup', e => { this.#endDrag(e); });
 
         this.#scene.addEventListener('touchstart', e => { this.#startDrag(e); });
         this.#scene.addEventListener('touchmove', e => { this.#handleDrag(e); });
-        this.#scene.addEventListener('touchend', e => { this.#endDrag(); });
-        this.#scene.addEventListener('touchcancel', e => { this.#endDrag(); });
+        this.#scene.addEventListener('touchend', e => { this.#endDrag(e); });
+        this.#scene.addEventListener('touchcancel', e => { this.#endDrag(e); });
 
         this.#zoomOutButton.addEventListener('click', e => { this.zoomOut(); });
         this.#zoomInButton.addEventListener('click', e => { this.zoomIn(); });
@@ -111,14 +111,15 @@ class Mini extends Component {
         let location = this.#getEventLocation(e);
         this.#dragStartX = location.clientX;
         this.#dragStartY = location.clientY;
-        this.#dragStartPanX = this.#panX;
-        this.#dragStartPanY = this.#panY;
+        this.#dragStartSubjectX = this.#panX;
+        this.#dragStartSubjectY = this.#panY;
         this.#dragging = true;
         e.preventDefault();
     }
 
-    #endDrag() {
+    #endDrag(e) {
         this.#dragging = false;
+        e.preventDefault();
     }
 
     #handleDrag(e) {
@@ -127,10 +128,37 @@ class Mini extends Component {
         let location = this.#getEventLocation(e);
         const deltaX = location.clientX - this.#dragStartX;
         const deltaY = location.clientY - this.#dragStartY;
-        this.#panX = this.#dragStartPanX + deltaX;
-        this.#panY = this.#dragStartPanY + deltaY;
+        this.#panX = this.#dragStartSubjectX + deltaX;
+        this.#panY = this.#dragStartSubjectY + deltaY;
 
         this.#updateSceneTransform();
+    }
+
+    #startCharacterDrag(character, e) {
+        let location = this.#getEventLocation(e);
+        this.#dragStartX = location.clientX;
+        this.#dragStartY = location.clientY;
+        this.#dragStartSubjectX = character.x;
+        this.#dragStartSubjectY = character.y;
+        this.#dragging = true;
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    #handleCharacterDrag(character, e) {
+        if (!this.#dragging) return; // Ignore ghost drag events
+
+        let location = this.#getEventLocation(e);
+        const deltaX = location.clientX - this.#dragStartX;
+        const deltaY = location.clientY - this.#dragStartY;
+        let transform = this.#scene.style.transform;
+        let scale = parseFloat(transform.substring(transform.indexOf('scale(') + 6, transform.length - 1));
+        character.x = this.#dragStartSubjectX + deltaX / scale;
+        character.y = this.#dragStartSubjectY + deltaY / scale;
+
+        this.#updateCharacterImage(character);
+        e.stopPropagation();
+        e.preventDefault();
     }
 
     #getEventLocation(e) {
@@ -171,9 +199,16 @@ class Mini extends Component {
             this.#characterChat(miniCharacter);
             e.stopPropagation();
         });
-        miniCharacter.container.addEventListener('touchstart', function(e) {
-            e.stopPropagation();
-        });
+
+        miniCharacter.container.addEventListener('mousedown', e => { this.#startCharacterDrag(miniCharacter, e); });
+        miniCharacter.container.addEventListener('mousemove', e => { this.#handleCharacterDrag(miniCharacter, e); });
+        miniCharacter.container.addEventListener('mouseup', e => { this.#endDrag(e); });
+
+        miniCharacter.container.addEventListener('touchstart', e => { this.#startCharacterDrag(miniCharacter, e); });
+        miniCharacter.container.addEventListener('touchmove', e => { this.#handleCharacterDrag(miniCharacter, e); });
+        miniCharacter.container.addEventListener('touchend', e => { this.#endDrag(e); });
+        miniCharacter.container.addEventListener('touchcancel', e => { this.#endDrag(e); });
+
         this.#updateCharacterImage(miniCharacter);
     }
 
