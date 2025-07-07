@@ -119,7 +119,6 @@ class Mini extends Component {
 
     #endDrag(e) {
         this.#dragging = false;
-        e.preventDefault();
     }
 
     #handleDrag(e) {
@@ -141,7 +140,6 @@ class Mini extends Component {
         this.#dragStartSubjectX = character.x;
         this.#dragStartSubjectY = character.y;
         this.#dragging = true;
-        e.preventDefault();
         e.stopPropagation();
     }
 
@@ -158,7 +156,6 @@ class Mini extends Component {
 
         this.#updateCharacterImage(character);
         e.stopPropagation();
-        e.preventDefault();
     }
 
     #getEventLocation(e) {
@@ -196,7 +193,13 @@ class Mini extends Component {
         miniCharacter.x = location.x;
         miniCharacter.y = location.y;
         miniCharacter.container.addEventListener('click', e => {
-            this.#characterChat(miniCharacter);
+            // If we were dragging the character, don't chat
+            let distanceX = (this.#dragStartSubjectX - miniCharacter.x);
+            let distanceY = (this.#dragStartSubjectY - miniCharacter.y);
+            let distanceMoved = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+            if (distanceMoved < 4) {
+                this.#characterChat(miniCharacter);
+            }
             e.stopPropagation();
         });
 
