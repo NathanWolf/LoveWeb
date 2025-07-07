@@ -260,4 +260,8 @@ class Mini extends Component {
         this.#scene.style.transformOrigin = centerX + 'px ' + centerY + 'px';
         this.#scene.style.transform = 'translate(' + translateX + 'px,' + translateY + 'px) scale(' + scale + ')';
     }
+
+    onResize() {
+        this.#updateSceneTransform();
+    }
 }
