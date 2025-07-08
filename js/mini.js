@@ -74,7 +74,7 @@ class Mini extends Component {
         let location = this.#getRandomLocation(this.#scene);
         bug.style.left = location.x + 'px';
         bug.style.top = location.y + 'px';
-        bug.style.zIndex = location.y.toString();
+        bug.style.zIndex = (location.y + 7).toString();
         bug.addEventListener('click', e => {
             this.showPopup(location.x, location.y, "You found Bug!");
             e.stopPropagation();
@@ -276,7 +276,7 @@ class Mini extends Component {
         character.container.style.left = character.x + 'px';
         character.container.style.top = character.y + 'px';
         character.container.style.position = 'absolute';
-        character.container.style.zIndex = Math.floor(character.y).toString();
+        character.container.style.zIndex = Math.floor(character.y + 24).toString();
     }
 
     #tick() {
