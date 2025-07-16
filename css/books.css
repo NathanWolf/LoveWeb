@@ -1,0 +1,97 @@
+#books {
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.bookInfoColumn {
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+}
+
+.bookInfoBlock {
+    display: flex;
+    flex-direction: row;
+    margin: 1em;
+    background-color: var(--tile-background-color);
+    border-radius: 20px;
+    padding: 1em;
+    color: var(--tile-color);
+    text-align: center;
+}
+
+.bookInfo {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1em;
+}
+
+.bookTitle {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.bookProgress {
+    font-style: italic;
+    font-size: 0.75em;
+    margin-bottom: 2em;
+}
+
+.bookCoverFull {
+    /*
+    width: 1650px;
+    height: 2550px;
+    */
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.bookCoverSmall {
+    width: 165px;
+    min-width: 165px;
+    height: 255px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.bookDiviineSmall {
+    background-image: url('../image/books/diviine/small.png');
+}
+
+.bookDiviinitySmall {
+    background-image: url('../image/books/diviinity/small.png');
+}
+
+.bookSiinSmall {
+    background-image: url('../image/books/siin/small.png');
+}
+
+.bookDiviineFull {
+    background-image: url('../image/books/diviine/full.png');
+}
+
+.bookDiviinityFull {
+    background-image: url('../image/books/diviinity/full.png');
+}
+
+.bookSiinFull {
+    background-image: url('../image/books/siin/full.png');
+}
+
+.bookImageContainer {
+    width: 90vh;
+    min-width: 90vh;
+    height: 90vh;
+    display: flex;
+    background: var(--popup-background-color);
+    border: 8px solid var(--popup-border-color);
+    flex-direction: column;
+    z-index: var(--gallery-layer);
+}

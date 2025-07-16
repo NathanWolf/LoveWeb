@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/font.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/games.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/mini.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/books.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/history.js?v=<?=VERSION?>"></script>
@@ -45,6 +46,7 @@
     <script type="text/javascript" src="js/games.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/slideshow.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/mini.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/books.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
         var _love;
@@ -84,7 +86,8 @@
         </div>
 
         <div class="tabButtons" id="mainMenu">
-            <div class="tabButton active toolbarButton" data-tab="info">Info</div>
+            <div class="tabButton active toolbarButton" data-tab="books">Books</div>
+            <div class="tabButton toolbarButton" data-tab="info">About the Author</div>
             <div class="tabButton toolbarButton" data-tab="minii">NEW! Minii Lands</div>
             <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
             <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
@@ -104,7 +107,15 @@
 
         <div class="tabContainer" id="mainTabContainer">
 
-        <div class="tab" id="info">
+        <div class="tab" id="books">
+            <div class="infoTooltip">
+                <div>&larr;</div>
+                <div>Click the Burger for More!</div>
+            </div>
+            <?php require('tabs/books.inc.php'); ?>
+        </div>
+
+        <div class="tab" id="info" style="display: none">
             <div class="infoTooltip">
                 <div>&larr;</div>
                 <div>Click the Burger for More!</div>
