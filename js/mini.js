@@ -220,7 +220,9 @@ class Mini extends Component {
         let profile = this.getController().getProfile();
         let user = profile.getUser();
         let character = this.getController().getCharacters().getCharacter(miniCharacter.id);
-        if (user == null || this.#loadingMessage) {
+        // Temporarily allowing chat while not logged in
+        // if (user == null || this.#loadingMessage) {
+        if (this.#loadingMessage) {
             this.showPopup(miniCharacter.x + 20, miniCharacter.y, "Hi, I'm " + character.name + "!");
         } else {
             this.#loadingMessage = true;

@@ -25,7 +25,7 @@ if (!isset($_REQUEST['action'])) {
 $ACTION = $_REQUEST['action'];
 
 // Anonymous chat is maybe getting us into some trouble?
-if (!$USER_ID && $ACTION !== 'prompt') {
+if (!$USER_ID && $ACTION !== 'prompt' && $ACTION !== 'mini') {
     die(json_encode(array('success' => false, 'message' => 'Log in to chat')));
 }
 
@@ -219,6 +219,9 @@ function getCharacterPrompt($loveDatabase, $persona, $alternativeId) {
 
 function getUserPrompt($loveDatabase, $userId) {
     $user = $loveDatabase->getUser($userId);
+    if ($user == null) {
+        return 'My name is stranger';
+    }
     $prompt = 'My name is ' . getCharacterName($user) . "\n";
     $system = null;
     if ($user['chat']['system']) {
