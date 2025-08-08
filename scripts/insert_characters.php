@@ -9,8 +9,10 @@ if (count($argv) < 2) {
 }
 
 require_once '../data/LoveDatabase.class.php';
+require_once '../data/LoveAdminDatabase.class.php';
 
 $db = new \com\elmakers\love\LoveDatabase();
+$admin = new \com\elmakers\love\LoveAdminDatabase();
 $characters = $db->getCharacters();
 
 $characterFolder = $argv[1];
@@ -26,8 +28,17 @@ foreach ($iterator as $fileInfo) {
     $characterId = $info['filename'];
     if (!isset($characters[$characterId])) {
         $name = ucfirst($characterId);
-        echo "INSERT INTO persona (id, first_name) values ('$characterId', '$name');\n";
-        echo "INSERT INTO persona_tier (persona_id, tier_list_id, tier_id) values ('$characterId', 'renown', 'minor');\n";
-        echo "INSERT INTO persona_image (persona_id, image_id, title, description, metadata, tags, width, height) values ('$characterId', 'full', 'Full Body', 'This character\\'s full body image', '{\"center\":[256,256]}', 'full,current', $width, $height);\n";
+        $newPersona = array('id' => $characterId, 'first_name' => $name);
+        $admin->insert('persona', $newPersona);
+
+        $newPersonaTier = array('persona_id' => $characterId, 'tier_list_id' => 'renown', 'tier_id' => 'minor');
+        $admin->insert('persona_tier', $newPersonaTier);
+
+        $newPersonaImage = array('persona_id' => $characterId, 'image_id' => 'full', 'title' => 'Full Body',
+            'description' => "This character's full body image", 'metadata' => '{\"center\":[256,256]}',
+            'tags' => 'full,current', 'width' => $width, 'height' => $height);
+        $admin->insert('persona_image', $newPersonaImage);
+
+        echo "Added new character: $characterId\n";
     }
 }
