@@ -7,8 +7,11 @@ if (PHP_SAPI !== 'cli') {
 require_once '../data/LoveDatabase.class.php';
 require_once '../data/LoveAdminDatabase.class.php';
 
+
 if (count($argv) < 2) {
-    die("Usage: insert_images <character folder>\n");
+    $characterFolder = '../images/dynamic/characters';
+} else {
+    $characterFolder = $argv[1];
 }
 
 $db = new \com\elmakers\love\LoveDatabase();
@@ -16,7 +19,6 @@ $admin = new \com\elmakers\love\LoveAdminDatabase();
 
 $characters = $db->getCharacters();
 
-$characterFolder = $argv[1];
 $iterator = new DirectoryIterator($characterFolder);
 foreach ($iterator as $fileInfo) {
     if ($fileInfo->isDot()) continue;

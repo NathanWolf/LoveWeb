@@ -5,7 +5,9 @@ if (PHP_SAPI !== 'cli') {
 }
 
 if (count($argv) < 2) {
-    die("Usage: insert_characters <character folder>\n");
+    $characterFolder = '../images/dynamic/characters';
+} else {
+    $characterFolder = $argv[1];
 }
 
 require_once '../data/LoveDatabase.class.php';
@@ -15,7 +17,6 @@ $db = new \com\elmakers\love\LoveDatabase();
 $admin = new \com\elmakers\love\LoveAdminDatabase();
 $characters = $db->getCharacters();
 
-$characterFolder = $argv[1];
 $iterator = new DirectoryIterator($characterFolder);
 foreach ($iterator as $fileInfo) {
     if ($fileInfo->isDot()) continue;

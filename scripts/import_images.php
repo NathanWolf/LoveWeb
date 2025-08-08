@@ -4,12 +4,12 @@ if (PHP_SAPI !== 'cli') {
     die('What are you doing?');
 }
 
-if (count($argv) < 3) {
-    die("Usage: import_images <import folder> <character folder>\n");
+if (count($argv) < 2) {
+    die("Usage: import_images <import folder> [character folder]\n");
 }
 
 $importFolder = $argv[1];
-$characterFolder = $argv[2];
+$targetCharacterId = count($argv) > 2 ? $argv[2] : null;
 $iterator = new DirectoryIterator($importFolder);
 foreach ($iterator as $fileInfo) {
     if ($fileInfo->isDot()) continue;

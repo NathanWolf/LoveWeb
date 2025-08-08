@@ -7,18 +7,14 @@ if (PHP_SAPI !== 'cli') {
 require_once '../data/LoveDatabase.class.php';
 require_once '../data/LoveAdminDatabase.class.php';
 
-if (count($argv) < 2) {
-    die("Usage: update_images <character folder> [character] [image]\n");
-}
-
 $db = new \com\elmakers\love\LoveDatabase();
 $admin = new \com\elmakers\love\LoveAdminDatabase();
 
 $characters = $db->getCharacters();
 
-$characterFolder = $argv[1];
-$targetCharacterId = count($argv) > 2 ? $argv[2] : null;
-$targetImageId = count($argv) > 3 ? $argv[3] : null;
+$targetCharacterId = count($argv) > 1 ? $argv[1] : null;
+$targetImageId = count($argv) > 2 ? $argv[2] : null;
+$characterFolder = count($argv) > 3 ? $argv[2] : '../images/dynamic/characters';
 $bumpVersion = in_array('--version', $argv);
 $forceUpdate = in_array('--force', $argv);
 $iterator = new DirectoryIterator($characterFolder);
