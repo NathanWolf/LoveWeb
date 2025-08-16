@@ -448,7 +448,7 @@ CREATE TABLE conversation
 );
 
 alter table conversation
-    add target_alternative_id int null
+    add target_alternative_id int null,
     add source_alternative_id int null,
     add anonymous boolean not null default false;
 
@@ -614,4 +614,48 @@ CREATE TABLE persona_mini (
           references persona(id)
           on delete cascade
           on update cascade
+);
+
+CREATE TABLE dressup_category
+(
+    id   VARCHAR(64)  NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    constraint dressup_category_pk
+        primary key (id)
+);
+
+CREATE TABLE persona_dressup (
+    persona_id VARCHAR(64) NOT NULL,
+    width INT NOT NULL,
+    height INT NOT NULL,
+
+    constraint persona_dressup_pk
+      primary key (persona_id),
+
+    foreign key (persona_id)
+      references persona(id)
+      on delete cascade
+      on update cascade
+);
+
+CREATE TABLE persona_dressup_item (
+    persona_id VARCHAR(64) NOT NULL,
+    category_id VARCHAR(64) NOT NULL,
+    image_id VARCHAR(64) NOT NULL,
+    title VARCHAR(64) NOT NULL,
+    description VARCHAR(255) NOT NULL DEFAULT '',
+    layer int NOT NULL DEFAULT 0,
+
+    constraint persona_dressup_item_pk
+        primary key (persona_id, category_id, image_id),
+
+    foreign key (persona_id)
+        references persona(id)
+        on delete cascade
+        on update cascade,
+
+    foreign key (category_id)
+        references dressup_category(id)
+        on delete cascade
+        on update cascade
 );

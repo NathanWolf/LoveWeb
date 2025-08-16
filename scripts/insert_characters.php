@@ -5,7 +5,7 @@ if (PHP_SAPI !== 'cli') {
 }
 
 if (count($argv) < 2) {
-    $characterFolder = '../images/dynamic/characters';
+    $characterFolder = '../image/dynamic/characters';
 } else {
     $characterFolder = $argv[1];
 }

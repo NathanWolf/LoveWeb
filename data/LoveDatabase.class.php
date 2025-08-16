@@ -383,6 +383,29 @@ CDATA;
         return $mini;
     }
 
+    public function getDressupPersona() {
+        $dressup = $this->getAll('persona_dressup');
+        foreach ($dressup as &$dressupRef) {
+            $dressupRef['items'] = array();
+        }
+        $dressup = $this->index($dressup, 'persona_id');
+        $items = $this->getAll('persona_dressup_item');
+        foreach ($items as $item) {
+            if (!isset($dressup[$item['persona_id']]['items'][$item['category_id']])) {
+                $dressup[$item['persona_id']]['items'][$item['category_id']] = array();
+            }
+            $dressup[$item['persona_id']]['items'][$item['category_id']][$item['image_id']] = $item;
+        }
+
+        return $dressup;
+    }
+
+    public function getDressupCategories() {
+        $dressup = $this->getAll('dressup_category');
+        $dressup = $this->index($dressup);
+        return $dressup;
+    }
+
     public function getTimelineEvents() {
         return $this->getAll('timeline_event', 'year, month, day, priority');
     }

@@ -14,7 +14,7 @@ $characters = $db->getCharacters();
 
 $targetCharacterId = count($argv) > 1 ? $argv[1] : null;
 $targetImageId = count($argv) > 2 ? $argv[2] : null;
-$characterFolder = count($argv) > 3 ? $argv[2] : '../images/dynamic/characters';
+$characterFolder = count($argv) > 3 ? $argv[2] : '../image/dynamic/characters';
 $bumpVersion = in_array('--version', $argv);
 $forceUpdate = in_array('--force', $argv);
 $iterator = new DirectoryIterator($characterFolder);

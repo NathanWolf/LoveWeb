@@ -9,7 +9,7 @@ require_once '../data/LoveAdminDatabase.class.php';
 
 
 if (count($argv) < 2) {
-    $characterFolder = '../images/dynamic/characters';
+    $characterFolder = '../image/dynamic/characters';
 } else {
     $characterFolder = $argv[1];
 }
