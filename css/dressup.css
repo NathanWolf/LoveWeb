@@ -8,6 +8,27 @@ div#dressup {
     touch-action: none;
 }
 
+.dressupCharacterChoice {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.dressupCharacterChoiceHeader {
+    text-align: center;
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 2em;
+}
+
+.dressupCharacterList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-y: auto;
+}
+
 .dressupCharacterContainer {
     flex: 1;
 }

@@ -656,7 +656,7 @@ class Characters extends Component {
         let character = this.getCharacter(this.#popupCharacterId);
         if (character == null || !character.images.hasOwnProperty(imageId)) return;
         let image = character.images[imageId];
-        imageContainer.style.backgroundImage = 'url(' + this.#getImage(this.#popupCharacterId, imageId) + ')';
+        imageContainer.style.backgroundImage = 'url(' + this.getImage(this.#popupCharacterId, imageId) + ')';
         if (image.offset_x != 0) {
             imageContainer.style.marginLeft = image.offset_x;
         }
@@ -739,7 +739,8 @@ class Characters extends Component {
         this.#showCharacterPopup(characterList[index]);
     }
 
-    #getImage(characterId, dataKey) {
+    getImage(characterId, dataKey) {
+        dataKey = typeof(dataKey) == 'undefined' ? 'full' : dataKey;
         let image = 'image/ui/missing.png';
         let character = this.getCharacter(characterId);
         if (character != null && character.images.hasOwnProperty(dataKey)) {
@@ -757,15 +758,11 @@ class Characters extends Component {
                 character.chat.alternatives[alternative_id].hasOwnProperty('portrait_id')) {
                 let alternativePortrait = character.chat.alternatives[alternative_id].portrait_id;
                 if (alternativePortrait != null && alternativePortrait != '') {
-                    return this.#getImage(characterId, alternativePortrait);
+                    return this.getImage(characterId, alternativePortrait);
                 }
             }
         }
-        return this.#getImage(characterId, 'portrait');
-    }
-
-    getImage(characterId) {
-        return this.#getImage(characterId, 'full');
+        return this.getImage(characterId, 'portrait');
     }
 
     getTier(characterId, tierList, defaultTier) {
