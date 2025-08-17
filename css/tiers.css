@@ -18,11 +18,6 @@
     border-radius: 25px;
 }
 
-#tierLists .option:hover {
-    background: var(--tile-hover-background-color);
-    color: var(--tile-hover-color);
-}
-
 #tierLists .title {
     font-size: 3em;
     font-weight: bold;
@@ -57,4 +52,11 @@
 
 .tierPortrait.dragging {
     position: absolute;
+}
+
+@media (hover: hover) {
+    #tierLists .option:hover {
+        background: var(--tile-hover-background-color);
+        color: var(--tile-hover-color);
+    }
 }

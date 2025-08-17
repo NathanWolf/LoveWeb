@@ -193,11 +193,6 @@ textarea {
     text-align: center;
 }
 
-.tile:hover {
-    text-decoration: underline;
-    background-color: var(--tile-hover-background-color) !important;
-}
-
 .tile a {
     text-decoration: none;
     color: var(--tile-color);
@@ -372,11 +367,6 @@ textarea {
     white-space: nowrap;
 }
 
-.toolbarButton:hover {
-    background: var(--button-hover-background-color);
-    color: var(--button-hover-color);
-}
-
 .tabButton.active {
     background: var(--button-active-color);
     cursor: default;
@@ -463,4 +453,16 @@ textarea {
     flex-wrap: wrap;
     flex-direction: row;
     flex: auto;
+}
+
+@media (hover: hover) {
+    .tile:hover {
+        text-decoration: underline;
+        background-color: var(--tile-hover-background-color) !important;
+    }
+
+    .toolbarButton:hover {
+        background: var(--button-hover-background-color);
+        color: var(--button-hover-color);
+    }
 }

@@ -64,16 +64,6 @@
     display: flex;
 }
 
-.thumbnailContainer:hover .thumbnailName {
-    background-color: var(--name-hover-background-color);
-    border-color: var(--name-hover-border-color);
-    color: var(--name-hover-color);
-}
-
-.thumbnailContainer:hover .thumbnail {
-    background-color: var(--tile-hover-background-color);
-}
-
 .realmSheet {
     width: 90%;
     height: 90vh;
@@ -153,4 +143,16 @@
 
 button.realmChatButton {
     width: 14em;
+}
+
+@media (hover: hover) {
+    .thumbnailContainer:hover .thumbnailName {
+        background-color: var(--name-hover-background-color);
+        border-color: var(--name-hover-border-color);
+        color: var(--name-hover-color);
+    }
+
+    .thumbnailContainer:hover .thumbnail {
+        background-color: var(--tile-hover-background-color);
+    }
 }

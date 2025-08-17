@@ -23,11 +23,6 @@
     overflow-x: hidden;
 }
 
-.conversationContainer:hover {
-    background-color: var(--button-hover-background-color);
-    color: var(--button-hover-color);
-}
-
 .chatContainer {
     display: flex;
     flex-direction: column;
@@ -187,5 +182,12 @@
     }
     100% {
         opacity: 0;
+    }
+}
+
+@media (hover: hover) {
+    .conversationContainer:hover {
+        background-color: var(--button-hover-background-color);
+        color: var(--button-hover-color);
     }
 }

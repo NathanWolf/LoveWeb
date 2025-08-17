@@ -97,16 +97,6 @@
     display: flex;
 }
 
-.portraitContainer:hover .portraitName {
-    background-color: var(--name-hover-background-color);
-    border-color: var(--name-hover-border-color);
-    color: var(--name-hover-color);
-}
-
-.portraitContainer:hover .portrait {
-    background-color: var(--tile-hover-background-color);
-}
-
 .characterSheet {
     width: 90%;
     height: 90vh;
@@ -469,4 +459,16 @@ span.characterGroupDescription {
     font-size: 0.75em;
     font-style: italic;
     margin-left: 2em;
+}
+
+@media (hover: hover) {
+    .portraitContainer:hover .portraitName {
+        background-color: var(--name-hover-background-color);
+        border-color: var(--name-hover-border-color);
+        color: var(--name-hover-color);
+    }
+
+    .portraitContainer:hover .portrait {
+        background-color: var(--tile-hover-background-color);
+    }
 }

@@ -12,11 +12,6 @@ button {
     margin-right: 1em;
 }
 
-button:hover {
-    background-color: var(--input-hover-background-color);
-    color: var(--input-hover-color);
-}
-
 button:disabled {
     background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(19, 1, 1, 0.3));
     color: light-dark(rgba(16, 16, 16, 0.3), rgba(255, 255, 255, 0.3));
@@ -200,4 +195,11 @@ table.relationshipTable tbody tr td span {
 
 .rowSeparator td {
     border-bottom: 1px solid var(--separator-color);
+}
+
+@media (hover: hover) {
+    button:hover {
+        background-color: var(--input-hover-background-color);
+        color: var(--input-hover-color);
+    }
 }
