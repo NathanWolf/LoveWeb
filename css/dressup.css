@@ -31,6 +31,9 @@ div#dressup {
 
 .dressupCharacterContainer {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .dressupItemContainer {
@@ -66,7 +69,6 @@ div#dressup {
     position: absolute;
     top: 0;
     height: 100%;
-    width: 100%;
     background-repeat: no-repeat;
     background-size: contain;
 }

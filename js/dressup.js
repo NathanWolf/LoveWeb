@@ -83,6 +83,8 @@ class Dressup extends Component {
         let characterContainer = Utilities.createDiv('dressupCharacterContainer', this.#container);
         let baseImage = Utilities.createDiv('dressupLayer dressupBase', characterContainer);
         baseImage.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/base.png)';
+        let aspectRatio = dressupCharacter.width / dressupCharacter.height;
+        baseImage.style.aspectRatio = aspectRatio.toString();
 
         let itemContainer = Utilities.createDiv('dressupItemContainer', this.#container);
         for (let categoryId in dressupCharacter.items) {
@@ -100,6 +102,7 @@ class Dressup extends Component {
                 itemLayer.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/items/' + categoryId + '/' + itemId + '.png)';
                 itemLayer.style.display = 'none';
                 itemLayer.style.zIndex = (10 + item.layer).toString();
+                itemLayer.style.aspectRatio = aspectRatio.toString();
 
                 let itemThumbnail = Utilities.createDiv('dressupThumbnail', categoryContainer);
                 itemThumbnail.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/thumbnails/' + categoryId + '/' + itemId + '.png)';
