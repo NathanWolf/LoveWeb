@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="css/font.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/games.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/mini.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/dressup.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/books.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
@@ -46,6 +47,7 @@
     <script type="text/javascript" src="js/games.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/slideshow.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/mini.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/dressup.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/books.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
@@ -88,7 +90,8 @@
         <div class="tabButtons" id="mainMenu">
             <div class="tabButton active toolbarButton" data-tab="books">Books</div>
             <div class="tabButton toolbarButton" data-tab="info">About the Author</div>
-            <div class="tabButton toolbarButton" data-tab="minii">NEW! Minii Lands</div>
+            <div class="tabButton toolbarButton" data-tab="dressup">NEW! Dress-Up</div>
+            <div class="tabButton toolbarButton" data-tab="minii">Minii Lands</div>
             <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
             <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
             <div class="tabButton toolbarButton" data-tab="realms">Realms</div>
@@ -147,46 +150,13 @@
         <div class="tab" id="quizzes" style="display: none">
         </div>
 
-        <div class="tab" id="minii" style="display: none"></div>
+        <div class="tab" id="minii" style="display: none">
+        </div>
+
+        <div class="tab" id="dressup" style="display: none"></div>
 
         <div class="tab" id="games" style="display: none">
-            <div class="buttonContainer">
-
-                <div class="navigation gamesButtonAndLabel" data-tab="minii">
-                    <div class="buttonMini gamesButton"></div>
-                    <div class="gamesButtonLabel">Minii Lands</div>
-                </div>
-
-                <div class="navigation gamesButtonAndLabel" data-tab="quizzes">
-                    <div class="buttonQuizzes gamesButton"></div>
-                    <div class="gamesButtonLabel">Quizzes</div>
-                </div>
-
-
-                <div class="navigation gamesButtonAndLabel" data-tab="flashCards">
-                    <div class="buttonCards gamesButton"></div>
-                    <div class="gamesButtonLabel">Flash Cards</div>
-                </div>
-
-                <div class="navigation gamesButtonAndLabel" data-tab="tierLists">
-                    <div class="buttonTiers gamesButton"></div>
-                    <div class="gamesButtonLabel">Tier Lists</div>
-                </div>
-
-                <div class="gamesButtonAndLabel">
-                    <a href="https://games.elmakers.com/love" target="_blank">
-                        <div class="buttonLove gamesButton"></div>
-                        <div class="gamesButtonLabel">Love and Ciel Game (W.I.P.)</div>
-                    </a>
-                </div>
-
-                <div class="gamesButtonAndLabel">
-                    <a href="https://games.elmakers.com/corzaelia" target="_blank">
-                        <div class="buttonCorzaelia gamesButton"></div>
-                        <div class="gamesButtonLabel">Corzaelia Game (W.I.P.)</div>
-                    </a>
-                </div>
-            </div>
+            <?php require('tabs/games.inc.php'); ?>
         </div>
 
         <div class="tab" id="timeline" style="display: none">

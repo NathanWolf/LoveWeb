@@ -14,6 +14,8 @@ try {
     $timelineEvents = $db->getTimelineEvents();
     $months = $db->getMonths();
     $mini = $db->getMiniPersona();
+    $dressupCharacters = $db->getDressupPersona();
+    $dressupCategories = $db->getDressupCategories();
     $response = array(
         'success' => true,
         'characters' => $characters,
@@ -25,7 +27,11 @@ try {
         'months' => $months,
         'realms' => $realms,
         'realm_properties' => $realmPropertyTypes,
-        'mini' => $mini
+        'mini' => $mini,
+        'dressup' => array(
+            'characters' => $dressupCharacters,
+            'categories' => $dressupCategories
+        )
     );
 } catch (Exception $ex) {
     $response = array(

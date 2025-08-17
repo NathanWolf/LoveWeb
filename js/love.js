@@ -7,6 +7,7 @@ class Love {
     #chat = new Chat(this, document.getElementById('chat'));
     #quizzes = new Quizzes(this, document.getElementById('quizzes'));
     #mini = new Mini(this, document.getElementById('minii'));
+    #dressup = new Dressup(this, document.getElementById('dressup'));
     #games = new Games(this, document.getElementById('games'));
     #flashcards = new Flashcards(this, document.getElementById('flashCards'));
     #tiers = new Tiers(this, document.getElementById('tierLists'));
@@ -30,6 +31,7 @@ class Love {
         games: this.#games,
         quizzes: this.#quizzes,
         minii: this.#mini,
+        dressup: this.#dressup,
         flashCards: this.#flashcards,
         tierLists: this.#tiers,
         relationships: this.#relationships,
@@ -217,6 +219,7 @@ class Love {
         this.#characters.addProperties(data.properties);
         this.#characters.addCharacters(data.characters);
         this.#mini.addCharacters(data.mini);
+        this.#dressup.addData(data.dressup);
         this.#timeline.addTimelineEvents(data.events);
         this.#timeline.addMonths(data.months);
         this.#relationships.addRelationships(data.relationships);
