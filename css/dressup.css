@@ -19,6 +19,7 @@ div#dressup {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
     z-index: 200;
     border-left: 8px solid var(--tile2-border-color);
 }
@@ -72,7 +73,7 @@ div#dressup {
 @media all and (max-width: 1024px)
 {
     .dressupItemContainer {
-        width: 140px;
+        width: 148px;
     }
 
     .dressupCategoryHeader {
