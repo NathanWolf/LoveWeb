@@ -105,7 +105,7 @@ foreach ($iterator as $fileInfo) {
     }
 
     if (!isset($dressup[$characterId])) {
-        list($width, $height, $type, $attr) = getimagesize($pathname);
+        list($width, $height, $type, $attr) = getimagesize($pathname . '/base.png');
         $newRecord = array(
             'persona_id' => $characterId,
             'width' => $width,
@@ -172,11 +172,25 @@ foreach ($iterator as $fileInfo) {
             $title = str_replace('_', ' ', $title);
             $title = ucwords($title);
 
+            $layer = 0;
+            switch ($categoryId) {
+                case 'socks': $layer = 10; break;
+                case 'shoes': $layer = 20; break;
+                case 'pants': $layer = 30; break;
+                case 'shorts': $layer = 40; break;
+                case 'dresses': $layer = 50; break;
+                case 'skirts': $layer = 60; break;
+                case 'shirts': $layer = 75; break; // undershirts: 70
+                case 'jackets': $layer = 80; break;
+                case 'accessories': $layer = 90; break;
+            }
+
             $newRecord = array(
                 'persona_id' => $characterId,
                 'category_id' => $categoryId,
                 'image_id' => $itemId,
-                'title' => $title
+                'title' => $title,
+                'layer' => $layer
             );
             $admin->insert('persona_dressup_item', $newRecord);
             echo "Saving new item for $characterId/$categoryId/$itemId as $title\n";
