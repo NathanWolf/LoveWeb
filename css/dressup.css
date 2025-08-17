@@ -36,8 +36,9 @@ div#dressup {
     width: 100%;
     padding: 8px;
     font-size: 2em;
-    border: 2px solid var(--group-header-border-color);
-    color: var(--group-header-color);;
+    background-color: var(--tile2-background-color);
+    border: 2px solid var(--tile2-border-color);
+    color: var(--tile2-color);
 }
 
 .dressupLayer {
