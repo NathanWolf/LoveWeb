@@ -47,7 +47,12 @@ class Dressup extends Component {
 
         let itemContainer = Utilities.createDiv('dressupItemContainer', this.#container);
         for (let categoryId in dressupCharacter.items) {
+            if (!this.#categories.hasOwnProperty(categoryId)) continue;
             if (!dressupCharacter.items.hasOwnProperty(categoryId)) continue;
+            let category = this.#categories[categoryId];
+            let categoryHeader = Utilities.createDiv('dressupCategoryHeader', itemContainer);
+            categoryHeader.innerText = category.name;
+            let categoryContainer = Utilities.createDiv('dressupCategoryContainer', itemContainer);
             let categoryItems = dressupCharacter.items[categoryId];
             for (let itemId in categoryItems) {
                 if (!categoryItems.hasOwnProperty(itemId)) continue;
@@ -57,7 +62,7 @@ class Dressup extends Component {
                 itemLayer.style.display = 'none';
                 itemLayer.style.zIndex = (10 + item.layer).toString();
 
-                let itemThumbnail = Utilities.createDiv('dressupThumbnail', itemContainer);
+                let itemThumbnail = Utilities.createDiv('dressupThumbnail', categoryContainer);
                 itemThumbnail.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/thumbnails/' + categoryId + '/' + itemId + '.png)';
                 itemThumbnail.title = item.title;
 

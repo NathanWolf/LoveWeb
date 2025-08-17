@@ -16,11 +16,26 @@ div#dressup {
     width: 440px;
     height: 100%;
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
     overflow-y: auto;
     z-index: 200;
     border-left: 8px solid var(--tile2-border-color);
+}
+
+.dressupCategoryContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 100%;
+}
+
+.dressupCategoryHeader {
+    margin: 1em 0em;
+    width: 100%;
+    padding: 8px;
+    font-size: 2em;
+    border: 2px solid var(--group-header-border-color);
+    color: var(--group-header-color);;
 }
 
 .dressupLayer {
