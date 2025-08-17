@@ -1,5 +1,6 @@
 class Dressup extends Component {
     #container;
+    #characterId;
     #dressupCharacters = {};
     #categories = {};
 
@@ -53,6 +54,7 @@ class Dressup extends Component {
 
     showCharacterSelect() {
         let controller = this;
+        this.#characterId = null;
         Utilities.empty(this.#container);
 
         let dressupCharacterChoice = Utilities.createDiv('dressupCharacterChoice', this.#container);
@@ -74,6 +76,8 @@ class Dressup extends Component {
             this.showCharacterSelect();
             return;
         }
+        this.#characterId = characterId;
+        this.getController().getHistory().set('character', characterId);
         Utilities.empty(this.#container);
         let dressupCharacter = this.#dressupCharacters[characterId];
         let characterContainer = Utilities.createDiv('dressupCharacterContainer', this.#container);
@@ -112,5 +116,22 @@ class Dressup extends Component {
                 });
             }
         }
+    }
+
+    onHistoryChange() {
+        let history = this.getController().getHistory();
+        let characterId = history.get('character');
+        if (this.#characterId != characterId) {
+            if (characterId == null) {
+                this.showCharacterSelect();
+            } else {
+                this.showCharacter(characterId);
+            }
+        }
+    }
+
+    deactivate() {
+        this.#characterId = null
+        this.getController().getHistory().unset('character');
     }
 }
