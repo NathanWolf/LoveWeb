@@ -13,6 +13,7 @@ div#dressup {
 }
 
 .dressupItemContainer {
+    background-color: var(--tile-background-color);
     width: 440px;
     height: 100%;
     display: flex;
@@ -66,4 +67,15 @@ div#dressup {
 
 .dressupThumbnail.selected {
     background-color: var(--button-active-color);
+}
+
+@media all and (max-width: 1024px)
+{
+    .dressupItemContainer {
+        width: 140px;
+    }
+
+    .dressupCategoryHeader {
+        font-size: 0.9em;
+    }
 }
