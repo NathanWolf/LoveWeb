@@ -1,9 +1,6 @@
 #chat {
     align-content: start;
     flex-direction: column;
-    padding-right: 8px;
-    padding-left: 8px;
-    padding-top: 12px;
 }
 
 .conversationContainer {
@@ -51,10 +48,12 @@
 
 .chatCharacterList {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    overflow-y: auto;
+    align-content: start;
+    overflow: auto;
+    padding-bottom: 128px;
+    margin-top: -1em;
 }
 
 #chat .portraitContainer {
