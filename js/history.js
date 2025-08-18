@@ -69,6 +69,14 @@ class History {
         }
     }
 
+    setOrClear(key, value) {
+        if (value == null) {
+            this.unset(key);
+        } else {
+            this.set(key, value);
+        }
+    }
+
     #rebuildHash() {
         let hashUrl = '';
 

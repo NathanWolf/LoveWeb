@@ -7,6 +7,8 @@ use Exception;
 require_once 'Database.class.php';
 
 class LoveDatabase extends Database {
+    public static $HASH_ALGORITHM = 'sha256';
+
     public function createUser($email, $password, $firstName, $lastName, $address) {
         $existing = $this->lookupUser($email);
         if ($existing) {
@@ -463,5 +465,49 @@ CDATA;
             $outputFilename = $outputFolder . '/portrait.png';
         }
         imagepng($scaled, $outputFilename);
+    }
+
+    public function findOutfit($personaId, $outfit) {
+        $outfit = json_encode($outfit);
+        $hash = hash(self::$HASH_ALGORITHM, $outfit);
+        $existing = $this->query('SELECT * FROM dressup_outfit WHERE hash = :hash and persona_id = :persona', array('hash' => $hash, 'persona' => $personaId));
+        foreach ($existing as $check) {
+            if ($check['outfit'] == $outfit) return $check;
+        }
+        return null;
+    }
+
+    public function saveOutfit($personaId, $outfit) {
+        $existing = $this->findOutfit($personaId, $outfit);
+        if ($existing) {
+            return $existing;
+        }
+        $outfitString = json_encode($outfit);
+        $hash = hash(self::$HASH_ALGORITHM, $outfitString);
+        $newRecord = array(
+            'outfit' => $outfitString,
+            'persona_id' => $personaId,
+            'hash' => $hash,
+            'hash_algorithm' => self::$HASH_ALGORITHM,
+            'version' => 1
+        );
+        $this->insert('dressup_outfit', $newRecord);
+        // Can't get the auto-generated uuid without finding the new record
+        $newRecord = $this->findOutfit($personaId, $outfit);
+        if (!$newRecord) {
+            throw new Exception("Failed to create new dressup_outfit record");
+        }
+        return $newRecord;
+    }
+
+    public function saveUserOutfit($userId, $outfitId) {
+        $sql = <<<SQL
+INSERT INTO user_dressup_outfit (user_id, outfit_id) VALUES (:user, :outfit) ON DUPLICATE KEY UPDATE share_count = share_count + 1
+SQL;
+        $this->execute($sql, array('user' => $userId, 'outfit' => $outfitId));
+    }
+
+    public function loadOutfit($id) {
+        return $this->get('dressup_outfit', $id);
     }
 }

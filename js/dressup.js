@@ -1,6 +1,7 @@
 class Dressup extends Component {
     #container;
     #characterId;
+    #outfitId;
     #dressupCharacters = {};
     #categories = {};
     #items = {};
@@ -26,8 +27,12 @@ class Dressup extends Component {
         let element = this.getElement();
         Utilities.empty(element);
         this.#container = Utilities.createDiv('dressupContainer', element);
-
-        this.showCharacterSelect();
+        this.loadHistory();
+        if (this.#characterId != null) {
+            this.showCharacter(this.#characterId, this.#outfitId);
+        } else {
+            this.showCharacterSelect();
+        }
     }
 
     #createPortrait(characterId) {
@@ -55,7 +60,7 @@ class Dressup extends Component {
 
     showCharacterSelect() {
         let controller = this;
-        this.#characterId = null;
+        this.#setCharacterId(null);
         Utilities.empty(this.#container);
 
         let dressupCharacterChoice = Utilities.createDiv('dressupCharacterChoice', this.#container);
@@ -71,7 +76,17 @@ class Dressup extends Component {
         }
     }
 
-    showCharacter(characterId) {
+    #setCharacterId(characterId) {
+        this.#characterId = characterId;
+        this.getController().getHistory().setOrClear('character', characterId);
+    }
+
+    #setOutfitId(outfitId) {
+        this.#outfitId = outfitId;
+        this.getController().getHistory().setOrClear('outfit', outfitId);
+    }
+
+    showCharacter(characterId, outfitId) {
         if (!this.#dressupCharacters.hasOwnProperty(characterId)) {
             alert("Something went wrong, please try again!");
             this.showCharacterSelect();
@@ -79,8 +94,8 @@ class Dressup extends Component {
         }
         let controller = this;
         this.#items = {};
-        this.#characterId = characterId;
-        this.getController().getHistory().set('character', characterId);
+        this.#outfitId = null;
+        this.#setCharacterId(characterId);
         Utilities.empty(this.#container);
         let dressupCharacter = this.#dressupCharacters[characterId];
         let characterContainer = Utilities.createDiv('dressupCharacterContainer', this.#container);
@@ -98,6 +113,10 @@ class Dressup extends Component {
         let clearButton = Utilities.createElement('button', 'dressupButton', buttonsContainer, 'Clear');
         clearButton.addEventListener('click', function() {
             controller.clear();
+        });
+        let shareButton = Utilities.createElement('button', 'dressupButton', buttonsContainer, 'Share');
+        shareButton.addEventListener('click', function() {
+            controller.share();
         });
         let itemContainer = Utilities.createDiv('dressupItemContainer', controlsContainer);
         for (let categoryId in dressupCharacter.items) {
@@ -134,7 +153,11 @@ class Dressup extends Component {
             }
         }
 
-        this.randomize();
+        if (outfitId == null) {
+            this.randomize();
+        } else {
+            this.loadOutfit(outfitId);
+        }
     }
 
     hideItem(categoryId, itemId) {
@@ -142,6 +165,7 @@ class Dressup extends Component {
         Utilities.removeClass(item.itemThumbnail, 'selected');
         item.itemLayer.style.display = 'none';
         item.visible = false;
+        this.#setOutfitId(null);
     }
 
     showItem(categoryId, itemId) {
@@ -149,6 +173,7 @@ class Dressup extends Component {
         Utilities.addClass(item.itemThumbnail, 'selected');
         item.itemLayer.style.display = 'block';
         item.visible = true;
+        this.#setOutfitId(null);
     }
 
     toggleItem(categoryId, itemId) {
@@ -169,6 +194,89 @@ class Dressup extends Component {
                 }
             }
         }
+    }
+
+    #processShare(response) {
+        if (response == null || !response.success) {
+            let message = "Failed to save outfit, please try again!";
+            if (response != null && response.hasOwnProperty("message")) {
+                message += " (" + response.message + ")";
+            }
+            alert(message);
+            return;
+        }
+        this.#setOutfitId(response.outfit.id);
+        navigator.share({
+            title: 'Divvinity',
+            text: 'Check out this cool character outfit I made!',
+            url: window.location.href
+        });
+    }
+
+    share() {
+        const request = new XMLHttpRequest();
+        let controller = this;
+        request.onload = function() {
+            controller.#processShare(this.response);
+        };
+        request.responseType = 'json';
+        request.onerror = function() { alert("Failed to save outfit, sorry!"); };
+        let items = [];
+
+        for (let categoryId in this.#items) {
+            if (!this.#items.hasOwnProperty(categoryId)) continue;
+            for (let itemId in this.#items[categoryId]) {
+                if (!this.#items[categoryId].hasOwnProperty(itemId)) continue;
+                if (this.#items[categoryId][itemId].visible) {
+                    let itemRecord = {
+                        category_id: categoryId,
+                        image_id: itemId
+                    };
+                    items.push(itemRecord);
+                }
+            }
+        }
+        let outfit = {items: items};
+        let url = "data/love.php?action=save_outfit&character=" + this.#characterId + "&outfit=" + JSON.stringify(outfit);
+        let user = this.getController().getProfile().getUser();
+        if (user != null) {
+            url += "&user_id=" + user.id + "&user_token=" + user.token;
+        }
+        request.open("POST", url, true);
+        request.send();
+    }
+
+    #processLoadOutfit(response) {
+        if (response == null || !response.success) {
+            let message = "Failed to load outfit, please try again!";
+            if (response != null && response.hasOwnProperty("message")) {
+                message += " (" + response.message + ")";
+            }
+            alert(message);
+            return;
+        }
+        let outfit = JSON.parse(response.outfit.outfit);
+        this.clear();
+        for (let i = 0; i < outfit.items.length; i++) {
+            this.showItem(outfit.items[i]['category_id'], outfit.items[i]['image_id']);
+        }
+        // Reset history but avoid reloading
+        this.#outfitId = response.outfit.id;
+        this.#setOutfitId(this.#outfitId);
+    }
+
+    loadOutfit(outfitId) {
+        this.#outfitId = outfitId;
+        const request = new XMLHttpRequest();
+        let controller = this;
+        request.onload = function() {
+            controller.#processLoadOutfit(this.response);
+        };
+        request.responseType = 'json';
+        request.onerror = function() { alert("Failed to load outfit, sorry!"); };
+        let url = "data/love.php?action=load_outfit&id=" + outfitId;
+        request.open("POST", url, true);
+        request.send();
     }
 
     randomize() {
@@ -197,20 +305,28 @@ class Dressup extends Component {
         }
     }
 
-    onHistoryChange() {
+    loadHistory() {
         let history = this.getController().getHistory();
-        let characterId = history.get('character');
-        if (this.#characterId != characterId) {
-            if (characterId == null) {
+        this.#characterId = history.get('character');
+        this.#outfitId = history.get('outfit');
+    }
+
+    onHistoryChange() {
+        let oldCharacterId = this.#characterId;
+        let oldOutfitId = this.#outfitId;
+        this.loadHistory();;
+        if (this.#characterId != oldCharacterId) {
+            if (this.#characterId == null) {
                 this.showCharacterSelect();
             } else {
-                this.showCharacter(characterId);
+                this.showCharacter(this.#characterId);
             }
+        } else if (this.#outfitId != oldOutfitId) {
+            this.loadOutfit(this.#outfitId);
         }
     }
 
     deactivate() {
-        this.#characterId = null
-        this.getController().getHistory().unset('character');
+        this.#setCharacterId(null);
     }
 }

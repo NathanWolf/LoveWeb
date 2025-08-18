@@ -205,7 +205,7 @@ class Love {
 
     load() {
         const love = this;
-        this.#request('data/love.php', function() {
+        this.#request('data/love.php?action=load', function() {
             love.#processData(this.response);
         });
     }

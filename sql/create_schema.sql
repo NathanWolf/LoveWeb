@@ -8,6 +8,8 @@ grant update,insert ON love.user_property to 'love'@'127.0.0.1';
 grant update,insert,delete ON love.conversation to 'love'@'127.0.0.1';
 grant update,insert,delete ON love.conversation_message to 'love'@'127.0.0.1';
 grant update,insert,delete ON love.user_token to 'love'@'127.0.0.1';
+grant insert ON love.dressup_outfit to 'love'@'127.0.0.1';
+grant update,insert,delete ON love.user_dressup_outfit to 'love'@'127.0.0.1';
 
 create user 'love_admin'@'127.0.0.1' identified by 'super-duper-secure-password';
 grant all privileges ON love.* to 'love_admin'@'127.0.0.1';
@@ -665,4 +667,36 @@ CREATE TABLE persona_dressup_item (
         references dressup_category(id)
         on delete cascade
         on update cascade
+);
+
+CREATE TABLE dressup_outfit (
+    id char(40) DEFAULT (uuid()),
+    hash char(64) NOT NULL,
+    hash_algorithm char(64) NOT NULL,
+    version int NOT NULL,
+    persona_id VARCHAR(64) NOT NULL,
+    outfit JSON NOT NULL,
+
+    created timestamp not null default CURRENT_TIMESTAMP,
+    updated timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+
+    foreign key (persona_id)
+        references persona(id)
+        on delete cascade
+        on update cascade,
+
+     constraint dressup_outfits_pk
+         primary key (id)
+);
+
+CREATE TABLE user_dressup_outfit (
+    user_id varchar(40) NOT NULL,
+    outfit_id char(40),
+    share_count int not null default(1),
+
+    created timestamp not null default CURRENT_TIMESTAMP,
+    updated timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+
+    constraint user_dressup_outfit_pk
+        primary key (user_id, outfit_id)
 );
