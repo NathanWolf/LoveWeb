@@ -103,7 +103,7 @@ class Dressup extends Component {
         let dressupCharacter = this.#dressupCharacters[characterId];
         let characterContainer = Utilities.createDiv('dressupCharacterContainer', this.#container);
         let baseImage = Utilities.createDiv('dressupLayer dressupBase', characterContainer);
-        baseImage.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/base.png)';
+        baseImage.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/base.png?version=' + _version +')';
         let aspectRatio = dressupCharacter.width / dressupCharacter.height;
         baseImage.style.aspectRatio = aspectRatio.toString();
 

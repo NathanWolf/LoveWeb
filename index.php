@@ -52,6 +52,7 @@
     <script type="text/javascript">
         // For debugging
         var _love;
+        var _version = <?=VERSION?>;
         window.onload = function() {
             let love = new Love();
             love.register();
