@@ -157,7 +157,11 @@ class Dressup extends Component {
         }
 
         if (outfitId == null) {
-            this.randomize();
+            if (dressupCharacter.default_outfit != null) {
+                this.showOutfit(JSON.parse(dressupCharacter.default_outfit));
+            } else {
+                this.randomize();
+            }
         } else {
             this.loadOutfit(outfitId);
         }
@@ -209,7 +213,7 @@ class Dressup extends Component {
             return;
         }
         this.#setOutfitId(response.outfit.id, response.title);
-        let title = 'Divvinity (Dressup';
+        let title = 'Diviinity (Dressup';
         if (response.title != null) {
             title += ' | ' + response.title;
         }
@@ -273,14 +277,18 @@ class Dressup extends Component {
             return;
         }
         let outfit = JSON.parse(response.outfit.outfit);
+        this.showOutfit(outfit);
+        // Reset history but avoid reloading
+        this.#outfitId = response.outfit.id;
+        let title = response.outfit.hasOwnProperty('user') && outfit.user != null ? response.outfit.user.title : null;
+        this.#setOutfitId(this.#outfitId, title);
+    }
+
+    showOutfit(outfit) {
         this.clear();
         for (let i = 0; i < outfit.items.length; i++) {
             this.showItem(outfit.items[i]['category_id'], outfit.items[i]['image_id']);
         }
-        // Reset history but avoid reloading
-        this.#outfitId = response.outfit.id;
-        let title = response.outfit.hasOwnProperty('user') ? response.outfit.user.title : null;
-        this.#setOutfitId(this.#outfitId, title);
     }
 
     loadOutfit(outfitId) {

@@ -9,11 +9,11 @@
     --burger-layer-3: 130000;
     --burger-layer-4: 140000;
     --burger-layer-5: 150000;
-    --mask-layer: 50;
-    --target-layer: 30;
-    --handle-layer: 25;
-    --popup-layer: 200;
-    --gallery-layer: 300;
+    --mask-layer: 1050;
+    --target-layer: 1030;
+    --handle-layer: 1025;
+    --popup-layer: 10200;
+    --gallery-layer: 10300;
     --loading-layer: 1000000;
 
     --background-color: #FFFADF;

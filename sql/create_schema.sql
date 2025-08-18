@@ -657,6 +657,9 @@ CREATE TABLE persona_dressup (
       on update cascade
 );
 
+alter table persona_dressup
+    add default_outfit JSON null;
+
 CREATE TABLE persona_dressup_item (
     persona_id VARCHAR(64) NOT NULL,
     category_id VARCHAR(64) NOT NULL,
