@@ -30,8 +30,8 @@ Open Font License, Version 1.1 (http://scripts.sil.org/OFL).
     src: url(../font/CharisSIL-BoldItalic.woff2);
 }
 
-/* set body to use Charis SIL */
-body {
+/* set body and other elements to use Charis SIL */
+body, button, select, input {
     /* fall back to sans serif so that it's really obvious if the fonts don't load */
     font-family: CharisSILW, sans-serif;
 }
