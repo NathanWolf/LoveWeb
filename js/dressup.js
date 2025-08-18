@@ -119,7 +119,7 @@ class Dressup extends Component {
             controller.share();
         });
         let itemContainer = Utilities.createDiv('dressupItemContainer', controlsContainer);
-        for (let categoryId in dressupCharacter.items) {
+        for (let categoryId in this.#categories) {
             if (!this.#categories.hasOwnProperty(categoryId)) continue;
             if (!dressupCharacter.items.hasOwnProperty(categoryId)) continue;
             this.#items[categoryId] = {};

@@ -632,6 +632,9 @@ alter table dressup_category
     add probability float default 1 not null,
     add probability_ratio float default 1 not null;
 
+alter table dressup_category
+    add priority int default 1 not null;
+
 CREATE TABLE persona_dressup (
     persona_id VARCHAR(64) NOT NULL,
     portrait_id VARCHAR(64) NULL,

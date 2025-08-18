@@ -403,7 +403,7 @@ CDATA;
     }
 
     public function getDressupCategories() {
-        $dressup = $this->getAll('dressup_category');
+        $dressup = $this->getAll('dressup_category', 'priority');
         $dressup = $this->index($dressup);
         return $dressup;
     }
