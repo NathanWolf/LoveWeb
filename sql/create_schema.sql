@@ -635,6 +635,13 @@ alter table dressup_category
 alter table dressup_category
     add priority int default 1 not null;
 
+alter table dressup_category
+    add linked_category_id VARCHAR(64) null,
+    add foreign key (linked_category_id)
+        references dressup_category(id)
+        on delete cascade
+        on update set null;
+
 CREATE TABLE persona_dressup (
     persona_id VARCHAR(64) NOT NULL,
     portrait_id VARCHAR(64) NULL,
@@ -671,6 +678,9 @@ CREATE TABLE persona_dressup_item (
         on delete cascade
         on update cascade
 );
+
+alter table persona_dressup_item
+    add linked_image_id VARCHAR(64) null;
 
 CREATE TABLE dressup_outfit (
     id char(40) DEFAULT (uuid()),

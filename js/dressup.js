@@ -281,6 +281,7 @@ class Dressup extends Component {
 
     randomize() {
         this.clear();
+        let linked = {};
         let dressupCharacter = this.#dressupCharacters[this.#characterId];
         for (let categoryId in dressupCharacter.items) {
             if (!this.#categories.hasOwnProperty(categoryId)) continue;
@@ -295,10 +296,25 @@ class Dressup extends Component {
                 if (remaining.length == 0) break;
                 if (items >= limit) break;
                 if (items >= required && Math.random() > probability) break;
-                let index = Math.floor(Math.random() * remaining.length);
-                let itemId = remaining[index];
+                let itemId = null;
+                if (linked.hasOwnProperty(categoryId) && linked[categoryId].length > 0) {
+                    itemId = linked[categoryId].pop();
+                } else {
+                    let index = Math.floor(Math.random() * remaining.length);
+                    itemId = remaining[index];
+                    remaining.splice(index, 1);
+                    if (category.linked_category_id != null) {
+                        let item = dressupCharacter.items[categoryId][itemId];
+                        if (item.linked_image_id != null) {
+                            if (!linked.hasOwnProperty(category.linked_category_id)) {
+                                linked[category.linked_category_id] = [];
+                            }
+                            linked[category.linked_category_id].push(item.linked_image_id);
+                        }
+                    }
+                }
+
                 this.showItem(categoryId, itemId);
-                remaining.splice(index, 1);
                 items++;
                 probability *= category.probability_ratio;
             }
