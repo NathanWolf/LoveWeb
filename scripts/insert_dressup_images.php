@@ -189,7 +189,7 @@ foreach ($iterator as $fileInfo) {
                 case 'mouths': $layer = 85; break;
                 case 'eyebrows': $layer = 87; break;
                 case 'hair_back': $layer = 2; break;
-                case 'hair_front': $layer = 81; break;
+                case 'hair_front': $layer = 82; break;
             }
 
             $newRecord = array(
