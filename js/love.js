@@ -173,14 +173,9 @@ class Love {
             }
         }
 
-        let title = 'Diviinity';
-        let tabTitle = tab.getTitle();
-        if (tabTitle != null) {
-            title += ' (' + tabTitle + ')';
-        }
-        document.title = title;
         this.#tab = tabId;
         this.#history.set('tab', this.#tab);
+        this.updateTitle();
 
         // Don't activate the tab until data is loaded
         if (!this.#loaded) {
@@ -192,6 +187,17 @@ class Love {
             previousTab.deactivate();
         }
         tab.activate();
+    }
+
+    updateTitle() {
+        let tab = this.#tabs[this.#tab];
+
+        let title = 'Diviinity';
+        let tabTitle = tab.getTitle();
+        if (tabTitle != null) {
+            title += ' (' + tabTitle + ')';
+        }
+        document.title = title;
     }
 
     #request(url, callback) {

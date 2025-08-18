@@ -404,4 +404,8 @@ class Mini extends Component {
     onResize() {
         this.#updateSceneTransform();
     }
+
+    getTitle() {
+        return 'Minii World';
+    }
 }

@@ -2,6 +2,7 @@ class Dressup extends Component {
     #container;
     #characterId;
     #outfitId;
+    #outfitTitle;
     #dressupCharacters = {};
     #categories = {};
     #items = {};
@@ -81,8 +82,10 @@ class Dressup extends Component {
         this.getController().getHistory().setOrClear('character', characterId);
     }
 
-    #setOutfitId(outfitId) {
+    #setOutfitId(outfitId, outfitTitle) {
         this.#outfitId = outfitId;
+        this.#outfitTitle = outfitTitle;
+        this.getController().updateTitle();
         this.getController().getHistory().setOrClear('outfit', outfitId);
     }
 
@@ -165,7 +168,7 @@ class Dressup extends Component {
         Utilities.removeClass(item.itemThumbnail, 'selected');
         item.itemLayer.style.display = 'none';
         item.visible = false;
-        this.#setOutfitId(null);
+        this.#setOutfitId(null, null);
     }
 
     showItem(categoryId, itemId) {
@@ -173,7 +176,7 @@ class Dressup extends Component {
         Utilities.addClass(item.itemThumbnail, 'selected');
         item.itemLayer.style.display = 'block';
         item.visible = true;
-        this.#setOutfitId(null);
+        this.#setOutfitId(null, null);
     }
 
     toggleItem(categoryId, itemId) {
@@ -205,15 +208,21 @@ class Dressup extends Component {
             alert(message);
             return;
         }
-        this.#setOutfitId(response.outfit.id);
-        navigator.share({
-            title: 'Divvinity',
-            text: 'Check out this cool character outfit I made!',
-            url: window.location.href
-        });
+        this.#setOutfitId(response.outfit.id, response.title);
+        try {
+            navigator.share({
+                title: 'Divvinity',
+                text: 'Check out this cool character outfit I made!',
+                url: window.location.href
+            });
+        } catch (e) {
+            // Ignored, this may just be the user cancelling the share
+        }
     }
 
     share() {
+        let title = prompt("What do you want to call this outfit?")
+
         const request = new XMLHttpRequest();
         let controller = this;
         request.onload = function() {
@@ -242,6 +251,9 @@ class Dressup extends Component {
         if (user != null) {
             url += "&user_id=" + user.id + "&user_token=" + user.token;
         }
+        if (title != null) {
+            url += '&title=' + encodeURIComponent(title);
+        }
         request.open("POST", url, true);
         request.send();
     }
@@ -262,7 +274,8 @@ class Dressup extends Component {
         }
         // Reset history but avoid reloading
         this.#outfitId = response.outfit.id;
-        this.#setOutfitId(this.#outfitId);
+        let title = response.outfit.hasOwnProperty('user') ? response.outfit.user.title : null;
+        this.#setOutfitId(this.#outfitId, title);
     }
 
     loadOutfit(outfitId) {
@@ -275,6 +288,10 @@ class Dressup extends Component {
         request.responseType = 'json';
         request.onerror = function() { alert("Failed to load outfit, sorry!"); };
         let url = "data/love.php?action=load_outfit&id=" + outfitId;
+        let user = this.getController().getProfile().getUser();
+        if (user != null) {
+            url += "&user_id=" + user.id + "&user_token=" + user.token;
+        }
         request.open("POST", url, true);
         request.send();
     }
@@ -344,5 +361,13 @@ class Dressup extends Component {
 
     deactivate() {
         this.#setCharacterId(null);
+    }
+
+    getTitle() {
+        let title = 'Dressup';
+        if (this.#outfitTitle != null) {
+            title += ' | ' + this.#outfitTitle;
+        }
+        return title;
     }
 }

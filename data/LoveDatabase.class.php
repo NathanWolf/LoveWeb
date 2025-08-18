@@ -500,11 +500,16 @@ CDATA;
         return $newRecord;
     }
 
-    public function saveUserOutfit($userId, $outfitId) {
+    public function saveUserOutfit($userId, $outfitId, $title) {
         $sql = <<<SQL
-INSERT INTO user_dressup_outfit (user_id, outfit_id) VALUES (:user, :outfit) ON DUPLICATE KEY UPDATE share_count = share_count + 1
+INSERT INTO user_dressup_outfit (user_id, outfit_id, title) VALUES (:user, :outfit, :title) ON DUPLICATE KEY UPDATE share_count = share_count + 1, title = COALESCE(:newtitle, title)
 SQL;
-        $this->execute($sql, array('user' => $userId, 'outfit' => $outfitId));
+        $this->execute($sql, array('user' => $userId, 'outfit' => $outfitId, 'title' => $title, 'newtitle' => $title));
+    }
+
+    public function loadUserOutfit($userId, $outfitId) {
+        $records = $this->query('SELECT * FROM user_dressup_outfit WHERE user_id = :user and outfit_id = :outfit', array('user' => $userId, 'outfit' => $outfitId));
+        return $records ? $records[0] : null;
     }
 
     public function loadOutfit($id) {

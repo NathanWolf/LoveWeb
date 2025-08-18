@@ -35,18 +35,24 @@ function loadData() {
     );
 }
 
-function loadDressupOutfit($id) {
+function loadDressupOutfit($id, $userId, $userToken) {
     $db = new com\elmakers\love\LoveDatabase();
-    return $db->loadOutfit($id);
+    $outfit = $db->loadOutfit($id);
+    if ($userId && $userToken) {
+        $db->validateLogin($userId, $userToken);
+        $userOutfit = $db->loadUserOutfit($userId, $id);
+        $outfit['user'] = $userOutfit;
+    }
+    return $outfit;
 }
 
-function saveDressupOutfit($personaId, $outfit, $userId, $userToken) {
+function saveDressupOutfit($personaId, $outfit, $title, $userId, $userToken) {
     $db = new com\elmakers\love\LoveDatabase();
     $outfit = $db->saveOutfit($personaId, $outfit);
     if ($outfit && $userId) {
         try {
             $db->validateLogin($userId, $userToken);
-            $db->saveUserOutfit($userId, $outfit['id']);
+            $db->saveUserOutfit($userId, $outfit['id'], $title);
         } catch (Exception $ex) {
             // Going to ignore login issues.
             // error_log('Error saving user outfit: ' . $ex->getMessage());
@@ -64,21 +70,26 @@ try {
             die(json_encode($data));
         case 'load_outfit':
             $outfitId = getParameter('id');
-            $outfit = loadDressupOutfit($outfitId);
+            $userId = getParameter('user_id', '');
+            $userToken = getParameter('user_token', '');
+            $outfit = loadDressupOutfit($outfitId, $userId, $userToken);
             if (!$outfit) {
                 throw new Exception("Failed to load outfit id: " . $outfitId);
             }
-            die(json_encode(array('success' => true, 'outfit' => $outfit)));
+            $title = null;
+            die(json_encode(array('success' => true, 'outfit' => $outfit, 'title' => $title)));
         case 'save_outfit':
             $personaId = getParameter('character');
             $outfit = json_decode(getParameter('outfit'), true);
+            $title = getParameter('title', '');
+            $title = $title ?: null;
             $userId = getParameter('user_id', '');
             $userToken = getParameter('user_token', '');
-            $outfit = saveDressupOutfit($personaId, $outfit, $userId, $userToken);
+            $outfit = saveDressupOutfit($personaId, $outfit, $title, $userId, $userToken);
             if (!$outfit) {
                 throw new Exception("Failed to load outfit");
             }
-            die(json_encode(array('success' => true, 'outfit' => $outfit)));
+            die(json_encode(array('success' => true, 'outfit' => $outfit, 'title' => $title)));
         default:
             throw new Exception("Invalid action: $action");
     }

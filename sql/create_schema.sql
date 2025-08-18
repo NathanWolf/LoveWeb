@@ -713,3 +713,6 @@ CREATE TABLE user_dressup_outfit (
     constraint user_dressup_outfit_pk
         primary key (user_id, outfit_id)
 );
+
+ALTER TABLE user_dressup_outfit
+    ADD title varchar(255) NULL;
