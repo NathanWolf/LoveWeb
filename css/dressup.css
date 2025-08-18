@@ -94,6 +94,10 @@ div#dressup {
     background-size: contain;
 }
 
+.dressupBase {
+    z-index: 15;
+}
+
 .dressupThumbnail {
     width: 128px;
     height: 128px;

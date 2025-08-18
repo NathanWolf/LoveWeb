@@ -183,6 +183,13 @@ foreach ($iterator as $fileInfo) {
                 case 'shirts': $layer = 75; break; // undershirts: 70
                 case 'jackets': $layer = 80; break;
                 case 'accessories': $layer = 90; break;
+                case 'glasses': $layer = 95; break;
+                case 'eyes_right': $layer = 83; break;
+                case 'eyes_left': $layer = 83; break;
+                case 'mouths': $layer = 85; break;
+                case 'eyebrows': $layer = 87; break;
+                case 'hair_back': $layer = 2; break;
+                case 'hair_front': $layer = 81; break;
             }
 
             $newRecord = array(
