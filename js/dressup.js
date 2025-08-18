@@ -3,6 +3,7 @@ class Dressup extends Component {
     #characterId;
     #dressupCharacters = {};
     #categories = {};
+    #items = {};
 
     constructor(controller, element) {
         super(controller, element)
@@ -76,6 +77,8 @@ class Dressup extends Component {
             this.showCharacterSelect();
             return;
         }
+        let controller = this;
+        this.#items = {};
         this.#characterId = characterId;
         this.getController().getHistory().set('character', characterId);
         Utilities.empty(this.#container);
@@ -86,10 +89,21 @@ class Dressup extends Component {
         let aspectRatio = dressupCharacter.width / dressupCharacter.height;
         baseImage.style.aspectRatio = aspectRatio.toString();
 
-        let itemContainer = Utilities.createDiv('dressupItemContainer', this.#container);
+        let controlsContainer = Utilities.createDiv('dressupControlsContainer', this.#container);
+        let buttonsContainer = Utilities.createDiv('dressupButtonsContainer', controlsContainer);
+        let randomizeButton = Utilities.createElement('button', 'dressupButton', buttonsContainer, 'Randomize');
+        randomizeButton.addEventListener('click', function() {
+            controller.randomize();
+        });
+        let clearButton = Utilities.createElement('button', 'dressupButton', buttonsContainer, 'Clear');
+        clearButton.addEventListener('click', function() {
+            controller.clear();
+        });
+        let itemContainer = Utilities.createDiv('dressupItemContainer', controlsContainer);
         for (let categoryId in dressupCharacter.items) {
             if (!this.#categories.hasOwnProperty(categoryId)) continue;
             if (!dressupCharacter.items.hasOwnProperty(categoryId)) continue;
+            this.#items[categoryId] = {};
             let category = this.#categories[categoryId];
             let categoryHeader = Utilities.createDiv('dressupCategoryHeader', itemContainer);
             categoryHeader.innerText = category.name;
@@ -108,15 +122,77 @@ class Dressup extends Component {
                 itemThumbnail.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/thumbnails/' + categoryId + '/' + itemId + '.png)';
                 itemThumbnail.title = item.title;
 
+                this.#items[categoryId][itemId] = {
+                    itemLayer: itemLayer,
+                    itemThumbnail: itemThumbnail,
+                    visible: false
+                };
+
                 itemThumbnail.addEventListener('click', e => {
-                    if (itemLayer.style.display == 'none') {
-                        Utilities.addClass(itemThumbnail, 'selected');
-                        itemLayer.style.display = 'block';
-                    } else {
-                        Utilities.removeClass(itemThumbnail, 'selected');
-                        itemLayer.style.display = 'none';
-                    }
+                    controller.toggleItem(categoryId, itemId);
                 });
+            }
+        }
+
+        this.randomize();
+    }
+
+    hideItem(categoryId, itemId) {
+        let item = this.#items[categoryId][itemId];
+        Utilities.removeClass(item.itemThumbnail, 'selected');
+        item.itemLayer.style.display = 'none';
+        item.visible = false;
+    }
+
+    showItem(categoryId, itemId) {
+        let item = this.#items[categoryId][itemId];
+        Utilities.addClass(item.itemThumbnail, 'selected');
+        item.itemLayer.style.display = 'block';
+        item.visible = true;
+    }
+
+    toggleItem(categoryId, itemId) {
+        if (this.#items[categoryId][itemId].visible) {
+            this.hideItem(categoryId, itemId);
+        } else {
+            this.showItem(categoryId, itemId);
+        }
+    }
+
+    clear() {
+        for (let categoryId in this.#items) {
+            if (!this.#items.hasOwnProperty(categoryId)) continue;
+            for (let itemId in this.#items[categoryId]) {
+                if (!this.#items[categoryId].hasOwnProperty(itemId)) continue;
+                if (this.#items[categoryId][itemId].visible) {
+                    this.hideItem(categoryId, itemId);
+                }
+            }
+        }
+    }
+
+    randomize() {
+        this.clear();
+        let dressupCharacter = this.#dressupCharacters[this.#characterId];
+        for (let categoryId in dressupCharacter.items) {
+            if (!this.#categories.hasOwnProperty(categoryId)) continue;
+            if (!dressupCharacter.items.hasOwnProperty(categoryId)) continue;
+            let category = this.#categories[categoryId];
+            let limit = category.max_items;
+            let required = category.min_items;
+            let items = 0;
+            let probability = category.probability;
+            let remaining = Object.keys(dressupCharacter.items[categoryId]);
+            while (true) {
+                if (remaining.length == 0) break;
+                if (items >= limit) break;
+                if (items >= required && Math.random() > probability) break;
+                let index = Math.floor(Math.random() * remaining.length);
+                let itemId = remaining[index];
+                this.showItem(categoryId, itemId);
+                remaining.splice(index, 1);
+                items++;
+                probability *= category.probability_ratio;
             }
         }
     }

@@ -36,16 +36,37 @@ div#dressup {
     align-items: center;
 }
 
-.dressupItemContainer {
-    background-color: var(--tile-background-color);
+.dressupControlsContainer {
+    display: flex;
+    flex-direction: column;
+    z-index: 200;
+    background-color: var(--tile2-background-color);
+    border-left: 8px solid var(--tile2-border-color);
     width: 440px;
     height: 100%;
+}
+
+.dressupButtonsContainer {
+    margin: 4px;
+    display: flex;
+    flex-direction: row;
+    background-color: var(--tile-background-color);
+    border-bottom: 4px solid var(--tile2-border-color);
+}
+
+.dressupButton {
+    background-color: var(--button-background-color);
+    border-color: var(--button-border-color);
+    color: var(--button-color);
+}
+
+.dressupItemContainer {
+    flex: 1;
+    background-color: var(--tile-background-color);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
-    z-index: 200;
-    border-left: 8px solid var(--tile2-border-color);
 }
 
 .dressupCategoryContainer {
@@ -56,7 +77,7 @@ div#dressup {
 }
 
 .dressupCategoryHeader {
-    margin: 1em 0em;
+    margin: 8px;
     width: 100%;
     padding: 8px;
     font-size: 2em;
@@ -99,11 +120,20 @@ div#dressup {
 
 @media all and (max-width: 1024px)
 {
-    .dressupItemContainer {
+    .dressupControlsContainer {
         width: 148px;
     }
 
+    .dressupButtonsContainer button {
+        font-size: 0.8em;
+        padding: 0;
+    }
+
+    .dressupButtonsContainer {
+        flex-direction: column;
+    }
+
     .dressupCategoryHeader {
-        font-size: 0.9em;
+        font-size: 0.8em;
     }
 }

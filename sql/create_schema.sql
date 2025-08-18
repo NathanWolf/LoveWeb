@@ -624,6 +624,12 @@ CREATE TABLE dressup_category
         primary key (id)
 );
 
+alter table dressup_category
+    add min_items int default 1 not null,
+    add max_items int default 1 not null,
+    add probability float default 1 not null,
+    add probability_ratio float default 1 not null;
+
 CREATE TABLE persona_dressup (
     persona_id VARCHAR(64) NOT NULL,
     portrait_id VARCHAR(64) NULL,
