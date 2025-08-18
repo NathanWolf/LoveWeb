@@ -209,9 +209,14 @@ class Dressup extends Component {
             return;
         }
         this.#setOutfitId(response.outfit.id, response.title);
+        let title = 'Divvinity (Dressup';
+        if (response.title != null) {
+            title += ' | ' + response.title;
+        }
+        title += ')';
         try {
             navigator.share({
-                title: 'Divvinity',
+                title: title,
                 text: 'Check out this cool character outfit I made!',
                 url: window.location.href
             });
