@@ -108,6 +108,23 @@
     z-index: var(--popup-layer);
 }
 
+.characterSheetButtonSection {
+    display: flex;
+    flex-direction: row;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.characterSheetButtonSection button {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 2em;
+}
+
 .characterSheet .label {
     font-weight: bold;
 }

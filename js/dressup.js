@@ -383,4 +383,8 @@ class Dressup extends Component {
         }
         return title;
     }
+
+    hasCharacter(characterId) {
+        return this.#dressupCharacters.hasOwnProperty(characterId);
+    }
 }

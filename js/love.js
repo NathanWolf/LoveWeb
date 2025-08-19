@@ -71,6 +71,10 @@ class Love {
         return this.#chat;
     }
 
+    getDressup() {
+        return this.#dressup;
+    }
+
     getProfile() {
         return this.#profile;
     }

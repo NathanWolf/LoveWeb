@@ -384,7 +384,7 @@ class Characters extends Component {
         }
 
         // Column 1:
-        // Images, Backstory
+        // Images, Buttons, Backstory
         let column1 = Utilities.createDiv('column column_1', popup);
 
         let imageLabel = Utilities.createDiv('label section above clickable', column1, 'Click to View Images');
@@ -397,6 +397,22 @@ class Characters extends Component {
             characterController.onShowImages();
         });
 
+        let buttonContainer = Utilities.createDiv('characterSheetButtonSection section', column1);
+        let chatButton = Utilities.createElement('button', '', buttonContainer, 'Chat');
+        chatButton.addEventListener('click', function() {
+            Utilities.closePopups();
+            characterController.getController().selectTab('chat');
+            characterController.getController().getChat().startChatWithCharacter(characterKey);
+        });
+        let dressup = this.getController().getDressup();
+        if (dressup.hasCharacter(characterKey)) {
+            let dressupButton = Utilities.createElement('button', '', buttonContainer, 'Dress');
+            dressupButton.addEventListener('click', function() {
+                Utilities.closePopups();
+                characterController.getController().selectTab('dressup');
+                characterController.getController().getDressup().showCharacter(characterKey);
+            });
+        }
         Utilities.createDiv('backstory section', column1, character.backstory);
         Utilities.createDiv('label section below', column1, 'Backstory');
 

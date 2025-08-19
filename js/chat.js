@@ -280,6 +280,10 @@ class Chat extends Component {
         }
     }
 
+    startChatWithCharacter(targetCharacterId) {
+        this.#chooseSource(targetCharacterId, null, null);
+    }
+
     #chooseSource(targetCharacterId, targetAlternativeIndex, realmId) {
         let container = this.getElement();
         let controller = this;
