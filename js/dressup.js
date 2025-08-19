@@ -176,6 +176,8 @@ class Dressup extends Component {
     }
 
     showItem(categoryId, itemId) {
+        if (!this.#items.hasOwnProperty(categoryId)) return;
+        if (!this.#items[categoryId].hasOwnProperty(itemId)) return;
         let item = this.#items[categoryId][itemId];
         Utilities.addClass(item.itemThumbnail, 'selected');
         item.itemLayer.style.display = 'block';
