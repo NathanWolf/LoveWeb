@@ -181,7 +181,7 @@ foreach ($iterator as $fileInfo) {
                 case 'skirts': $layer = 50; break;
                 case 'dresses': $layer = 60; break;
                 case 'shirts': $layer = 75; break; // undershirts: 70
-                case 'armwarmers': $layer = 78; break;
+                case 'armwarmers': $layer = 72; break;
                 case 'jackets': $layer = 80; break;
                 case 'accessories': $layer = 90; break;
                 case 'glasses': $layer = 95; break;
