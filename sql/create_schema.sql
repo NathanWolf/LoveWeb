@@ -705,6 +705,9 @@ CREATE TABLE dressup_outfit (
          primary key (id)
 );
 
+create index dressup_outfit_hash_index
+    on dressup_outfit (hash);
+
 CREATE TABLE user_dressup_outfit (
     user_id varchar(40) NOT NULL,
     outfit_id char(40),
