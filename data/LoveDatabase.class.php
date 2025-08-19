@@ -389,6 +389,7 @@ CDATA;
         $dressup = $this->getAll('persona_dressup');
         foreach ($dressup as &$dressupRef) {
             $dressupRef['items'] = array();
+            $dressupRef['categories'] = array();
         }
         $dressup = $this->index($dressup, 'persona_id');
         $items = $this->getAll('persona_dressup_item');
@@ -397,6 +398,10 @@ CDATA;
                 $dressup[$item['persona_id']]['items'][$item['category_id']] = array();
             }
             $dressup[$item['persona_id']]['items'][$item['category_id']][$item['image_id']] = $item;
+        }
+        $categories = $this->getAll('persona_dressup_category');
+        foreach ($categories as $category) {
+            $dressup[$category['persona_id']]['categories'][$category['category_id']] = $category;
         }
 
         return $dressup;

@@ -722,3 +722,34 @@ CREATE TABLE user_dressup_outfit (
 
 ALTER TABLE user_dressup_outfit
     ADD title varchar(255) NULL;
+
+CREATE TABLE persona_dressup_category
+(
+    persona_id VARCHAR(64) NOT NULL,
+    category_id VARCHAR(64) NOT NULL,
+
+    min_items int null,
+    max_items int null,
+    probability float null,
+    probability_ratio float null,
+    priority int null,
+    linked_category_id VARCHAR(64) null,
+
+    constraint persona_dressup_category_pk
+        primary key (persona_id, category_id),
+
+    foreign key (persona_id)
+        references persona(id)
+        on delete cascade
+        on update cascade,
+
+    foreign key (category_id)
+        references dressup_category(id)
+        on delete cascade
+        on update cascade,
+
+    foreign key (linked_category_id)
+        references dressup_category(id)
+        on delete cascade
+        on update set null
+);

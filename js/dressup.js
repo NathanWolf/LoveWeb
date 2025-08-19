@@ -89,6 +89,23 @@ class Dressup extends Component {
         this.getController().getHistory().setOrClear('outfit', outfitId);
     }
 
+    getCategory(categoryId) {
+        let category = this.#categories[categoryId];
+        if (this.#characterId != null) {
+            let character = this.#dressupCharacters[this.#characterId];
+            if (character.categories.hasOwnProperty(categoryId)) {
+                let characterCategory = character.categories[categoryId];
+                let omitNull = obj => {
+                    Object.keys(obj).filter(key => obj[key] === null).forEach(key => delete(obj[key]))
+                    return obj
+                }
+                category = { ...omitNull(category), ...omitNull(characterCategory) }
+            }
+        }
+
+        return category;
+    }
+
     showCharacter(characterId, outfitId) {
         if (!this.#dressupCharacters.hasOwnProperty(characterId)) {
             alert("Something went wrong, please try again!");
@@ -126,7 +143,7 @@ class Dressup extends Component {
             if (!this.#categories.hasOwnProperty(categoryId)) continue;
             if (!dressupCharacter.items.hasOwnProperty(categoryId)) continue;
             this.#items[categoryId] = {};
-            let category = this.#categories[categoryId];
+            let category = this.getCategory(categoryId);
             let categoryHeader = Utilities.createDiv('dressupCategoryHeader', itemContainer);
             categoryHeader.innerText = category.name;
             let categoryContainer = Utilities.createDiv('dressupCategoryContainer', itemContainer);
@@ -318,7 +335,7 @@ class Dressup extends Component {
         for (let categoryId in dressupCharacter.items) {
             if (!this.#categories.hasOwnProperty(categoryId)) continue;
             if (!dressupCharacter.items.hasOwnProperty(categoryId)) continue;
-            let category = this.#categories[categoryId];
+            let category = this.getCategory(categoryId);
             let limit = category.max_items;
             let required = category.min_items;
             let items = 0;
