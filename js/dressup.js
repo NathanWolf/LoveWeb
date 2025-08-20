@@ -1,5 +1,6 @@
 class Dressup extends Component {
     #container;
+    #characterContainer;
     #characterId;
     #outfitId;
     #outfitTitle;
@@ -119,6 +120,7 @@ class Dressup extends Component {
         Utilities.empty(this.#container);
         let dressupCharacter = this.#dressupCharacters[characterId];
         let characterContainer = Utilities.createDiv('dressupCharacterContainer', this.#container);
+        this.#characterContainer = characterContainer;
         let baseImage = Utilities.createDiv('dressupLayer dressupBase', characterContainer);
         baseImage.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/base.png?version=' + _version +')';
         let aspectRatio = dressupCharacter.width / dressupCharacter.height;
@@ -207,6 +209,23 @@ class Dressup extends Component {
             this.hideItem(categoryId, itemId);
         } else {
             this.showItem(categoryId, itemId);
+            this.showItemPopup(categoryId, itemId);
+        }
+    }
+
+    showItemPopup(categoryId, itemId) {
+        let dressupCharacter = this.#dressupCharacters[this.#characterId];
+        let item = dressupCharacter.items[categoryId][itemId];
+        if (item.title != null && item.title.length > 0) {
+            let title = item.title;
+            let category = this.#categories[categoryId];
+            if (category.name != null && category.name.length > 0) {
+                title = category.name + ' : ' + title;
+            }
+            let popupLayer = Utilities.createDiv('dressupItemPopup', this.#characterContainer, title);
+            setTimeout(function() {
+               popupLayer.remove();
+            }, 2000);
         }
     }
 
