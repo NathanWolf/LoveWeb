@@ -219,7 +219,7 @@ class Dressup extends Component {
         if (item.title != null && item.title.length > 0) {
             let title = item.title;
             let category = this.#categories[categoryId];
-            if (category.name != null && category.name.length > 0) {
+            if (category.name != null && category.name.length > 0 && category.name != title) {
                 title = category.name + ' : ' + title;
             }
             let popupLayer = Utilities.createDiv('dressupItemPopup', this.#characterContainer, title);
