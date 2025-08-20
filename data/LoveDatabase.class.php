@@ -524,12 +524,15 @@ SQL;
     public static function makeOutfitItemTitle($categoryId, $itemId) {
         $title = $itemId;
         $categoryIdSingular = substr($categoryId, 0, -1);
+        $categoryIdSecondary = null;
         if ($categoryId == 'accessories') {
             $categoryIdSingular = 'accessory';
         } else if ($categoryId == 'eyes_left') {
             $categoryIdSingular = 'left_eye';
+            $categoryIdSecondary = '_eye_left';
         } else if ($categoryId == 'eyes_right') {
             $categoryIdSingular = 'right_eye';
+            $categoryIdSecondary = '_eye_right';
         } else if ($categoryId == 'hair_back') {
             $categoryIdSingular = 'back_hair';
         } else if ($categoryId == 'hair_front') {
@@ -537,6 +540,9 @@ SQL;
         }
         $title = str_replace($categoryId . '_', '', $title);
         $title = str_replace($categoryIdSingular . '_', '', $title);
+        if ($categoryIdSecondary) {
+            $title = str_replace($categoryIdSecondary, '', $title);
+        }
         $title = str_replace('_', ' ', $title);
         $title = ucwords($title);
         $title = str_replace('Tshirt', 'T-Shirt', $title);
