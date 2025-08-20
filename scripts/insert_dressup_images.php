@@ -174,6 +174,8 @@ foreach ($iterator as $fileInfo) {
 
             $layer = 0;
             switch ($categoryId) {
+                case 'wings': $layer = 4; break;
+                case 'skin': $layer = 6; break;
                 case 'socks': $layer = 10; break;
                 case 'shoes': $layer = 20; break;
                 case 'pants': $layer = 30; break;
@@ -188,7 +190,7 @@ foreach ($iterator as $fileInfo) {
                 case 'eyes_right': $layer = 83; break;
                 case 'eyes_left': $layer = 83; break;
                 case 'eyes': $layer = 83; break;
-                case 'mouths': $layer = 85; break;
+                case 'mouths': $layer = 80; break;
                 case 'eyebrows': $layer = 87; break;
                 case 'hair_back': $layer = 2; break;
                 case 'hair_front': $layer = 82; break;
