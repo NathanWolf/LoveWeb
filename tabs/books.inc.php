@@ -6,9 +6,9 @@
 <div class="bookInfoColumn">
 
     <div class="bookInfoBlock">
-        <div class="bookCoverSmall bookDiviinitySmall" id="bookDiviinity"></div>
+        <div class="bookCoverSmall bookDiviineSmall" id="bookDiviine"></div>
         <div class="bookInfo">
-            <div class="bookTitle">Book 1 : Diviinity</div>
+            <div class="bookTitle">Book 1 : Diviine</div>
             <div class="bookProgress">First Draft Complete, Currently Editing and Illustrating</div>
             <div class="bookDescription">
                 The first book in the Diviinity series.
@@ -23,9 +23,9 @@
     </div>
 
     <div class="bookInfoBlock">
-        <div class="bookCoverSmall bookDiviineSmall" id="bookDiviine"></div>
+        <div class="bookCoverSmall bookSpliitSmall" id="bookSpliit"></div>
         <div class="bookInfo">
-            <div class="bookTitle">Book 2 : Diviine</div>
+            <div class="bookTitle">Book 2 : Spliit</div>
             <div class="bookProgress">Started Initial Writing</div>
             <div class="bookDescription">
                 The origin story of Thirteen Diviine, the Split, the Realms and everything we know exists as of

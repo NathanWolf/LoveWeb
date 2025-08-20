@@ -61,24 +61,24 @@
     cursor: pointer;
 }
 
-.bookDiviineSmall {
-    background-image: url('../image/books/diviine/small.png');
+.bookSpliitSmall {
+    background-image: url('../image/books/spliit/small.png');
 }
 
-.bookDiviinitySmall {
-    background-image: url('../image/books/diviinity/small.png');
+.bookDiviineSmall {
+    background-image: url('../image/books/diviine/small.png');
 }
 
 .bookSiinSmall {
     background-image: url('../image/books/siin/small.png');
 }
 
-.bookDiviineFull {
-    background-image: url('../image/books/diviine/full.png');
+.bookSpliitFull {
+    background-image: url('../image/books/spliit/full.png');
 }
 
-.bookDiviinityFull {
-    background-image: url('../image/books/diviinity/full.png');
+.bookDiviineFull {
+    background-image: url('../image/books/diviine/full.png');
 }
 
 .bookSiinFull {

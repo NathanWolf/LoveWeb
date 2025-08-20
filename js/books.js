@@ -1,20 +1,20 @@
 class Books extends Component {
     #diviine;
-    #diviinity;
+    #spliit;
     #siin;
 
     constructor(controller, element) {
         super(controller, element);
-        this.#diviinity = document.getElementById("bookDiviinity");
         this.#diviine = document.getElementById("bookDiviine");
+        this.#spliit = document.getElementById("bookSpliit");
         this.#siin = document.getElementById("bookSiin");
 
         let books = this;
         this.#diviine.addEventListener("click", function() {
             books.showBookCover('Diviine');
         });
-        this.#diviinity.addEventListener("click", function() {
-            books.showBookCover('Diviinity');
+        this.#spliit.addEventListener("click", function() {
+            books.showBookCover('Spliit');
         });
         this.#siin.addEventListener("click", function() {
             books.showBookCover('Siin');
