@@ -168,10 +168,7 @@ foreach ($iterator as $fileInfo) {
                 continue;
             }
 
-            $title = $itemId;
-            $title = str_replace('_', ' ', $title);
-            $title = ucwords($title);
-
+            $title = $db::makeOutfitItemTitle($categoryId, $itemId);
             $layer = 0;
             switch ($categoryId) {
                 case 'wings': $layer = 4; break;

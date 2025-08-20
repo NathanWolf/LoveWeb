@@ -520,4 +520,27 @@ SQL;
     public function loadOutfit($id) {
         return $this->get('dressup_outfit', $id);
     }
+
+    public static function makeOutfitItemTitle($categoryId, $itemId) {
+        $title = $itemId;
+        $categoryIdSingular = substr($categoryId, 0, -1);
+        if ($categoryId == 'accessories') {
+            $categoryIdSingular = 'accessory';
+        } else if ($categoryId == 'eyes_left') {
+            $categoryIdSingular = 'left_eye';
+        } else if ($categoryId == 'eyes_right') {
+            $categoryIdSingular = 'right_eye';
+        } else if ($categoryId == 'hair_back') {
+            $categoryIdSingular = 'back_hair';
+        } else if ($categoryId == 'hair_front') {
+            $categoryIdSingular = 'front_hair';
+        }
+        $title = str_replace($categoryId . '_', '', $title);
+        $title = str_replace($categoryIdSingular . '_', '', $title);
+        $title = str_replace('_', ' ', $title);
+        $title = ucwords($title);
+        $title = str_replace('Tshirt', 'T-Shirt', $title);
+
+        return $title;
+    }
 }
