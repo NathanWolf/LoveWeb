@@ -62,27 +62,27 @@
 }
 
 .bookSpliitSmall {
-    background-image: url('../image/books/spliit/small.png');
+    background-image: url('../image/books/spliit/small.png?v=2');
 }
 
 .bookDiviineSmall {
-    background-image: url('../image/books/diviine/small.png');
+    background-image: url('../image/books/diviine/small.png?v=2');
 }
 
 .bookSiinSmall {
-    background-image: url('../image/books/siin/small.png');
+    background-image: url('../image/books/siin/small.png?v=2');
 }
 
 .bookSpliitFull {
-    background-image: url('../image/books/spliit/full.png');
+    background-image: url('../image/books/spliit/full.png?v=2');
 }
 
 .bookDiviineFull {
-    background-image: url('../image/books/diviine/full.png');
+    background-image: url('../image/books/diviine/full.png?v=2');
 }
 
 .bookSiinFull {
-    background-image: url('../image/books/siin/full.png');
+    background-image: url('../image/books/siin/full.png?v=2');
 }
 
 .bookImageContainer {
