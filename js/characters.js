@@ -398,12 +398,22 @@ class Characters extends Component {
         });
 
         let buttonContainer = Utilities.createDiv('characterSheetButtonSection section', column1);
-        let chatButton = Utilities.createElement('button', '', buttonContainer, 'Chat');
-        chatButton.addEventListener('click', function() {
-            Utilities.closePopups();
-            characterController.getController().selectTab('chat');
-            characterController.getController().getChat().startChatWithCharacter(characterKey);
-        });
+
+        let user = this.getController().getProfile().getUser();
+        if (user != null) {
+            let chatButton = Utilities.createElement('button', '', buttonContainer, 'Chat');
+            chatButton.addEventListener('click', function () {
+                Utilities.closePopups();
+                characterController.getController().selectTab('chat');
+                characterController.getController().getChat().startChatWithCharacter(characterKey);
+            });
+        } else {
+            let loginButton = Utilities.createElement('button', '', buttonContainer, 'Login to Chat');
+            loginButton.addEventListener('click', function () {
+                Utilities.closePopups();
+                characterController.getController().selectTab('profile');
+            });
+        }
         let dressup = this.getController().getDressup();
         if (dressup.hasCharacter(characterKey)) {
             let dressupButton = Utilities.createElement('button', '', buttonContainer, 'Dress');
