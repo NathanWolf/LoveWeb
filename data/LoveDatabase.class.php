@@ -269,44 +269,47 @@ CDATA;
         $properties = $this->getAll('persona_property');
         $images = $this->getAll('persona_image');
 
+        $allCharacters = array();
+        foreach ($characters as $character) {
+            $allCharacters[$character['id']] = $this->fixupCharacter($character);
+        }
+        foreach ($relationships as $relationship) {
+            if (!isset($allCharacters[$relationship['persona_id']])) continue;
+            if (isset($allCharacters[$relationship['persona_id']]['relationships'][$relationship['relationship_id']])) {
+                $allCharacters[$relationship['persona_id']]['relationships'][$relationship['relationship_id']][] = $relationship['related_persona_id'];
+            } else {
+                $allCharacters[$relationship['persona_id']]['relationships'][$relationship['relationship_id']] = array($relationship['related_persona_id']);
+            }
+        }
+        foreach ($tiers as $tier) {
+            if (!isset($allCharacters[$tier['persona_id']])) continue;
+            $allCharacters[$tier['persona_id']]['tiers'][$tier['tier_list_id']] = $tier;
+        }
+        foreach ($properties as $property) {
+            if (!isset($allCharacters[$property['persona_id']])) continue;
+            $allCharacters[$property['persona_id']]['properties'][$property['property_id']] = $property['value'];
+        }
+        foreach ($images as $image) {
+            if (!isset($allCharacters[$image['persona_id']])) continue;
+            $allCharacters[$image['persona_id']]['images'][$image['image_id']] = $image;
+        }
+
         $results = array();
         $alternates = array();
-        foreach ($characters as $character) {
-            $fixed = $this->fixupCharacter($character);;
+        foreach ($allCharacters as $character) {
             if ($character['base_id']) {
                 if (!isset($alternates[$character['base_id']])) {
                     $alternates[$character['base_id']] = array();
                 }
-                $alternates[$character['base_id']][$character['id']] = $fixed;
+                $alternates[$character['base_id']][$character['id']] = $character;
             } else {
-                $fixed['variants'] = array();
-                $results[$character['id']] = $fixed;
+                $character['variants'] = array();
+                $results[$character['id']] = $character;
             }
         }
         foreach ($alternates as $baseId => $alternateCharacters){
             $results[$baseId]['variants'] = $alternateCharacters;
         }
-        foreach ($relationships as $relationship) {
-            if (!isset($results[$relationship['persona_id']])) continue;
-            if (isset($results[$relationship['persona_id']]['relationships'][$relationship['relationship_id']])) {
-                $results[$relationship['persona_id']]['relationships'][$relationship['relationship_id']][] = $relationship['related_persona_id'];
-            } else {
-                $results[$relationship['persona_id']]['relationships'][$relationship['relationship_id']] = array($relationship['related_persona_id']);
-            }
-        }
-        foreach ($tiers as $tier) {
-            if (!isset($results[$tier['persona_id']])) continue;
-            $results[$tier['persona_id']]['tiers'][$tier['tier_list_id']] = $tier;
-        }
-        foreach ($properties as $property) {
-            if (!isset($results[$property['persona_id']])) continue;
-            $results[$property['persona_id']]['properties'][$property['property_id']] = $property['value'];
-        }
-        foreach ($images as $image) {
-            if (!isset($results[$image['persona_id']])) continue;
-            $results[$image['persona_id']]['images'][$image['image_id']] = $image;
-        }
-
         return $results;
     }
 
