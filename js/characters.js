@@ -8,6 +8,7 @@ class Characters extends Component {
     #popupImageElement = null;
     #characterImageElement = null;
     #characters = {};
+    #variants = {};
     #properties = {};
     #filters = {};
     #search = '';
@@ -25,6 +26,9 @@ class Characters extends Component {
         for (let id in characters) {
             if (characters.hasOwnProperty(id)) {
                 this.#characters[id] = characters[id];
+                for (let variantId in characters[id]['variants']) {
+                    this.#variants[variantId] = characters[id]['variants'][variantId];
+                }
             }
         }
     }
@@ -46,7 +50,13 @@ class Characters extends Component {
     }
 
     getCharacter(id) {
-        return this.#characters.hasOwnProperty(id) ? this.#characters[id] : null;
+        if (this.#characters.hasOwnProperty(id)) {
+            return this.#characters[id];
+        }
+        if (this.#variants.hasOwnProperty(id)) {
+            return this.#variants[id];
+        }
+        return null;
     }
 
     getProperty(characterId, propertyKey) {

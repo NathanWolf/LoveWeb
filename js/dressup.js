@@ -42,7 +42,6 @@ class Dressup extends Component {
         let character = characters.getCharacter(characterId);
         let dressupCharacter = this.#dressupCharacters[characterId];
         let name = character.name;
-        let portraitId = dressupCharacter.portrait_id != null ? dressupCharacter.portrait_id : 'portrait';
         let portraitContainer = document.createElement('div');
         portraitContainer.className = 'portraitContainer';
 
@@ -54,7 +53,7 @@ class Dressup extends Component {
 
         let portrait = document.createElement('div');
         portrait.className = 'portrait';
-        portrait.style.backgroundImage = 'url(' + characters.getImage(character.id, portraitId) + ')';
+        portrait.style.backgroundImage = 'url(' + characters.getImage(character.id, 'portrait') + ')';
         portraitContainer.appendChild(portrait);
 
         return portraitContainer;
