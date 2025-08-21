@@ -7,7 +7,6 @@ if (PHP_SAPI !== 'cli') {
 require_once '../data/LoveDatabase.class.php';
 require_once '../data/LoveAdminDatabase.class.php';
 
-
 if (count($argv) < 2) {
     $characterFolder = '../image/dressup/characters';
 } else {

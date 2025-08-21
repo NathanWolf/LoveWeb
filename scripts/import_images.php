@@ -9,7 +9,11 @@ if (count($argv) < 2) {
 }
 
 $importFolder = $argv[1];
-$targetCharacterId = count($argv) > 2 ? $argv[2] : null;
+if (count($argv) < 3) {
+    $characterFolder = '../image/dynamic/characters';
+} else {
+    $characterFolder = $argv[2];
+}
 $iterator = new DirectoryIterator($importFolder);
 foreach ($iterator as $fileInfo) {
     if ($fileInfo->isDot()) continue;
