@@ -270,8 +270,21 @@ CDATA;
         $images = $this->getAll('persona_image');
 
         $results = array();
+        $alternates = array();
         foreach ($characters as $character) {
-            $results[$character['id']] = $this->fixupCharacter($character);
+            $fixed = $this->fixupCharacter($character);;
+            if ($character['base_id']) {
+                if (!isset($alternates[$character['base_id']])) {
+                    $alternates[$character['base_id']] = array();
+                }
+                $alternates[$character['base_id']][$character['id']] = $fixed;
+            } else {
+                $fixed['variants'] = array();
+                $results[$character['id']] = $fixed;
+            }
+        }
+        foreach ($alternates as $baseId => $alternateCharacters){
+            $results[$baseId]['variants'] = $alternateCharacters;
         }
         foreach ($relationships as $relationship) {
             if (!isset($results[$relationship['persona_id']])) continue;

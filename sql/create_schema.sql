@@ -157,7 +157,7 @@ alter table persona
 
 alter table persona
     add column base_id VARCHAR(64) NULL,
-    add column alternate_name VARCHAR(64) NULL,
+    add column variant_name VARCHAR(64) NULL,
     add foreign key (base_id)
     references persona(id)
     on delete cascade
