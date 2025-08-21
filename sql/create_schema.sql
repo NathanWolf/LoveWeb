@@ -652,7 +652,6 @@ alter table dressup_category
 
 CREATE TABLE persona_dressup (
     persona_id VARCHAR(64) NOT NULL,
-    portrait_id VARCHAR(64) NULL,
     width INT NOT NULL,
     height INT NOT NULL,
 
