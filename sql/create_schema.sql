@@ -155,6 +155,14 @@ alter table persona
 alter table persona
     add column first_name_references bigint default null;
 
+alter table persona
+    add column base_id VARCHAR(64) NULL,
+    add column alternate_name VARCHAR(64) NULL,
+    add foreign key (base_id)
+    references persona(id)
+    on delete cascade
+    on update cascade;
+
 create table property
 (
     id VARCHAR(64) NOT NULL,
