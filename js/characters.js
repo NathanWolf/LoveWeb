@@ -362,7 +362,7 @@ class Characters extends Component {
         popup.scrollTop = popup.scrollHeight;
     }
 
-    #showCharacterPopup(characterKey) {
+    #showCharacterPopup(characterKey, variantId) {
         let character = this.getCharacter(characterKey);
         if (character == null) {
             alert("Sorry, something went wrong!");
@@ -394,7 +394,7 @@ class Characters extends Component {
         }
 
         // Column 1:
-        // Images, Buttons, Backstory
+        // Images, Buttons, Variants
         let column1 = Utilities.createDiv('column column_1', popup);
 
         let imageLabel = Utilities.createDiv('label section above clickable', column1, 'Click to View Images');
@@ -433,8 +433,25 @@ class Characters extends Component {
                 characterController.getController().getDressup().showCharacter(characterKey);
             });
         }
-        Utilities.createDiv('backstory section', column1, character.backstory);
-        Utilities.createDiv('label section below', column1, 'Backstory');
+        if (character.base_id != null) {
+            let variantContainer = Utilities.createDiv('variants section', column1);
+            Utilities.createDiv('label section below', column1, 'Variants');
+            let currentButton = Utilities.createElement('button', 'characterVariantButton', variantContainer, 'Current');
+            currentButton.addEventListener('click', function() {
+                characterController.showVariant(character.base_id, null);
+            });
+        } else if (Object.keys(character.variants).length > 0) {
+            let variantContainer = Utilities.createDiv('variants section', column1);
+            Utilities.createDiv('label section below', column1, 'Variants');
+            for (let variantId in character.variants) {
+                if (!character.variants.hasOwnProperty(variantId)) continue;
+                let variant = character.variants[variantId];
+                let variantButton = Utilities.createElement('button', 'characterVariantButton', variantContainer, variant.variant_name);
+                variantButton.addEventListener('click', function() {
+                    characterController.showVariant(characterKey, variantId);
+                });
+            }
+        }
 
         // Column 2
         // Info
@@ -608,6 +625,15 @@ class Characters extends Component {
             if (renownTier.color != null) {
                 renownDiv.style.color = renownTier.color;
             }
+        }
+    }
+
+    showVariant(baseId, variantId) {
+        Utilities.closePopups();
+        if (variantId == null) {
+            this.#showCharacterPopup(baseId);
+        } else {
+            this.#showCharacterPopup(variantId);
         }
     }
 

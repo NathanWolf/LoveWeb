@@ -114,7 +114,10 @@
     padding-top: 0 !important;
     margin-top: 0 !important;
     padding-bottom: 0 !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
     margin-bottom: 0 !important;
+    font-size: 0.9em;
 }
 
 .characterSheetButtonSection button {
@@ -185,6 +188,22 @@
     background-color: var(--popup-background-color);
     padding: 0.5em;
     flex: auto;
+}
+
+.characterSheet .section.variants {
+    border: 2px solid var(--section-border-color);
+    background-color: var(--popup-background-color);
+    padding: 0.5em;
+    flex: auto;
+    overflow-y: auto;
+}
+
+.characterVariantButton {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 2em;
 }
 
 .characterSheet .section.info {
