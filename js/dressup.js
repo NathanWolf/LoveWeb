@@ -40,7 +40,6 @@ class Dressup extends Component {
     #createPortrait(characterId) {
         let characters = this.getController().getCharacters();
         let character = characters.getCharacter(characterId);
-        let dressupCharacter = this.#dressupCharacters[characterId];
         let name = character.name;
         let portraitContainer = document.createElement('div');
         portraitContainer.className = 'portraitContainer';
@@ -171,6 +170,21 @@ class Dressup extends Component {
                 itemThumbnail.addEventListener('click', e => {
                     controller.toggleItem(categoryId, itemId);
                 });
+            }
+        }
+
+        // Show permanent items
+        for (let categoryId in this.#categories) {
+            if (!this.#categories.hasOwnProperty(categoryId)) continue;
+            if (!dressupCharacter.permanent.hasOwnProperty(categoryId)) continue;
+            let categoryItems = dressupCharacter.permanent[categoryId];
+            for (let itemId in categoryItems) {
+                if (!categoryItems.hasOwnProperty(itemId)) continue;
+                let item = categoryItems[itemId];
+                let itemLayer = Utilities.createDiv('dressupLayer', characterContainer);
+                itemLayer.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/items/' + categoryId + '/' + itemId + '.png?version=' + _version +')';
+                itemLayer.style.zIndex = (10 + item.layer).toString();
+                itemLayer.style.aspectRatio = aspectRatio.toString();
             }
         }
 

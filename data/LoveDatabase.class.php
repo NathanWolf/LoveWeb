@@ -408,15 +408,23 @@ CDATA;
         $dressup = $this->getAll('persona_dressup');
         foreach ($dressup as &$dressupRef) {
             $dressupRef['items'] = array();
+            $dressupRef['permanent'] = array();
             $dressupRef['categories'] = array();
         }
         $dressup = $this->index($dressup, 'persona_id');
         $items = $this->getAll('persona_dressup_item');
         foreach ($items as $item) {
-            if (!isset($dressup[$item['persona_id']]['items'][$item['category_id']])) {
-                $dressup[$item['persona_id']]['items'][$item['category_id']] = array();
+            if ($item['permanent']) {
+                if (!isset($dressup[$item['persona_id']]['permanent'][$item['category_id']])) {
+                    $dressup[$item['persona_id']]['permanent'][$item['category_id']] = array();
+                }
+                $dressup[$item['persona_id']]['permanent'][$item['category_id']][$item['image_id']] = $item;
+            } else {
+                if (!isset($dressup[$item['persona_id']]['items'][$item['category_id']])) {
+                    $dressup[$item['persona_id']]['items'][$item['category_id']] = array();
+                }
+                $dressup[$item['persona_id']]['items'][$item['category_id']][$item['image_id']] = $item;
             }
-            $dressup[$item['persona_id']]['items'][$item['category_id']][$item['image_id']] = $item;
         }
         $categories = $this->getAll('persona_dressup_category');
         foreach ($categories as $category) {
@@ -557,8 +565,10 @@ SQL;
             $categoryIdTertiary = 'eye_right_';
         } else if ($categoryId == 'hair_back') {
             $categoryIdSingular = 'back_hair';
+            $categoryIdSecondary = 'backhair_';
         } else if ($categoryId == 'hair_front') {
             $categoryIdSingular = 'front_hair';
+            $categoryIdSecondary = 'fronthair_';
         }
         $title = str_replace($categoryId . '_', '', $title);
         $title = str_replace($categoryIdSingular . '_', '', $title);

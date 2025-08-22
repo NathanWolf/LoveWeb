@@ -692,6 +692,9 @@ CREATE TABLE persona_dressup_item (
 alter table persona_dressup_item
     add linked_image_id VARCHAR(64) null;
 
+alter table persona_dressup_item
+    add permanent boolean not null default false;
+
 CREATE TABLE dressup_outfit (
     id char(40) DEFAULT (uuid()),
     hash char(64) NOT NULL,
