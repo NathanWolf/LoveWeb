@@ -16,7 +16,7 @@ if (count($argv) < 2) {
 $db = new \com\elmakers\love\LoveDatabase();
 $admin = new \com\elmakers\love\LoveAdminDatabase();
 
-$characters = $db->getCharacters();
+$characters = $db->getCharacters(0, true);
 $dressup = $db->getDressupPersona();
 $categories = $db->getDressupCategories();
 
@@ -162,7 +162,7 @@ foreach ($iterator as $fileInfo) {
                 saveCroppedImage($pathname, $thumbnailFile, 128);
             }
 
-            if (isset($dressup[$characterId]['items'][$categoryId][$itemId])) {
+            if (isset($dressup[$characterId]['items'][$categoryId][$itemId]) || isset($dressup[$characterId]['permanent'][$categoryId][$itemId]) ) {
                 echo "Skipping $characterId/$categoryId/$itemId, already exists\n";
                 continue;
             }

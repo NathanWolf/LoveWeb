@@ -259,7 +259,7 @@ CDATA;
         return $characters;
     }
 
-    public function getCharacters($amount = 0) {
+    public function getCharacters($amount = 0, $variants = false) {
         // Note that the db name is "persona" to avoid issues with "character" being a reserved word.
         if ($amount) {
             $characters = $this->getAll('persona', 'created desc');
@@ -298,20 +298,24 @@ CDATA;
         }
 
         $results = array();
-        $alternates = array();
-        foreach ($allCharacters as $character) {
-            if ($character['base_id']) {
-                if (!isset($alternates[$character['base_id']])) {
-                    $alternates[$character['base_id']] = array();
+        if ($variants) {
+            $results = $allCharacters;
+        } else {
+            $alternates = array();
+            foreach ($allCharacters as $character) {
+                if ($character['base_id']) {
+                    if (!isset($alternates[$character['base_id']])) {
+                        $alternates[$character['base_id']] = array();
+                    }
+                    $alternates[$character['base_id']][$character['id']] = $character;
+                } else {
+                    $character['variants'] = array();
+                    $results[$character['id']] = $character;
                 }
-                $alternates[$character['base_id']][$character['id']] = $character;
-            } else {
-                $character['variants'] = array();
-                $results[$character['id']] = $character;
             }
-        }
-        foreach ($alternates as $baseId => $alternateCharacters){
-            $results[$baseId]['variants'] = $alternateCharacters;
+            foreach ($alternates as $baseId => $alternateCharacters){
+                $results[$baseId]['variants'] = $alternateCharacters;
+            }
         }
         return $results;
     }
