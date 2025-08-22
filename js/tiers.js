@@ -245,7 +245,7 @@ class Tiers extends Component {
         }, 50);
     }
 
-    getGroupedCharacters(tierListId, showHidden) {
+    getGroupedCharacters(tierListId, showHidden, showVariants) {
         let characterController = this.getController().getCharacters();
         let tierList = this.getTierList(tierListId);
         if (tierList == null) {
@@ -254,7 +254,7 @@ class Tiers extends Component {
 
         // Group characters by the grouping tier
         let characterGroups = {};
-        let characters = characterController.getCharacterList(showHidden);
+        let characters = characterController.getCharacterList(showHidden, showVariants);
         for (let tierId in tierList.tiers) {
             if (tierList.tiers.hasOwnProperty(tierId)) {
                 let tier = tierList.tiers[tierId];

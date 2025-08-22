@@ -41,10 +41,17 @@ class Characters extends Component {
         }
     }
 
-    getCharacterList(showHidden) {
+    getCharacterList(showHidden, showVariants) {
         let characterList = Object.values(this.#characters);
         if (!showHidden) {
             characterList = characterList.filter((character) => !character.hidden);;
+        }
+        if (showVariants) {
+            let variants = [];
+            for (let i = 0; i < characterList.length; i++) {
+                variants.push(...Object.values(characterList[i].variants));
+            }
+            characterList.push(...variants);
         }
         return characterList;
     }

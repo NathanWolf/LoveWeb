@@ -60,7 +60,7 @@ class CharacterEditor extends Editor {
         let characterList = Utilities.createDiv('characterList', container);
 
         // Group characters by the grouping tier
-        let characterGroups = tiers.getGroupedCharacters(this.#groupTierList, true);
+        let characterGroups = tiers.getGroupedCharacters(this.#groupTierList, true, true);
 
         // Show grouped characters with group banners
         this.#characterIdList = [];
@@ -123,7 +123,7 @@ class CharacterEditor extends Editor {
             alert("Sorry, something went wrong!");
             return;
         }
-        let characterList = characters.getCharacterList(true);
+        let characterList = characters.getCharacterList(true, true);
 
         this.#characterId = characterKey;
         this.#portraitCenter = null;
@@ -491,7 +491,7 @@ class CharacterEditor extends Editor {
         if (!selectedId) {
             Utilities.createElement('option', '', select, '(Choose)').value = '';
         }
-        let characterList = this.getController().getCharacters().getCharacterList(true);
+        let characterList = this.getController().getCharacters().getCharacterList(true, true);
         characterList.sort(function(a, b) {
             return a.name.localeCompare(b.name);
         });
