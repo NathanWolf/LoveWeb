@@ -239,9 +239,19 @@ class Chat extends Component {
 
             let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
-                if (character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
-                    controller.#chooseAlternative(character.id, function(alternativeIndex) {
-                        controller.#chooseSource(character.id, alternativeIndex);
+                // TODO: Remove old-style chat variants?
+                let hasVariants = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0;
+                let variants = Object.values(character.variants);
+                for (let i = 0; i < variants.length; i++) {
+                    let variant = variants[i];
+                    if (variant.chat != null) {
+                        hasVariants = true;
+                        break;
+                    }
+                }
+                if (hasVariants) {
+                    controller.#chooseAlternative(character.id, function(characterId, alternativeIndex) {
+                        controller.#chooseSource(characterId, alternativeIndex);
                     });
                 } else {
                     controller.#chooseSource(character.id, null);
@@ -263,18 +273,25 @@ class Chat extends Component {
         newChatHeader.innerText = 'What version of ' + character.name +'?';
 
         let newChatCharacters = Utilities.createDiv('chatCharacterList', container);
-        let alternativeList = [{index: null, label: 'Present Day', alternate_id: null}];
+        let alternativeList = [{character: character, label: 'Present Day', alternate_id: null}];
         for (let i = 0; i < character.chat.alternatives.length; i++) {
             let alternative = character.chat.alternatives[i];
+            let index = i + 1;
             let label = alternative.hasOwnProperty('label') ? alternative.label : 'Alternative#' + index;
-            alternativeList.push({index: i, label: label, alternate_id: i});
+            alternativeList.push({character: character, label: label, alternate_id: i});
+        }
+        let variants = Object.values(character.variants);
+        for (let i = 0; i < variants.length; i++) {
+            let variant = variants[i];
+            if (variant.chat == null) continue;
+            alternativeList.push({character: variant, label: variant.name, alternate_id: null});
         }
 
         for (let i = 0; i < alternativeList.length; i++) {
             let alternative = alternativeList[i];
-            let portraitContainer = this.#createPortrait(character, alternative.label, alternative.alternate_id);
+            let portraitContainer = this.#createPortrait(alternative.character, alternative.label, alternative.alternate_id);
             portraitContainer.addEventListener('click', function() {
-                callback(alternative.index);
+                callback(alternative.character.id, alternative.alternate_id);
             });
             newChatCharacters.appendChild(portraitContainer);
         }
@@ -356,8 +373,8 @@ class Chat extends Component {
             let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
                 if (character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
-                    controller.#chooseAlternative(character.id, function(alternativeIndex) {
-                        controller.#newChat(targetCharacterId, character.id, targetAlternativeIndex, alternativeIndex, false, realmId);
+                    controller.#chooseAlternative(character.id, function(characterId, alternativeIndex) {
+                        controller.#newChat(targetCharacterId, characterId, targetAlternativeIndex, alternativeIndex, false, realmId);
                     });
                 } else {
                     controller.#newChat(targetCharacterId, character.id, targetAlternativeIndex, null, false, realmId);
