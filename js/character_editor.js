@@ -480,6 +480,13 @@ class CharacterEditor extends Editor {
             return;
         }
 
+        let characterId = this.#characterId;
+        let characters = this.getController().getCharacters();
+        let character = characters.getCharacter(characterId);
+        if (character.base_id != null) {
+            characterId = character.base_id;
+        }
+
         let editor = this;
         const request = new XMLHttpRequest();
         request.responseType = 'json';
@@ -492,7 +499,7 @@ class CharacterEditor extends Editor {
 
         request.open("POST", "data/editor.php", true);
         request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        let parameters = "action=create_variant_character&character=" + this.#characterId
+        let parameters = "action=create_variant_character&character=" + characterId
             + '&user=' + user.id
             + '&token=' + user.token
             + '&label=' + encodeURIComponent(label);
