@@ -239,8 +239,7 @@ class Chat extends Component {
 
             let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
-                // TODO: Remove old-style chat variants?
-                let hasVariants = character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0;
+                let hasVariants = false;
                 let variants = Object.values(character.variants);
                 for (let i = 0; i < variants.length; i++) {
                     let variant = variants[i];
@@ -274,12 +273,6 @@ class Chat extends Component {
 
         let newChatCharacters = Utilities.createDiv('chatCharacterList', container);
         let alternativeList = [{character: character, label: 'Present Day', alternate_id: null}];
-        for (let i = 0; i < character.chat.alternatives.length; i++) {
-            let alternative = character.chat.alternatives[i];
-            let index = i + 1;
-            let label = alternative.hasOwnProperty('label') ? alternative.label : 'Alternative#' + index;
-            alternativeList.push({character: character, label: label, alternate_id: i});
-        }
         let variants = Object.values(character.variants);
         for (let i = 0; i < variants.length; i++) {
             let variant = variants[i];
