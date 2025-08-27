@@ -356,7 +356,7 @@ class Chat extends Component {
             }
             let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
-                if (character.chat != null && character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) {
+                if (Object.values(character.variants).length > 0) {
                     controller.#chooseAlternative(character.id, function(characterId, alternativeIndex) {
                         controller.#newChat(targetCharacterId, characterId, targetAlternativeIndex, alternativeIndex, false, realmId);
                     });
