@@ -22,6 +22,11 @@ try {
                 $event['id'] = $db->insert('timeline_event', $event);
             }
             die(json_encode(array('success' => true, 'user' => $user, 'event' => $event)));
+        case 'create_variant_character':
+            $characterId = getParameter('character');
+            $variantLabel = getParameter('label');
+            $newVariant = $db->createVariant($characterId, $variantLabel);
+            die(json_encode(array('success' => true, 'user' => $user, 'character' => $newVariant)));
         case 'save_character':
             $debug = array();
             $allProperties = $db->getProperties();

@@ -120,7 +120,7 @@ class CharacterEditor extends Editor {
         let characters = this.getController().getCharacters();
         let character = characters.getCharacter(characterKey);
         if (character == null) {
-            alert("Sorry, something went wrong!");
+            alert("Sorry, something went wrong! (Unknown character: " + characterKey + ")");
             return;
         }
         let characterList = characters.getCharacterList(true, true);
@@ -218,6 +218,11 @@ class CharacterEditor extends Editor {
             editor.onNextCharacter();
         });
         this.createSaveConfirm(saveContainer);
+        Utilities.createElement('br', '', saveContainer);
+        let newVariantButton = Utilities.createElement('button', 'newVariant', saveContainer, 'Create New Variant');
+        newVariantButton.addEventListener('click', () => {
+            editor.createVariant();
+        });
 
         let editorContainer = Utilities.createDiv('editing', outerContainer);
         let editorForm = document.createElement('form');
@@ -525,6 +530,48 @@ class CharacterEditor extends Editor {
         }
         index = (index + direction + characterList.length) % characterList.length;
         this.showCharacter(characterList[index]);
+    }
+
+    createVariant() {
+        let profile = this.getController().getProfile();
+        let user = profile.getUser();
+        if (user == null || !user.admin) {
+            alert("Hey, you're not supposed to be doing this!");
+            return;
+        }
+        let label = prompt("Enter a label for this variant. This should not include the character name, and should be something short like Origins, Past, Little.");
+        if (label == "" || label == null) {
+            alert("You didn't enter anything, skipping");
+            return;
+        }
+
+        let editor = this;
+        const request = new XMLHttpRequest();
+        request.responseType = 'json';
+        request.onload = function() {
+            editor.processCreateVariant(this.response);
+        };
+        request.onerror = function() {
+            editor.saveFailed();
+        };
+
+        request.open("POST", "data/editor.php", true);
+        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        let parameters = "action=create_variant_character&character=" + this.#characterId
+            + '&user=' + user.id
+            + '&token=' + user.token
+            + '&label=' + encodeURIComponent(label);
+        request.send(parameters);
+    }
+
+    processCreateVariant(response) {
+        if (!response.success) {
+            this.saveFailed(response.message);
+            return;
+        }
+
+        this.getController().getCharacters().addVariant(response.character);
+        this.showCharacter(response.character.id);
     }
 
     #updatePortraitSelector() {

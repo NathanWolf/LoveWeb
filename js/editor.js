@@ -141,7 +141,6 @@ class Editor extends Component {
         if (!response.success) {
             this.saveFailed(response.message);
             return;
-
         }
         this.#saveButton.disabled = false;
         if (this.#confirmedElement != null) {

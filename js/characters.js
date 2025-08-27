@@ -880,6 +880,14 @@ class Characters extends Component {
         }
     }
 
+    addVariant(variantCharacter) {
+        if (variantCharacter.base_id == null) {
+            alert("Something went wrong (variant with no base id)");
+        }
+        this.#characters[variantCharacter.base_id]['variants'][variantCharacter.id] = variantCharacter;
+        this.#variants[variantCharacter.id] = variantCharacter;
+    }
+
     addRelationship(relationship) {
         let characterId = relationship.persona_id;
         if (this.#characters.hasOwnProperty(characterId)) {

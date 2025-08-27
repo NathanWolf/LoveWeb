@@ -84,6 +84,10 @@ class Database {
         return null;
     }
 
+    public function getMultiple($table, $id, $idField = 'id') {
+        return $this->query("SELECT * FROM $table WHERE $idField=:id", array('id' => $id));
+    }
+
     public function getAll($table, $sort = null) {
         $sql = "SELECT * FROM $table";
         if ($sort) {
