@@ -197,7 +197,7 @@ class Chat extends Component {
     #sortCharacters(characterList) {
         characterList.forEach(function(character) {
             if (character.chat == null) character.chat_tier = 3;
-            else if (character.chat.hasOwnProperty('alternatives') && character.chat.alternatives.length > 0) character.chat_tier = 1;
+            else if (Object.values(character.variants).length > 0) character.chat_tier = 1;
             else character.chat_tier = 2;
         });
 
@@ -239,16 +239,7 @@ class Chat extends Component {
 
             let portraitContainer = controller.#createPortrait(character);
             portraitContainer.addEventListener('click', function() {
-                let hasVariants = false;
-                let variants = Object.values(character.variants);
-                for (let i = 0; i < variants.length; i++) {
-                    let variant = variants[i];
-                    if (variant.chat != null) {
-                        hasVariants = true;
-                        break;
-                    }
-                }
-                if (hasVariants) {
+                if (Object.values(character.variants).length > 0) {
                     controller.#chooseAlternative(character.id, function(characterId, alternativeIndex) {
                         controller.#chooseSource(characterId, alternativeIndex);
                     });
