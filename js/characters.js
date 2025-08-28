@@ -152,7 +152,6 @@ class Characters extends Component {
                 let character = this.#characters[id];
                 let shouldShow = this.#shouldShow(character);
                 if (shouldShow) {
-                    console.log(character.name);
                     characterCount++;
                 }
                 for (let containerId in character.containers) {
