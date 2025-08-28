@@ -350,13 +350,20 @@ class Utilities {
 
         return false;
     }
-    static translateToFlag(value) {
+    static translateToFlag(flagType, value) {
+        if (flagType == 'birth_realm') flagType = 'realm';
+        else if (flagType == 'home_realm') flagType = 'realm';
+
         value = value.toLowerCase();
+        value = value.replaceAll(" / ", "_");
         value = value.replaceAll(" ", "_");
         value = value.replaceAll("/", "_");
         value = value.replaceAll(")", "");
         value = value.replaceAll("(", "");
         value = value.replaceAll("the_", "");
-        return value;
+
+        if (value == 'straight') value = 'straight_ally';
+
+        return flagType + '_' + value;
     }
 }

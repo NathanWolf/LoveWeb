@@ -152,7 +152,7 @@ class Realms extends Component {
         let flagDiv = Utilities.createDiv('section flag', flagsDiv);
         Utilities.createDiv('label flag', flagDiv, 'Flag');
         let imageDiv = Utilities.createDiv('flagImage', flagDiv);
-        imageDiv.style.backgroundImage = 'url(image/flags/' + Utilities.translateToFlag(realm.id) + '.jpg)';
+        imageDiv.style.backgroundImage = 'url(image/flags/' + Utilities.translateToFlag('realm', realm.id) + '.png?v=' + _version +')';
 
         // Column 2
         // Properties, Characters

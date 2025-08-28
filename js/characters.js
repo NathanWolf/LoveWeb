@@ -500,8 +500,12 @@ class Characters extends Component {
             Utilities.createDiv('label flag', flagDiv, propertyLabel);
             let value = character.properties.hasOwnProperty(flagId) ? character.properties[flagId] : 'none';
             let imageDiv = Utilities.createDiv('flagImage', flagDiv);
+            if (value != 'none' && flagId == 'pronouns' && character.properties.hasOwnProperty('gender')) {
+                let gender = character.properties['gender'];
+                value = gender + '_' + value;
+            }
             imageDiv.title = value;
-            imageDiv.style.backgroundImage = 'url(image/flags/' + Utilities.translateToFlag(value) + '.jpg)';
+            imageDiv.style.backgroundImage = 'url(image/flags/' + Utilities.translateToFlag(flagId, value) + '.png?v=' + _version + ')';
         }
 
         let preferencesDiv = Utilities.createDiv('preferences', column3);

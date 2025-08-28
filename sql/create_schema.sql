@@ -175,6 +175,7 @@ create table property
 insert into property (id, name) values ('sexuality', 'Sexuality');
 insert into property (id, name) values ('species', 'Species');
 insert into property (id, name) values ('pronouns', 'Pronouns');
+insert into property (id, name) values ('gender', 'Gender');
 insert into property (id, name) values ('title', 'Title');
 
 alter table property
