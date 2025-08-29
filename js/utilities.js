@@ -104,14 +104,28 @@ class Utilities {
         parent.appendChild(popupDiv);
 
         let hasPreviousButton = buttons.hasOwnProperty('previous') && buttons.previous !== false;
-        let hasLeftButtons = hasPreviousButton;
         let hasNextButton = buttons.hasOwnProperty('next') && buttons.previous !== false;
         let hasCloseButton = buttons.hasOwnProperty('close') && buttons.close !== false;
+        let hasDownloadButton = buttons.hasOwnProperty('download') && buttons.download !== false;
         let hasRightButtons = hasNextButton || hasCloseButton;
+        let hasLeftButtons = hasPreviousButton || hasDownloadButton;
 
         if (hasLeftButtons) {
             let leftContainer = this.createDiv('leftDialogButtons', contentDiv);
-            this.createDiv('emptyButtonContainer', leftContainer);
+            if (hasDownloadButton) {
+                let callback = buttons.download;
+                if (callback === true) callback = null;
+                let downloadContainer = this.createDiv('downloadButtonContainer', leftContainer);
+                let downloadButton = this.createElement('button', 'downloadButton', downloadContainer);
+                downloadButton.title = 'Download';
+                downloadButton.addEventListener('click', function() {
+                    if (callback != null) {
+                        callback(popupDiv);
+                    }
+                });
+            } else {
+                this.createDiv('emptyButtonContainer', leftContainer);
+            }
             if (hasPreviousButton) {
                 let callback = buttons.previous;
                 if (callback === true) callback = null;

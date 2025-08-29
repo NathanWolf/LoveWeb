@@ -659,6 +659,13 @@ class Characters extends Component {
                 characterController.onPreviousImage();
             }
         };
+
+        let user = this.getController().getProfile().getUser();
+        if (user != null && user.admin) {
+            buttons.download = function() {
+                characterController.onDownloadImage();
+            };
+        }
         this.#popupImageId = 'full';
         this.#popupSecondaryImageId = null;
         this.#popupImageElement = Utilities.showPopup(element.parentNode, 'characterImageContainer', buttons);
@@ -760,6 +767,19 @@ class Characters extends Component {
 
     onPreviousImage() {
         this.#goImage(-1);
+    }
+
+    onDownloadImage() {
+        let imageId = this.#popupSecondaryImageId != null ? this.#popupSecondaryImageId : this.#popupImageId;
+        let character = this.getCharacter(this.#popupCharacterId);
+        if (character == null || !character.images.hasOwnProperty(imageId)) return;
+
+        let link = document.createElement('a');
+        link.href = this.getImage(this.#popupCharacterId, imageId);
+        link.download = this.#popupCharacterId + '_' + imageId + '.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     #goImage(direction) {

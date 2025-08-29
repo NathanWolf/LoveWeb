@@ -39,16 +39,20 @@
     flex-direction: column;
 }
 
-.closeButtonContainer, .nextButtonContainer, .previousButtonContainer, .emptyButtonContainer {
+.closeButtonContainer, .nextButtonContainer, .previousButtonContainer, .emptyButtonContainer, .downloadButtonContainer {
     flex-basis: 50%;
 }
 
-.closeButton, .nextButton, .previousButton {
+.closeButton, .nextButton, .previousButton, .downloadButton {
     background-size: contain;
     background-repeat: no-repeat;
     width: 64px;
     height: 64px;
     margin: 0;
+}
+
+.downloadButtonContainer {
+    margin-top: 64px;
 }
 
 .closeButton {
@@ -61,6 +65,10 @@
 
 .previousButton {
     background-image: url('../image/ui/previous.png');
+}
+
+.downloadButton {
+    background-image: url('../image/ui/download.png');
 }
 
 .clickable {
