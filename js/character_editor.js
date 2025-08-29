@@ -218,7 +218,10 @@ class CharacterEditor extends Editor {
             editor.onNextCharacter();
         });
         this.createSaveConfirm(saveContainer);
-        Utilities.createElement('br', '', saveContainer);
+        let doneButton = Utilities.createElement('button', 'doneButton', saveContainer, 'Done');
+        doneButton.addEventListener('click', () => {
+            editor.show();
+        });
         let newVariantButton = Utilities.createElement('button', 'newVariant', saveContainer, 'Create New Variant');
         newVariantButton.addEventListener('click', () => {
             editor.createVariant();
