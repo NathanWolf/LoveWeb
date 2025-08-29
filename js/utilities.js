@@ -350,7 +350,9 @@ class Utilities {
 
         return false;
     }
+
     static translateToFlag(flagType, value) {
+        if (value == 'none' || value == null || value == '') return 'none';
         if (flagType == 'birth_realm') flagType = 'realm';
         else if (flagType == 'home_realm') flagType = 'realm';
 
