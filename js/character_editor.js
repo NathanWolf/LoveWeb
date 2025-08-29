@@ -308,8 +308,13 @@ class CharacterEditor extends Editor {
             character.middle_name = middleNameInput.value;
             character.birth_name = birthNameInput.value;
             character.name = character.first_name;
+
+            // TODO: build these names server-side
             if (nickNameInput.value.length > 0) {
                 character.name = nickNameInput.value;
+            }
+            if (character.variant_name != null && character.variant_name.length > 0) {
+                character.name = character.name + ' (' + character.variant_name + ')';
             }
             character.full_name = character.first_name;
             if (lastNameInput.value.length > 0) {
