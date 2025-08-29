@@ -304,13 +304,13 @@ CDATA;
         } else {
             $alternates = array();
             foreach ($allCharacters as $character) {
+                $character['variants'] = array();
                 if ($character['base_id']) {
                     if (!isset($alternates[$character['base_id']])) {
                         $alternates[$character['base_id']] = array();
                     }
                     $alternates[$character['base_id']][$character['id']] = $character;
                 } else {
-                    $character['variants'] = array();
                     $results[$character['id']] = $character;
                 }
             }
