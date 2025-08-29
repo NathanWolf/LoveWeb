@@ -877,7 +877,9 @@ class Characters extends Component {
 
     updateCharacter(characterInfo) {
         if (this.#variants.hasOwnProperty(characterInfo.id)) {
-            this.#variants[characterInfo.id] = Utilities.merge(this.#variants[characterInfo.id], characterInfo);
+            let variantCharacter = Utilities.merge(this.#variants[characterInfo.id], characterInfo);;
+            this.#variants[variantCharacter.id] = variantCharacter;
+            this.#characters[variantCharacter.base_id].variants[variantCharacter.id] = variantCharacter;
         } else if (this.#characters.hasOwnProperty(characterInfo.id)) {
             this.#characters[characterInfo.id] = Utilities.merge(this.#characters[characterInfo.id], characterInfo);
         } else {
