@@ -257,11 +257,10 @@ CDATA;
     }
 
     public function getNewCharacters($amount) {
-        $characters = $this->index($characters);
-        return $characters;
+        return $this->getCharacters(false, $amount);
     }
 
-    public function getCharacters($amount = 0, $variants = false) {
+    public function getCharacters($variants = false, $amount = 0) {
         // Note that the db name is "persona" to avoid issues with "character" being a reserved word.
         if ($amount) {
             $characters = $this->getAll('persona', 'created desc');

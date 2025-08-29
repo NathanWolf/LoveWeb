@@ -16,7 +16,7 @@ if (count($argv) < 2) {
 $db = new \com\elmakers\love\LoveDatabase();
 $admin = new \com\elmakers\love\LoveAdminDatabase();
 
-$characters = $db->getCharacters(0, true);
+$characters = $db->getCharacters(true);
 $dressup = $db->getDressupPersona();
 $categories = $db->getDressupCategories();
 

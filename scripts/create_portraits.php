@@ -12,7 +12,7 @@ require_once '../data/LoveDatabase.class.php';
 
 $db = new \com\elmakers\love\LoveDatabase();
 $limit = count($argv) > 6 ? $argv[6] : 0;
-$characters = $db->getCharacters($limit);
+$characters = $db->getNewCharacters($limit);
 $characterFolder = $argv[1];
 $outputFolder = $argv[2];
 if (!file_exists($outputFolder)) {

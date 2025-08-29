@@ -15,7 +15,7 @@ require_once '../data/LoveAdminDatabase.class.php';
 
 $db = new \com\elmakers\love\LoveDatabase();
 $admin = new \com\elmakers\love\LoveAdminDatabase();
-$characters = $db->getCharacters(0, true);
+$characters = $db->getCharacters(true);
 
 $iterator = new DirectoryIterator($characterFolder);
 foreach ($iterator as $fileInfo) {
