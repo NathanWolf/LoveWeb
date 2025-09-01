@@ -267,7 +267,6 @@ class Chat extends Component {
         let variants = Object.values(character.variants);
         for (let i = 0; i < variants.length; i++) {
             let variant = variants[i];
-            if (variant.chat == null) continue;
             alternativeList.push({character: variant, label: variant.name, alternate_id: null});
         }
 
