@@ -256,12 +256,22 @@ class Tiers extends Component {
         for (let tierId in tierList.tiers) {
             if (tierList.tiers.hasOwnProperty(tierId)) {
                 let tier = tierList.tiers[tierId];
+
+                let theme = document.documentElement.getAttribute('data-theme');
+                let darkVariable = theme == 'dark' ? 'dark_dark' : 'dark';
+                let colorVariable = theme == 'dark' ? 'dark_color' : 'color';
+
+                let color = tier[colorVariable];
+                if (color == null) color = tier.color;
+                let darkFlag = tier[darkVariable];
+                if (darkFlag == null) darkFlag = tier.dark;
+
                 characterGroups[tier.id] = {
                     id: tier.id,
                     tier_list_id: tierListId,
                     name: tier.name,
-                    color: tier.color,
-                    dark: tier.dark,
+                    color: color,
+                    dark: darkFlag,
                     description: tier.description,
                     characters: []
                 };

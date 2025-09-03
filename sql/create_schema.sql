@@ -111,6 +111,10 @@ alter table tier
 alter table tier
     add description text null;
 
+alter table tier
+    add dark_color VARCHAR(64) NULL,
+    add dark_dark boolean null;
+
 create table persona
 (
     id VARCHAR(64) NOT NULL,
