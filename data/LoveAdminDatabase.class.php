@@ -124,4 +124,13 @@ SQL;
         $newCharacter['images'] = $newCharacterImages;
         return $newCharacter;
     }
+
+    public function updatePersonaTier($personaId, $tierListId, $tierId) {
+        $sql = <<<SQL
+INSERT INTO persona_tier (persona_id, tier_list_id, tier_id) values (:persona, :list, :tier)
+ON DUPLICATE KEY UPDATE tier_id=VALUES(tier_id)
+SQL;
+        $parameters = array('persona' => $personaId, 'list' => $tierListId, 'tier' => $tierId);
+        $this->execute($sql, $parameters);
+    }
 }
