@@ -72,9 +72,7 @@ class CharacterEditor extends Editor {
             if (group.dark) {
                 Utilities.addClass(header, 'dark');
             }
-            group.characters.forEach(function(characterTier) {
-                let character = characters.getCharacter(characterTier.persona_id);
-
+            group.characters.forEach(function(character) {
                 if (controller.#filterProperty != '*' && character.properties.hasOwnProperty(controller.#filterProperty)) return;
 
                 let portraitContainer = document.createElement('div');

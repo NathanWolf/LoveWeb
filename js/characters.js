@@ -1,5 +1,6 @@
 class Characters extends Component {
-    #groupTierList = 'renown';
+    #secondaryGroupTierList = 'renown';
+    #primaryGroupTierList = 'media';
     #characterIdList = [];
     #groupContainers = {};
     #popupCharacterId = null;
@@ -159,7 +160,8 @@ class Characters extends Component {
                     if (character.containers.hasOwnProperty(containerId)) {
                         Utilities.setVisible(character.containers[containerId], shouldShow);
                         if (shouldShow) {
-                            visibleGroups[character.groupId] = true;
+                            visibleGroups[character.primaryGroupId] = true;
+                            visibleGroups[character.secondaryGroupId] = true;
                         }
                     }
                 }
@@ -205,6 +207,20 @@ class Characters extends Component {
         return filterSelect;
     }
 
+    #createHeader(group, container, className) {
+        let header = Utilities.createDiv('characterGroupHeader ' + group.id + ' ' + group.tier_list_id, container);
+        Utilities.createSpan('', header, group.name);
+        if (group.description != null) {
+            Utilities.createSpan('characterGroupDescription', header, group.description);
+        }
+        header.style.backgroundColor = group.color;
+        if (group.dark) {
+            Utilities.addClass(header, 'dark');
+        }
+        this.#groupContainers[group.id] = header;
+        return header;
+    }
+
     show() {
         let characterController = this;
         let container = this.getElement();
@@ -244,47 +260,46 @@ class Characters extends Component {
         let characterList = Utilities.createDiv('characterList', container);
 
         // Group characters by the grouping tier
-        let characterGroups = tiers.getGroupedCharacters(this.#groupTierList);
+        let characters = this.getCharacterList();
+        let primaryGroups = tiers.groupCharacters(characters, this.#primaryGroupTierList);
 
         // Show grouped characters with group banners
-        Object.values(characterGroups).forEach(function(group) {
-            if (group.characters.length == 0) return;
-            let header = Utilities.createDiv('characterGroupHeader', characterList);
-            Utilities.createSpan('', header, group.name);
-            if (group.description != null) {
-                Utilities.createSpan('characterGroupDescription', header, group.description);
-            }
-            header.style.backgroundColor = group.color;
-            if (group.dark) {
-                Utilities.addClass(header, 'dark');
-            }
-            characterController.#groupContainers[group.id] = header;
-            group.characters.forEach(function(characterTier) {
-                let character = characterController.getCharacter(characterTier.persona_id);
-                let portraitContainer = document.createElement('div');
-                portraitContainer.className = 'portraitContainer';
-                portraitContainer.addEventListener('click', function() {
-                    characterController.#showCharacterPopup(character.id);
+        Object.values(primaryGroups).forEach(function(primaryGroup) {
+            if (primaryGroup.characters.length == 0) return;
+            characterController.#createHeader(primaryGroup, characterList);
+
+            let secondaryGroups = tiers.groupCharacters(primaryGroup.characters, characterController.#secondaryGroupTierList);
+            Object.values(secondaryGroups).forEach(function(secondaryGroup) {
+                if (secondaryGroup.characters.length == 0) return;
+
+                characterController.#createHeader(secondaryGroup, characterList);
+                secondaryGroup.characters.forEach(function(character) {
+                    let portraitContainer = document.createElement('div');
+                    portraitContainer.className = 'portraitContainer';
+                    portraitContainer.addEventListener('click', function() {
+                        characterController.#showCharacterPopup(character.id);
+                    });
+
+                    let portraitName = document.createElement('div');
+                    portraitName.className = 'portraitName';
+                    portraitName.innerText = character.name;
+                    portraitContainer.appendChild(portraitName);
+
+                    let portrait = document.createElement('div');
+                    portrait.className = 'portrait';
+                    portrait.style.backgroundImage = 'url(' + characterController.getPortrait(character.id) + ')';
+                    portraitContainer.appendChild(portrait);
+
+                    characterList.appendChild(portraitContainer);
+
+                    character.containers = {
+                        portrait: portrait,
+                        name: portraitName
+                    };
+                    character.primaryGroupId = primaryGroup.id;
+                    character.secondaryGroupId = secondaryGroup.id;
+                    characterController.#characterIdList.push(character.id);
                 });
-
-                let portraitName = document.createElement('div');
-                portraitName.className = 'portraitName';
-                portraitName.innerText = character.name;
-                portraitContainer.appendChild(portraitName);
-
-                let portrait = document.createElement('div');
-                portrait.className = 'portrait';
-                portrait.style.backgroundImage = 'url(' + characterController.getPortrait(character.id) + ')';
-                portraitContainer.appendChild(portrait);
-
-                characterList.appendChild(portraitContainer);
-
-                character.containers = {
-                    portrait: portrait,
-                    name: portraitName
-                };
-                character.groupId = group.id;
-                characterController.#characterIdList.push(character.id);
             });
         });
 
@@ -335,13 +350,12 @@ class Characters extends Component {
         let popup = Utilities.showPopup(element.parentNode, 'allCharacters');
         let characterController = this;
         let tiers = this.getController().getTiers();
-        let characterGroups = tiers.getGroupedCharacters(this.#groupTierList);
+        let characterGroups = tiers.getGroupedCharacters(this.#primaryGroupTierList);
         let scale = 0.2;
         Object.values(characterGroups).forEach(function(group) {
             if (group.characters.length == 0) return;
             // TODO: group separation?
-            group.characters.forEach(function(characterTier) {
-                let character = characterController.getCharacter(characterTier.persona_id);
+            group.characters.forEach(function(character) {
                 if (!characterController.#shouldShow(character)) return;
                 if (!character.images.hasOwnProperty('full')) return;
                 let fullImage = character.images.full;

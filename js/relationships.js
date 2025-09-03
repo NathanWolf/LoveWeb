@@ -71,8 +71,7 @@ class Relationships extends Component {
                 header.style.color = 'white';
             }
 
-            group.characters.forEach(function (characterTier) {
-                let character = characters.getCharacter(characterTier.persona_id);
+            group.characters.forEach(function (character) {
                 if (!character.hasOwnProperty('relationships')) return;
 
                 // Make a table spaced out to look like a family tree

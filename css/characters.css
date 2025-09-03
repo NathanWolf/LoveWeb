@@ -386,6 +386,11 @@ table.properties th {
     color: var(--header-dark-color);
 }
 
+.characterGroupHeader.media {
+    text-align: center;
+    font-size: 3em;
+}
+
 tr.headerRow {
     border: none;
 }

@@ -245,8 +245,7 @@ class Tiers extends Component {
         }, 50);
     }
 
-    getGroupedCharacters(tierListId, showHidden, showVariants) {
-        let characterController = this.getController().getCharacters();
+    groupCharacters(characters, tierListId) {
         let tierList = this.getTierList(tierListId);
         if (tierList == null) {
             tierList = {};
@@ -254,12 +253,12 @@ class Tiers extends Component {
 
         // Group characters by the grouping tier
         let characterGroups = {};
-        let characters = characterController.getCharacterList(showHidden, showVariants);
         for (let tierId in tierList.tiers) {
             if (tierList.tiers.hasOwnProperty(tierId)) {
                 let tier = tierList.tiers[tierId];
                 characterGroups[tier.id] = {
                     id: tier.id,
+                    tier_list_id: tierListId,
                     name: tier.name,
                     color: tier.color,
                     dark: tier.dark,
@@ -268,19 +267,17 @@ class Tiers extends Component {
                 };
             }
         }
-        characterGroups['unknown'] = {name: 'Unknown', characters: [], color: 'grey', dark: 0};
-        let defaultTier = {tier_id: 'unknown', priority: 0};
+        characterGroups['none'] = {name: 'None', characters: [], color: 'grey', dark: 0, id: 'none', tier_list_id: tierListId};
+        let defaultTier = {tier_id: 'none', priority: 0};
         for (let characterId in characters) {
-            if (characters.hasOwnProperty(characterId) && (showHidden || !characters[characterId].hidden)) {
+            if (characters.hasOwnProperty(characterId)) {
                 let character = characters[characterId];
                 let tier = defaultTier;
                 if (character.tiers.hasOwnProperty(tierListId)) {
                     tier = character.tiers[tierListId];
-                } else {
-                    tier = {...tier};
-                    tier.persona_id = character.id;
                 }
-                characterGroups[tier.tier_id].characters.push(tier);
+                character.priority = tier.priority;
+                characterGroups[tier.tier_id].characters.push(character);
             }
         }
 
@@ -289,7 +286,7 @@ class Tiers extends Component {
             if (characterGroups.hasOwnProperty(tierId)) {
                 characterGroups[tierId].characters.sort(function(a, b) {
                     if (b.priority == a.priority) {
-                        return a.persona_id.localeCompare(b.persona_id);
+                        return a.name.localeCompare(b.name);
                     }
                     return b.priority - a.priority;
                 });
@@ -297,6 +294,12 @@ class Tiers extends Component {
         }
 
         return characterGroups;
+    }
+
+    getGroupedCharacters(tierListId, showHidden, showVariants) {
+        let characterController = this.getController().getCharacters();
+        let characters = characterController.getCharacterList(showHidden, showVariants);
+        return this.groupCharacters(characters, tierListId);
     }
 
     onHistoryChange() {
