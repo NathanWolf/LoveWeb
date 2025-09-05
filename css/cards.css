@@ -6,3 +6,32 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.cardsConfigureChoiceHeader {
+    font-size: 1.2em;
+    background-color: var(--name-background-color);
+    color: var(--name-color);
+    padding: 12px;
+    margin-top: 1em;
+}
+
+.configureChoiceInput {
+    margin-right: 8px;
+}
+
+.configureChoiceContainer {
+    display: flex;
+}
+
+.configureChoiceInput input {
+    padding: 0;
+    margin: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.configureChoiceLabel {
+    flex: auto;
+    font-size: 18px;
+    text-align: left;
+}
