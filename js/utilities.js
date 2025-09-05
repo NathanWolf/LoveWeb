@@ -5,10 +5,12 @@ class Utilities {
         underline: false,
     });
 
-    static shuffle = function(a) {
-        return a.map(value => ({ value, sort: Math.random() }))
-            .sort((a, b) => a.sort - b.sort)
-            .map(({ value }) => value);
+    static shuffle = function(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
     }
 
     static mapArray = function(obj) {
