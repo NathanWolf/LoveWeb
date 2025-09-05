@@ -3,6 +3,11 @@
 
 <div class="buttonContainer">
 
+    <div class="navigation gamesButtonAndLabel" data-tab="cards">
+        <div class="buttonCards gamesButton"></div>
+        <div class="gamesButtonLabel">Card Game</div>
+    </div>
+
     <div class="navigation gamesButtonAndLabel" data-tab="minii">
         <div class="buttonMini gamesButton"></div>
         <div class="gamesButtonLabel">Minii Lands</div>
@@ -18,9 +23,8 @@
         <div class="gamesButtonLabel">Quizzes</div>
     </div>
 
-
     <div class="navigation gamesButtonAndLabel" data-tab="flashCards">
-        <div class="buttonCards gamesButton"></div>
+        <div class="buttonFlashCards gamesButton"></div>
         <div class="gamesButtonLabel">Flash Cards</div>
     </div>
 

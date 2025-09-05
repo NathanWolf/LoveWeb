@@ -23,6 +23,10 @@
     background-image: url('../image/buttons/quizzes.png');
 }
 
+.buttonFlashCards {
+    background-image: url('../image/buttons/cards.png');
+}
+
 .buttonCards {
     background-image: url('../image/buttons/cards.png');
 }

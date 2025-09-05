@@ -19,6 +19,7 @@ class Love {
     #timelineEditor = new TimelineEditor(this, document.getElementById('timelineEditor'));
     #info = new Info(this, document.getElementById('info'));
     #books = new Books(this, document.getElementById('books'));
+    #cards = new Cards(this, document.getElementById('cards'));
     #slideshow = new Slideshow(this, document.getElementById('slideshow'));
     #mainMenu = document.getElementById('mainMenu');
     #mainTabContainer = document.getElementById('mainTabContainer');
@@ -42,7 +43,8 @@ class Love {
         profile: this.#profile,
         info: this.#info,
         books: this.#books,
-        slideshow: this.#slideshow
+        slideshow: this.#slideshow,
+        cards: this.#cards
     };
 
     constructor() {

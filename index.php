@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="css/mini.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/dressup.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/books.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/cards.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/history.js?v=<?=VERSION?>"></script>
@@ -49,6 +50,7 @@
     <script type="text/javascript" src="js/mini.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/dressup.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/books.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/cards.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
         var _love;
@@ -125,6 +127,9 @@
                 <div>Click the Burger for More!</div>
             </div>
             <?php require('tabs/intro.inc.php'); ?>
+        </div>
+
+        <div class="tab" id="cards">
         </div>
 
         <div class="tab" id="slideshow" style="display: none">
