@@ -15,6 +15,10 @@
     margin-top: 1em;
 }
 
+.cardsStartGameButton {
+    width: 100%;
+}
+
 .configureChoiceInput {
     margin-right: 8px;
 }
@@ -34,4 +38,48 @@
     flex: auto;
     font-size: 18px;
     text-align: left;
+}
+
+#cardsInfoContainer {
+    margin-top: 10px;
+}
+
+#cardsGameButtonContainer {
+    margin-top: 10px;
+}
+
+.cardsCharacterCard {
+    min-width: 400px;
+    min-height: 626px;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    background: url('../image/cards/characterCard.png');
+}
+
+.cardsCharacterCardBack {
+    min-width: 400px;
+    min-height: 626px;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    background: url('../image/cards/characterCardBack.png');
+}
+
+.cardsCharacterCardTitle {
+    font-size: 3em;
+    width: 100%;
+    text-align: center;
+    height: 75px;
+    vertical-align: middle;
+    color: #993C16;
+}
+
+.cardsCharacterCardPortrait {
+    margin-top: 4px;
+    min-width: 256px;
+    min-height: 546px;
+    overflow: hidden;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-y: 0;
 }

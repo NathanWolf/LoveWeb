@@ -130,6 +130,20 @@
         </div>
 
         <div class="tab" id="cards">
+            <div id="cardsConfigureContainer" style="display: none">
+
+            </div>
+            <div id="cardsGameContainer" style="display: none">
+                <div id="cardsCardContainer">
+
+                </div>
+                <div id="cardsInfoContainer">
+
+                </div>
+                <div id="cardsGameButtonContainer">
+
+                </div>
+            </div>
         </div>
 
         <div class="tab" id="slideshow" style="display: none">
