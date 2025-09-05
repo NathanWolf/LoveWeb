@@ -223,6 +223,7 @@ class Tiers extends Component {
     deactivate() {
         super.deactivate();
         clearTimeout(this.#scrollTimer);
+        this.getController().getHistory().unset('list');
         this.#scrolling = 0;
         this.#clicked = null;
         this.#dragging = false;
@@ -322,10 +323,6 @@ class Tiers extends Component {
                 this.onSelectTierList(list);
             }
         }
-    }
-
-    deactivate() {
-        this.getController().getHistory().unset('list');
     }
 
     getParent() {
