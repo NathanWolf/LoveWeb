@@ -5,7 +5,7 @@
 
     <div class="navigation gamesButtonAndLabel" data-tab="cards">
         <div class="buttonCards gamesButton"></div>
-        <div class="gamesButtonLabel">Card Game</div>
+        <div class="gamesButtonLabel">Card Game (W.I.P.)</div>
     </div>
 
     <div class="navigation gamesButtonAndLabel" data-tab="minii">

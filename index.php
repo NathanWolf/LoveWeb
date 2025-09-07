@@ -129,7 +129,7 @@
             <?php require('tabs/intro.inc.php'); ?>
         </div>
 
-        <div class="tab" id="cards">
+        <div class="tab" id="cards" style="display: none">
             <div id="cardsConfigureContainer" style="display: none">
 
             </div>
