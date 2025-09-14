@@ -32,7 +32,7 @@ foreach ($iterator as $fileInfo) {
         $newPersona = array('id' => $characterId, 'first_name' => $name);
         $admin->insert('persona', $newPersona);
 
-        $newPersonaTier = array('persona_id' => $characterId, 'tier_list_id' => 'renown', 'tier_id' => 'minor');
+        $newPersonaTier = array('persona_id' => $characterId, 'tier_list_id' => 'renown', 'tier_id' => 'unrelated');
         $admin->insert('persona_tier', $newPersonaTier);
 
         $newPersonaImage = array('persona_id' => $characterId, 'image_id' => 'full', 'title' => 'Full Body',
