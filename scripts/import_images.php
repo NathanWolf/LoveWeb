@@ -22,6 +22,7 @@ foreach ($iterator as $fileInfo) {
     $info = pathinfo($pathname);
     $filename = $info['filename'];
     $filename = strtolower($filename);
+    if (strlen($filename) == 0) continue;
     if ($filename == 'other' || $filename == 'background') {
         echo "Skipping $filename\n";
         continue;
