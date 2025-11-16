@@ -172,13 +172,14 @@ foreach ($iterator as $fileInfo) {
             switch ($categoryId) {
                 case 'wings': $layer = 4; break;
                 case 'skin': $layer = 6; break;
+                case 'undershirts': $layer = 8; break;
                 case 'socks': $layer = 10; break;
                 case 'shoes': $layer = 20; break;
                 case 'pants': $layer = 30; break;
                 case 'shorts': $layer = 40; break;
                 case 'skirts': $layer = 50; break;
                 case 'dresses': $layer = 60; break;
-                case 'shirts': $layer = 75; break; // undershirts: 70
+                case 'shirts': $layer = 75; break;
                 case 'armwarmers': $layer = 72; break;
                 case 'jackets': $layer = 80; break;
                 case 'accessories': $layer = 90; break;
