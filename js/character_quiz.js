@@ -58,6 +58,7 @@ class CharacterQuiz extends Component {
         Utilities.empty(element);
         let container = Utilities.createDiv('chosenCharacter', element);
         let characters = this.getController().getCharacters();
+        let games = this.getController().getGames();
         let scores = this.#getSortedScores();
         let chosen = scores.length == 0 ? null : scores[0];
         if (chosen == null || chosen.score == 0) {
@@ -170,7 +171,7 @@ class CharacterQuiz extends Component {
     #nextQuestion() {
         let element = this.getElement();
         element.scrollTop = 0;
-        let characters = this.getController().getCharacters();
+        let games = this.getController().getGames();
         Utilities.empty(element);
         if (this.#remainingQuestions.length === 0) {
             this.#showResults();
@@ -207,7 +208,7 @@ class CharacterQuiz extends Component {
                 answers[value] = true;
             }
         }
-        let allCharacters = characters.getCharacterList();
+        let allCharacters = games.getCharacterList('character_quiz');
         for (let i = 0; i < allCharacters.length; i++) {
             if (Object.values(answers).length >= this.#maxAnswers) break;
             let character = allCharacters[i];
@@ -249,8 +250,8 @@ class CharacterQuiz extends Component {
 
     onAnswerClick(propertyValue) {
         let propertyId = this.#currentQuestion.id;
-        let characters = this.getController().getCharacters();
-        let allCharacters = characters.getCharacterList();
+        let games = this.getController().getGames();
+        let allCharacters = games.getCharacterList('character_quiz');
         for (let i = 0; i < allCharacters.length; i++) {
             let character = allCharacters[i];
             let characterValue = character.properties.hasOwnProperty(propertyId) ? character.properties[propertyId] : 'None';
