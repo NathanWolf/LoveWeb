@@ -204,4 +204,18 @@ class Database {
         }
         return $results;
     }
+
+    static function multiIndex(&$data, $primary, $secondary) {
+        $results = array();
+        foreach ($data as &$record) {
+            $recordId = $record[$primary];
+            $secondaryValue = $record[$secondary];
+            if (isset($results[$recordId])) {
+                $results[$recordId][$secondaryValue] = $record;
+            } else {
+                $results[$recordId] = array($secondaryValue => $record);
+            }
+        }
+        return $results;
+    }
 }

@@ -403,10 +403,10 @@ CDATA;
         return $months;
     }
 
-    public function getMiniPersona() {
-        $mini = $this->getAll('persona_mini');
-        $mini = $this->index($mini, 'persona_id');
-        return $mini;
+    public function getPersonaGame() {
+        $game = $this->getAll('persona_game');
+        $game = $this->multiIndex($game, 'game_id', 'persona_id');
+        return $game;
     }
 
     public function getDressupPersona() {

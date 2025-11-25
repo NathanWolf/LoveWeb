@@ -230,7 +230,7 @@ class Love {
 
         this.#characters.addProperties(data.properties);
         this.#characters.addCharacters(data.characters);
-        this.#mini.addCharacters(data.mini);
+        this.#mini.addCharacters(data.games.mini);
         this.#dressup.addData(data.dressup);
         this.#timeline.addTimelineEvents(data.events);
         this.#timeline.addMonths(data.months);

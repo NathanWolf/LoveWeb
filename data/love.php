@@ -14,7 +14,7 @@ function loadData() {
     $quizzes = $db->getQuizzes();
     $timelineEvents = $db->getTimelineEvents();
     $months = $db->getMonths();
-    $mini = $db->getMiniPersona();
+    $game = $db->getPersonaGame();
     $dressupCharacters = $db->getDressupPersona();
     $dressupCategories = $db->getDressupCategories();
     return array(
@@ -27,7 +27,7 @@ function loadData() {
         'months' => $months,
         'realms' => $realms,
         'realm_properties' => $realmPropertyTypes,
-        'mini' => $mini,
+        'games' => $game,
         'dressup' => array(
             'characters' => $dressupCharacters,
             'categories' => $dressupCategories
