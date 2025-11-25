@@ -768,3 +768,19 @@ CREATE TABLE persona_dressup_category
         on delete cascade
         on update set null
 );
+
+CREATE TABLE persona_game
+(
+    persona_id VARCHAR(64) NOT NULL,
+    game_id VARCHAR(64) NOT NULL,
+    enabled bool NOT NULL DEFAULT true,
+    data JSON NULL,
+
+    constraint persona_game_pk
+        primary key (persona_id, game_id),
+
+    foreign key (persona_id)
+        references persona(id)
+        on delete cascade
+        on update cascade
+);
