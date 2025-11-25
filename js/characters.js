@@ -43,18 +43,27 @@ class Characters extends Component {
     }
 
     getCharacterList(showHidden, showVariants) {
-        let characterList = Object.values(this.#characters);
-        if (!showHidden) {
-            characterList = characterList.filter((character) => !character.hidden);;
-        }
-        if (showVariants) {
-            let variants = [];
-            for (let i = 0; i < characterList.length; i++) {
-                variants.push(...Object.values(characterList[i].variants));
+        return Object.values(this.getCharacters(showHidden, showVariants));
+    }
+
+    getCharacters(showHidden, showVariants) {
+        let characters = {};
+        for (let id in this.#characters) {
+            if (this.#characters.hasOwnProperty(id)) {
+                let character = this.#characters[id];
+                if (!showHidden && character.hidden) continue;
+                characters[id] = character;
+
+                if (showVariants) {
+                    for (let variantId in character.variants) {
+                        if (character.variants.hasOwnProperty(variantId)) {
+                            characters[variantId] = character.variants[variantId];
+                        }
+                    }
+                }
             }
-            characterList.push(...variants);
         }
-        return characterList;
+        return characters;
     }
 
     getCharacter(id) {

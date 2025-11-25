@@ -27,7 +27,7 @@ class Mini extends Component {
 
     addCharacters(characters) {
         for (let id in characters) {
-            if (characters.hasOwnProperty(id)) {
+            if (characters.hasOwnProperty(id) && characters[id].enabled) {
                 this.miniCharacters[id] = {
                     id: id,
                     facing: this.#getRandomFacing(),

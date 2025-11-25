@@ -9,7 +9,7 @@ class Flashcards extends Component {
     }
 
     show() {
-        let characters = this.getController().getCharacters().getCharacterList();
+        let characters = this.getController().getGames().getCharacterList('flashcards');
         this.#wrongAnswers = 0;
         this.#correctAnswers = 0;
         this.#currentFlashcards = Utilities.shuffle(characters);

@@ -97,6 +97,10 @@ class Love {
         return this.#history;
     }
 
+    getGames() {
+        return this.#games;
+    }
+
     register() {
         let love = this;
         Utilities.addHandlerToClass('tabButton', function() {
@@ -239,6 +243,7 @@ class Love {
         this.#tiers.addTiers(data.tiers);
         this.#realms.addRealms(data.realms);
         this.#realms.addProperties(data.realm_properties);
+        this.#games.addGames(data.games);
 
         this.#loaded = true;
         document.getElementById('loading').style.display = 'none';

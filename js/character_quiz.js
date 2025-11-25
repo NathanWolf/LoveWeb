@@ -20,8 +20,9 @@ class CharacterQuiz extends Component {
 
         let usedProperties = {};
         let characters = this.getController().getCharacters();
+        let games = this.getController().getGames();
         let allProperties = characters.getProperties();
-        let allCharacters = characters.getCharacterList();
+        let allCharacters = games.getCharacterList('character_quiz');
         for (let i = 0; i < allCharacters.length; i++) {
             let character = allCharacters[i];
             for (let propertyKey in character.properties) {
@@ -55,6 +56,7 @@ class CharacterQuiz extends Component {
     #showResults() {
         let element = this.getElement();
         Utilities.empty(element);
+        let container = Utilities.createDiv('chosenCharacter', element);
         let characters = this.getController().getCharacters();
         let scores = this.#getSortedScores();
         let chosen = scores.length == 0 ? null : scores[0];
@@ -68,7 +70,6 @@ class CharacterQuiz extends Component {
             return
         }
 
-        let container = Utilities.createDiv('chosenCharacter', element);
         let chosenCharacter = chosen.character;
         let portraitContainer = Utilities.createDiv('portrait', container);
         portraitContainer.style.backgroundImage = 'url(' + characters.getPortrait(chosenCharacter.id) + ')';
