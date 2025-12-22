@@ -237,6 +237,7 @@ function getUserPrompt($loveDatabase, $userId) {
 
 function getMiniPrompt($loveDatabase, $targetPersona, $userId) : string {
     global $_miniPrompt;
+    global $_conversationPrompt;
     $characterName = getCharacterName($targetPersona);
     $basePrompt = $_miniPrompt;
     $basePrompt = str_replace('{name}', $characterName, $basePrompt);
@@ -245,7 +246,7 @@ function getMiniPrompt($loveDatabase, $targetPersona, $userId) : string {
     $sourcePrompt = getUserPrompt($loveDatabase, $userId);
     if ($sourcePrompt) {
         $sourcePrompt = changeCharacterPromptPerson($sourcePrompt);
-        $prompt .= "\n\nYou are speaking to someone who would be described like this:\n$sourcePrompt";
+        $prompt .= "\n\n$_conversationPrompt\n$sourcePrompt";
     }
     return $prompt;
 }
@@ -253,6 +254,7 @@ function getMiniPrompt($loveDatabase, $targetPersona, $userId) : string {
 function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous, $targetRealm) : string {
     global $_realmPrompt;
     global $_characterPrompt;
+    global $_conversationPrompt;
 
     if ($targetRealm) {
         $realmName = $targetRealm['name'];
@@ -275,7 +277,7 @@ function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourceP
 
     if ($sourcePrompt) {
         $sourcePrompt = changeCharacterPromptPerson($sourcePrompt);
-        $prompt .= "\n\nYou are speaking to someone who would be described like this:\n$sourcePrompt";
+        $prompt .= "\n\n$_conversationPrompt\n$sourcePrompt";
     }
     return $prompt;
 }

@@ -21,6 +21,11 @@ Please keep your responses brief, one paragraph at most. Don't use over-colorful
 unless the following prompt says otherwise.
 CDATA;
 
+$_conversationPrompt = <<<CDATA
+You are speaking to someone who would be described like this:
+CDATA;
+
+
 $_realmPrompt = <<<CDATA
 You are not an AI assistant but acting as a realm in a fictional story.
 You are acting with the user as the citizens of this realm, how they’d interact with the person they’re talking to. 
