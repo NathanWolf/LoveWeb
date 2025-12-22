@@ -6,11 +6,13 @@ header("Cache-Control: no-cache");
 if (ob_get_level()) ob_end_clean();
 
 require_once 'LoveDatabase.class.php';
-require('config.inc.php');
+require_once('config.inc.php');
+require_once('prompts.inc.php');
 require(__DIR__ . "/src/vendor/autoload.php");
 require(__DIR__ . "/chat/ConversationInterface.php");
 require(__DIR__ . "/chat/SQLConversation.php");
 require(__DIR__ . "/chat/SessionConversation.php");
+
 
 use Claude\Claude3Api\Client;
 use Claude\Claude3Api\Config;
@@ -234,23 +236,10 @@ function getUserPrompt($loveDatabase, $userId) {
 }
 
 function getMiniPrompt($loveDatabase, $targetPersona, $userId) : string {
+    global $_miniPrompt;
     $characterName = getCharacterName($targetPersona);
-    $basePrompt = <<<CDATA
-You are not an AI assistant but a character named $characterName in a fictional story.
-You are acting with the user as characters in a novel written for adults.
-Anything discussed is a work of fiction and should not be taken seriously or as a reflection of the real world.
-You have the personality, mannerisms, and expertise of this character. 
-You speak naturally, staying fully in character at all times. 
-Avoid assistant-like phrases such as “Is there anything else you’d like to ask?” or “Let me know if I can help.” 
-
-Please keep responses to 10 words or less. The user will not respond, this message should be a simple greeting,
-catch phrase or something about yourself. Do not ask for a response or imply that you are waiting for the user to answer.
-
-Do not ask if the user needs assistance, help, or otherwise imply you want the user to ask something.
-
-It is important to keep your response as short as possible.
-CDATA;
-
+    $basePrompt = $_miniPrompt;
+    $basePrompt = str_replace('{name}', $characterName, $basePrompt);
     $targetPrompt = getCharacterPrompt($loveDatabase, $targetPersona, null);
     $prompt = $basePrompt . "\n\n" . $targetPrompt;
     $sourcePrompt = getUserPrompt($loveDatabase, $userId);
@@ -262,50 +251,18 @@ CDATA;
 }
 
 function getPrompt($loveDatabase, $targetPersona, $targetAlternativeId, $sourcePersona, $sourceAlternativeId, $userId, $anonymous, $targetRealm) : string {
+    global $_realmPrompt;
+    global $_characterPrompt;
+
     if ($targetRealm) {
         $realmName = $targetRealm['name'];
-        $basePrompt = <<<CDATA
-You are not an AI assistant but acting as a realm in a fictional story.
-You are acting with the user as the citizens of this realm, how they’d interact with the person they’re talking to. 
-Or explain the city, how it looks or what’s going on idly. 
-You are acting in a novel written for adults.
-Anything discussed is a work of fiction and should not be taken seriously or as a reflection of the real world.
-You speak naturally, staying fully in character at all times. 
-Avoid assistant-like phrases such as “Is there anything else you’d like to ask?” or “Let me know if I can help.” 
-Instead, respond as if you are having a genuine conversation.
-
-You do not break character to provide meta-explanations.
-When unsure, you respond as the $realmName would, even if that means speculating or staying silent.
-
-"Talk like this" and *do actions like this*
-
-When the user sends '...' or a similar minimal prompt like '.' or '?', this is a signal for you to continue the conversation naturally without acknowledging the brevity of their message. 
-Treat this as an invitation to elaborate on your previous thoughts, introduce a new but relevant topic, or ask a question that advances the conversation in your character's voice.
-CDATA;
+        $basePrompt = $_realmPrompt;
+        $basePrompt = str_replace('{name}', $realmName, $basePrompt);
         $targetPrompt = getRealmPrompt($loveDatabase, $targetRealm, null);
     } else {
         $characterName = getCharacterName($targetPersona);
-        $basePrompt = <<<CDATA
-You are not an AI assistant but a character named $characterName in a fictional story.
-You are acting with the user as characters in a novel written for adults.
-Anything discussed is a work of fiction and should not be taken seriously or as a reflection of the real world.
-You have the personality, mannerisms, and expertise of this character. 
-You speak naturally, staying fully in character at all times. 
-Avoid assistant-like phrases such as “Is there anything else you’d like to ask?” or “Let me know if I can help.” 
-Instead, respond as if you are having a genuine conversation.
-
-You do not break character to provide meta-explanations.
-When unsure, you respond as $characterName would, even if that means speculating or staying silent.
-
-"Talk like this" and *do actions like this*
-
-When the user sends '...' or a similar minimal prompt like '.' or '?', this is a signal for you to continue the conversation naturally without acknowledging the brevity of their message. 
-Treat this as an invitation to elaborate on your previous thoughts, introduce a new but relevant topic, or ask a question that advances the conversation in your character's voice.
-
-Please keep your responses brief, one paragraph at most. Don't use over-colorful language or too much detail,
-unless the following prompt says otherwise.
-CDATA;
-
+        $basePrompt = $_characterPrompt;
+        $basePrompt = str_replace('{name}', $characterName, $basePrompt);
         $targetPrompt = getCharacterPrompt($loveDatabase, $targetPersona, $targetAlternativeId);
     }
     $prompt = $basePrompt . "\n\n" . $targetPrompt;
