@@ -167,6 +167,11 @@ alter table persona
     on delete cascade
     on update cascade;
 
+alter table persona
+    add column first_name_old varchar(255) default null,
+    add column birth_name_old varchar(255) default null,
+    add column nick_name_old varchar(255) default null;
+
 create table property
 (
     id VARCHAR(64) NOT NULL,
