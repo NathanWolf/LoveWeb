@@ -1,5 +1,6 @@
 class Flashcards extends Component {
     #correctAnswer = 0;
+    #correctAnswerText = 0;
     #correctAnswers = 0;
     #wrongAnswers = 0;
     #currentFlashcards = [];
@@ -66,6 +67,7 @@ class Flashcards extends Component {
             answer.innerText = answers[i].name;
             if (answers[i].id === nextCharacter.id) {
                 this.#correctAnswer = i;
+                this.#correctAnswerText = answers[i].name;
             }
             answer.dataset.index = i;
             answer.addEventListener('click', function() {
@@ -83,7 +85,7 @@ class Flashcards extends Component {
             Utilities.showStatusPopup(element.parentNode, 'flashCardCorrect').innerText = 'CORRECT!';
             this.#correctAnswers++;
         } else {
-            Utilities.showStatusPopup(element.parentNode, 'flashCardWrong').innerText = 'Wrong :(';
+            Utilities.showStatusPopup(element.parentNode, 'flashCardWrong', 5000).innerHTML = "Sorry, no! It's:<br>" + this.#correctAnswerText;
             this.#wrongAnswers++;
         }
         this.#nextFlashCard();
