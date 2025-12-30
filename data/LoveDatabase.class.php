@@ -230,7 +230,8 @@ CDATA;
         $character['name_old'] = null;
         if ($character['first_name_old']) {
             $character['name_old'] = $character['first_name_old'];
-        }if ($character['nick_name_old']) {
+        }
+        if ($character['nick_name_old']) {
             $character['name_old'] = $character['nick_name_old'];
         }
         $character['name'] = $character['first_name'];
