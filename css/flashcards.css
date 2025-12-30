@@ -13,7 +13,7 @@
     background-color: var(--tile-background-color);
 }
 
-#flashCards {
+#flashCards, #renameFlashcards {
     justify-content: center;
     align-items: center;
 }
@@ -56,6 +56,13 @@
     padding-left: 0.2em;
     list-style-type: square;
     width: 10em;
+}
+
+.oldName {
+    background-color: var(--name-background-color);
+    color: var(--name-color);
+    text-align: center;
+    font-style: italic;
 }
 
 @media (hover: hover) {

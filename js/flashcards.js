@@ -12,8 +12,17 @@ class Flashcards extends Component {
         let characters = this.getController().getGames().getCharacterList('flashcards');
         this.#wrongAnswers = 0;
         this.#correctAnswers = 0;
+        characters = this.filter(characters);
         this.#currentFlashcards = Utilities.shuffle(characters);
         this.#nextFlashCard();
+    }
+
+    filter(characters) {
+        return characters;
+    }
+
+    getCaption(character) {
+        return null;
     }
 
     #nextFlashCard() {
@@ -37,6 +46,10 @@ class Flashcards extends Component {
 
         let nextCharacter = this.#currentFlashcards.pop();
         flashCardContainer.style.backgroundImage = 'url(' + this.getController().getCharacters().getPortrait(nextCharacter.id) + ')';
+        let caption = this.getCaption(nextCharacter);
+        if (caption != null) {
+            flashCardOuterContainer.appendChild(caption);
+        }
         let list = document.createElement('ul');
         let answers = [nextCharacter];
         let characters = this.getController().getCharacters().getCharacterList();

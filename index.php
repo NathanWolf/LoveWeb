@@ -34,6 +34,7 @@
     <script type="text/javascript" src="js/character_quiz.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/quizzes.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/flashcards.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/rename_flashcards.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/tiers.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/relationships.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/timeline.js?v=<?=VERSION?>"></script>
@@ -165,6 +166,9 @@
         </div>
 
         <div class="tab" id="flashCards" style="display: none">
+        </div>
+
+        <div class="tab" id="renameFlashcards" style="display: none">
         </div>
 
         <div class="tab" id="quizzes" style="display: none">

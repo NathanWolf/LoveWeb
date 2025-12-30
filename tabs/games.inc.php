@@ -3,6 +3,11 @@
 
 <div class="buttonContainer">
 
+    <div class="navigation gamesButtonAndLabel" data-tab="renameFlashcards">
+        <div class="buttonCards gamesButton"></div>
+        <div class="gamesButtonLabel">Renamed Characters Flashcards</div>
+    </div>
+
     <div class="navigation gamesButtonAndLabel" data-tab="cards">
         <div class="buttonCards gamesButton"></div>
         <div class="gamesButtonLabel">Card Game (W.I.P.)</div>

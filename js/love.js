@@ -10,6 +10,7 @@ class Love {
     #dressup = new Dressup(this, document.getElementById('dressup'));
     #games = new Games(this, document.getElementById('games'));
     #flashcards = new Flashcards(this, document.getElementById('flashCards'));
+    #renameFlashcards = new RenameFlashcards(this, document.getElementById('renameFlashcards'));
     #tiers = new Tiers(this, document.getElementById('tierLists'));
     #relationships = new Relationships(this, document.getElementById('relationships'));
     #timeline = new Timeline(this, document.getElementById('timeline'));
@@ -34,6 +35,7 @@ class Love {
         minii: this.#mini,
         dressup: this.#dressup,
         flashCards: this.#flashcards,
+        renameFlashcards: this.#renameFlashcards,
         tierLists: this.#tiers,
         relationships: this.#relationships,
         timeline: this.#timeline,
