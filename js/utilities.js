@@ -61,6 +61,11 @@ class Utilities {
     }
 
     static showStatusPopup(parent, innerClass, timeout) {
+        let elements = document.getElementsByClassName('statusPopup');
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].remove();
+        }
+
         if (typeof(innerClass) === 'undefined') {
             innerClass = 'popupInnerContent';
         }
@@ -76,6 +81,10 @@ class Utilities {
         innerDiv.className = innerClass;
         contentDiv.appendChild(innerDiv);
         parent.appendChild(popupDiv);
+
+        popupDiv.addEventListener('click', function() {
+            popupDiv.remove();
+        });
 
         setTimeout(function() {
            popupDiv.remove();
