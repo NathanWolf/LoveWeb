@@ -17,4 +17,8 @@ class RenameFlashcards extends Flashcards {
     getCaption(character) {
         return Utilities.createDiv('oldName', undefined, character.first_name_old);
     }
+
+    getTitle() {
+        return 'Learn the New Character Names!';
+    }
 }
