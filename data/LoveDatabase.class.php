@@ -227,6 +227,12 @@ CDATA;
         $character['relationships'] = array();
         $character['properties'] = array();
         $character['images'] = array();
+        $character['name_old'] = null;
+        if ($character['first_name_old']) {
+            $character['name_old'] = $character['first_name_old'];
+        }if ($character['nick_name_old']) {
+            $character['name_old'] = $character['nick_name_old'];
+        }
         $character['name'] = $character['first_name'];
         if ($character['nick_name']) {
             $character['name'] = $character['nick_name'];

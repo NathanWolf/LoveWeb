@@ -7,7 +7,7 @@ class RenameFlashcards extends Flashcards {
     filter(characters) {
         let renamedCharacters = [];
         for (let character of characters) {
-            if (character.first_name_old != null && character.first_name_old != character.first_name) {
+            if (character.name_old != null && character.name_old != character.name) {
                 renamedCharacters.push(character);
             }
         }
