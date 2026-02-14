@@ -94,7 +94,7 @@
         <div class="tabButtons" id="mainMenu">
             <div class="tabButton active toolbarButton" data-tab="books">Books</div>
             <div class="tabButton toolbarButton" data-tab="info">About the Author</div>
-            <div class="tabButton toolbarButton" data-tab="dressup">NEW! Dress-Up</div>
+            <div class="tabButton toolbarButton" data-tab="dressup">Dress-Up</div>
             <div class="tabButton toolbarButton" data-tab="minii">Minii Lands</div>
             <div class="tabButton toolbarButton" data-tab="slideshow">Slideshow</div>
             <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
