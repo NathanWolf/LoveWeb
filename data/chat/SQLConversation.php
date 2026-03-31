@@ -134,17 +134,35 @@ class SQLConversation implements ConversationInterface
         return $conversation;
     }
 
-    public function get_messages(): array {
+    public function get_messages(int|null $maxMessageCount): array {
         if( ! isset( $this->chat_id ) ) {
             return [];
         }
 
-        $stmt = $this->db->prepare( "SELECT * FROM conversation_message WHERE `conversation_id` = :chat_id ORDER BY created asc" );
+        $query = "SELECT * FROM conversation_message WHERE `conversation_id` = :chat_id ORDER BY created desc";
+        if ($maxMessageCount) {
+            $query .= " LIMIT $maxMessageCount";
+        }
+        $stmt = $this->db->prepare( $query );
         $stmt->execute( [
             ":chat_id" => $this->chat_id,
         ] );
 
-        return $stmt->fetchAll( PDO::FETCH_ASSOC );
+        $messages = $stmt->fetchAll( PDO::FETCH_ASSOC );
+        $messages = array_reverse($messages);
+        // Make sure we have the system prompt
+        if ($messages && $messages[0]['role'] != 'system') {
+            $query = "SELECT * FROM conversation_message WHERE `conversation_id` = :chat_id AND role = 'system' ORDER BY created asc LIMIT 1";
+            $stmt = $this->db->prepare( $query );
+            $stmt->execute( [
+                ":chat_id" => $this->chat_id,
+            ] );
+            $prompt = $stmt->fetchAll( PDO::FETCH_ASSOC );
+            if ($prompt) {
+                array_unshift($messages, $prompt);
+            }
+        }
+        return $messages;
     }
 
     public function add_message( $message ): int {

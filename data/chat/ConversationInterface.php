@@ -8,7 +8,7 @@ interface ConversationInterface
 
     public function find( int $chat_id  ): self|false;
 
-    public function get_messages();
+    public function get_messages( int|null $maxMessageCount );
 
     public function add_message( $message ): int;
 

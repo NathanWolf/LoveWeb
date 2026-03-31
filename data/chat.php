@@ -286,7 +286,7 @@ function getMiniMessage($loveDatabase, $persona, $userId, $message) {
     global $SETTINGS;
 
     $config = new Config($SETTINGS['anthropic']['key']);
-    if ($SETTINGS['anthropic']['max_tokens']) {
+    if (isset($SETTINGS['anthropic']['max_tokens'])) {
         $config->setMaxTokens($SETTINGS['anthropic']['max_tokens']);
     }
     $client = new Client($config);
@@ -315,12 +315,12 @@ function streamCompletion($conversation, $context = null) {
     $response_text = '';
 
     $readOnly = $context != null;
-    $context = $context ?: $conversation->get_messages();
+    $context = $context ?: $conversation->get_messages($SETTINGS['chat']['max_history']);
 
     // create a new completion
     try {
         $config = new Config($SETTINGS['anthropic']['key']);
-        if ($SETTINGS['anthropic']['max_tokens']) {
+        if (isset($SETTINGS['anthropic']['max_tokens'])) {
             $config->setMaxTokens($SETTINGS['anthropic']['max_tokens']);
         }
         $client = new Client($config);
@@ -563,7 +563,7 @@ try {
                 $conversation->updateSystem($system);
                 $updateTime = microtime(true);
             }
-            $context = $conversation->get_messages();
+            $context = $conversation->get_messages($SETTINGS['chat']['max_history']);
             $getMessages = microtime(true);
             $timing = array(
                 'lookups' => ($dbLookups - $start),
@@ -585,7 +585,7 @@ try {
             }
 
             // First message must be system prompt
-            $messages = $conversation->get_messages();
+            $messages = $conversation->get_messages($SETTINGS['chat']['max_history']);
             if (count($messages) == 0 || $messages[0]['role'] !== 'system') {
                 die(json_encode(array('success' => false, 'message' => "This conversation is missing a system prompt")));
             }

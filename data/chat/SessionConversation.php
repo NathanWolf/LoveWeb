@@ -148,12 +148,19 @@ class SessionConversation implements ConversationInterface
         return false;
     }
 
-    public function get_messages(): array {
+    public function get_messages(int|null $maxMessageCount): array {
         if( ! isset( $this->chat_id ) ) {
             return [];
         }
 
-        return $_SESSION['chats'][$this->chat_id]["messages"] ?? [];
+        $messages = $_SESSION['chats'][$this->chat_id]["messages"] ?? [];
+        $messageCount = count($messages);
+        if ($maxMessageCount && $messageCount > $maxMessageCount) {
+            $prompt = $messages[0];
+            $messages = array_slice($messages, $messageCount - $maxMessageCount, $maxMessageCount);
+            array_unshift($messages, $prompt);
+        }
+        return $messages;
     }
 
     public function add_message( $message ): int {
@@ -222,7 +229,7 @@ class SessionConversation implements ConversationInterface
                 'target_realm_id' => $this->targetRealmId,
                 'source_alternative_id' => $this->sourceAlternativeId,
                 'target_alternative_id' => $this->targetAlternativeId,
-                "messages" => $this->get_messages(),
+                "messages" => $this->get_messages(null),
             ];
         }
 
