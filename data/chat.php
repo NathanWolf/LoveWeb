@@ -305,7 +305,7 @@ function getMiniMessage($loveDatabase, $persona, $userId, $message) {
     return $content[0]['text'];
 }
 
-function streamCompletion($conversation, $context = null) {
+function streamCompletion($loveDatabase, $userId, $conversation, $context = null) {
     global $SETTINGS;
 
     // This endpoint does not return JSON
@@ -313,6 +313,15 @@ function streamCompletion($conversation, $context = null) {
 
     $error = null;
     $response_text = '';
+
+    if ($SETTINGS['chat']['admin_only']) {
+        $user = $loveDatabase->getUser($userId);
+        if (!$user['admin']) {
+            echo "event: stop\n";
+            echo "data: " . json_encode(["content" => "Sorry, we had to turn off chat for now!\nIt got really expensive :(\nWe're trying to figure out a way to bring it back."]) . "\n\n";
+            return;
+        }
+    }
 
     $readOnly = $context != null;
     $context = $context ?: $conversation->get_messages($SETTINGS['chat']['max_history']);
@@ -574,7 +583,7 @@ try {
             );
             die(json_encode(array('messages' => $context, 'timing' => $timing, 'success' => true)));
         case 'stream':
-            streamCompletion($conversation);
+            streamCompletion($loveDatabase, $USER_ID, $conversation);
             break;
         case 'stream_agent':
             // This doesn't work with realms or users
@@ -606,7 +615,7 @@ try {
                     'content' => 'Please start a conversation as if I just walked into the room'
                 );
             }
-            streamCompletion($conversation, $messages);
+            streamCompletion($loveDatabase, $USER_ID, $conversation, $messages);
             break;
         default:
             throw new Exception("Unknown action " . $ACTION);
