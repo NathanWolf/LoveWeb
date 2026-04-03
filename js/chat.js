@@ -720,6 +720,7 @@ class Chat extends Component {
         eventSource.addEventListener( "error", function() {
             alert("Sorry, something went wrong!");
             controller.stopWaiting();
+            eventSource.close();
         });
 
         // Initialize ChatGPT response
@@ -803,6 +804,7 @@ class Chat extends Component {
         // handle errors
         eventSource.addEventListener( "error", function() {
             controller.updateMessage(message, "Sorry, there was an error in the request. Check your error logs." );
+            eventSource.close();
         } );
 
         // Initialize response
