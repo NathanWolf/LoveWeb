@@ -372,6 +372,7 @@ function streamCompletion($loveDatabase, $userId, $conversation, $context = null
 
     if ($error !== null) {
         $response_text = $error;
+        echo "event: stop\n";
         echo "data: " . json_encode(["content" => $error]) . "\n\n";
         flush();
     }
