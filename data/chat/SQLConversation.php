@@ -159,7 +159,7 @@ class SQLConversation implements ConversationInterface
             ] );
             $prompt = $stmt->fetchAll( PDO::FETCH_ASSOC );
             if ($prompt) {
-                array_unshift($messages, $prompt);
+                array_unshift($messages, $prompt[0]);
             }
         }
         return $messages;
