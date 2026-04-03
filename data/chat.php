@@ -289,6 +289,9 @@ function getMiniMessage($loveDatabase, $persona, $userId, $message) {
     if (isset($SETTINGS['anthropic']['max_tokens'])) {
         $config->setMaxTokens($SETTINGS['anthropic']['max_tokens']);
     }
+    if (isset($SETTINGS['anthropic']['cache_control'])) {
+        $config->setCacheControl($SETTINGS['anthropic']['cache_control']);
+    }
     $client = new Client($config);
     $system = getMiniPrompt($loveDatabase, $persona, $userId);
     $messages = array();
@@ -331,6 +334,9 @@ function streamCompletion($loveDatabase, $userId, $conversation, $context = null
         $config = new Config($SETTINGS['anthropic']['key']);
         if (isset($SETTINGS['anthropic']['max_tokens'])) {
             $config->setMaxTokens($SETTINGS['anthropic']['max_tokens']);
+        }
+        if (isset($SETTINGS['anthropic']['cache_control'])) {
+            $config->setCacheControl($SETTINGS['anthropic']['cache_control']);
         }
         $client = new Client($config);
         $system = "";
