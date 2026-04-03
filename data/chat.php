@@ -343,6 +343,9 @@ function streamCompletion($loveDatabase, $userId, $conversation, $context = null
         $messages = array();
 
         foreach ($context as $message) {
+            if (!isset($message['role']) || !isset($message['content'])) {
+                continue;
+            }
             $role = $message['role'];
             if ($role === 'system') {
                 $system = $message['content'];
