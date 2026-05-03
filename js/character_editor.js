@@ -79,6 +79,7 @@ class CharacterEditor extends Editor {
             if (group.dark) {
                 Utilities.addClass(header, 'dark');
             }
+            let anyCharacters = false;
             group.characters.forEach(function(character) {
                 if (controller.#filterProperty == 'portrait') {
                     if (character.images.hasOwnProperty('portrait')) return;
@@ -107,7 +108,12 @@ class CharacterEditor extends Editor {
                     name: portraitName
                 };
                 controller.#characterIdList.push(character.id);
+                anyCharacters = true;
             });
+
+            if (!anyCharacters) {
+                header.remove();
+            }
         });
 
         characterList.scrollTop = this.#scrollPosition;

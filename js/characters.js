@@ -170,7 +170,7 @@ class Characters extends Component {
                         Utilities.setVisible(character.containers[containerId], shouldShow);
                         if (shouldShow) {
                             visibleGroups[character.primaryGroupId] = true;
-                            visibleGroups[character.secondaryGroupId] = true;
+                            visibleGroups[character.primaryGroupId + '_' + character.secondaryGroupId] = true;
                         }
                     }
                 }
@@ -216,7 +216,7 @@ class Characters extends Component {
         return filterSelect;
     }
 
-    #createHeader(group, container, className) {
+    #createHeader(group, container, secondaryGroupType) {
         let header = Utilities.createDiv('characterGroupHeader ' + group.id + ' ' + group.tier_list_id, container);
         Utilities.createSpan('', header, group.name);
         if (group.description != null) {
@@ -226,7 +226,11 @@ class Characters extends Component {
         if (group.dark) {
             Utilities.addClass(header, 'dark');
         }
-        this.#groupContainers[group.id] = header;
+        let groupId = group.id;
+        if (secondaryGroupType != null) {
+            groupId = secondaryGroupType.id + '_' + groupId;
+        }
+        this.#groupContainers[groupId] = header;
         return header;
     }
 
@@ -281,7 +285,7 @@ class Characters extends Component {
             Object.values(secondaryGroups).forEach(function(secondaryGroup) {
                 if (secondaryGroup.characters.length == 0) return;
 
-                characterController.#createHeader(secondaryGroup, characterList);
+                characterController.#createHeader(secondaryGroup, characterList, primaryGroup);
                 secondaryGroup.characters.forEach(function(character) {
                     let portraitContainer = document.createElement('div');
                     portraitContainer.className = 'portraitContainer';
