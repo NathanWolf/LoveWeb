@@ -36,6 +36,13 @@ class CharacterEditor extends Editor {
         allOption.value = '*';
         allOption.innerText = '(Showing all characters)';
         filterSelect.appendChild(allOption);
+        let profileOption = document.createElement('option');
+        profileOption.value = 'portrait';
+        profileOption.innerText = 'Missing Portrait Image';
+        filterSelect.appendChild(profileOption);
+        if (this.#filterProperty == 'portrait') {
+            profileOption.selected = true;
+        }
 
         for (let propertyId in properties) {
             if (!properties.hasOwnProperty(propertyId)) continue;
@@ -73,7 +80,9 @@ class CharacterEditor extends Editor {
                 Utilities.addClass(header, 'dark');
             }
             group.characters.forEach(function(character) {
-                if (controller.#filterProperty != '*' && character.properties.hasOwnProperty(controller.#filterProperty)) return;
+                if (controller.#filterProperty == 'portrait') {
+                    if (character.images.hasOwnProperty('portrait')) return;
+                } else if (controller.#filterProperty != '*' && character.properties.hasOwnProperty(controller.#filterProperty)) return;
 
                 let portraitContainer = document.createElement('div');
                 portraitContainer.className = 'portraitContainer';
