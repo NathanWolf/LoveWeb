@@ -443,18 +443,12 @@ class Characters extends Component {
         let buttonContainer = Utilities.createDiv('characterSheetButtonSection section', column1);
 
         let user = this.getController().getProfile().getUser();
-        if (user != null) {
+        if (user != null && user.admin) {
             let chatButton = Utilities.createElement('button', '', buttonContainer, 'Chat');
             chatButton.addEventListener('click', function () {
                 Utilities.closePopups();
                 characterController.getController().selectTab('chat');
                 characterController.getController().getChat().startChatWithCharacter(characterKey);
-            });
-        } else {
-            let loginButton = Utilities.createElement('button', '', buttonContainer, 'Login to Chat');
-            loginButton.addEventListener('click', function () {
-                Utilities.closePopups();
-                characterController.getController().selectTab('profile');
             });
         }
         let dressup = this.getController().getDressup();
