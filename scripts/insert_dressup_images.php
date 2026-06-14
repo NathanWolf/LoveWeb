@@ -170,6 +170,7 @@ foreach ($iterator as $fileInfo) {
             $title = $db::makeOutfitItemTitle($categoryId, $itemId);
             $layer = 0;
             switch ($categoryId) {
+                case 'bodies': $layer = 2; break;
                 case 'wings': $layer = 4; break;
                 case 'skin': $layer = 6; break;
                 case 'undershirts': $layer = 8; break;
