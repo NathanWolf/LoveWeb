@@ -425,7 +425,23 @@ CDATA;
         }
         $dressup = $this->index($dressup, 'persona_id');
         $items = $this->getAll('persona_dressup_item');
+        $primaryItems = array();
+        $itemMap = array();
+        $secondaryItems = array();
         foreach ($items as $item) {
+            $itemMap[$item['image_id']] = $item;
+            if ($item['secondary_image_id']) {
+                $secondaryItems[$item['secondary_image_id']] = $item;
+            }
+        }
+        foreach ($items as $item) {
+            if (!isset($secondaryItems[$item['image_id']])) {
+                $item['secondary_image'] = $itemMap[$item['secondary_image_id']] ?? null;
+                $primaryItems[] = $item;
+            }
+        }
+
+        foreach ($primaryItems as $item) {
             if ($item['permanent']) {
                 if (!isset($dressup[$item['persona_id']]['permanent'][$item['category_id']])) {
                     $dressup[$item['persona_id']]['permanent'][$item['category_id']] = array();

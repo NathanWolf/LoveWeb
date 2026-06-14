@@ -151,19 +151,22 @@ class Dressup extends Component {
             for (let itemId in categoryItems) {
                 if (!categoryItems.hasOwnProperty(itemId)) continue;
                 let item = categoryItems[itemId];
-                let itemLayer = Utilities.createDiv('dressupLayer', characterContainer);
-                itemLayer.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/items/' + categoryId + '/' + itemId + '.png?version=' + _version +')';
-                itemLayer.style.display = 'none';
-                itemLayer.style.zIndex = (10 + item.layer).toString();
-                itemLayer.style.aspectRatio = aspectRatio.toString();
-
+                let itemLayer = this.createItemLayer(characterContainer, characterId, categoryId, itemId, aspectRatio, 'none', item.layer);
                 let itemThumbnail = Utilities.createDiv('dressupThumbnail', categoryContainer);
                 itemThumbnail.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/thumbnails/' + categoryId + '/' + itemId + '.png?version=' + _version +')';
                 itemThumbnail.title = item.title;
+                let secondaryImage = null;
+
+                if (item.secondary_image != null) {
+                    secondaryImage = {
+                        itemLayer: this.createItemLayer(characterContainer, characterId, categoryId, item.secondary_image.image_id, aspectRatio, 'none', item.secondary_image.layer)
+                    };
+                }
 
                 this.#items[categoryId][itemId] = {
                     itemLayer: itemLayer,
                     itemThumbnail: itemThumbnail,
+                    secondaryImage: secondaryImage,
                     visible: false
                 };
 
@@ -181,10 +184,7 @@ class Dressup extends Component {
             for (let itemId in categoryItems) {
                 if (!categoryItems.hasOwnProperty(itemId)) continue;
                 let item = categoryItems[itemId];
-                let itemLayer = Utilities.createDiv('dressupLayer', characterContainer);
-                itemLayer.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/items/' + categoryId + '/' + itemId + '.png?version=' + _version +')';
-                itemLayer.style.zIndex = (10 + item.layer).toString();
-                itemLayer.style.aspectRatio = aspectRatio.toString();
+                this.createItemLayer(characterContainer, characterId, categoryId, itemId, aspectRatio, 'block', item.layer);
             }
         }
 
@@ -199,11 +199,23 @@ class Dressup extends Component {
         }
     }
 
+    createItemLayer(characterContainer, characterId, categoryId, itemId, aspectRatio, display, itemLayerIndex) {
+        let itemLayer = Utilities.createDiv('dressupLayer', characterContainer);
+        itemLayer.style.backgroundImage = 'url(image/dressup/characters/' + characterId + '/items/' + categoryId + '/' + itemId + '.png?version=' + _version +')';
+        itemLayer.style.display = display;
+        itemLayer.style.zIndex = (10 + itemLayerIndex).toString();
+        itemLayer.style.aspectRatio = aspectRatio.toString();
+        return itemLayer;
+    }
+
     hideItem(categoryId, itemId) {
         let item = this.#items[categoryId][itemId];
         Utilities.removeClass(item.itemThumbnail, 'selected');
         item.itemLayer.style.display = 'none';
         item.visible = false;
+        if (item.secondaryImage != null) {
+            item.secondaryImage.itemLayer.style.display = 'none';
+        }
         this.#setOutfitId(null, null);
     }
 
@@ -213,6 +225,9 @@ class Dressup extends Component {
         let item = this.#items[categoryId][itemId];
         Utilities.addClass(item.itemThumbnail, 'selected');
         item.itemLayer.style.display = 'block';
+        if (item.secondaryImage != null) {
+            item.secondaryImage.itemLayer.style.display = 'block';
+        }
         item.visible = true;
         this.#setOutfitId(null, null);
     }
