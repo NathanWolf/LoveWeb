@@ -27,8 +27,9 @@ foreach ($iterator as $fileInfo) {
         echo "Skipping $filename\n";
         continue;
     }
-    // Ughhh rename the layer please XD
-    if ($filename == 'mable-anne') $filename = 'anne';
+
+    // Deal with Windows decomposed characters
+    $filename = Normalizer::normalize($filename);
     $targetFolder = $characterFolder . '/' . $filename;
     if (!file_exists($targetFolder)) {
         echo "Creating $filename, target folder doesn't exist\n";
