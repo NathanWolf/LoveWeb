@@ -442,6 +442,7 @@ CDATA;
         }
 
         foreach ($primaryItems as $item) {
+            if (!isset($dressup[$item['persona_id']])) continue;
             if ($item['permanent']) {
                 if (!isset($dressup[$item['persona_id']]['permanent'][$item['category_id']])) {
                     $dressup[$item['persona_id']]['permanent'][$item['category_id']] = array();
@@ -456,6 +457,7 @@ CDATA;
         }
         $categories = $this->getAll('persona_dressup_category');
         foreach ($categories as $category) {
+            if (!isset($dressup[$category['persona_id']])) continue;
             $dressup[$category['persona_id']]['categories'][$category['category_id']] = $category;
         }
 
