@@ -1,7 +1,7 @@
 class Love {
     #loaded = false;
     #mainMenuOpen = false;
-    #tab = 'info';
+    #tab = 'projects';
     #history = new History();
     #characters = new Characters(this, document.getElementById('characters'));
     #chat = new Chat(this, document.getElementById('chat'));
