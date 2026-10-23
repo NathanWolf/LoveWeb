@@ -1,4 +1,4 @@
-class Books extends Component {
+class Projects extends Component {
     #diviine;
     #spliit;
     #siin;

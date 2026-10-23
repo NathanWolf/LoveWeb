@@ -19,7 +19,7 @@ class Love {
     #characterEditor = new CharacterEditor(this, document.getElementById('characterEditor'));
     #timelineEditor = new TimelineEditor(this, document.getElementById('timelineEditor'));
     #info = new Info(this, document.getElementById('info'));
-    #books = new Books(this, document.getElementById('books'));
+    #projects = new Projects(this, document.getElementById('projects'));
     #cards = new Cards(this, document.getElementById('cards'));
     #slideshow = new Slideshow(this, document.getElementById('slideshow'));
     #mainMenu = document.getElementById('mainMenu');
@@ -44,14 +44,14 @@ class Love {
         timelineEditor: this.#timelineEditor,
         profile: this.#profile,
         info: this.#info,
-        books: this.#books,
+        projects: this.#projects,
         slideshow: this.#slideshow,
         cards: this.#cards
     };
 
     constructor() {
         let controller = this;
-        this.#history.setDefault('tab', 'books');
+        this.#history.setDefault('tab', 'projects');
         this.#history.onChange(function() {
             controller.onHistoryChange();
         });

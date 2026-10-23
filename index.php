@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="css/games.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/mini.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/dressup.css?v=<?=VERSION?>">
-    <link rel="stylesheet" href="css/books.css?v=<?=VERSION?>">
+    <link rel="stylesheet" href="css/projects.css?v=<?=VERSION?>">
     <link rel="stylesheet" href="css/cards.css?v=<?=VERSION?>">
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script type="text/javascript" src="js/utilities.js?v=<?=VERSION?>"></script>
@@ -50,7 +50,7 @@
     <script type="text/javascript" src="js/slideshow.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/mini.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/dressup.js?v=<?=VERSION?>"></script>
-    <script type="text/javascript" src="js/books.js?v=<?=VERSION?>"></script>
+    <script type="text/javascript" src="js/projects.js?v=<?=VERSION?>"></script>
     <script type="text/javascript" src="js/cards.js?v=<?=VERSION?>"></script>
     <script type="text/javascript">
         // For debugging
@@ -92,7 +92,7 @@
         </div>
 
         <div class="tabButtons" id="mainMenu">
-            <div class="tabButton active toolbarButton" data-tab="books">Books</div>
+            <div class="tabButton active toolbarButton" data-tab="projects">Projects</div>
             <div class="tabButton toolbarButton" data-tab="info">About the Author</div>
             <div class="tabButton toolbarButton" data-tab="dressup">Dress-Up</div>
             <div class="tabButton toolbarButton" data-tab="minii">Minii Lands</div>
@@ -114,12 +114,12 @@
 
         <div class="tabContainer" id="mainTabContainer">
 
-        <div class="tab" id="books">
+        <div class="tab" id="projects">
             <div class="infoTooltip">
                 <div>&larr;</div>
                 <div>Click the Burger for More!</div>
             </div>
-            <?php require('tabs/books.inc.php'); ?>
+            <?php require('tabs/projects.inc.php'); ?>
         </div>
 
         <div class="tab" id="info" style="display: none">
