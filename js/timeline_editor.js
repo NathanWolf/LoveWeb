@@ -149,6 +149,8 @@ class TimelineEditor extends Editor {
             }
             data.end_month = parseInt(endMonthInput.value);
             data.end_day = parseInt(endDayInput.value);
+            if (isNaN(data.end_month)) data.end_month = 0;
+            if (isNaN(data.end_day)) data.end_day = 0;
             data.name = nameInput.value;
             data.description = descriptionInput.value;
             editor.#updateEvent(data, saveButton, successFunction);
