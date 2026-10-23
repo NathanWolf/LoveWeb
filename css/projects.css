@@ -21,13 +21,17 @@
     border-radius: 20px;
     padding: 1em;
     color: var(--tile-color);
-    text-align: center;
 }
 
 .bookInfo {
     display: flex;
     flex-direction: column;
     margin-left: 1em;
+    text-align: left;
+}
+
+.bookDescription {
+    text-indent: 3em;
 }
 
 .bookTitle {
@@ -95,4 +99,13 @@
     border: 8px solid var(--popup-border-color);
     flex-direction: column;
     z-index: var(--gallery-layer);
+}
+
+.bookLinks {
+    margin-top: 2em;
+}
+
+.bookInfo a {
+    color: var(--link-color);
+    text-decoration: none;
 }

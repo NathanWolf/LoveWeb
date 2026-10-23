@@ -24,6 +24,7 @@
     --input-hover-color: black;
     --input-hover-background-color: #DF9750;
     --input-placeholder-color: #888888;
+    --link-color: #6c290b;
     --title-color: #752C0E;
     --tile-color: #752C0E;
     --tile-background-color: #FEE4AF;
@@ -83,6 +84,7 @@
     --input-hover-color: #A284EF;
     --input-hover-background-color: #8364D4;
     --input-placeholder-color: #4E4985;
+    --link-color: #6f6995;
     --title-color: #c7c7d8;
     --tile-color: #9793b5;
     --tile-background-color: #232144;
