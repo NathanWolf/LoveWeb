@@ -32,7 +32,8 @@
 
 .bookTitle {
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1.75em;
+    color: var(--title-color);
 }
 
 .bookProgress {
