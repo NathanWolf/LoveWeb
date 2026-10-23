@@ -15,12 +15,28 @@
 }
 
 .infoBlock {
-    margin: 1em;
+    margin: 1em 1em 1em 3em;
     background-color: var(--tile-background-color);
     border-radius: 20px;
     padding: 1em;
     color: var(--tile-color);
-    text-align: center;
+    text-align: left;
+    width: 100%;
+}
+
+.infoQuestion {
+    text-indent: 0 !important;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.infoBlock a {
+    text-decoration: none;
+    color: var(--link-color);
+}
+
+.infoBlock div {
+    text-indent: 2em;
 }
 
 .column {

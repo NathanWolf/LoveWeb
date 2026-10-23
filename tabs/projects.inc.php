@@ -105,7 +105,7 @@
         <div class="bookInfo">
             <div class="bookTitle">Other</div>
             <div class="bookDescription">
-                <a target="_blank" href="https://docs.google.com/presentation/d/1R_kpweOampv5IN2nzTF9SmQg6ILnWItCAfOVBTDIEEA">My other projects mashed into a slideshow here<a/>
+                <a target="_blank" href="https://docs.google.com/presentation/d/1R_kpweOampv5IN2nzTF9SmQg6ILnWItCAfOVBTDIEEA">My other projects mashed into a slideshow here</a>
             </div>
         </div>
     </div>
