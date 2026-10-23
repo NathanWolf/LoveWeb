@@ -792,3 +792,6 @@ CREATE TABLE persona_game
         on delete cascade
         on update cascade
 );
+
+alter table persona_dressup
+    add hidden bool default 0 not null;

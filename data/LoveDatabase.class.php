@@ -417,7 +417,7 @@ CDATA;
     }
 
     public function getDressupPersona() {
-        $dressup = $this->getAll('persona_dressup');
+        $dressup = $this->getFiltered('persona_dressup', 'hidden = 0');
         foreach ($dressup as &$dressupRef) {
             $dressupRef['items'] = array();
             $dressupRef['permanent'] = array();

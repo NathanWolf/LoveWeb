@@ -88,6 +88,10 @@ class Database {
         return $this->query("SELECT * FROM $table WHERE $idField=:id", array('id' => $id));
     }
 
+    public function getFiltered($table, $filter, $parameters = array()) {
+        return $this->query("SELECT * FROM $table WHERE $filter", $parameters);
+    }
+
     public function getAll($table, $sort = null) {
         $sql = "SELECT * FROM $table";
         if ($sort) {
