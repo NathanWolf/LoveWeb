@@ -436,8 +436,8 @@ CDATA;
         }
         foreach ($items as $item) {
             if (!isset($secondaryItems[$item['image_id']])) {
-                $item['secondary_image'] = $itemMap[$item['secondary_image_id']] ?? null;
-                $primaryItems[] = $item;
+                $item['secondary_image'] = $item['secondary_image_id'] && $itemMap[$item['secondary_image_id']] ? $itemMap[$item['secondary_image_id']] : null;
+                    $primaryItems[] = $item;
             }
         }
 
