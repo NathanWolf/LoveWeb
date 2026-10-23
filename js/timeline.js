@@ -2,6 +2,7 @@ class Timeline extends Component {
     #timelineEvents = {};
     #timeline = [];
     #months = {};
+    #splitYear = 2036;
 
     constructor(controller, element) {
         super(controller, element);
@@ -53,10 +54,15 @@ class Timeline extends Component {
 
     #createEvent(container, event, nextEvent) {
         let eventDiv = Utilities.createDiv('event ' + event.importance, container);
-        let yearType = event.year < 0 ? 'BT' : 'AT';
+        let yearType = 'PS';
         let month = event.month < 10 ? '0' + event.month : event.month;
         let day = event.day < 10 ? '0' + event.day : event.day;
-        let eventDate = Math.abs(event.year) + ' ' + yearType + ' - ' + month + ' - ' + day;
+        let year = event.year;
+        if (year <= 0) {
+            year = this.#splitYear + year;
+            yearType = 'AD';
+        }
+        let eventDate = Math.abs(year) + ' ' + yearType + ' - ' + month + ' - ' + day;
         Utilities.createDiv('eventDate', eventDiv, eventDate);
         Utilities.createDiv('eventName', eventDiv, event.name);
         if (event.description.length > 0) {
