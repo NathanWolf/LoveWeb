@@ -27,6 +27,11 @@
         </a>
     </div>
 
+    <div class="navigation gamesButtonAndLabel" data-tab="tierLists">
+        <div class="buttonTiers gamesButton"></div>
+        <div class="gamesButtonLabel">Tier Lists</div>
+    </div>
+
     <!--
     <div class="navigation gamesButtonAndLabel" data-tab="renameFlashcards">
         <div class="buttonCards gamesButton"></div>
@@ -46,11 +51,6 @@
     <div class="navigation gamesButtonAndLabel" data-tab="flashCards">
         <div class="buttonFlashCards gamesButton"></div>
         <div class="gamesButtonLabel">Flash Cards</div>
-    </div>
-
-    <div class="navigation gamesButtonAndLabel" data-tab="tierLists">
-        <div class="buttonTiers gamesButton"></div>
-        <div class="gamesButtonLabel">Tier Lists</div>
     </div>
 
     -->
