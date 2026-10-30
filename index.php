@@ -95,7 +95,7 @@
             <div class="tabButton active toolbarButton" data-tab="projects">Projects</div>
             <div class="tabButton toolbarButton" data-tab="info">About the Author</div>
             <div class="tabButton toolbarButton" data-tab="characters">Characters</div>
-            <div class="tabButton toolbarButton user" data-tab="chat" style="display: none">Chat</div>
+            <div class="tabButton toolbarButton admin" data-tab="chat" style="display: none">Chat</div>
             <div class="tabButton toolbarButton" data-tab="games">Games</div>
             <div class="tabButton toolbarButton" data-tab="relationships">Relationships</div>
             <div class="tabButton toolbarButton" data-tab="timeline">Timeline</div>
